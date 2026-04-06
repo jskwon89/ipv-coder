@@ -2,63 +2,68 @@
 
 import { useState } from "react";
 
-const analysisTabs = ["분석결과", "시각화", "해석", "R코드"] as const;
 const dataTabs = ["프로젝트 연결", "파일 업로드", "직접 입력"] as const;
 
-const quickAnalyses = [
-  { label: "기술통계", desc: "빈도, 평균, 표준편차, 교차표" },
-  { label: "시각화", desc: "막대그래프, 파이차트, 히스토그램, 박스플롯, 산점도" },
+const instantAnalyses = [
+  { label: "빈도분석", desc: "범주형 변수의 빈도 및 비율" },
+  { label: "기술통계", desc: "평균, 표준편차, 최소/최대, 중앙값" },
+  { label: "교차표", desc: "두 범주형 변수 간 교차분석" },
+  { label: "시각화", desc: "막대, 파이, 히스토그램, 박스플롯, 산점도" },
+];
+
+const requestAnalyses = [
   { label: "집단분석", desc: "GBTM 궤적, LCA, 군집분석" },
   { label: "생존분석", desc: "Cox 비례위험, Kaplan-Meier" },
   { label: "회귀분석", desc: "로지스틱, 다중회귀, 다수준" },
+  { label: "구조방정식", desc: "SEM, 경로분석, 매개효과" },
   { label: "AI 분석 추천", desc: "데이터에 적합한 분석 자동 추천" },
 ];
 
+const resultTabs = ["분석결과", "시각화", "해석"] as const;
+
 export default function StatsAnalysisPage() {
   const [activeDataTab, setActiveDataTab] = useState<(typeof dataTabs)[number]>("프로젝트 연결");
-  const [activeResultTab, setActiveResultTab] = useState<(typeof analysisTabs)[number]>("분석결과");
-  const [selectedAnalyses, setSelectedAnalyses] = useState<string[]>([]);
-  const [customRequest, setCustomRequest] = useState("");
+  const [activeResultTab, setActiveResultTab] = useState<(typeof resultTabs)[number]>("분석결과");
+  const [selectedInstant, setSelectedInstant] = useState<string[]>([]);
+  const [selectedRequest, setSelectedRequest] = useState<string[]>([]);
+  const [requestDetail, setRequestDetail] = useState("");
+  const [requestSubmitted, setRequestSubmitted] = useState(false);
 
-  const toggleAnalysis = (label: string) => {
-    setSelectedAnalyses((prev) =>
+  const toggleInstant = (label: string) => {
+    setSelectedInstant((prev) =>
       prev.includes(label) ? prev.filter((a) => a !== label) : [...prev, label]
     );
+  };
+
+  const toggleRequest = (label: string) => {
+    setSelectedRequest((prev) =>
+      prev.includes(label) ? prev.filter((a) => a !== label) : [...prev, label]
+    );
+  };
+
+  const handleRequestSubmit = () => {
+    setRequestSubmitted(true);
+    setTimeout(() => setRequestSubmitted(false), 3000);
   };
 
   return (
     <div className="p-8 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold">통계분석/시각화</h1>
-            <span className="text-[10px] font-medium bg-rose-500/20 text-rose-400 px-2 py-0.5 rounded-full">
-              준비 중
-            </span>
-          </div>
-          <p className="text-muted-foreground text-sm mt-1">데이터 분석 및 시각화 도구</p>
-        </div>
-      </div>
-
-      {/* Pricing info */}
-      <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg px-4 py-3 mb-6 flex items-start gap-3">
-        <svg className="w-5 h-5 text-blue-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        <p className="text-sm text-blue-300">분석 종류와 데이터 크기에 따라 크레딧이 소모됩니다</p>
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold">통계분석 / 시각화</h1>
+        <p className="text-muted-foreground text-sm mt-1">기술통계와 시각화는 바로 실행, 고급 분석은 의뢰 형태로 진행됩니다</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left column: Data Input + Analysis Selection */}
+        {/* Left: Data Input */}
         <div className="lg:col-span-2 space-y-6">
+
           {/* Data Input */}
           <div className="bg-card rounded-xl border border-border">
             <div className="px-6 py-4 border-b border-border">
               <h2 className="font-semibold">데이터 입력</h2>
             </div>
             <div className="px-6 py-4">
-              {/* Tabs */}
               <div className="flex gap-1 mb-4 bg-secondary/50 rounded-lg p-1">
                 {dataTabs.map((tab) => (
                   <button
@@ -75,7 +80,6 @@ export default function StatsAnalysisPage() {
                 ))}
               </div>
 
-              {/* Tab content */}
               {activeDataTab === "프로젝트 연결" && (
                 <div>
                   <label className="block text-sm font-medium mb-2">기존 프로젝트 선택</label>
@@ -97,31 +101,67 @@ export default function StatsAnalysisPage() {
               )}
 
               {activeDataTab === "직접 입력" && (
-                <div>
-                  <textarea
-                    rows={6}
-                    placeholder="데이터를 붙여넣기 하세요 (탭 또는 쉼표 구분)&#10;&#10;예:&#10;이름,나이,점수&#10;홍길동,25,85&#10;김철수,30,92"
-                    className="w-full px-4 py-3 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary font-mono resize-none"
-                  />
-                </div>
+                <textarea
+                  rows={6}
+                  placeholder={"데이터를 붙여넣기 하세요 (탭 또는 쉼표 구분)\n\n예:\n이름,나이,점수\n홍길동,25,85\n김철수,30,92"}
+                  className="w-full px-4 py-3 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary font-mono resize-none"
+                />
               )}
             </div>
           </div>
 
-          {/* Analysis Selection */}
+          {/* Instant Analysis (기술통계/시각화) */}
           <div className="bg-card rounded-xl border border-border">
-            <div className="px-6 py-4 border-b border-border">
-              <h2 className="font-semibold">분석 선택</h2>
+            <div className="px-6 py-4 border-b border-border flex items-center justify-between">
+              <div>
+                <h2 className="font-semibold">즉시 실행</h2>
+                <p className="text-xs text-muted-foreground mt-0.5">기술통계와 시각화를 바로 확인합니다</p>
+              </div>
+              <span className="text-[10px] font-medium bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full">무료</span>
             </div>
             <div className="px-6 py-4 space-y-4">
-              {/* Quick buttons */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                {quickAnalyses.map((a) => (
+              <div className="grid grid-cols-2 gap-2">
+                {instantAnalyses.map((a) => (
                   <button
                     key={a.label}
-                    onClick={() => toggleAnalysis(a.label)}
+                    onClick={() => toggleInstant(a.label)}
                     className={`text-left px-4 py-3 rounded-lg border transition-colors ${
-                      selectedAnalyses.includes(a.label)
+                      selectedInstant.includes(a.label)
+                        ? "border-green-500 bg-green-500/10"
+                        : "border-border hover:bg-secondary/50"
+                    }`}
+                  >
+                    <div className="text-sm font-medium">{a.label}</div>
+                    <div className="text-xs text-muted-foreground mt-0.5">{a.desc}</div>
+                  </button>
+                ))}
+              </div>
+              <button
+                disabled={selectedInstant.length === 0}
+                className="w-full px-4 py-2.5 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                분석 실행 ({selectedInstant.length}개 선택)
+              </button>
+            </div>
+          </div>
+
+          {/* Request Analysis (고급 분석 의뢰) */}
+          <div className="bg-card rounded-xl border border-border">
+            <div className="px-6 py-4 border-b border-border flex items-center justify-between">
+              <div>
+                <h2 className="font-semibold">고급 분석 의뢰</h2>
+                <p className="text-xs text-muted-foreground mt-0.5">전문 분석이 필요한 경우 의뢰해주세요. 검토 후 결과를 전달합니다.</p>
+              </div>
+              <span className="text-[10px] font-medium bg-rose-500/20 text-rose-400 px-2 py-0.5 rounded-full">유료</span>
+            </div>
+            <div className="px-6 py-4 space-y-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {requestAnalyses.map((a) => (
+                  <button
+                    key={a.label}
+                    onClick={() => toggleRequest(a.label)}
+                    className={`text-left px-4 py-3 rounded-lg border transition-colors ${
+                      selectedRequest.includes(a.label)
                         ? "border-rose-500 bg-rose-500/10"
                         : "border-border hover:bg-secondary/50"
                     }`}
@@ -132,29 +172,39 @@ export default function StatsAnalysisPage() {
                 ))}
               </div>
 
-              {/* Custom request */}
               <div>
                 <label className="block text-sm font-medium mb-2">분석 요청사항</label>
                 <textarea
                   rows={3}
-                  value={customRequest}
-                  onChange={(e) => setCustomRequest(e.target.value)}
-                  placeholder="분석 요청사항을 입력하세요 (예: '처분유형별 징역 기간 차이를 분석해주세요')"
+                  value={requestDetail}
+                  onChange={(e) => setRequestDetail(e.target.value)}
+                  placeholder="구체적인 분석 요청사항을 입력하세요 (예: '처분유형별 징역 기간 차이를 ANOVA로 분석하고, 사후검정까지 부탁합니다')"
                   className="w-full px-4 py-3 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary resize-none"
                 />
               </div>
 
-              <button
-                disabled
-                className="w-full px-4 py-2.5 bg-rose-600 text-white rounded-lg text-sm font-medium hover:bg-rose-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                분석 실행
-              </button>
+              <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg px-4 py-3 text-sm text-amber-300">
+                분석 종류와 데이터 규모에 따라 비용이 달라집니다. 의뢰 접수 후 견적을 안내해드립니다.
+              </div>
+
+              {requestSubmitted ? (
+                <div className="w-full px-4 py-2.5 bg-green-600/20 text-green-400 rounded-lg text-sm font-medium text-center">
+                  의뢰가 접수되었습니다. 검토 후 연락드리겠습니다.
+                </div>
+              ) : (
+                <button
+                  onClick={handleRequestSubmit}
+                  disabled={selectedRequest.length === 0 && !requestDetail.trim()}
+                  className="w-full px-4 py-2.5 bg-rose-600 text-white rounded-lg text-sm font-medium hover:bg-rose-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  분석 의뢰 접수 ({selectedRequest.length}개 선택)
+                </button>
+              )}
             </div>
           </div>
         </div>
 
-        {/* Right column: Variable Selection */}
+        {/* Right: Variable Selection */}
         <div className="space-y-6">
           <div className="bg-card rounded-xl border border-border">
             <div className="px-6 py-4 border-b border-border">
@@ -188,7 +238,7 @@ export default function StatsAnalysisPage() {
       <div className="bg-card rounded-xl border border-border mt-6">
         <div className="px-6 py-4 border-b border-border">
           <div className="flex items-center gap-1 bg-secondary/50 rounded-lg p-1 w-fit">
-            {analysisTabs.map((tab) => (
+            {resultTabs.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveResultTab(tab)}
