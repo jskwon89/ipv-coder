@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import CreditConfirmDialog from "@/components/CreditConfirmDialog";
 import PageHeader from "@/components/PageHeader";
 
@@ -419,6 +420,10 @@ export default function TextAnalysisPage() {
 
   return (
     <div className="p-8 max-w-7xl mx-auto">
+      <Link href="/dashboard" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 mb-4">
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+        대시보드로 돌아가기
+      </Link>
       <PageHeader
         title="텍스트 분석"
         subtitle="판결문, 기사, 문서 등의 텍스트를 분석합니다"
@@ -450,7 +455,7 @@ export default function TextAnalysisPage() {
                 className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                   activeDataTab === tab
                     ? "bg-white text-gray-900 shadow-md"
-                    : "text-gray-400 hover:text-gray-700"
+                    : "text-gray-500 hover:text-gray-700"
                 }`}
               >
                 {tab}
@@ -465,35 +470,35 @@ export default function TextAnalysisPage() {
               value={textInput}
               onChange={(e) => setTextInput(e.target.value)}
               placeholder={"분석할 텍스트를 여기에 붙여넣기 하세요.\n\n판결문 전문, 기사 본문, 기타 문서 등"}
-              className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/20 focus:border-[#c49a2e] font-mono resize-none"
+              className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 font-mono resize-none"
             />
           )}
 
           {activeDataTab === "파일 업로드" && (
-            <div className="border-2 border-dashed border-gray-200 rounded-lg p-10 text-center hover:border-[#c49a2e]/40 transition-colors cursor-pointer">
+            <div className="border-2 border-dashed border-gray-200 rounded-lg p-10 text-center hover:border-rose-400/40 transition-colors cursor-pointer">
               <svg className="w-10 h-10 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
               </svg>
-              <p className="text-sm text-gray-400 mb-1">파일을 드래그하거나 클릭하여 업로드</p>
-              <p className="text-xs text-gray-400">TXT, PDF, Excel (.xlsx) 파일 지원</p>
+              <p className="text-sm text-gray-500 mb-1">파일을 드래그하거나 클릭하여 업로드</p>
+              <p className="text-xs text-gray-500">TXT, PDF, Excel (.xlsx) 파일 지원</p>
             </div>
           )}
 
           {activeDataTab === "프로젝트 연결" && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">기존 프로젝트 선택</label>
-              <select className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/20 focus:border-[#c49a2e]">
+              <select className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500">
                 <option value="">프로젝트를 선택하세요</option>
               </select>
               <div className="mt-3">
                 <label className="block text-sm font-medium text-gray-700 mb-2">분석 대상 필드</label>
-                <select className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/20 focus:border-[#c49a2e]">
+                <select className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500">
                   <option value="">필드를 선택하세요</option>
                   <option value="sentencing_text">판결문 전문 (sentencing_text)</option>
                   <option value="article_body">기사 본문</option>
                 </select>
               </div>
-              <p className="text-xs text-gray-400 mt-2">코딩이 완료된 프로젝트의 텍스트 데이터를 분석에 사용합니다</p>
+              <p className="text-xs text-gray-500 mt-2">코딩이 완료된 프로젝트의 텍스트 데이터를 분석에 사용합니다</p>
             </div>
           )}
         </div>
@@ -503,7 +508,7 @@ export default function TextAnalysisPage() {
       <div className="bg-white rounded-xl border border-rose-200 shadow-md mb-6">
         <div className="px-6 py-4 border-b border-gray-200 bg-rose-50">
           <h2 className="font-semibold text-gray-900">분석 유형 선택</h2>
-          <p className="text-xs text-gray-400 mt-0.5">실행할 분석을 선택하세요. 복수 선택 가능합니다.</p>
+          <p className="text-xs text-gray-500 mt-0.5">실행할 분석을 선택하세요. 복수 선택 가능합니다.</p>
         </div>
         <div className="px-6 py-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -550,13 +555,13 @@ export default function TextAnalysisPage() {
       {/* ── Bottom: Run button ── */}
       <div className="bg-white rounded-xl border border-rose-200 shadow-md mb-6">
         <div className="px-6 py-4 flex items-center justify-between">
-          <div className="text-sm text-gray-400">
+          <div className="text-sm text-gray-600">
             <span className="font-medium text-gray-900">{selected.length}개</span> 분석 선택됨
           </div>
           <button
             onClick={handleRun}
             disabled={selected.length === 0}
-            className="px-6 py-2.5 bg-[#c49a2e] text-white rounded-lg text-sm font-medium hover:bg-[#d4a843] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-6 py-2.5 bg-rose-600 text-white rounded-lg text-sm font-medium hover:bg-rose-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             분석 실행
           </button>
@@ -577,7 +582,7 @@ export default function TextAnalysisPage() {
                     className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
                       activeResultTab === id
                         ? "bg-white text-gray-900 shadow-md"
-                        : "text-gray-400 hover:text-gray-700"
+                        : "text-gray-500 hover:text-gray-700"
                     }`}
                   >
                     {a.label}
@@ -600,14 +605,14 @@ export default function TextAnalysisPage() {
         <div className="px-6 py-8">
           {analysisRun && activeResultTab ? (
             placeholderResults[activeResultTab] ?? (
-              <p className="text-sm text-gray-400 text-center">결과를 불러오는 중...</p>
+              <p className="text-sm text-gray-500 text-center">결과를 불러오는 중...</p>
             )
           ) : (
             <div className="text-center py-4">
               <svg className="w-12 h-12 text-gray-700 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
-              <p className="text-sm text-gray-400">분석을 선택하고 실행하면 결과가 여기에 표시됩니다</p>
+              <p className="text-sm text-gray-500">분석을 선택하고 실행하면 결과가 여기에 표시됩니다</p>
             </div>
           )}
         </div>

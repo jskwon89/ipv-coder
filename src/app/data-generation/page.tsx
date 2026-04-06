@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 const presetScales = [
   { label: "PHQ-9 (우울)", items: 9, range: "0-3", ref: "Kroenke et al., 2001" },
@@ -47,34 +48,38 @@ export default function DataGenerationPage() {
 
   return (
     <div className="p-8 max-w-7xl mx-auto">
+      <Link href="/dashboard" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 mb-4">
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+        대시보드로 돌아가기
+      </Link>
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
           <div className="flex items-center gap-3">
             <h1 className="text-2xl font-bold">연구 설계 지원</h1>
-            <span className="text-[10px] font-medium bg-cyan-50 text-cyan-600 px-2 py-0.5 rounded-full">
+            <span className="text-[10px] font-medium bg-teal-50 text-teal-600 px-2 py-0.5 rounded-full">
               준비 중
             </span>
           </div>
-          <p className="text-muted-foreground text-sm mt-1">검정력 분석, 시뮬레이션 데이터 생성, 설문/척도 설계 지원</p>
+          <p className="text-gray-600 text-sm mt-1">검정력 분석, 시뮬레이션 데이터 생성, 설문/척도 설계 지원</p>
         </div>
       </div>
 
       {/* Info boxes */}
       <div className="space-y-3 mb-6">
-        <div className="bg-cyan-900/20 border border-cyan-700/30 rounded-lg px-4 py-3 flex items-start gap-3">
-          <svg className="w-5 h-5 text-cyan-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="bg-teal-50 border border-teal-200 rounded-lg px-4 py-3 flex items-start gap-3">
+          <svg className="w-5 h-5 text-teal-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <p className="text-sm text-cyan-300">
+          <p className="text-sm text-teal-800">
             문헌 기반 시뮬레이션 데이터를 생성합니다. 검정력 분석, 분석 파이프라인 테스트, 연구 설계 사전 검토 등에 활용할 수 있습니다
           </p>
         </div>
-        <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg px-4 py-3 flex items-start gap-3">
-          <svg className="w-5 h-5 text-amber-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="bg-teal-50 border border-teal-200 rounded-lg px-4 py-3 flex items-start gap-3">
+          <svg className="w-5 h-5 text-teal-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <p className="text-sm text-amber-300">문헌 조사 + 자료 생성: ~200 크레딧</p>
+          <p className="text-sm text-teal-800">문헌 조사 + 자료 생성: ~200 크레딧</p>
         </div>
       </div>
 
@@ -114,7 +119,7 @@ export default function DataGenerationPage() {
                       onClick={() => toggleScale(scale.label)}
                       className={`text-left px-3 py-2.5 rounded-lg border transition-colors ${
                         selectedScales.includes(scale.label)
-                          ? "border-cyan-500 bg-cyan-900/20"
+                          ? "border-teal-400 bg-teal-50"
                           : "border-border hover:bg-gray-50"
                       }`}
                     >
@@ -181,7 +186,7 @@ export default function DataGenerationPage() {
                   />
                   <button
                     onClick={addCustomVar}
-                    className="px-3 py-2 bg-cyan-600 text-white rounded-lg text-sm font-medium hover:bg-cyan-700 transition-colors"
+                    className="px-3 py-2 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors"
                   >
                     추가
                   </button>
@@ -308,7 +313,7 @@ export default function DataGenerationPage() {
 
               <button
                 disabled
-                className="w-full px-4 py-2.5 bg-cyan-600 text-white rounded-lg text-sm font-medium hover:bg-cyan-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-4 py-2.5 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 자료 생성
               </button>

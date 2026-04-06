@@ -58,6 +58,10 @@ export default function JudgmentPage() {
 
   return (
     <div className="p-8 max-w-5xl mx-auto">
+      <Link href="/dashboard" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 mb-4">
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+        대시보드로 돌아가기
+      </Link>
       <PageHeader
         title="판결문 코딩"
         subtitle="AI 기반 판결문 자동 코딩 프로젝트를 관리합니다"
@@ -75,7 +79,7 @@ export default function JudgmentPage() {
         action={
           <button
             onClick={() => setShowModal(true)}
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#c49a2e] text-white rounded-xl text-sm font-medium hover:bg-[#d4a843] transition-colors shadow-md"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors shadow-md"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -88,7 +92,7 @@ export default function JudgmentPage() {
       {/* Project list */}
       <div className="space-y-4">
         {loading ? (
-          <div className="bg-white rounded-xl border border-blue-200 shadow-md p-12 text-center text-gray-400">
+          <div className="bg-white rounded-xl border border-blue-200 shadow-md p-12 text-center text-gray-600">
             로딩 중...
           </div>
         ) : projects.length === 0 ? (
@@ -96,10 +100,10 @@ export default function JudgmentPage() {
             <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
             </svg>
-            <p className="text-gray-400 mb-4">아직 프로젝트가 없습니다</p>
+            <p className="text-gray-600 mb-4">아직 프로젝트가 없습니다</p>
             <button
               onClick={() => setShowModal(true)}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#c49a2e] text-white rounded-xl text-sm font-medium hover:bg-[#d4a843] transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors"
             >
               첫 프로젝트 만들기
             </button>
@@ -121,8 +125,8 @@ export default function JudgmentPage() {
                       </svg>
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900 group-hover:text-[#c49a2e] transition-colors">{project.name}</h3>
-                      <p className="text-sm text-gray-400 mt-0.5">
+                      <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">{project.name}</h3>
+                      <p className="text-sm text-gray-600 mt-0.5">
                         {project.caseCount}건 중 {project.codedCount}건 완료 · 생성일 {project.createdAt.slice(0, 10)}
                       </p>
                     </div>
@@ -132,7 +136,7 @@ export default function JudgmentPage() {
                       <span className="text-lg font-bold text-gray-900">{pct}%</span>
                     </div>
                     <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
-                      <div className="h-full bg-[#c49a2e] rounded-full" style={{ width: `${pct}%` }} />
+                      <div className="h-full bg-blue-600 rounded-full" style={{ width: `${pct}%` }} />
                     </div>
                     <svg className="w-5 h-5 text-gray-400 group-hover:text-gray-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -157,7 +161,7 @@ export default function JudgmentPage() {
               onKeyDown={(e) => e.key === "Enter" && handleCreate()}
               placeholder="프로젝트 이름 입력 (예: 2024년 IPV 판결문 연구)"
               autoFocus
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/30 focus:border-[#c49a2e]"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500"
             />
             <div className="flex justify-end gap-3 mt-6">
               <button
@@ -169,7 +173,7 @@ export default function JudgmentPage() {
               <button
                 onClick={handleCreate}
                 disabled={creating || !newName.trim()}
-                className="px-5 py-2.5 bg-[#c49a2e] text-white rounded-xl text-sm font-medium hover:bg-[#d4a843] transition-colors disabled:opacity-50"
+                className="px-5 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors disabled:opacity-50"
               >
                 {creating ? "생성 중..." : "생성"}
               </button>

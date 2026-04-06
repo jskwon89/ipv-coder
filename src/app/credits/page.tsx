@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
 
 interface Transaction {
@@ -113,6 +114,10 @@ export default function CreditsPage() {
 
   return (
     <div className="p-8 max-w-5xl mx-auto space-y-8">
+      <Link href="/dashboard" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 mb-4">
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+        대시보드로 돌아가기
+      </Link>
       <PageHeader
         title="크레딧 관리"
         subtitle="서비스 이용에 필요한 크레딧을 관리합니다."
@@ -154,7 +159,7 @@ export default function CreditsPage() {
                 key={amt}
                 onClick={() => handleCharge(amt)}
                 disabled={charging}
-                className="px-4 py-2.5 rounded-lg border border-gray-200 hover:border-[#c49a2e] hover:bg-gray-200 text-sm font-medium transition-colors disabled:opacity-50"
+                className="px-4 py-2.5 rounded-lg border border-gray-200 hover:border-teal-500 hover:bg-teal-50 text-sm font-medium transition-colors disabled:opacity-50"
               >
                 {amt.toLocaleString()} 크레딧
               </button>
@@ -177,14 +182,14 @@ export default function CreditsPage() {
             <button
               onClick={() => handleCharge(Number(customAmount))}
               disabled={charging || !customAmount || Number(customAmount) <= 0}
-              className="px-6 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-2.5 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               충전하기
             </button>
           </div>
         </div>
 
-        <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-4 text-sm text-amber-300">
+        <div className="bg-teal-50 border border-teal-200 rounded-lg p-4 text-sm text-teal-800">
           <p className="font-medium">안내</p>
           <p className="mt-1">충전 요청 후 안내되는 계좌로 입금해주세요. 확인 후 크레딧이 충전됩니다.</p>
         </div>
@@ -213,7 +218,7 @@ export default function CreditsPage() {
                       <span className="text-gray-900">{row.credit}</span>
                     )}
                   </td>
-                  <td className="py-3 px-4 text-gray-400">{row.note}</td>
+                  <td className="py-3 px-4 text-gray-600">{row.note}</td>
                 </tr>
               ))}
             </tbody>

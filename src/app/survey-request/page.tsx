@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import QuestionEditor, { type SurveyQuestion } from "@/components/QuestionEditor";
 import SurveyPreview from "@/components/SurveyPreview";
 import PageHeader from "@/components/PageHeader";
@@ -201,6 +202,10 @@ export default function SurveyRequestPage() {
 
   return (
     <div className="p-8 max-w-7xl mx-auto">
+      <Link href="/dashboard" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 mb-4">
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+        대시보드로 돌아가기
+      </Link>
       <PageHeader
         title="설문조사 의뢰"
         subtitle="설문조사에 필요한 정보를 입력해주세요. 검토 후 견적을 안내해드립니다."
@@ -249,7 +254,7 @@ export default function SurveyRequestPage() {
           {/* Section 1 */}
           <section className="bg-card rounded-xl border border-purple-200 overflow-hidden">
             <div className="px-6 py-4 border-b border-border bg-purple-50 flex items-center gap-3">
-              <span className="w-7 h-7 rounded-full bg-indigo-500 text-white text-xs font-bold flex items-center justify-center">1</span>
+              <span className="w-7 h-7 rounded-full bg-purple-600 text-white text-xs font-bold flex items-center justify-center">1</span>
               <h2 className="font-semibold">기본 정보</h2>
             </div>
             <div className="p-6 space-y-4">
@@ -261,7 +266,7 @@ export default function SurveyRequestPage() {
                   value={formData.title}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                  className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                 />
               </div>
               <div>
@@ -273,7 +278,7 @@ export default function SurveyRequestPage() {
                   required
                   rows={3}
                   placeholder="본 설문의 목적을 간략히 기술해주세요"
-                  className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-indigo-500/50 resize-none"
+                  className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-purple-500/50 resize-none"
                 />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -285,7 +290,7 @@ export default function SurveyRequestPage() {
                     value={formData.requesterName}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                   />
                 </div>
                 <div>
@@ -297,7 +302,7 @@ export default function SurveyRequestPage() {
                     onChange={handleChange}
                     required
                     placeholder="이메일 또는 전화번호"
-                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                   />
                 </div>
                 <div>
@@ -307,7 +312,7 @@ export default function SurveyRequestPage() {
                     name="organization"
                     value={formData.organization}
                     onChange={handleChange}
-                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                   />
                 </div>
               </div>
@@ -317,7 +322,7 @@ export default function SurveyRequestPage() {
           {/* Section 2 */}
           <section className="bg-card rounded-xl border border-purple-200 overflow-hidden">
             <div className="px-6 py-4 border-b border-border bg-purple-50 flex items-center gap-3">
-              <span className="w-7 h-7 rounded-full bg-indigo-500 text-white text-xs font-bold flex items-center justify-center">2</span>
+              <span className="w-7 h-7 rounded-full bg-purple-600 text-white text-xs font-bold flex items-center justify-center">2</span>
               <h2 className="font-semibold">조사 대상</h2>
             </div>
             <div className="p-6 space-y-4">
@@ -329,7 +334,7 @@ export default function SurveyRequestPage() {
                   value={formData.population}
                   onChange={handleChange}
                   placeholder="예: 전국 만 19세 이상 성인 남녀"
-                  className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                  className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                 />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -341,7 +346,7 @@ export default function SurveyRequestPage() {
                     value={formData.sampleSize}
                     onChange={handleChange}
                     placeholder="500"
-                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                   />
                 </div>
                 <div>
@@ -350,7 +355,7 @@ export default function SurveyRequestPage() {
                     name="samplingMethod"
                     value={formData.samplingMethod}
                     onChange={handleChange}
-                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                   >
                     <option>할당표집</option>
                     <option>무작위표집</option>
@@ -368,7 +373,7 @@ export default function SurveyRequestPage() {
                   onChange={handleChange}
                   rows={3}
                   placeholder="포함/제외 기준을 기술해주세요"
-                  className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-indigo-500/50 resize-none"
+                  className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-purple-500/50 resize-none"
                 />
               </div>
             </div>
@@ -377,7 +382,7 @@ export default function SurveyRequestPage() {
           {/* Section 3 */}
           <section className="bg-card rounded-xl border border-purple-200 overflow-hidden">
             <div className="px-6 py-4 border-b border-border bg-purple-50 flex items-center gap-3">
-              <span className="w-7 h-7 rounded-full bg-indigo-500 text-white text-xs font-bold flex items-center justify-center">3</span>
+              <span className="w-7 h-7 rounded-full bg-purple-600 text-white text-xs font-bold flex items-center justify-center">3</span>
               <h2 className="font-semibold">설문 문항</h2>
             </div>
             <div className="p-6 space-y-4">
@@ -389,7 +394,7 @@ export default function SurveyRequestPage() {
                     name="questionCount"
                     value={formData.questionCount}
                     onChange={handleChange}
-                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                   />
                 </div>
                 <div>
@@ -398,7 +403,7 @@ export default function SurveyRequestPage() {
                     name="estimatedTime"
                     value={formData.estimatedTime}
                     onChange={handleChange}
-                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                   >
                     <option>5분 이내</option>
                     <option>5~10분</option>
@@ -414,7 +419,7 @@ export default function SurveyRequestPage() {
                   type="file"
                   accept=".pdf,.docx,.hwp,.xlsx"
                   onChange={(e) => setFile(e.target.files?.[0] || null)}
-                  className="w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-indigo-50 file:text-indigo-600 hover:file:bg-indigo-100"
+                  className="w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-purple-50 file:text-purple-600 hover:file:bg-purple-100"
                 />
                 <p className="text-xs text-muted-foreground mt-1">PDF, DOCX, HWP, XLSX 파일 지원</p>
               </div>
@@ -426,7 +431,7 @@ export default function SurveyRequestPage() {
                   onChange={handleChange}
                   rows={4}
                   placeholder="설문 문항을 직접 입력하거나 파일로 첨부해주세요"
-                  className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-indigo-500/50 resize-none"
+                  className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-purple-500/50 resize-none"
                 />
               </div>
               <div>
@@ -437,7 +442,7 @@ export default function SurveyRequestPage() {
                   value={formData.scales}
                   onChange={handleChange}
                   placeholder="예: PHQ-9, GAD-7, 자체 개발 문항 등"
-                  className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                  className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                 />
               </div>
             </div>
@@ -446,7 +451,7 @@ export default function SurveyRequestPage() {
           {/* Section 4 */}
           <section className="bg-card rounded-xl border border-purple-200 overflow-hidden">
             <div className="px-6 py-4 border-b border-border bg-purple-50 flex items-center gap-3">
-              <span className="w-7 h-7 rounded-full bg-indigo-500 text-white text-xs font-bold flex items-center justify-center">4</span>
+              <span className="w-7 h-7 rounded-full bg-purple-600 text-white text-xs font-bold flex items-center justify-center">4</span>
               <h2 className="font-semibold">조사 방식</h2>
             </div>
             <div className="p-6 space-y-4">
@@ -459,7 +464,7 @@ export default function SurveyRequestPage() {
                         type="checkbox"
                         checked={formData.surveyMethods.includes(method)}
                         onChange={() => handleCheckbox(method)}
-                        className="w-4 h-4 rounded border-border text-indigo-500 focus:ring-indigo-500/50"
+                        className="w-4 h-4 rounded border-border text-purple-600 focus:ring-purple-500/50"
                       />
                       <span className="text-sm">{method}</span>
                     </label>
@@ -474,7 +479,7 @@ export default function SurveyRequestPage() {
                     name="startDate"
                     value={formData.startDate}
                     onChange={handleChange}
-                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                   />
                 </div>
                 <div>
@@ -484,7 +489,7 @@ export default function SurveyRequestPage() {
                     name="endDate"
                     value={formData.endDate}
                     onChange={handleChange}
-                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                   />
                 </div>
               </div>
@@ -499,7 +504,7 @@ export default function SurveyRequestPage() {
                         value={status}
                         checked={formData.irbStatus === status}
                         onChange={handleChange}
-                        className="w-4 h-4 border-border text-indigo-500 focus:ring-indigo-500/50"
+                        className="w-4 h-4 border-border text-purple-600 focus:ring-purple-500/50"
                       />
                       <span className="text-sm">{status}</span>
                     </label>
@@ -514,7 +519,7 @@ export default function SurveyRequestPage() {
                     name="irbNumber"
                     value={formData.irbNumber}
                     onChange={handleChange}
-                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                   />
                 </div>
               )}
@@ -524,7 +529,7 @@ export default function SurveyRequestPage() {
           {/* Section 5 */}
           <section className="bg-card rounded-xl border border-purple-200 overflow-hidden">
             <div className="px-6 py-4 border-b border-border bg-purple-50 flex items-center gap-3">
-              <span className="w-7 h-7 rounded-full bg-indigo-500 text-white text-xs font-bold flex items-center justify-center">5</span>
+              <span className="w-7 h-7 rounded-full bg-purple-600 text-white text-xs font-bold flex items-center justify-center">5</span>
               <h2 className="font-semibold">추가 요청사항</h2>
             </div>
             <div className="p-6">
@@ -534,19 +539,19 @@ export default function SurveyRequestPage() {
                 onChange={handleChange}
                 rows={4}
                 placeholder="데이터 코딩, 기술통계 분석, 보고서 작성 등 추가 요청사항을 기재해주세요"
-                className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-indigo-500/50 resize-none"
+                className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-purple-500/50 resize-none"
               />
             </div>
           </section>
 
           {/* Cost notice */}
-          <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-5">
+          <div className="bg-purple-50 border border-purple-100 rounded-xl p-5">
             <div className="flex items-start gap-3">
-              <svg className="w-5 h-5 text-indigo-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-purple-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <div>
-                <p className="text-sm font-medium text-indigo-700">예상 비용 안내</p>
+                <p className="text-sm font-medium text-purple-700">예상 비용 안내</p>
                 <p className="text-sm text-muted-foreground mt-1">
                   설문 규모와 방식에 따라 비용이 달라집니다. 의뢰 접수 후 1-2일 내 견적을 안내해드립니다.
                 </p>
@@ -558,7 +563,7 @@ export default function SurveyRequestPage() {
           <div className="flex justify-end">
             <button
               type="submit"
-              className="px-8 py-3 bg-indigo-500 text-white rounded-lg text-sm font-medium hover:bg-indigo-600 transition-colors"
+              className="px-8 py-3 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors"
             >
               의뢰 접수
             </button>
@@ -600,7 +605,7 @@ export default function SurveyRequestPage() {
               <button
                 type="button"
                 onClick={() => applyTemplate("satisfaction")}
-                className="px-4 py-2 rounded-lg border border-border text-sm hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-600 transition-colors"
+                className="px-4 py-2 rounded-lg border border-border text-sm hover:bg-purple-50 hover:border-purple-200 hover:text-purple-600 transition-colors"
               >
                 만족도 조사
               </button>
@@ -635,7 +640,7 @@ export default function SurveyRequestPage() {
                   onChange={(e) => setImportJson(e.target.value)}
                   placeholder="내보내기한 JSON을 여기에 붙여넣으세요"
                   rows={4}
-                  className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-indigo-500/50 resize-none font-mono"
+                  className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-purple-500/50 resize-none font-mono"
                 />
                 <div className="flex justify-end gap-2">
                   <button
@@ -649,7 +654,7 @@ export default function SurveyRequestPage() {
                     type="button"
                     onClick={handleImportSurvey}
                     disabled={!importJson.trim()}
-                    className="px-4 py-2 bg-indigo-500 text-white rounded-lg text-sm font-medium hover:bg-indigo-600 transition-colors disabled:opacity-50"
+                    className="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors disabled:opacity-50"
                   >
                     불러오기
                   </button>
@@ -688,7 +693,7 @@ export default function SurveyRequestPage() {
             <button
               type="button"
               onClick={handleSubmitAll}
-              className="px-6 py-3 bg-indigo-500 text-white rounded-lg text-sm font-medium hover:bg-indigo-600 transition-colors"
+              className="px-6 py-3 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors"
             >
               의뢰 정보와 함께 제출
             </button>

@@ -96,6 +96,10 @@ export default function NewsSearchPage() {
 
   return (
     <div className="p-8 max-w-5xl mx-auto">
+      <Link href="/dashboard" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 mb-4">
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+        대시보드로 돌아가기
+      </Link>
       <PageHeader
         title="기사 검색"
         subtitle="뉴스 기사 검색 및 수집"
@@ -119,7 +123,7 @@ export default function NewsSearchPage() {
             onClick={() => setSearchType("keyword")}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               searchType === "keyword"
-                ? "bg-blue-500 text-white"
+                ? "bg-blue-600 text-white"
                 : "bg-gray-50 text-secondary-foreground hover:bg-border"
             }`}
           >
@@ -129,7 +133,7 @@ export default function NewsSearchPage() {
             onClick={() => setSearchType("sentence")}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               searchType === "sentence"
-                ? "bg-blue-500 text-white"
+                ? "bg-blue-600 text-white"
                 : "bg-gray-50 text-secondary-foreground hover:bg-border"
             }`}
           >
@@ -155,7 +159,7 @@ export default function NewsSearchPage() {
               />
               <button
                 onClick={addKeyword}
-                className="px-4 py-2.5 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors"
+                className="px-4 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
               >
                 추가
               </button>
@@ -174,7 +178,7 @@ export default function NewsSearchPage() {
                         {operator}
                       </button>
                     )}
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-900/30 text-blue-400 rounded-full text-sm">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm">
                       {kw}
                       <button
                         onClick={() => removeKeyword(kw)}
@@ -245,7 +249,7 @@ export default function NewsSearchPage() {
                 ? keywords.length === 0
                 : !query.trim())
             }
-            className="px-6 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors disabled:opacity-50 ml-auto"
+            className="px-6 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 ml-auto"
           >
             {loading ? "검색 중..." : "검색"}
           </button>
@@ -254,13 +258,13 @@ export default function NewsSearchPage() {
 
       {/* Selected export bar */}
       {selected.size > 0 && (
-        <div className="bg-blue-900/20 border border-blue-700/30 rounded-xl p-4 mb-6 flex items-center justify-between">
-          <span className="text-sm text-blue-300">
+        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6 flex items-center justify-between">
+          <span className="text-sm text-blue-700">
             {selected.size}건 선택됨
           </span>
           <button
             onClick={exportSelected}
-            className="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
           >
             선택한 기사 내보내기
           </button>

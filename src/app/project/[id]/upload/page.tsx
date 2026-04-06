@@ -167,17 +167,13 @@ export default function UploadPage() {
 
   return (
     <div className="p-8 max-w-5xl mx-auto">
-      {/* Breadcrumb */}
-      <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
-        <Link href="/" className="hover:text-foreground transition-colors">대시보드</Link>
-        <span>/</span>
-        <Link href={`/project/${projectId}`} className="hover:text-foreground transition-colors">프로젝트</Link>
-        <span>/</span>
-        <span>업로드</span>
-      </div>
+      <Link href="/dashboard" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 mb-4">
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+        대시보드로 돌아가기
+      </Link>
 
       <h1 className="text-2xl font-bold mb-2">사건 업로드</h1>
-      <p className="text-muted-foreground text-sm mb-6">
+      <p className="text-gray-600 text-sm mb-6">
         사건 목록 파일 또는 판결문 PDF를 업로드합니다.
       </p>
 
@@ -222,7 +218,7 @@ export default function UploadPage() {
               <button
                 onClick={handleParse}
                 disabled={parsing || !fileContent}
-                className="inline-flex items-center gap-2 px-6 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+                className="inline-flex items-center gap-2 px-6 py-2.5 bg-amber-600 text-white rounded-lg text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
               >
                 {parsing ? "파싱 중..." : "파일 분석"}
               </button>
@@ -285,7 +281,7 @@ export default function UploadPage() {
                 <button
                   onClick={handleSave}
                   disabled={saved || saving}
-                  className="inline-flex items-center gap-2 px-6 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+                  className="inline-flex items-center gap-2 px-6 py-2 bg-amber-600 text-white rounded-lg text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
                 >
                   {saved ? "저장 완료 (이동 중...)" : saving ? "저장 중..." : `저장 (IPV ${result.ipv.length}건 + 판단보류 ${result.ambiguous.length}건)`}
                 </button>
@@ -342,7 +338,7 @@ export default function UploadPage() {
                   <button
                     onClick={handlePdfUpload}
                     disabled={pdfProcessing}
-                    className="px-4 py-1.5 text-xs bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50"
+                    className="px-4 py-1.5 text-xs bg-amber-600 text-white rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50"
                   >
                     {pdfProcessing ? "처리 중..." : "텍스트 추출 시작"}
                   </button>

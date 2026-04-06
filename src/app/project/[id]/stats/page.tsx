@@ -59,21 +59,17 @@ export default function StatsPage() {
 
   return (
     <div className="p-8 max-w-7xl mx-auto">
-      {/* Breadcrumb */}
-      <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
-        <Link href="/" className="hover:text-foreground transition-colors">대시보드</Link>
-        <span>/</span>
-        <Link href={`/project/${params.id}`} className="hover:text-foreground transition-colors">프로젝트</Link>
-        <span>/</span>
-        <span>통계</span>
-      </div>
+      <Link href="/dashboard" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 mb-4">
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+        대시보드로 돌아가기
+      </Link>
 
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-bold">통계 대시보드</h1>
-          <p className="text-muted-foreground text-sm mt-1">코딩 완료 330건 기준 분석 결과</p>
+          <p className="text-gray-600 text-sm mt-1">코딩 완료 330건 기준 분석 결과</p>
         </div>
-        <button className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-opacity">
+        <button className="inline-flex items-center gap-2 px-4 py-2 bg-amber-600 text-white rounded-lg text-sm font-medium hover:bg-amber-700 transition-colors">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>

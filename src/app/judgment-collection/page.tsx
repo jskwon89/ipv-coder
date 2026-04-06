@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import Link from "next/link";
 
 type Tab = "caseNumber" | "keyword";
 type OutputFormat = "pdf" | "text" | "both";
@@ -108,8 +109,8 @@ export default function JudgmentCollectionPage() {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
         <div className="bg-white rounded-2xl shadow-lg p-10 max-w-lg w-full text-center">
-          <div className="w-16 h-16 bg-indigo-900/30 rounded-full flex items-center justify-center mx-auto mb-5">
-            <svg className="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-5">
+            <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
@@ -119,7 +120,7 @@ export default function JudgmentCollectionPage() {
           </p>
           <button
             onClick={() => setSubmitted(false)}
-            className="px-6 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium"
+            className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
           >
             새 의뢰 작성
           </button>
@@ -131,10 +132,14 @@ export default function JudgmentCollectionPage() {
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <Link href="/dashboard" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 mb-4">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+          대시보드로 돌아가기
+        </Link>
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">판결문 수집 의뢰</h1>
-          <p className="text-gray-400 mt-2 text-sm sm:text-base">
+          <p className="text-gray-600 mt-2 text-sm sm:text-base">
             필요한 판결문 정보를 입력해주세요. 확인 후 판결문을 수집하여 제공해드립니다.
           </p>
         </div>
@@ -142,7 +147,7 @@ export default function JudgmentCollectionPage() {
         {/* Section 1: Search Mode Tabs */}
         <div className="bg-white rounded-2xl shadow-md border border-blue-200 mb-6 overflow-hidden">
           <div className="flex items-center gap-3 px-6 pt-6 pb-4 bg-blue-50">
-            <span className="w-7 h-7 bg-indigo-600 text-white rounded-full flex items-center justify-center text-sm font-bold shrink-0">1</span>
+            <span className="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold shrink-0">1</span>
             <h2 className="text-lg font-semibold text-gray-900">검색 방식 선택</h2>
           </div>
 
@@ -152,8 +157,8 @@ export default function JudgmentCollectionPage() {
               onClick={() => setActiveTab("caseNumber")}
               className={`px-5 py-3 text-sm font-medium border-b-2 transition-colors ${
                 activeTab === "caseNumber"
-                  ? "border-indigo-600 text-indigo-600"
-                  : "border-transparent text-gray-400 hover:text-gray-700"
+                  ? "border-blue-600 text-blue-600"
+                  : "border-transparent text-gray-500 hover:text-gray-700"
               }`}
             >
               사건번호로 검색
@@ -162,8 +167,8 @@ export default function JudgmentCollectionPage() {
               onClick={() => setActiveTab("keyword")}
               className={`px-5 py-3 text-sm font-medium border-b-2 transition-colors ${
                 activeTab === "keyword"
-                  ? "border-indigo-600 text-indigo-600"
-                  : "border-transparent text-gray-400 hover:text-gray-700"
+                  ? "border-blue-600 text-blue-600"
+                  : "border-transparent text-gray-500 hover:text-gray-700"
               }`}
             >
               키워드/조건으로 검색
@@ -180,7 +185,7 @@ export default function JudgmentCollectionPage() {
                     value={caseNumbers}
                     onChange={(e) => setCaseNumbers(e.target.value)}
                     rows={8}
-                    className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 resize-y placeholder:text-gray-400"
+                    className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y placeholder:text-gray-400"
                     placeholder={"사건번호를 한 줄에 하나씩 입력하세요\n\n예:\n2023고단1234\n2024고합567\n서울중앙지방법원 2023고단890"}
                   />
                 </div>
@@ -196,7 +201,7 @@ export default function JudgmentCollectionPage() {
                     >
                       파일 선택
                     </button>
-                    <span className="text-sm text-gray-400">
+                    <span className="text-sm text-gray-500">
                       {uploadedFile ? uploadedFile.name : "txt, xlsx 파일 지원"}
                     </span>
                     <input
@@ -214,15 +219,15 @@ export default function JudgmentCollectionPage() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">수집 범위</label>
                   <div className="flex flex-wrap gap-4">
                     <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
-                      <input type="checkbox" checked={scopeFirst} onChange={(e) => setScopeFirst(e.target.checked)} className="rounded border-gray-200 text-indigo-600 focus:ring-indigo-500" />
+                      <input type="checkbox" checked={scopeFirst} onChange={(e) => setScopeFirst(e.target.checked)} className="rounded border-gray-200 text-blue-600 focus:ring-blue-500" />
                       1심 판결문
                     </label>
                     <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
-                      <input type="checkbox" checked={scopeSecond} onChange={(e) => setScopeSecond(e.target.checked)} className="rounded border-gray-200 text-indigo-600 focus:ring-indigo-500" />
+                      <input type="checkbox" checked={scopeSecond} onChange={(e) => setScopeSecond(e.target.checked)} className="rounded border-gray-200 text-blue-600 focus:ring-blue-500" />
                       2심/항소심
                     </label>
                     <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
-                      <input type="checkbox" checked={scopeThird} onChange={(e) => setScopeThird(e.target.checked)} className="rounded border-gray-200 text-indigo-600 focus:ring-indigo-500" />
+                      <input type="checkbox" checked={scopeThird} onChange={(e) => setScopeThird(e.target.checked)} className="rounded border-gray-200 text-blue-600 focus:ring-blue-500" />
                       3심/대법원
                     </label>
                   </div>
@@ -239,7 +244,7 @@ export default function JudgmentCollectionPage() {
                           name="outputFormat"
                           checked={outputFormat === fmt}
                           onChange={() => setOutputFormat(fmt)}
-                          className="border-gray-200 text-indigo-600 focus:ring-indigo-500"
+                          className="border-gray-200 text-blue-600 focus:ring-blue-500"
                         />
                         {fmt === "pdf" ? "PDF" : fmt === "text" ? "텍스트" : "둘 다"}
                       </label>
@@ -252,12 +257,12 @@ export default function JudgmentCollectionPage() {
                 {/* Keywords */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">검색 키워드</label>
-                  <div className="border border-gray-200 rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-indigo-500">
+                  <div className="border border-gray-200 rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500">
                     <div className="flex flex-wrap gap-1.5 mb-1">
                       {keywords.map((kw) => (
-                        <span key={kw} className="inline-flex items-center gap-1 bg-indigo-900/30 text-indigo-700 px-2.5 py-1 rounded-full text-xs font-medium">
+                        <span key={kw} className="inline-flex items-center gap-1 bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full text-xs font-medium">
                           {kw}
-                          <button onClick={() => removeKeyword(kw)} className="hover:text-indigo-900">
+                          <button onClick={() => removeKeyword(kw)} className="hover:text-blue-900">
                             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                           </button>
                         </span>
@@ -273,7 +278,7 @@ export default function JudgmentCollectionPage() {
                     />
                   </div>
                   <div className="flex items-center gap-3 mt-2">
-                    <span className="text-xs text-gray-400">연산:</span>
+                    <span className="text-xs text-gray-500">연산:</span>
                     {(["AND", "OR"] as const).map((op) => (
                       <label key={op} className="flex items-center gap-1.5 text-xs text-gray-600 cursor-pointer">
                         <input
@@ -281,7 +286,7 @@ export default function JudgmentCollectionPage() {
                           name="logic"
                           checked={keywordLogic === op}
                           onChange={() => setKeywordLogic(op)}
-                          className="border-gray-200 text-indigo-600 focus:ring-indigo-500"
+                          className="border-gray-200 text-blue-600 focus:ring-blue-500"
                         />
                         {op}
                       </label>
@@ -300,8 +305,8 @@ export default function JudgmentCollectionPage() {
                         onClick={() => toggleCourt(court)}
                         className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
                           selectedCourts.includes(court)
-                            ? "bg-indigo-600 text-white border-indigo-600"
-                            : "bg-white text-gray-600 border-gray-200 hover:border-indigo-300"
+                            ? "bg-blue-600 text-white border-blue-600"
+                            : "bg-white text-gray-600 border-gray-200 hover:border-blue-300"
                         }`}
                       >
                         {court}
@@ -317,15 +322,15 @@ export default function JudgmentCollectionPage() {
                     <select
                       value={startYear}
                       onChange={(e) => setStartYear(Number(e.target.value))}
-                      className="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                      className="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     >
                       {YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
                     </select>
-                    <span className="text-gray-400">~</span>
+                    <span className="text-gray-500">~</span>
                     <select
                       value={endYear}
                       onChange={(e) => setEndYear(Number(e.target.value))}
-                      className="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                      className="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     >
                       {YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
                     </select>
@@ -342,7 +347,7 @@ export default function JudgmentCollectionPage() {
                           type="checkbox"
                           checked={selectedCaseTypes.includes(ct.value)}
                           onChange={() => toggleCaseType(ct.value)}
-                          className="rounded border-gray-200 text-indigo-600 focus:ring-indigo-500"
+                          className="rounded border-gray-200 text-blue-600 focus:ring-blue-500"
                         />
                         {ct.label}
                       </label>
@@ -360,7 +365,7 @@ export default function JudgmentCollectionPage() {
                     value={lawKeyword}
                     onChange={(e) => setLawKeyword(e.target.value)}
                     placeholder="예: 상해, 폭행, 협박, 스토킹처벌법"
-                    className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-gray-400"
+                    className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-gray-400"
                   />
                 </div>
 
@@ -372,7 +377,7 @@ export default function JudgmentCollectionPage() {
                     value={maxCount}
                     onChange={(e) => setMaxCount(Number(e.target.value))}
                     min={1}
-                    className="w-32 border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    className="w-32 border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
               </div>
@@ -383,7 +388,7 @@ export default function JudgmentCollectionPage() {
         {/* Section 2: Requester info */}
         <div className="bg-white rounded-2xl shadow-md border border-blue-200 mb-6 overflow-hidden">
           <div className="flex items-center gap-3 px-6 pt-6 pb-4 bg-blue-50">
-            <span className="w-7 h-7 bg-indigo-600 text-white rounded-full flex items-center justify-center text-sm font-bold shrink-0">2</span>
+            <span className="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold shrink-0">2</span>
             <h2 className="text-lg font-semibold text-gray-900">의뢰자 정보</h2>
           </div>
           <div className="px-6 pb-6 space-y-4">
@@ -394,7 +399,7 @@ export default function JudgmentCollectionPage() {
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
               <div>
@@ -403,7 +408,7 @@ export default function JudgmentCollectionPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
             </div>
@@ -416,7 +421,7 @@ export default function JudgmentCollectionPage() {
                   type="text"
                   value={org}
                   onChange={(e) => setOrg(e.target.value)}
-                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
               <div>
@@ -424,7 +429,7 @@ export default function JudgmentCollectionPage() {
                 <select
                   value={purpose}
                   onChange={(e) => setPurpose(e.target.value as Purpose)}
-                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="학술연구">학술연구</option>
                   <option value="정책연구">정책연구</option>
@@ -440,7 +445,7 @@ export default function JudgmentCollectionPage() {
         {/* Section 3: Additional notes */}
         <div className="bg-white rounded-2xl shadow-md border border-blue-200 mb-6 overflow-hidden">
           <div className="flex items-center gap-3 px-6 pt-6 pb-4 bg-blue-50">
-            <span className="w-7 h-7 bg-indigo-600 text-white rounded-full flex items-center justify-center text-sm font-bold shrink-0">3</span>
+            <span className="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold shrink-0">3</span>
             <h2 className="text-lg font-semibold text-gray-900">추가 요청사항</h2>
           </div>
           <div className="px-6 pb-6">
@@ -449,33 +454,33 @@ export default function JudgmentCollectionPage() {
               onChange={(e) => setAdditionalNotes(e.target.value)}
               rows={4}
               placeholder="수집 시 특별히 확인이 필요한 사항이 있으면 기재해주세요"
-              className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 resize-y placeholder:text-gray-400"
+              className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y placeholder:text-gray-400"
             />
           </div>
         </div>
 
         {/* Cost info */}
-        <div className="bg-indigo-900/20 border border-indigo-700/30 rounded-2xl p-6 mb-6">
+        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 mb-6">
           <div className="flex items-start gap-3">
-            <svg className="w-5 h-5 text-indigo-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-blue-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <div>
-              <h3 className="text-sm font-semibold text-indigo-300 mb-2">수집 비용 안내</h3>
-              <p className="text-sm text-indigo-300 mb-3">
+              <h3 className="text-sm font-semibold text-blue-700 mb-2">수집 비용 안내</h3>
+              <p className="text-sm text-blue-700 mb-3">
                 수집 건수와 난이도에 따라 비용이 달라집니다.
               </p>
-              <ul className="space-y-1.5 text-sm text-indigo-300">
+              <ul className="space-y-1.5 text-sm text-blue-700">
                 <li className="flex items-start gap-2">
-                  <span className="text-indigo-400 mt-1">&#8226;</span>
+                  <span className="text-blue-600 mt-1">&#8226;</span>
                   <span><strong>사건번호 지정:</strong> ~100 크레딧/건</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-indigo-400 mt-1">&#8226;</span>
+                  <span className="text-blue-600 mt-1">&#8226;</span>
                   <span><strong>키워드 검색 수집:</strong> ~200 크레딧/건 (검색 포함)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-indigo-400 mt-1">&#8226;</span>
+                  <span className="text-blue-600 mt-1">&#8226;</span>
                   <span><strong>대량 수집 (50건 이상):</strong> 별도 견적</span>
                 </li>
               </ul>
@@ -487,7 +492,7 @@ export default function JudgmentCollectionPage() {
         <div className="flex justify-end">
           <button
             onClick={handleSubmit}
-            className="px-8 py-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors font-semibold text-sm shadow-md"
+            className="px-8 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-semibold text-sm shadow-md"
           >
             수집 의뢰 접수
           </button>
