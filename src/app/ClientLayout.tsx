@@ -59,11 +59,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             정책문서
           </Link>
 
-          {/* 통계분석 */}
+          {/* 계량통계분석 */}
           <div className="pt-6 pb-2 px-3">
             <div className="flex items-center gap-2 mb-1">
               <div className="w-1 h-3.5 rounded-full bg-rose-400/70"></div>
-              <span className="text-[11px] font-semibold tracking-wider text-white/50 uppercase">통계분석</span>
+              <span className="text-[11px] font-semibold tracking-wider text-white/50 uppercase">계량통계분석</span>
             </div>
           </div>
           <Link href="/stats-analysis" className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-sidebar-hover transition-colors text-sm border-l-2 border-transparent hover:border-rose-400/50">

@@ -104,24 +104,24 @@ export default function LandingPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <ServiceCard
-              image="/images/scott-graham-5fNmWej4tAA-unsplash.jpg"
+              image="/images/판결문코딩.jpg"
               title="판결문 코딩"
               description="AI 기반 판결문 자동 코딩으로 연구 시간을 절약하세요"
             />
             <ServiceCard
               image="/images/headway-5QgIuuBxKwM-unsplash.jpg"
-              title="통계분석"
+              title="계량통계분석"
               description="기초통계부터 고급분석까지, 전문가가 직접 분석합니다"
             />
             <ServiceCard
-              image="/images/campaign-creators-gMsnXqILjp4-unsplash.jpg"
-              title="설문조사"
-              description="설문 설계부터 데이터 수집까지 원스톱 서비스"
-            />
-            <ServiceCard
-              image="/images/krakenimages-376KN_ISplE-unsplash.jpg"
+              image="/images/텍스트분석.png"
               title="텍스트 분석"
               description="토픽모델링, 감성분석, 워드클라우드 등 텍스트 분석"
+            />
+            <ServiceCard
+              image="/images/설문조사.png"
+              title="설문조사"
+              description="설문 설계부터 데이터 수집까지 원스톱 서비스"
             />
             <ServiceCard
               image="/images/john-FlPc9_VocJ4-unsplash.jpg"
@@ -149,7 +149,7 @@ export default function LandingPage() {
               <StepCard step={1} title="회원가입" description="무료 가입 후 크레딧 충전" />
               <StepCard step={2} title="서비스 선택" description="필요한 분석/코딩 서비스 선택" />
               <StepCard step={3} title="자료 업로드" description="판결문, 설문지, 데이터 업로드" />
-              <StepCard step={4} title="결과 확인" description="분석 결과 및 보고서 다운로드" />
+              <StepCard step={4} title="결과 확인" description="분석 결과 및 보고서 완성" />
             </div>
             <div className="relative h-80 rounded-2xl overflow-hidden shadow-lg">
               <Image
