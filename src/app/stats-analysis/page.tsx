@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import CreditConfirmDialog from "@/components/CreditConfirmDialog";
+import PageHeader from "@/components/PageHeader";
 
 const dataTabs = ["프로젝트 연결", "파일 업로드", "직접 입력"] as const;
 
@@ -62,11 +63,19 @@ export default function StatsAnalysisPage() {
 
   return (
     <div className="p-8 max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">통계분석 / 시각화</h1>
-        <p className="text-gray-500 text-sm mt-1">기술통계와 시각화는 바로 실행, 고급 분석은 의뢰 형태로 진행됩니다</p>
-      </div>
+      <PageHeader
+        title="통계분석 / 시각화"
+        subtitle="기술통계와 시각화는 바로 실행, 고급 분석은 의뢰 형태로 진행됩니다"
+        breadcrumbs={[
+          { label: "계량통계분석" },
+          { label: "기초통계 및 시각화" },
+        ]}
+        icon={
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          </svg>
+        }
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left: Data Input */}

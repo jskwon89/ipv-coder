@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import PageHeader from "@/components/PageHeader";
 
 interface NewsResult {
   id: string;
@@ -95,20 +96,19 @@ export default function NewsSearchPage() {
 
   return (
     <div className="p-8 max-w-5xl mx-auto">
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-2xl font-bold">기사 검색</h1>
-          <p className="text-muted-foreground text-sm mt-1">
-            뉴스 기사 검색 및 수집
-          </p>
-        </div>
-        <Link
-          href="/"
-          className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-        >
-          대시보드로 돌아가기
-        </Link>
-      </div>
+      <PageHeader
+        title="기사 검색"
+        subtitle="뉴스 기사 검색 및 수집"
+        breadcrumbs={[
+          { label: "문서 코딩" },
+          { label: "기사 검색" },
+        ]}
+        icon={
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+          </svg>
+        }
+      />
 
       {/* Search type toggle */}
       <div className="bg-card rounded-xl border border-border p-6 mb-6">

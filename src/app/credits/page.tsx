@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import PageHeader from "@/components/PageHeader";
 
 interface Transaction {
   id: string;
@@ -112,11 +113,19 @@ export default function CreditsPage() {
 
   return (
     <div className="p-8 max-w-5xl mx-auto space-y-8">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">크레딧 관리</h1>
-        <p className="text-sm text-gray-500 mt-1">서비스 이용에 필요한 크레딧을 관리합니다.</p>
-      </div>
+      <PageHeader
+        title="크레딧 관리"
+        subtitle="서비스 이용에 필요한 크레딧을 관리합니다."
+        breadcrumbs={[
+          { label: "연구 지원" },
+          { label: "크레딧 관리" },
+        ]}
+        icon={
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        }
+      />
 
       {/* Balance Card */}
       <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl p-8 text-white shadow-lg">

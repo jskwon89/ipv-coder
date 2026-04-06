@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import CreditConfirmDialog from "@/components/CreditConfirmDialog";
+import PageHeader from "@/components/PageHeader";
 
 /* ───── analysis type definitions ───── */
 
@@ -418,11 +419,19 @@ export default function TextAnalysisPage() {
 
   return (
     <div className="p-8 max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">텍스트 분석</h1>
-        <p className="text-gray-500 text-sm mt-1">판결문, 기사, 문서 등의 텍스트를 분석합니다</p>
-      </div>
+      <PageHeader
+        title="텍스트 분석"
+        subtitle="판결문, 기사, 문서 등의 텍스트를 분석합니다"
+        breadcrumbs={[
+          { label: "계량통계분석" },
+          { label: "텍스트 분석" },
+        ]}
+        icon={
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        }
+      />
 
       {/* ── Data Input ── */}
       <div className="bg-white rounded-xl border border-gray-100 shadow-sm mb-6">
