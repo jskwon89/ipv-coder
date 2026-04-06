@@ -6,6 +6,7 @@ import Link from "next/link";
 import StatusBadge, { type CaseStatus } from "@/components/StatusBadge";
 import VariableSelector from "@/components/VariableSelector";
 import PricingCalculator from "@/components/PricingCalculator";
+import CreditConfirmDialog from "@/components/CreditConfirmDialog";
 import { VARIABLE_GROUPS, estimateCost, getSelectedVariableCount } from "@/lib/variable-groups";
 
 const ccItems = [
@@ -391,55 +392,20 @@ export default function CaseDetailPage() {
       </div>
 
       {/* Pricing Confirmation Dialog */}
-      {showPricingConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-card rounded-xl border border-border shadow-2xl w-full max-w-md mx-4">
-            <div className="px-6 pt-6 pb-4">
-              <h3 className="text-lg font-bold mb-1">AI 자동 코딩 확인</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                아래 비용을 확인하고 진행하시겠습니까?
-              </p>
-
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">선택된 변수</span>
-                  <span className="font-medium">{selectedVars.length}개</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">판결문 길이</span>
-                  <span className="font-medium">{textLength.toLocaleString("ko-KR")}자</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">예상 API 비용</span>
-                  <span className="font-medium">${pricingInfo.apiCost.toFixed(4)}</span>
-                </div>
-                <div className="border-t border-border pt-2 mt-2" />
-                <div className="flex justify-between items-baseline">
-                  <span className="font-semibold">서비스 이용료</span>
-                  <span className="text-xl font-bold text-primary">
-                    {pricingInfo.totalKRW.toLocaleString("ko-KR")}원
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex gap-3 px-6 pb-6 pt-2">
-              <button
-                onClick={() => setShowPricingConfirm(false)}
-                className="flex-1 px-4 py-2 bg-secondary text-secondary-foreground rounded-lg text-sm font-medium hover:opacity-80 transition-opacity border border-border"
-              >
-                취소
-              </button>
-              <button
-                onClick={confirmAiCoding}
-                className="flex-1 px-4 py-2 bg-yellow-500 text-white rounded-lg text-sm font-medium hover:bg-yellow-600 transition-colors"
-              >
-                코딩 시작
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <CreditConfirmDialog
+        isOpen={showPricingConfirm}
+        onClose={() => setShowPricingConfirm(false)}
+        onConfirm={confirmAiCoding}
+        serviceName="판결문 AI 코딩"
+        creditCost={Math.ceil(pricingInfo.totalKRW / 10)}
+        currentBalance={1000}
+        details={[
+          `선택된 변수: ${selectedVars.length}개`,
+          `판결문 길이: ${textLength.toLocaleString("ko-KR")}자`,
+          `예상 API 비용: $${pricingInfo.apiCost.toFixed(4)}`,
+          `서비스 이용료: ${pricingInfo.totalKRW.toLocaleString("ko-KR")}원`,
+        ]}
+      />
     </div>
   );
 }

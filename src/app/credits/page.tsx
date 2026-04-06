@@ -15,12 +15,15 @@ interface Transaction {
 const QUICK_AMOUNTS = [1000, 5000, 10000, 50000, 100000];
 
 const PRICE_TABLE = [
-  { service: "판결문 AI 코딩 (기본)", credit: "~150", note: "기본변수 + 짧은 전문" },
-  { service: "판결문 AI 코딩 (전체)", credit: "~300", note: "전체변수 + 긴 전문" },
-  { service: "기사 요약", credit: "~50/건", note: "AI 요약 생성" },
-  { service: "기술통계표 Excel", credit: "~50", note: "" },
-  { service: "판결문 수집 (사건번호)", credit: "~100/건", note: "" },
-  { service: "판결문 수집 (키워드)", credit: "~200/건", note: "" },
+  { service: "판결문 AI 코딩 (기본)", credit: "~500", note: "기본변수 + 짧은 전문" },
+  { service: "판결문 AI 코딩 (전체)", credit: "~1,000", note: "전체변수 + 긴 전문" },
+  { service: "토픽모델링", credit: "~300", note: "주제 추출" },
+  { service: "감성분석 / 키워드 네트워크", credit: "~300", note: "" },
+  { service: "기사 요약 / 문서 요약", credit: "~200/건", note: "AI 요약 생성" },
+  { service: "기술통계표 Excel / 워드클라우드", credit: "~200", note: "" },
+  { service: "키워드 빈도분석", credit: "~100", note: "" },
+  { service: "판결문 수집 (사건번호)", credit: "~300/건", note: "의뢰" },
+  { service: "판결문 수집 (키워드)", credit: "~500/건", note: "검색 포함" },
   { service: "기초통계/시각화", credit: "무료", note: "" },
   { service: "PDF 텍스트 추출", credit: "무료", note: "" },
   { service: "검색", credit: "무료", note: "" },
