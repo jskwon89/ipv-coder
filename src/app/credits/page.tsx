@@ -88,7 +88,7 @@ export default function CreditsPage() {
       case "charge": return "text-green-600 bg-green-50";
       case "use": return "text-red-600 bg-red-50";
       case "refund": return "text-blue-600 bg-blue-50";
-      default: return "text-gray-600 bg-gray-50";
+      default: return "text-gray-300 bg-[#0f1a2e]";
     }
   };
 
@@ -140,19 +140,19 @@ export default function CreditsPage() {
       </div>
 
       {/* Charge Section */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-5">
-        <h2 className="text-lg font-semibold text-gray-900">크레딧 충전</h2>
+      <div className="bg-[#1e2d47] rounded-xl border border-[#2a3a54] p-6 space-y-5">
+        <h2 className="text-lg font-semibold text-white">크레딧 충전</h2>
 
         {/* Quick amounts */}
         <div>
-          <p className="text-sm text-gray-600 mb-3">빠른 충전</p>
+          <p className="text-sm text-gray-300 mb-3">빠른 충전</p>
           <div className="flex flex-wrap gap-2">
             {QUICK_AMOUNTS.map((amt) => (
               <button
                 key={amt}
                 onClick={() => handleCharge(amt)}
                 disabled={charging}
-                className="px-4 py-2.5 rounded-lg border border-gray-200 hover:border-blue-400 hover:bg-blue-50 text-sm font-medium transition-colors disabled:opacity-50"
+                className="px-4 py-2.5 rounded-lg border border-[#2a3a54] hover:border-[#c49a2e] hover:bg-[#243350] text-sm font-medium transition-colors disabled:opacity-50"
               >
                 {amt.toLocaleString()} 크레딧
               </button>
@@ -162,7 +162,7 @@ export default function CreditsPage() {
 
         {/* Custom amount */}
         <div>
-          <p className="text-sm text-gray-600 mb-3">직접 입력</p>
+          <p className="text-sm text-gray-300 mb-3">직접 입력</p>
           <div className="flex gap-2">
             <input
               type="number"
@@ -170,7 +170,7 @@ export default function CreditsPage() {
               onChange={(e) => setCustomAmount(e.target.value)}
               placeholder="충전할 금액"
               min={1}
-              className="flex-1 px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="flex-1 px-4 py-2.5 border border-[#2a3a54] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
             <button
               onClick={() => handleCharge(Number(customAmount))}
@@ -182,36 +182,36 @@ export default function CreditsPage() {
           </div>
         </div>
 
-        <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-sm text-amber-800">
+        <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-4 text-sm text-amber-300">
           <p className="font-medium">안내</p>
           <p className="mt-1">충전 요청 후 안내되는 계좌로 입금해주세요. 확인 후 크레딧이 충전됩니다.</p>
         </div>
       </div>
 
       {/* Price Table */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">서비스 요금표</h2>
+      <div className="bg-[#1e2d47] rounded-xl border border-[#2a3a54] p-6">
+        <h2 className="text-lg font-semibold text-white mb-4">서비스 요금표</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-100">
-                <th className="text-left py-3 px-4 font-medium text-gray-500">서비스</th>
-                <th className="text-right py-3 px-4 font-medium text-gray-500">크레딧</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-500">비고</th>
+              <tr className="border-b border-[#2a3a54]">
+                <th className="text-left py-3 px-4 font-medium text-gray-400">서비스</th>
+                <th className="text-right py-3 px-4 font-medium text-gray-400">크레딧</th>
+                <th className="text-left py-3 px-4 font-medium text-gray-400">비고</th>
               </tr>
             </thead>
             <tbody>
               {PRICE_TABLE.map((row, i) => (
                 <tr key={i} className="border-b border-gray-50 last:border-0">
-                  <td className="py-3 px-4 text-gray-900">{row.service}</td>
+                  <td className="py-3 px-4 text-white">{row.service}</td>
                   <td className="py-3 px-4 text-right font-medium">
                     {row.credit === "무료" ? (
                       <span className="text-green-600">{row.credit}</span>
                     ) : (
-                      <span className="text-gray-900">{row.credit}</span>
+                      <span className="text-white">{row.credit}</span>
                     )}
                   </td>
-                  <td className="py-3 px-4 text-gray-500">{row.note}</td>
+                  <td className="py-3 px-4 text-gray-400">{row.note}</td>
                 </tr>
               ))}
             </tbody>
@@ -220,8 +220,8 @@ export default function CreditsPage() {
       </div>
 
       {/* Transaction History */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">거래 내역</h2>
+      <div className="bg-[#1e2d47] rounded-xl border border-[#2a3a54] p-6">
+        <h2 className="text-lg font-semibold text-white mb-4">거래 내역</h2>
 
         {transactions.length === 0 ? (
           <div className="text-center py-12 text-gray-400">
@@ -234,19 +234,19 @@ export default function CreditsPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-100">
-                  <th className="text-left py-3 px-4 font-medium text-gray-500">날짜</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-500">유형</th>
-                  <th className="text-right py-3 px-4 font-medium text-gray-500">금액</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-500">서비스</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-500">설명</th>
-                  <th className="text-right py-3 px-4 font-medium text-gray-500">잔액</th>
+                <tr className="border-b border-[#2a3a54]">
+                  <th className="text-left py-3 px-4 font-medium text-gray-400">날짜</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-400">유형</th>
+                  <th className="text-right py-3 px-4 font-medium text-gray-400">금액</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-400">서비스</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-400">설명</th>
+                  <th className="text-right py-3 px-4 font-medium text-gray-400">잔액</th>
                 </tr>
               </thead>
               <tbody>
                 {transactions.map((tx) => (
                   <tr key={tx.id} className="border-b border-gray-50 last:border-0">
-                    <td className="py-3 px-4 text-gray-600 whitespace-nowrap">{formatDate(tx.createdAt)}</td>
+                    <td className="py-3 px-4 text-gray-300 whitespace-nowrap">{formatDate(tx.createdAt)}</td>
                     <td className="py-3 px-4">
                       <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${typeColor(tx.type)}`}>
                         {typeLabel(tx.type)}
@@ -257,9 +257,9 @@ export default function CreditsPage() {
                         {tx.type === "use" ? "-" : "+"}{tx.amount.toLocaleString()}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-gray-600">{tx.service}</td>
-                    <td className="py-3 px-4 text-gray-600">{tx.description}</td>
-                    <td className="py-3 px-4 text-right text-gray-900 tabular-nums">{tx.balanceAfter.toLocaleString()}</td>
+                    <td className="py-3 px-4 text-gray-300">{tx.service}</td>
+                    <td className="py-3 px-4 text-gray-300">{tx.description}</td>
+                    <td className="py-3 px-4 text-right text-white tabular-nums">{tx.balanceAfter.toLocaleString()}</td>
                   </tr>
                 ))}
               </tbody>

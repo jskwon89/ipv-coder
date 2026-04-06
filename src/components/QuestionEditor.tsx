@@ -448,7 +448,7 @@ export default function QuestionEditor({ questions, onChange }: Props) {
                         }`}
                       >
                         <span
-                          className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white transition-transform ${
+                          className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-[#1e2d47] transition-transform ${
                             q.hasOtherOption ? "translate-x-5" : ""
                           }`}
                         />
@@ -516,7 +516,7 @@ export default function QuestionEditor({ questions, onChange }: Props) {
                     }`}
                   >
                     <span
-                      className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white transition-transform ${
+                      className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-[#1e2d47] transition-transform ${
                         q.required ? "translate-x-5" : ""
                       }`}
                     />

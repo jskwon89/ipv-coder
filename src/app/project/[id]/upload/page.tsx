@@ -186,7 +186,7 @@ export default function UploadPage() {
         <button
           onClick={() => setMode("list")}
           className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-            mode === "list" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+            mode === "list" ? "bg-card text-foreground shadow-md shadow-black/20" : "text-muted-foreground hover:text-foreground"
           }`}
         >
           사건 목록 (.txt / .xlsx)
@@ -194,7 +194,7 @@ export default function UploadPage() {
         <button
           onClick={() => setMode("pdf")}
           className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-            mode === "pdf" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+            mode === "pdf" ? "bg-card text-foreground shadow-md shadow-black/20" : "text-muted-foreground hover:text-foreground"
           }`}
         >
           판결문 PDF 직접 업로드
@@ -243,7 +243,7 @@ export default function UploadPage() {
               <div className="bg-card rounded-xl border border-border overflow-hidden">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-border bg-gray-50">
+                    <tr className="border-b border-border bg-[#0f1a2e]">
                       <th className="text-left px-4 py-3 font-medium">번호</th>
                       <th className="text-left px-4 py-3 font-medium">법원</th>
                       <th className="text-left px-4 py-3 font-medium">사건번호</th>
@@ -267,7 +267,7 @@ export default function UploadPage() {
                             ) : c.is_ipv ? (
                               <span className="inline-flex px-2 py-0.5 bg-green-50 text-green-700 text-xs rounded-full font-medium">IPV</span>
                             ) : (
-                              <span className="inline-flex px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full font-medium">비IPV</span>
+                              <span className="inline-flex px-2 py-0.5 bg-[#243350] text-gray-300 text-xs rounded-full font-medium">비IPV</span>
                             )}
                           </td>
                           <td className="px-4 py-3 text-xs text-muted-foreground max-w-xs truncate">{c.reason}</td>
@@ -356,7 +356,7 @@ export default function UploadPage() {
               <div className="bg-card rounded-xl border border-border overflow-hidden">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-border bg-gray-50">
+                    <tr className="border-b border-border bg-[#0f1a2e]">
                       <th className="text-left px-4 py-3 font-medium">파일명</th>
                       <th className="text-left px-4 py-3 font-medium">크기</th>
                       <th className="text-left px-4 py-3 font-medium">페이지</th>

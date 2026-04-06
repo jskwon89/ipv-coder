@@ -124,7 +124,7 @@ export default function SurveyPreview({ title, onTitleChange, questions }: Props
                           value={otherTexts[q.id] || ""}
                           onChange={(e) => setOtherTexts((prev) => ({ ...prev, [q.id]: e.target.value }))}
                           placeholder="직접 입력..."
-                          className="ml-6 w-[calc(100%-1.5rem)] px-3 py-1.5 border border-border rounded-lg text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                          className="ml-6 w-[calc(100%-1.5rem)] px-3 py-1.5 border border-border rounded-lg text-sm bg-[#0f1a2e] focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
                         />
                       </div>
                     )}
@@ -151,7 +151,7 @@ export default function SurveyPreview({ title, onTitleChange, questions }: Props
                           value={otherTexts[q.id] || ""}
                           onChange={(e) => setOtherTexts((prev) => ({ ...prev, [q.id]: e.target.value }))}
                           placeholder="직접 입력..."
-                          className="ml-6 w-[calc(100%-1.5rem)] px-3 py-1.5 border border-border rounded-lg text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                          className="ml-6 w-[calc(100%-1.5rem)] px-3 py-1.5 border border-border rounded-lg text-sm bg-[#0f1a2e] focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
                         />
                       </div>
                     )}
@@ -186,7 +186,7 @@ export default function SurveyPreview({ title, onTitleChange, questions }: Props
                     type="text"
                     disabled
                     placeholder="단답형 텍스트"
-                    className="w-full px-3 py-2 border border-border rounded-lg text-sm bg-gray-50"
+                    className="w-full px-3 py-2 border border-border rounded-lg text-sm bg-[#0f1a2e]"
                   />
                 )}
 
@@ -196,7 +196,7 @@ export default function SurveyPreview({ title, onTitleChange, questions }: Props
                     disabled
                     rows={3}
                     placeholder="장문형 텍스트"
-                    className="w-full px-3 py-2 border border-border rounded-lg text-sm bg-gray-50 resize-none"
+                    className="w-full px-3 py-2 border border-border rounded-lg text-sm bg-[#0f1a2e] resize-none"
                   />
                 )}
 
@@ -206,7 +206,7 @@ export default function SurveyPreview({ title, onTitleChange, questions }: Props
                     type="number"
                     disabled
                     placeholder="숫자 입력"
-                    className="w-full max-w-[200px] px-3 py-2 border border-border rounded-lg text-sm bg-gray-50"
+                    className="w-full max-w-[200px] px-3 py-2 border border-border rounded-lg text-sm bg-[#0f1a2e]"
                   />
                 )}
               </div>

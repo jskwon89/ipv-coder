@@ -118,7 +118,7 @@ export default function VariableSelector({
           return (
             <div key={group.id} className="border border-border rounded-lg overflow-hidden">
               {/* Group header */}
-              <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 hover:bg-secondary transition-colors">
+              <div className="flex items-center gap-2 px-3 py-2 bg-[#0f1a2e] hover:bg-secondary transition-colors">
                 <input
                   type="checkbox"
                   checked={allSelected}
@@ -155,7 +155,7 @@ export default function VariableSelector({
                   {group.variables.map((v) => (
                     <label
                       key={v.id}
-                      className="flex items-start gap-2 py-1 text-sm cursor-pointer hover:bg-gray-50 rounded px-1 -mx-1"
+                      className="flex items-start gap-2 py-1 text-sm cursor-pointer hover:bg-[#0f1a2e] rounded px-1 -mx-1"
                     >
                       <input
                         type="checkbox"

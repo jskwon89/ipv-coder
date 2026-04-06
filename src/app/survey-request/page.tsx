@@ -216,13 +216,13 @@ export default function SurveyRequestPage() {
       />
 
       {/* Tabs */}
-      <div className="flex gap-1 mb-6 bg-gray-100 p-1 rounded-lg w-fit">
+      <div className="flex gap-1 mb-6 bg-[#243350] p-1 rounded-lg w-fit">
         <button
           type="button"
           onClick={() => setActiveTab("request")}
           className={`px-5 py-2 rounded-md text-sm font-medium transition-colors ${
             activeTab === "request"
-              ? "bg-card text-foreground shadow-sm"
+              ? "bg-card text-foreground shadow-md shadow-black/20"
               : "text-muted-foreground hover:text-foreground"
           }`}
         >
@@ -233,7 +233,7 @@ export default function SurveyRequestPage() {
           onClick={() => setActiveTab("builder")}
           className={`px-5 py-2 rounded-md text-sm font-medium transition-colors ${
             activeTab === "builder"
-              ? "bg-card text-foreground shadow-sm"
+              ? "bg-card text-foreground shadow-md shadow-black/20"
               : "text-muted-foreground hover:text-foreground"
           }`}
         >

@@ -198,7 +198,7 @@ export default function CaseDetailPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left: Full text viewer */}
         <div className="bg-card rounded-xl border border-border overflow-hidden">
-          <div className="px-4 py-3 border-b border-border bg-gray-50 font-medium text-sm">
+          <div className="px-4 py-3 border-b border-border bg-[#0f1a2e] font-medium text-sm">
             판결문 전문
           </div>
           <div className="p-4 h-[calc(100vh-250px)] overflow-y-auto text-sm leading-relaxed font-mono whitespace-pre-wrap">
@@ -214,7 +214,7 @@ export default function CaseDetailPage() {
 
         {/* Right: Coding form */}
         <div className="bg-card rounded-xl border border-border overflow-hidden">
-          <div className="px-4 py-3 border-b border-border bg-gray-50 font-medium text-sm">
+          <div className="px-4 py-3 border-b border-border bg-[#0f1a2e] font-medium text-sm">
             코딩 폼
           </div>
           <div className="p-4 h-[calc(100vh-250px)] overflow-y-auto space-y-6">
@@ -286,7 +286,7 @@ export default function CaseDetailPage() {
                 <div key={n} className="border border-border rounded-lg overflow-hidden mb-2">
                   <button
                     onClick={() => toggleIncident(n)}
-                    className="w-full flex items-center justify-between px-3 py-2 bg-gray-50 text-sm font-medium hover:bg-secondary transition-colors"
+                    className="w-full flex items-center justify-between px-3 py-2 bg-[#0f1a2e] text-sm font-medium hover:bg-secondary transition-colors"
                   >
                     <span>제 {n} 차 범행</span>
                     <svg

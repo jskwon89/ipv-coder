@@ -62,19 +62,19 @@ export default function DataGenerationPage() {
 
       {/* Info boxes */}
       <div className="space-y-3 mb-6">
-        <div className="bg-cyan-50 border border-cyan-100 rounded-lg px-4 py-3 flex items-start gap-3">
-          <svg className="w-5 h-5 text-cyan-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="bg-cyan-900/20 border border-cyan-700/30 rounded-lg px-4 py-3 flex items-start gap-3">
+          <svg className="w-5 h-5 text-cyan-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <p className="text-sm text-cyan-700">
+          <p className="text-sm text-cyan-300">
             문헌 기반 시뮬레이션 데이터를 생성합니다. 검정력 분석, 분석 파이프라인 테스트, 연구 설계 사전 검토 등에 활용할 수 있습니다
           </p>
         </div>
-        <div className="bg-amber-50 border border-amber-100 rounded-lg px-4 py-3 flex items-start gap-3">
-          <svg className="w-5 h-5 text-amber-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg px-4 py-3 flex items-start gap-3">
+          <svg className="w-5 h-5 text-amber-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <p className="text-sm text-amber-700">문헌 조사 + 자료 생성: ~200 크레딧</p>
+          <p className="text-sm text-amber-300">문헌 조사 + 자료 생성: ~200 크레딧</p>
         </div>
       </div>
 
@@ -114,8 +114,8 @@ export default function DataGenerationPage() {
                       onClick={() => toggleScale(scale.label)}
                       className={`text-left px-3 py-2.5 rounded-lg border transition-colors ${
                         selectedScales.includes(scale.label)
-                          ? "border-cyan-500 bg-cyan-50"
-                          : "border-border hover:bg-gray-50"
+                          ? "border-cyan-500 bg-cyan-900/20"
+                          : "border-border hover:bg-[#0f1a2e]"
                       }`}
                     >
                       <div className="text-sm font-medium">{scale.label}</div>
@@ -320,14 +320,14 @@ export default function DataGenerationPage() {
       {/* Output Preview */}
       <div className="bg-card rounded-xl border border-border mt-6">
         <div className="px-6 py-4 border-b border-border flex items-center justify-between">
-          <div className="flex items-center gap-1 bg-gray-50 rounded-lg p-1 w-fit">
+          <div className="flex items-center gap-1 bg-[#0f1a2e] rounded-lg p-1 w-fit">
             {outputTabs.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveOutputTab(tab)}
                 className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${
                   activeOutputTab === tab
-                    ? "bg-card text-foreground shadow-sm"
+                    ? "bg-card text-foreground shadow-md shadow-black/20"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -338,19 +338,19 @@ export default function DataGenerationPage() {
           <div className="flex gap-2">
             <button
               disabled
-              className="px-3 py-1.5 border border-border rounded-lg text-xs font-medium hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 py-1.5 border border-border rounded-lg text-xs font-medium hover:bg-[#0f1a2e] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Excel
             </button>
             <button
               disabled
-              className="px-3 py-1.5 border border-border rounded-lg text-xs font-medium hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 py-1.5 border border-border rounded-lg text-xs font-medium hover:bg-[#0f1a2e] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               CSV
             </button>
             <button
               disabled
-              className="px-3 py-1.5 border border-border rounded-lg text-xs font-medium hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 py-1.5 border border-border rounded-lg text-xs font-medium hover:bg-[#0f1a2e] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               SPSS (.sav)
             </button>

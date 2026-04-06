@@ -123,7 +123,7 @@ export default function TextAnalysisPage() {
       ),
       options: (
         <div className="mt-3 space-y-2">
-          <label className="text-xs font-medium text-gray-700">토픽 수: {topicCount}</label>
+          <label className="text-xs font-medium text-gray-200">토픽 수: {topicCount}</label>
           <input
             type="range"
             min={2}
@@ -150,14 +150,14 @@ export default function TextAnalysisPage() {
       options: (
         <div className="mt-3 space-y-3">
           <div>
-            <label className="text-xs font-medium text-gray-700 block mb-1">최대 단어 수</label>
+            <label className="text-xs font-medium text-gray-200 block mb-1">최대 단어 수</label>
             <div className="flex gap-1.5">
               {[50, 100, 200].map((n) => (
                 <button
                   key={n}
                   onClick={() => setMaxWords(n)}
                   className={`flex-1 px-2 py-1.5 rounded-md text-xs font-medium border transition-colors ${
-                    maxWords === n ? "border-blue-500 bg-blue-50 text-blue-600" : "border-gray-200 hover:bg-gray-50 text-gray-600"
+                    maxWords === n ? "border-blue-500 bg-blue-50 text-blue-600" : "border-[#2a3a54] hover:bg-[#0f1a2e] text-gray-300"
                   }`}
                 >
                   {n}
@@ -166,12 +166,12 @@ export default function TextAnalysisPage() {
             </div>
           </div>
           <div className="flex items-center justify-between">
-            <label className="text-xs font-medium text-gray-700">불용어 제거</label>
+            <label className="text-xs font-medium text-gray-200">불용어 제거</label>
             <button
               onClick={() => setRemoveStopwords(!removeStopwords)}
               className={`w-9 h-5 rounded-full relative transition-colors ${removeStopwords ? "bg-blue-500" : "bg-gray-300"}`}
             >
-              <span className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${removeStopwords ? "left-[18px]" : "left-0.5"}`} />
+              <span className={`absolute top-0.5 w-4 h-4 rounded-full bg-[#1e2d47] shadow transition-transform ${removeStopwords ? "left-[18px]" : "left-0.5"}`} />
             </button>
           </div>
         </div>
@@ -190,14 +190,14 @@ export default function TextAnalysisPage() {
       ),
       options: (
         <div className="mt-3">
-          <label className="text-xs font-medium text-gray-700 block mb-1">분석 단위</label>
+          <label className="text-xs font-medium text-gray-200 block mb-1">분석 단위</label>
           <div className="flex gap-1.5">
             {(["문장별", "문서별"] as const).map((u) => (
               <button
                 key={u}
                 onClick={() => setSentimentUnit(u)}
                 className={`flex-1 px-2 py-1.5 rounded-md text-xs font-medium border transition-colors ${
-                  sentimentUnit === u ? "border-green-500 bg-green-50 text-green-600" : "border-gray-200 hover:bg-gray-50 text-gray-600"
+                  sentimentUnit === u ? "border-green-500 bg-green-50 text-green-600" : "border-[#2a3a54] hover:bg-[#0f1a2e] text-gray-300"
                 }`}
               >
                 {u}
@@ -221,14 +221,14 @@ export default function TextAnalysisPage() {
       options: (
         <div className="mt-3 space-y-3">
           <div>
-            <label className="text-xs font-medium text-gray-700 block mb-1">상위 N개</label>
+            <label className="text-xs font-medium text-gray-200 block mb-1">상위 N개</label>
             <div className="flex gap-1.5">
               {[10, 20, 50].map((n) => (
                 <button
                   key={n}
                   onClick={() => setTopN(n)}
                   className={`flex-1 px-2 py-1.5 rounded-md text-xs font-medium border transition-colors ${
-                    topN === n ? "border-orange-500 bg-orange-50 text-orange-600" : "border-gray-200 hover:bg-gray-50 text-gray-600"
+                    topN === n ? "border-orange-500 bg-orange-50 text-orange-600" : "border-[#2a3a54] hover:bg-[#0f1a2e] text-gray-300"
                   }`}
                 >
                   {n}
@@ -237,14 +237,14 @@ export default function TextAnalysisPage() {
             </div>
           </div>
           <div>
-            <label className="text-xs font-medium text-gray-700 block mb-1">n-gram</label>
+            <label className="text-xs font-medium text-gray-200 block mb-1">n-gram</label>
             <div className="flex gap-1.5">
               {[1, 2, 3].map((n) => (
                 <button
                   key={n}
                   onClick={() => setNgram(n)}
                   className={`flex-1 px-2 py-1.5 rounded-md text-xs font-medium border transition-colors ${
-                    ngram === n ? "border-orange-500 bg-orange-50 text-orange-600" : "border-gray-200 hover:bg-gray-50 text-gray-600"
+                    ngram === n ? "border-orange-500 bg-orange-50 text-orange-600" : "border-[#2a3a54] hover:bg-[#0f1a2e] text-gray-300"
                   }`}
                 >
                   {n}-gram
@@ -268,7 +268,7 @@ export default function TextAnalysisPage() {
       ),
       options: (
         <div className="mt-3 space-y-2">
-          <label className="text-xs font-medium text-gray-700">최소 동시출현 횟수: {minCooccurrence}</label>
+          <label className="text-xs font-medium text-gray-200">최소 동시출현 횟수: {minCooccurrence}</label>
           <input
             type="range"
             min={2}
@@ -294,14 +294,14 @@ export default function TextAnalysisPage() {
       ),
       options: (
         <div className="mt-3">
-          <label className="text-xs font-medium text-gray-700 block mb-1">요약 길이</label>
+          <label className="text-xs font-medium text-gray-200 block mb-1">요약 길이</label>
           <div className="flex gap-1.5">
             {(["짧게", "보통", "자세히"] as const).map((l) => (
               <button
                 key={l}
                 onClick={() => setSummaryLength(l)}
                 className={`flex-1 px-2 py-1.5 rounded-md text-xs font-medium border transition-colors ${
-                  summaryLength === l ? "border-rose-500 bg-rose-50 text-rose-600" : "border-gray-200 hover:bg-gray-50 text-gray-600"
+                  summaryLength === l ? "border-rose-500 bg-rose-50 text-rose-600" : "border-[#2a3a54] hover:bg-[#0f1a2e] text-gray-300"
                 }`}
               >
                 {l}
@@ -334,21 +334,21 @@ export default function TextAnalysisPage() {
           <div key={i} className="flex items-start gap-3">
             <span className="shrink-0 w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center text-xs font-bold">T{i + 1}</span>
             <div>
-              <div className="text-sm font-medium text-gray-900">토픽 {i + 1}</div>
-              <div className="text-xs text-gray-500 mt-0.5">키워드: 폭행, 상해, 피해자, 협박, 가정폭력, 징역, 집행유예, ...</div>
-              <div className="w-full bg-gray-100 rounded-full h-1.5 mt-1.5"><div className="bg-purple-500 h-1.5 rounded-full" style={{ width: `${Math.max(20, 90 - i * 15)}%` }} /></div>
+              <div className="text-sm font-medium text-white">토픽 {i + 1}</div>
+              <div className="text-xs text-gray-400 mt-0.5">키워드: 폭행, 상해, 피해자, 협박, 가정폭력, 징역, 집행유예, ...</div>
+              <div className="w-full bg-[#243350] rounded-full h-1.5 mt-1.5"><div className="bg-purple-500 h-1.5 rounded-full" style={{ width: `${Math.max(20, 90 - i * 15)}%` }} /></div>
             </div>
           </div>
         ))}
       </div>
     ),
     wordcloud: (
-      <div className="flex items-center justify-center py-12 border-2 border-dashed border-gray-200 rounded-lg">
+      <div className="flex items-center justify-center py-12 border-2 border-dashed border-[#2a3a54] rounded-lg">
         <div className="text-center">
           <svg className="w-16 h-16 text-blue-200 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
           </svg>
-          <p className="text-sm text-gray-500">워드클라우드 시각화 영역</p>
+          <p className="text-sm text-gray-400">워드클라우드 시각화 영역</p>
           <p className="text-xs text-gray-400 mt-1">최대 {maxWords}개 단어 표시 | 불용어 제거: {removeStopwords ? "ON" : "OFF"}</p>
         </div>
       </div>
@@ -358,15 +358,15 @@ export default function TextAnalysisPage() {
         <div className="grid grid-cols-3 gap-3">
           <div className="bg-green-50 rounded-lg p-4 text-center">
             <div className="text-2xl font-bold text-green-600">23%</div>
-            <div className="text-xs text-gray-500 mt-1">긍정</div>
+            <div className="text-xs text-gray-400 mt-1">긍정</div>
           </div>
-          <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <div className="text-2xl font-bold text-gray-600">52%</div>
-            <div className="text-xs text-gray-500 mt-1">중립</div>
+          <div className="bg-[#0f1a2e] rounded-lg p-4 text-center">
+            <div className="text-2xl font-bold text-gray-300">52%</div>
+            <div className="text-xs text-gray-400 mt-1">중립</div>
           </div>
           <div className="bg-red-50 rounded-lg p-4 text-center">
             <div className="text-2xl font-bold text-red-600">25%</div>
-            <div className="text-xs text-gray-500 mt-1">부정</div>
+            <div className="text-xs text-gray-400 mt-1">부정</div>
           </div>
         </div>
         <div className="h-4 rounded-full overflow-hidden flex">
@@ -374,7 +374,7 @@ export default function TextAnalysisPage() {
           <div className="bg-gray-400 h-full" style={{ width: "52%" }} />
           <div className="bg-red-500 h-full" style={{ width: "25%" }} />
         </div>
-        <p className="text-xs text-gray-500">분석 단위: {sentimentUnit}</p>
+        <p className="text-xs text-gray-400">분석 단위: {sentimentUnit}</p>
       </div>
     ),
     frequency: (
@@ -382,30 +382,30 @@ export default function TextAnalysisPage() {
         {["폭행", "피해자", "상해", "협박", "징역", "집행유예", "가정폭력", "재범", "보호", "처분"].slice(0, Math.min(10, topN)).map((w, i) => (
           <div key={w} className="flex items-center gap-3">
             <span className="text-xs text-gray-400 w-5 text-right">{i + 1}</span>
-            <span className="text-sm font-medium text-gray-900 w-20">{w}</span>
-            <div className="flex-1 bg-gray-100 rounded-full h-2">
+            <span className="text-sm font-medium text-white w-20">{w}</span>
+            <div className="flex-1 bg-[#243350] rounded-full h-2">
               <div className="bg-orange-500 h-2 rounded-full" style={{ width: `${Math.max(10, 100 - i * 10)}%` }} />
             </div>
             <span className="text-xs text-gray-400 w-10 text-right">{Math.round(150 - i * 12)}</span>
           </div>
         ))}
-        <p className="text-xs text-gray-500 mt-2">n-gram: {ngram} | 상위 {topN}개</p>
+        <p className="text-xs text-gray-400 mt-2">n-gram: {ngram} | 상위 {topN}개</p>
       </div>
     ),
     network: (
-      <div className="flex items-center justify-center py-12 border-2 border-dashed border-gray-200 rounded-lg">
+      <div className="flex items-center justify-center py-12 border-2 border-dashed border-[#2a3a54] rounded-lg">
         <div className="text-center">
           <svg className="w-16 h-16 text-teal-200 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
           </svg>
-          <p className="text-sm text-gray-500">키워드 네트워크 시각화 영역</p>
+          <p className="text-sm text-gray-400">키워드 네트워크 시각화 영역</p>
           <p className="text-xs text-gray-400 mt-1">최소 동시출현 {minCooccurrence}회</p>
         </div>
       </div>
     ),
     summary: (
-      <div className="bg-gray-50 rounded-lg p-5">
-        <p className="text-sm leading-relaxed text-gray-700">
+      <div className="bg-[#0f1a2e] rounded-lg p-5">
+        <p className="text-sm leading-relaxed text-gray-200">
           본 판결문은 가정폭력 사건에 대한 것으로, 피고인은 배우자에 대한 폭행 및 상해 혐의로 기소되었습니다.
           법원은 피해자의 진술과 의료 기록을 바탕으로 유죄를 인정하였으며, 재범 위험성과 피해자 보호의 필요성을 고려하여
           징역형의 집행유예를 선고하였습니다. 보호관찰과 사회봉사명령이 부과되었습니다.
@@ -434,21 +434,21 @@ export default function TextAnalysisPage() {
       />
 
       {/* ── Data Input ── */}
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm mb-6">
-        <div className="px-6 py-4 border-b border-gray-100">
-          <h2 className="font-semibold text-gray-900">데이터 입력</h2>
+      <div className="bg-[#1e2d47] rounded-xl border border-[#2a3a54] shadow-md shadow-black/20 mb-6">
+        <div className="px-6 py-4 border-b border-[#2a3a54]">
+          <h2 className="font-semibold text-white">데이터 입력</h2>
         </div>
         <div className="px-6 py-4">
           {/* tabs */}
-          <div className="flex gap-1 mb-4 bg-gray-100 rounded-lg p-1">
+          <div className="flex gap-1 mb-4 bg-[#243350] rounded-lg p-1">
             {dataTabs.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveDataTab(tab)}
                 className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                   activeDataTab === tab
-                    ? "bg-white text-gray-900 shadow-sm"
-                    : "text-gray-500 hover:text-gray-700"
+                    ? "bg-[#1e2d47] text-white shadow-md shadow-black/20"
+                    : "text-gray-400 hover:text-gray-200"
                 }`}
               >
                 {tab}
@@ -463,29 +463,29 @@ export default function TextAnalysisPage() {
               value={textInput}
               onChange={(e) => setTextInput(e.target.value)}
               placeholder={"분석할 텍스트를 여기에 붙여넣기 하세요.\n\n판결문 전문, 기사 본문, 기타 문서 등"}
-              className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#1e3a5f]/20 focus:border-[#1e3a5f] font-mono resize-none"
+              className="w-full px-4 py-3 border border-[#2a3a54] rounded-lg text-sm bg-[#1e2d47] text-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/20 focus:border-[#c49a2e] font-mono resize-none"
             />
           )}
 
           {activeDataTab === "파일 업로드" && (
-            <div className="border-2 border-dashed border-gray-200 rounded-lg p-10 text-center hover:border-[#1e3a5f]/40 transition-colors cursor-pointer">
+            <div className="border-2 border-dashed border-[#2a3a54] rounded-lg p-10 text-center hover:border-[#c49a2e]/40 transition-colors cursor-pointer">
               <svg className="w-10 h-10 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
               </svg>
-              <p className="text-sm text-gray-500 mb-1">파일을 드래그하거나 클릭하여 업로드</p>
+              <p className="text-sm text-gray-400 mb-1">파일을 드래그하거나 클릭하여 업로드</p>
               <p className="text-xs text-gray-400">TXT, PDF, Excel (.xlsx) 파일 지원</p>
             </div>
           )}
 
           {activeDataTab === "프로젝트 연결" && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">기존 프로젝트 선택</label>
-              <select className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#1e3a5f]/20 focus:border-[#1e3a5f]">
+              <label className="block text-sm font-medium text-gray-200 mb-2">기존 프로젝트 선택</label>
+              <select className="w-full px-4 py-2.5 border border-[#2a3a54] rounded-lg text-sm bg-[#1e2d47] text-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/20 focus:border-[#c49a2e]">
                 <option value="">프로젝트를 선택하세요</option>
               </select>
               <div className="mt-3">
-                <label className="block text-sm font-medium text-gray-700 mb-2">분석 대상 필드</label>
-                <select className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#1e3a5f]/20 focus:border-[#1e3a5f]">
+                <label className="block text-sm font-medium text-gray-200 mb-2">분석 대상 필드</label>
+                <select className="w-full px-4 py-2.5 border border-[#2a3a54] rounded-lg text-sm bg-[#1e2d47] text-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/20 focus:border-[#c49a2e]">
                   <option value="">필드를 선택하세요</option>
                   <option value="sentencing_text">판결문 전문 (sentencing_text)</option>
                   <option value="article_body">기사 본문</option>
@@ -498,10 +498,10 @@ export default function TextAnalysisPage() {
       </div>
 
       {/* ── Analysis Type Selection ── */}
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm mb-6">
-        <div className="px-6 py-4 border-b border-gray-100">
-          <h2 className="font-semibold text-gray-900">분석 유형 선택</h2>
-          <p className="text-xs text-gray-500 mt-0.5">실행할 분석을 선택하세요. 복수 선택 가능합니다.</p>
+      <div className="bg-[#1e2d47] rounded-xl border border-[#2a3a54] shadow-md shadow-black/20 mb-6">
+        <div className="px-6 py-4 border-b border-[#2a3a54]">
+          <h2 className="font-semibold text-white">분석 유형 선택</h2>
+          <p className="text-xs text-gray-400 mt-0.5">실행할 분석을 선택하세요. 복수 선택 가능합니다.</p>
         </div>
         <div className="px-6 py-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -514,11 +514,11 @@ export default function TextAnalysisPage() {
                   className={`text-left px-4 py-4 rounded-xl border-2 transition-all ${
                     on
                       ? a.styles.cardOn
-                      : "border-gray-200 hover:bg-gray-50"
+                      : "border-[#2a3a54] hover:bg-[#0f1a2e]"
                   }`}
                 >
                   <div className="flex items-start justify-between">
-                    <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${on ? a.styles.iconOn : "bg-gray-100 text-gray-400"}`}>
+                    <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${on ? a.styles.iconOn : "bg-[#243350] text-gray-400"}`}>
                       {a.icon}
                     </div>
                     <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${a.styles.badge}`}>
@@ -526,7 +526,7 @@ export default function TextAnalysisPage() {
                     </span>
                   </div>
                   <div className="mt-3">
-                    <div className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                    <div className="text-sm font-semibold text-white flex items-center gap-2">
                       {a.label}
                       {on && (
                         <svg className={`w-4 h-4 ${a.styles.check}`} fill="currentColor" viewBox="0 0 20 20">
@@ -534,7 +534,7 @@ export default function TextAnalysisPage() {
                         </svg>
                       )}
                     </div>
-                    <div className="text-xs text-gray-500 mt-1">{a.desc}</div>
+                    <div className="text-xs text-gray-400 mt-1">{a.desc}</div>
                   </div>
                   {/* expanded options */}
                   {on && <div onClick={(e) => e.stopPropagation()}>{a.options}</div>}
@@ -546,15 +546,15 @@ export default function TextAnalysisPage() {
       </div>
 
       {/* ── Bottom: Run button ── */}
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm mb-6">
+      <div className="bg-[#1e2d47] rounded-xl border border-[#2a3a54] shadow-md shadow-black/20 mb-6">
         <div className="px-6 py-4 flex items-center justify-between">
-          <div className="text-sm text-gray-500">
-            <span className="font-medium text-gray-900">{selected.length}개</span> 분석 선택됨
+          <div className="text-sm text-gray-400">
+            <span className="font-medium text-white">{selected.length}개</span> 분석 선택됨
           </div>
           <button
             onClick={handleRun}
             disabled={selected.length === 0}
-            className="px-6 py-2.5 bg-[#1e3a5f] text-white rounded-lg text-sm font-medium hover:bg-[#162d4a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-6 py-2.5 bg-[#c49a2e] text-white rounded-lg text-sm font-medium hover:bg-[#d4a843] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             분석 실행
           </button>
@@ -562,10 +562,10 @@ export default function TextAnalysisPage() {
       </div>
 
       {/* ── Results Area ── */}
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
-        <div className="px-6 py-4 border-b border-gray-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+      <div className="bg-[#1e2d47] rounded-xl border border-[#2a3a54] shadow-md shadow-black/20">
+        <div className="px-6 py-4 border-b border-[#2a3a54] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           {analysisRun && selected.length > 0 ? (
-            <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1 w-fit overflow-x-auto">
+            <div className="flex items-center gap-1 bg-[#243350] rounded-lg p-1 w-fit overflow-x-auto">
               {selected.map((id) => {
                 const a = analyses.find((x) => x.id === id)!;
                 return (
@@ -574,8 +574,8 @@ export default function TextAnalysisPage() {
                     onClick={() => setActiveResultTab(id)}
                     className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
                       activeResultTab === id
-                        ? "bg-white text-gray-900 shadow-sm"
-                        : "text-gray-500 hover:text-gray-700"
+                        ? "bg-[#1e2d47] text-white shadow-md shadow-black/20"
+                        : "text-gray-400 hover:text-gray-200"
                     }`}
                   >
                     {a.label}
@@ -584,10 +584,10 @@ export default function TextAnalysisPage() {
               })}
             </div>
           ) : (
-            <span className="text-sm font-semibold text-gray-900">분석 결과</span>
+            <span className="text-sm font-semibold text-white">분석 결과</span>
           )}
           {analysisRun && (
-            <button className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-2">
+            <button className="px-4 py-2 border border-[#2a3a54] rounded-lg text-sm font-medium text-gray-200 hover:bg-[#0f1a2e] transition-colors flex items-center gap-2">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
@@ -598,14 +598,14 @@ export default function TextAnalysisPage() {
         <div className="px-6 py-8">
           {analysisRun && activeResultTab ? (
             placeholderResults[activeResultTab] ?? (
-              <p className="text-sm text-gray-500 text-center">결과를 불러오는 중...</p>
+              <p className="text-sm text-gray-400 text-center">결과를 불러오는 중...</p>
             )
           ) : (
             <div className="text-center py-4">
               <svg className="w-12 h-12 text-gray-200 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
-              <p className="text-sm text-gray-500">분석을 선택하고 실행하면 결과가 여기에 표시됩니다</p>
+              <p className="text-sm text-gray-400">분석을 선택하고 실행하면 결과가 여기에 표시됩니다</p>
             </div>
           )}
         </div>

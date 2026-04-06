@@ -221,7 +221,7 @@ export default function ProjectDetailPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-border bg-gray-50">
+              <tr className="border-b border-border bg-[#0f1a2e]">
                 <th className="text-left px-4 py-3 font-medium">번호</th>
                 <th className="text-left px-4 py-3 font-medium">법원</th>
                 <th className="text-left px-4 py-3 font-medium">사건번호</th>
@@ -239,7 +239,7 @@ export default function ProjectDetailPage() {
                 </tr>
               ) : (
                 filteredCases.map((c) => (
-                  <tr key={c.id} className="hover:bg-gray-50 transition-colors">
+                  <tr key={c.id} className="hover:bg-[#0f1a2e] transition-colors">
                     <td className="px-4 py-3 text-muted-foreground">{c.key}</td>
                     <td className="px-4 py-3">{c.court}</td>
                     <td className="px-4 py-3 font-mono text-xs">{c.case_no}</td>

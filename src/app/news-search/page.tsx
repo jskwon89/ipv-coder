@@ -172,7 +172,7 @@ export default function NewsSearchPage() {
                         {operator}
                       </button>
                     )}
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-900/30 text-blue-400 rounded-full text-sm">
                       {kw}
                       <button
                         onClick={() => removeKeyword(kw)}
@@ -252,8 +252,8 @@ export default function NewsSearchPage() {
 
       {/* Selected export bar */}
       {selected.size > 0 && (
-        <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6 flex items-center justify-between">
-          <span className="text-sm text-blue-700">
+        <div className="bg-blue-900/20 border border-blue-700/30 rounded-xl p-4 mb-6 flex items-center justify-between">
+          <span className="text-sm text-blue-300">
             {selected.size}건 선택됨
           </span>
           <button

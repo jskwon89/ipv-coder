@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DocCoder - 문서 코딩 시스템",
-  description: "문서 코딩 및 분석 시스템",
+  title: "ResearchOn - 연구 및 데이터 플랫폼",
+  description: "연구 및 데이터 분석 플랫폼",
 };
 
 export default function RootLayout({

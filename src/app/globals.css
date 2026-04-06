@@ -1,21 +1,21 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fafafa;
-  --foreground: #1a1a1a;
-  --card: #ffffff;
-  --card-foreground: #1a1a1a;
-  --primary: #1e3a5f;
-  --primary-foreground: #ffffff;
-  --secondary: #f3f4f6;
-  --secondary-foreground: #374151;
-  --muted: #f3f4f6;
-  --muted-foreground: #6b7280;
-  --border: #e5e7eb;
-  --sidebar: #1a2332;
-  --sidebar-foreground: #e2e8f0;
-  --sidebar-hover: #243347;
-  --accent: #c49a2e;
+  --background: #0f1a2e;
+  --foreground: #e8ecf4;
+  --card: #1e2d47;
+  --card-foreground: #e8ecf4;
+  --primary: #c49a2e;
+  --primary-foreground: #0f1a2e;
+  --secondary: #243350;
+  --secondary-foreground: #a0aec0;
+  --muted: #1a2744;
+  --muted-foreground: #7a8ba8;
+  --border: #2a3a54;
+  --sidebar: #0a1220;
+  --sidebar-foreground: #c8d6e5;
+  --sidebar-hover: #162035;
+  --accent: #d4a843;
 }
 
 @theme inline {
@@ -52,9 +52,9 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d1d5db;
+  background: #2a3a54;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
+  background: #3a4a64;
 }

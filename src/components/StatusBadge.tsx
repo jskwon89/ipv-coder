@@ -13,7 +13,7 @@ const statusConfig: Record<
   CaseStatus,
   { label: string; bg: string; text: string; dot: string }
 > = {
-  pending: { label: "대기", bg: "bg-gray-100", text: "text-gray-700", dot: "bg-gray-400" },
+  pending: { label: "대기", bg: "bg-[#243350]", text: "text-gray-300", dot: "bg-gray-400" },
   checking: { label: "확인중", bg: "bg-blue-50", text: "text-blue-700", dot: "bg-blue-400" },
   available: { label: "전문있음", bg: "bg-green-50", text: "text-green-700", dot: "bg-green-400" },
   unavailable: { label: "미등록", bg: "bg-red-50", text: "text-red-700", dot: "bg-red-400" },

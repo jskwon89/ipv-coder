@@ -25,7 +25,7 @@ export default function PaperTemplatePage() {
       </Link>
 
       <div className="mt-6 flex items-center gap-3">
-        <div className="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center">
+        <div className="w-10 h-10 rounded-lg bg-purple-900/30 flex items-center justify-center">
           <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
           </svg>
@@ -33,7 +33,7 @@ export default function PaperTemplatePage() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-2xl font-bold">학술논문 분석</h1>
-            <span className="text-[10px] font-medium bg-purple-50 text-purple-600 px-2 py-0.5 rounded-full">
+            <span className="text-[10px] font-medium bg-purple-900/30 text-purple-600 px-2 py-0.5 rounded-full">
               준비 중
             </span>
           </div>
@@ -88,7 +88,7 @@ export default function PaperTemplatePage() {
             <button
               key={q}
               onClick={() => setQuestion(q)}
-              className="px-3 py-1.5 text-xs font-medium border border-purple-200 text-purple-600 rounded-full hover:bg-purple-50 transition-colors"
+              className="px-3 py-1.5 text-xs font-medium border border-purple-700/40 text-purple-600 rounded-full hover:bg-purple-900/30 transition-colors"
             >
               {q}
             </button>

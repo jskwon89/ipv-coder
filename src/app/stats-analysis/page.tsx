@@ -82,20 +82,20 @@ export default function StatsAnalysisPage() {
         <div className="lg:col-span-2 space-y-6">
 
           {/* Data Input */}
-          <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
-            <div className="px-6 py-4 border-b border-gray-100">
-              <h2 className="font-semibold text-gray-900">데이터 입력</h2>
+          <div className="bg-[#1e2d47] rounded-xl border border-[#2a3a54] shadow-md shadow-black/20">
+            <div className="px-6 py-4 border-b border-[#2a3a54]">
+              <h2 className="font-semibold text-white">데이터 입력</h2>
             </div>
             <div className="px-6 py-4">
-              <div className="flex gap-1 mb-4 bg-gray-100 rounded-lg p-1">
+              <div className="flex gap-1 mb-4 bg-[#243350] rounded-lg p-1">
                 {dataTabs.map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setActiveDataTab(tab)}
                     className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                       activeDataTab === tab
-                        ? "bg-white text-gray-900 shadow-sm"
-                        : "text-gray-500 hover:text-gray-700"
+                        ? "bg-[#1e2d47] text-white shadow-md shadow-black/20"
+                        : "text-gray-400 hover:text-gray-200"
                     }`}
                   >
                     {tab}
@@ -105,8 +105,8 @@ export default function StatsAnalysisPage() {
 
               {activeDataTab === "프로젝트 연결" && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">기존 프로젝트 선택</label>
-                  <select className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#1e3a5f]/20 focus:border-[#1e3a5f]">
+                  <label className="block text-sm font-medium text-gray-200 mb-2">기존 프로젝트 선택</label>
+                  <select className="w-full px-4 py-2.5 border border-[#2a3a54] rounded-lg text-sm bg-[#1e2d47] text-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/20 focus:border-[#c49a2e]">
                     <option value="">프로젝트를 선택하세요</option>
                   </select>
                   <p className="text-xs text-gray-400 mt-2">코딩이 완료된 프로젝트의 데이터를 분석에 사용합니다</p>
@@ -114,11 +114,11 @@ export default function StatsAnalysisPage() {
               )}
 
               {activeDataTab === "파일 업로드" && (
-                <div className="border-2 border-dashed border-gray-200 rounded-lg p-8 text-center">
+                <div className="border-2 border-dashed border-[#2a3a54] rounded-lg p-8 text-center">
                   <svg className="w-10 h-10 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                   </svg>
-                  <p className="text-sm text-gray-500 mb-1">파일을 드래그하거나 클릭하여 업로드</p>
+                  <p className="text-sm text-gray-400 mb-1">파일을 드래그하거나 클릭하여 업로드</p>
                   <p className="text-xs text-gray-400">Excel (.xlsx), CSV 파일 지원</p>
                 </div>
               )}
@@ -127,18 +127,18 @@ export default function StatsAnalysisPage() {
                 <textarea
                   rows={6}
                   placeholder={"데이터를 붙여넣기 하세요 (탭 또는 쉼표 구분)\n\n예:\n이름,나이,점수\n홍길동,25,85\n김철수,30,92"}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#1e3a5f]/20 focus:border-[#1e3a5f] font-mono resize-none"
+                  className="w-full px-4 py-3 border border-[#2a3a54] rounded-lg text-sm bg-[#1e2d47] text-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/20 focus:border-[#c49a2e] font-mono resize-none"
                 />
               )}
             </div>
           </div>
 
           {/* Instant Analysis (기술통계/시각화) */}
-          <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
-            <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+          <div className="bg-[#1e2d47] rounded-xl border border-[#2a3a54] shadow-md shadow-black/20">
+            <div className="px-6 py-4 border-b border-[#2a3a54] flex items-center justify-between">
               <div>
-                <h2 className="font-semibold text-gray-900">즉시 실행</h2>
-                <p className="text-xs text-gray-500 mt-0.5">기술통계와 시각화를 바로 확인합니다</p>
+                <h2 className="font-semibold text-white">즉시 실행</h2>
+                <p className="text-xs text-gray-400 mt-0.5">기술통계와 시각화를 바로 확인합니다</p>
               </div>
               <span className="text-[10px] font-medium bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full">무료</span>
             </div>
@@ -151,11 +151,11 @@ export default function StatsAnalysisPage() {
                     className={`text-left px-4 py-3 rounded-lg border transition-colors ${
                       selectedInstant.includes(a.label)
                         ? "border-emerald-500 bg-emerald-50"
-                        : "border-gray-200 hover:bg-gray-50"
+                        : "border-[#2a3a54] hover:bg-[#0f1a2e]"
                     }`}
                   >
-                    <div className="text-sm font-medium text-gray-900">{a.label}</div>
-                    <div className="text-xs text-gray-500 mt-0.5">{a.desc}</div>
+                    <div className="text-sm font-medium text-white">{a.label}</div>
+                    <div className="text-xs text-gray-400 mt-0.5">{a.desc}</div>
                   </button>
                 ))}
               </div>
@@ -171,7 +171,7 @@ export default function StatsAnalysisPage() {
                 type="button"
                 onClick={() => setShowExcelCreditDialog(true)}
                 disabled={excelExporting}
-                className="w-full px-4 py-2.5 bg-[#1e3a5f] text-white rounded-lg text-sm font-medium hover:bg-[#162d4a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full px-4 py-2.5 bg-[#c49a2e] text-white rounded-lg text-sm font-medium hover:bg-[#d4a843] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -181,7 +181,7 @@ export default function StatsAnalysisPage() {
 
               {/* Excel export success message */}
               {excelDone && (
-                <div className="w-full px-4 py-2.5 bg-emerald-50 text-emerald-700 rounded-lg text-sm font-medium text-center border border-emerald-200">
+                <div className="w-full px-4 py-2.5 bg-emerald-900/20 text-emerald-400 rounded-lg text-sm font-medium text-center border border-emerald-700/30">
                   기술통계표 Excel 파일이 다운로드되었습니다.
                 </div>
               )}
@@ -189,11 +189,11 @@ export default function StatsAnalysisPage() {
           </div>
 
           {/* Request Analysis (고급 분석 의뢰) */}
-          <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
-            <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+          <div className="bg-[#1e2d47] rounded-xl border border-[#2a3a54] shadow-md shadow-black/20">
+            <div className="px-6 py-4 border-b border-[#2a3a54] flex items-center justify-between">
               <div>
-                <h2 className="font-semibold text-gray-900">고급 분석 의뢰</h2>
-                <p className="text-xs text-gray-500 mt-0.5">전문 분석이 필요한 경우 의뢰해주세요. 검토 후 결과를 전달합니다.</p>
+                <h2 className="font-semibold text-white">고급 분석 의뢰</h2>
+                <p className="text-xs text-gray-400 mt-0.5">전문 분석이 필요한 경우 의뢰해주세요. 검토 후 결과를 전달합니다.</p>
               </div>
               <span className="text-[10px] font-medium bg-rose-50 text-rose-600 px-2 py-0.5 rounded-full">유료</span>
             </div>
@@ -206,32 +206,32 @@ export default function StatsAnalysisPage() {
                     className={`text-left px-4 py-3 rounded-lg border transition-colors ${
                       selectedRequest.includes(a.label)
                         ? "border-rose-500 bg-rose-50"
-                        : "border-gray-200 hover:bg-gray-50"
+                        : "border-[#2a3a54] hover:bg-[#0f1a2e]"
                     }`}
                   >
-                    <div className="text-sm font-medium text-gray-900">{a.label}</div>
-                    <div className="text-xs text-gray-500 mt-0.5">{a.desc}</div>
+                    <div className="text-sm font-medium text-white">{a.label}</div>
+                    <div className="text-xs text-gray-400 mt-0.5">{a.desc}</div>
                   </button>
                 ))}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">분석 요청사항</label>
+                <label className="block text-sm font-medium text-gray-200 mb-2">분석 요청사항</label>
                 <textarea
                   rows={3}
                   value={requestDetail}
                   onChange={(e) => setRequestDetail(e.target.value)}
                   placeholder="구체적인 분석 요청사항을 입력하세요 (예: '처분유형별 징역 기간 차이를 ANOVA로 분석하고, 사후검정까지 부탁합니다')"
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#1e3a5f]/20 focus:border-[#1e3a5f] resize-none"
+                  className="w-full px-4 py-3 border border-[#2a3a54] rounded-lg text-sm bg-[#1e2d47] text-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/20 focus:border-[#c49a2e] resize-none"
                 />
               </div>
 
-              <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 text-sm text-amber-800">
+              <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg px-4 py-3 text-sm text-amber-300">
                 분석 종류와 데이터 규모에 따라 비용이 달라집니다. 의뢰 접수 후 견적을 안내해드립니다.
               </div>
 
               {requestSubmitted ? (
-                <div className="w-full px-4 py-2.5 bg-emerald-50 text-emerald-700 rounded-lg text-sm font-medium text-center border border-emerald-200">
+                <div className="w-full px-4 py-2.5 bg-emerald-900/20 text-emerald-400 rounded-lg text-sm font-medium text-center border border-emerald-700/30">
                   의뢰가 접수되었습니다. 검토 후 연락드리겠습니다.
                 </div>
               ) : (
@@ -249,16 +249,16 @@ export default function StatsAnalysisPage() {
 
         {/* Right: Variable Selection */}
         <div className="space-y-6">
-          <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
-            <div className="px-6 py-4 border-b border-gray-100">
-              <h2 className="font-semibold text-gray-900">변수 선택</h2>
+          <div className="bg-[#1e2d47] rounded-xl border border-[#2a3a54] shadow-md shadow-black/20">
+            <div className="px-6 py-4 border-b border-[#2a3a54]">
+              <h2 className="font-semibold text-white">변수 선택</h2>
             </div>
             <div className="px-6 py-4">
-              <p className="text-sm text-gray-500 text-center py-8">
+              <p className="text-sm text-gray-400 text-center py-8">
                 데이터를 로드하면 변수 목록이 표시됩니다
               </p>
-              <div className="text-xs text-gray-500 space-y-2 border-t border-gray-100 pt-4">
-                <p className="font-medium text-gray-700">변수 지정 방법:</p>
+              <div className="text-xs text-gray-400 space-y-2 border-t border-[#2a3a54] pt-4">
+                <p className="font-medium text-gray-200">변수 지정 방법:</p>
                 <div className="flex items-center gap-2">
                   <span className="inline-block w-2 h-2 rounded-full bg-rose-500" />
                   <span>종속변수</span>
@@ -278,17 +278,17 @@ export default function StatsAnalysisPage() {
       </div>
 
       {/* Results Area */}
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm mt-6">
-        <div className="px-6 py-4 border-b border-gray-100">
-          <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1 w-fit">
+      <div className="bg-[#1e2d47] rounded-xl border border-[#2a3a54] shadow-md shadow-black/20 mt-6">
+        <div className="px-6 py-4 border-b border-[#2a3a54]">
+          <div className="flex items-center gap-1 bg-[#243350] rounded-lg p-1 w-fit">
             {resultTabs.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveResultTab(tab)}
                 className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${
                   activeResultTab === tab
-                    ? "bg-white text-gray-900 shadow-sm"
-                    : "text-gray-500 hover:text-gray-700"
+                    ? "bg-[#1e2d47] text-white shadow-md shadow-black/20"
+                    : "text-gray-400 hover:text-gray-200"
                 }`}
               >
                 {tab}
@@ -300,7 +300,7 @@ export default function StatsAnalysisPage() {
           <svg className="w-12 h-12 text-gray-200 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
           </svg>
-          <p className="text-sm text-gray-500">분석 결과가 여기에 표시됩니다</p>
+          <p className="text-sm text-gray-400">분석 결과가 여기에 표시됩니다</p>
         </div>
       </div>
 
