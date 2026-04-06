@@ -14,33 +14,33 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#0f1a2e] text-white">
+    <div className="min-h-screen bg-white text-gray-900">
       {/* Navigation */}
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? "bg-[#0f1a2e] shadow-md shadow-black/30" : "bg-transparent"
+          scrolled ? "bg-white shadow-md" : "bg-transparent"
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2">
             <Image src="/images/main.png" alt="ResearchOn" width={32} height={32} className="rounded-lg" />
-            <span className={`text-xl font-bold tracking-tight ${scrolled ? "text-white" : "text-white"}`}>
+            <span className={`text-xl font-bold tracking-tight ${scrolled ? "text-gray-900" : "text-white"}`}>
               ResearchOn
             </span>
           </Link>
-          <div className={`hidden md:flex items-center gap-8 text-sm font-medium ${scrolled ? "text-gray-300" : "text-white/90"}`}>
+          <div className={`hidden md:flex items-center gap-8 text-sm font-medium ${scrolled ? "text-gray-600" : "text-white/90"}`}>
             <a href="#services" className="hover:opacity-70 transition-opacity">서비스</a>
             <a href="#pricing" className="hover:opacity-70 transition-opacity">가격</a>
             <a href="#how-it-works" className="hover:opacity-70 transition-opacity">이용절차</a>
             <a href="#contact" className="hover:opacity-70 transition-opacity">문의</a>
           </div>
           <div className="flex items-center gap-3">
-            <button className={`text-sm font-medium px-4 py-2 rounded-lg transition-colors ${scrolled ? "text-gray-300 hover:bg-[#1a2744]" : "text-white hover:bg-white/10"}`}>
+            <button className={`text-sm font-medium px-4 py-2 rounded-lg transition-colors ${scrolled ? "text-gray-600 hover:bg-gray-100" : "text-white hover:bg-white/10"}`}>
               로그인
             </button>
             <Link
               href="/dashboard"
-              className="text-sm font-medium px-4 py-2 rounded-lg transition-colors bg-[#c49a2e] text-[#0f1a2e] hover:bg-[#d4a843]"
+              className="text-sm font-medium px-4 py-2 rounded-lg transition-colors bg-[#c49a2e] text-white hover:bg-[#d4a843]"
             >
               시작하기
             </Link>
@@ -74,7 +74,7 @@ export default function LandingPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/dashboard"
-              className="px-8 py-4 bg-[#c49a2e] text-[#0f1a2e] rounded-xl text-base font-semibold hover:bg-[#d4a843] transition-colors shadow-lg"
+              className="px-8 py-4 bg-[#c49a2e] text-white rounded-xl text-base font-semibold hover:bg-[#d4a843] transition-colors shadow-lg"
             >
               무료로 시작하기
             </Link>
@@ -95,40 +95,40 @@ export default function LandingPage() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-24 px-6 bg-[#0f1a2e]">
+      <section id="services" className="py-24 px-6 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-white mb-4">제공 서비스</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">제공 서비스</h2>
             <div className="w-16 h-1 bg-[#c49a2e] mx-auto rounded-full" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <ServiceCard
-              image="/images/판결문1.png"
+              image="/images/landing-판결문.png"
               title="판결문 코딩"
               description="AI 기반 판결문 자동 코딩으로 연구 시간을 절약하세요"
             />
             <ServiceCard
-              image="/images/계량통계분석1.png"
+              image="/images/landing-계량통계.png"
               title="계량통계분석"
               description="기초통계부터 고급분석까지, 전문가가 직접 분석합니다"
             />
             <ServiceCard
-              image="/images/텍스트분석1.png"
+              image="/images/landing-텍스트분석.png"
               title="텍스트 분석"
               description="토픽모델링, 감성분석, 워드클라우드 등 텍스트 분석"
             />
             <ServiceCard
-              image="/images/설문조사1.png"
+              image="/images/landing-설문조사.png"
               title="설문조사"
               description="설문 설계부터 데이터 수집까지 원스톱 서비스"
             />
             <ServiceCard
-              image="/images/기사검색1.png"
+              image="/images/landing-기사검색.png"
               title="기사 검색"
               description="키워드 기반 뉴스 검색 및 요약 수집"
             />
             <ServiceCard
-              image="/images/연구설계지원1.png"
+              image="/images/landing-연구설계.png"
               title="연구 설계 지원"
               description="검정력 분석, 시뮬레이션 데이터 생성"
             />
@@ -137,10 +137,10 @@ export default function LandingPage() {
       </section>
 
       {/* How it Works */}
-      <section id="how-it-works" className="py-24 px-6 bg-[#1a2744]">
+      <section id="how-it-works" className="py-24 px-6 bg-gray-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-white mb-4">이용 절차</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">이용 절차</h2>
             <div className="w-16 h-1 bg-[#c49a2e] mx-auto rounded-full" />
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -163,11 +163,11 @@ export default function LandingPage() {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="py-24 px-6 bg-[#0f1a2e]">
+      <section id="pricing" className="py-24 px-6 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-4">
-            <h2 className="text-4xl font-bold text-white mb-4">합리적인 가격</h2>
-            <p className="text-lg text-gray-400 mb-2">1 크레딧 = 10원</p>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">합리적인 가격</h2>
+            <p className="text-lg text-gray-500 mb-2">1 크레딧 = 10원</p>
             <div className="w-16 h-1 bg-[#c49a2e] mx-auto rounded-full" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
@@ -195,7 +195,7 @@ export default function LandingPage() {
       </section>
 
       {/* Contact / CTA Section */}
-      <section id="contact" className="py-24 px-6 bg-[#1a2332] text-white">
+      <section id="contact" className="py-24 px-6 bg-[#0f1a2e] text-white">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-4xl font-bold mb-4">연구의 새로운 시작</h2>
           <p className="text-lg text-white/70 mb-10">
@@ -207,14 +207,14 @@ export default function LandingPage() {
               placeholder="이메일 주소를 입력하세요"
               className="w-full px-5 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-white/30"
             />
-            <button className="shrink-0 px-6 py-3 bg-[#c49a2e] text-[#0f1a2e] rounded-xl text-sm font-semibold hover:bg-[#d4a843] transition-colors">
+            <button className="shrink-0 px-6 py-3 bg-[#c49a2e] text-white rounded-xl text-sm font-semibold hover:bg-[#d4a843] transition-colors">
               문의하기
             </button>
           </div>
           <div className="pt-4">
             <Link
               href="/dashboard"
-              className="inline-block px-10 py-4 bg-[#c49a2e] text-[#0f1a2e] rounded-xl text-base font-semibold hover:bg-[#d4a843] transition-colors shadow-lg"
+              className="inline-block px-10 py-4 bg-[#c49a2e] text-white rounded-xl text-base font-semibold hover:bg-[#d4a843] transition-colors shadow-lg"
             >
               무료로 시작하기
             </Link>
@@ -272,7 +272,7 @@ function ServiceCard({
   description: string;
 }) {
   return (
-    <div className="group bg-[#1e2d47] rounded-xl border border-[#2a3a54] shadow-md shadow-black/20 hover:shadow-xl transition-shadow overflow-hidden">
+    <div className="group bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-xl transition-shadow overflow-hidden">
       <div className="relative h-48 overflow-hidden">
         <Image
           src={image}
@@ -282,8 +282,8 @@ function ServiceCard({
         />
       </div>
       <div className="p-6">
-        <h3 className="text-lg font-semibold text-white mb-2">{title}</h3>
-        <p className="text-sm text-gray-400 leading-relaxed mb-4">{description}</p>
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">{title}</h3>
+        <p className="text-sm text-gray-500 leading-relaxed mb-4">{description}</p>
         <span className="text-sm font-medium text-[#c49a2e] group-hover:underline">
           자세히 보기 &rarr;
         </span>
@@ -302,12 +302,12 @@ function StepCard({
   description: string;
 }) {
   return (
-    <div className="bg-[#1e2d47] rounded-xl p-6 shadow-md shadow-black/20 border border-[#2a3a54]">
-      <div className="w-10 h-10 rounded-full bg-[#c49a2e] text-[#0f1a2e] flex items-center justify-center text-sm font-bold mb-4">
+    <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+      <div className="w-10 h-10 rounded-full bg-[#c49a2e] text-white flex items-center justify-center text-sm font-bold mb-4">
         {step}
       </div>
-      <h3 className="font-semibold text-white mb-1">{title}</h3>
-      <p className="text-sm text-gray-400">{description}</p>
+      <h3 className="font-semibold text-gray-900 mb-1">{title}</h3>
+      <p className="text-sm text-gray-500">{description}</p>
     </div>
   );
 }
@@ -330,20 +330,20 @@ function PricingCard({
       className={`rounded-2xl p-8 border ${
         popular
           ? "border-[#c49a2e] shadow-xl ring-2 ring-[#c49a2e]/20 relative"
-          : "border-[#2a3a54] shadow-md shadow-black/20"
-      } bg-[#1e2d47]`}
+          : "border-gray-200 shadow-sm"
+      } bg-white`}
     >
       {popular && (
-        <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#c49a2e] text-[#0f1a2e] text-xs font-semibold px-4 py-1 rounded-full">
+        <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#c49a2e] text-white text-xs font-semibold px-4 py-1 rounded-full">
           인기
         </span>
       )}
-      <h3 className="text-lg font-bold text-white mb-1">{tier}</h3>
-      <p className="text-sm text-gray-400 mb-4">{credits}</p>
-      <div className="text-3xl font-bold text-white mb-6">{price}</div>
+      <h3 className="text-lg font-bold text-gray-900 mb-1">{tier}</h3>
+      <p className="text-sm text-gray-500 mb-4">{credits}</p>
+      <div className="text-3xl font-bold text-gray-900 mb-6">{price}</div>
       <ul className="space-y-3 mb-8">
         {features.map((f) => (
-          <li key={f} className="flex items-center gap-3 text-sm text-gray-300">
+          <li key={f} className="flex items-center gap-3 text-sm text-gray-600">
             <svg className="w-5 h-5 text-emerald-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
@@ -355,8 +355,8 @@ function PricingCard({
         href="/credits"
         className={`block w-full text-center py-3 rounded-xl text-sm font-semibold transition-colors ${
           popular
-            ? "bg-[#c49a2e] text-[#0f1a2e] hover:bg-[#d4a843]"
-            : "bg-[#243350] text-gray-200 hover:bg-[#2a3a54]"
+            ? "bg-[#c49a2e] text-white hover:bg-[#d4a843]"
+            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
         }`}
       >
         크레딧 충전하기
