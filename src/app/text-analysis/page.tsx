@@ -426,6 +426,8 @@ export default function TextAnalysisPage() {
           { label: "계량통계분석" },
           { label: "텍스트 분석" },
         ]}
+        iconBgClass="bg-rose-50"
+        iconTextClass="text-rose-600"
         icon={
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -434,8 +436,8 @@ export default function TextAnalysisPage() {
       />
 
       {/* ── Data Input ── */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-md mb-6">
-        <div className="px-6 py-4 border-b border-gray-200">
+      <div className="bg-white rounded-xl border border-rose-200 shadow-md mb-6">
+        <div className="px-6 py-4 border-b border-gray-200 bg-rose-50">
           <h2 className="font-semibold text-gray-900">데이터 입력</h2>
         </div>
         <div className="px-6 py-4">
@@ -498,8 +500,8 @@ export default function TextAnalysisPage() {
       </div>
 
       {/* ── Analysis Type Selection ── */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-md mb-6">
-        <div className="px-6 py-4 border-b border-gray-200">
+      <div className="bg-white rounded-xl border border-rose-200 shadow-md mb-6">
+        <div className="px-6 py-4 border-b border-gray-200 bg-rose-50">
           <h2 className="font-semibold text-gray-900">분석 유형 선택</h2>
           <p className="text-xs text-gray-400 mt-0.5">실행할 분석을 선택하세요. 복수 선택 가능합니다.</p>
         </div>
@@ -546,7 +548,7 @@ export default function TextAnalysisPage() {
       </div>
 
       {/* ── Bottom: Run button ── */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-md mb-6">
+      <div className="bg-white rounded-xl border border-rose-200 shadow-md mb-6">
         <div className="px-6 py-4 flex items-center justify-between">
           <div className="text-sm text-gray-400">
             <span className="font-medium text-gray-900">{selected.length}개</span> 분석 선택됨
@@ -562,7 +564,7 @@ export default function TextAnalysisPage() {
       </div>
 
       {/* ── Results Area ── */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-md">
+      <div className="bg-white rounded-xl border border-rose-200 shadow-md">
         <div className="px-6 py-4 border-b border-gray-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           {analysisRun && selected.length > 0 ? (
             <div className="flex items-center gap-1 bg-gray-200 rounded-lg p-1 w-fit overflow-x-auto">

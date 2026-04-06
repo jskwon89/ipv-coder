@@ -15,8 +15,8 @@ export default function SurveyResultsPage() {
       <p className="text-muted-foreground text-sm mb-8">의뢰하신 설문조사의 진행 상황과 결과를 확인합니다.</p>
 
       {/* 의뢰 목록 */}
-      <div className="bg-card rounded-xl border border-border">
-        <div className="px-6 py-4 border-b border-border">
+      <div className="bg-card rounded-xl border border-purple-200">
+        <div className="px-6 py-4 border-b border-border bg-purple-50">
           <h2 className="font-semibold">의뢰 내역</h2>
         </div>
         <div className="divide-y divide-border">
@@ -37,7 +37,7 @@ export default function SurveyResultsPage() {
       </div>
 
       {/* 진행 상태 설명 */}
-      <div className="mt-8 bg-card rounded-xl border border-border p-6">
+      <div className="mt-8 bg-card rounded-xl border border-purple-200 p-6">
         <h3 className="font-semibold mb-4">진행 절차 안내</h3>
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
           <div className="text-center">

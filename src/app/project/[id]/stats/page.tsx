@@ -172,7 +172,7 @@ export default function StatsPage() {
 
 function ChartCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-card rounded-xl border border-border p-5">
+    <div className="bg-card rounded-xl border border-amber-200 p-5">
       <h3 className="font-semibold text-sm mb-4">{title}</h3>
       {children}
     </div>

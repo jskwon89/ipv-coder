@@ -70,6 +70,8 @@ export default function StatsAnalysisPage() {
           { label: "계량통계분석" },
           { label: "기초통계 및 시각화" },
         ]}
+        iconBgClass="bg-rose-50"
+        iconTextClass="text-rose-600"
         icon={
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -82,8 +84,8 @@ export default function StatsAnalysisPage() {
         <div className="lg:col-span-2 space-y-6">
 
           {/* Data Input */}
-          <div className="bg-white rounded-xl border border-gray-200 shadow-md">
-            <div className="px-6 py-4 border-b border-gray-200">
+          <div className="bg-white rounded-xl border border-rose-200 shadow-md">
+            <div className="px-6 py-4 border-b border-gray-200 bg-rose-50">
               <h2 className="font-semibold text-gray-900">데이터 입력</h2>
             </div>
             <div className="px-6 py-4">
@@ -134,8 +136,8 @@ export default function StatsAnalysisPage() {
           </div>
 
           {/* Instant Analysis (기술통계/시각화) */}
-          <div className="bg-white rounded-xl border border-gray-200 shadow-md">
-            <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+          <div className="bg-white rounded-xl border border-rose-200 shadow-md">
+            <div className="px-6 py-4 border-b border-gray-200 bg-rose-50 flex items-center justify-between">
               <div>
                 <h2 className="font-semibold text-gray-900">즉시 실행</h2>
                 <p className="text-xs text-gray-400 mt-0.5">기술통계와 시각화를 바로 확인합니다</p>
@@ -189,8 +191,8 @@ export default function StatsAnalysisPage() {
           </div>
 
           {/* Request Analysis (고급 분석 의뢰) */}
-          <div className="bg-white rounded-xl border border-gray-200 shadow-md">
-            <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+          <div className="bg-white rounded-xl border border-rose-200 shadow-md">
+            <div className="px-6 py-4 border-b border-gray-200 bg-rose-50 flex items-center justify-between">
               <div>
                 <h2 className="font-semibold text-gray-900">고급 분석 의뢰</h2>
                 <p className="text-xs text-gray-400 mt-0.5">전문 분석이 필요한 경우 의뢰해주세요. 검토 후 결과를 전달합니다.</p>
@@ -249,8 +251,8 @@ export default function StatsAnalysisPage() {
 
         {/* Right: Variable Selection */}
         <div className="space-y-6">
-          <div className="bg-white rounded-xl border border-gray-200 shadow-md">
-            <div className="px-6 py-4 border-b border-gray-200">
+          <div className="bg-white rounded-xl border border-rose-200 shadow-md">
+            <div className="px-6 py-4 border-b border-gray-200 bg-rose-50">
               <h2 className="font-semibold text-gray-900">변수 선택</h2>
             </div>
             <div className="px-6 py-4">
@@ -278,7 +280,7 @@ export default function StatsAnalysisPage() {
       </div>
 
       {/* Results Area */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-md mt-6">
+      <div className="bg-white rounded-xl border border-rose-200 shadow-md mt-6">
         <div className="px-6 py-4 border-b border-gray-200">
           <div className="flex items-center gap-1 bg-gray-200 rounded-lg p-1 w-fit">
             {resultTabs.map((tab) => (

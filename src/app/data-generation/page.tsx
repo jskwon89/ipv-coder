@@ -82,8 +82,8 @@ export default function DataGenerationPage() {
         {/* Left column */}
         <div className="lg:col-span-2 space-y-6">
           {/* Research Topic */}
-          <div className="bg-card rounded-xl border border-border">
-            <div className="px-6 py-4 border-b border-border">
+          <div className="bg-card rounded-xl border border-teal-200">
+            <div className="px-6 py-4 border-b border-border bg-teal-50">
               <h2 className="font-semibold">연구 주제</h2>
             </div>
             <div className="px-6 py-4">
@@ -99,8 +99,8 @@ export default function DataGenerationPage() {
           </div>
 
           {/* Scale / Variable Selection */}
-          <div className="bg-card rounded-xl border border-border">
-            <div className="px-6 py-4 border-b border-border">
+          <div className="bg-card rounded-xl border border-teal-200">
+            <div className="px-6 py-4 border-b border-border bg-teal-50">
               <h2 className="font-semibold">척도/변수 설정</h2>
             </div>
             <div className="px-6 py-4 space-y-4">
@@ -218,8 +218,8 @@ export default function DataGenerationPage() {
         {/* Right column: Data Specification + Generation Options */}
         <div className="space-y-6">
           {/* Sample size */}
-          <div className="bg-card rounded-xl border border-border">
-            <div className="px-6 py-4 border-b border-border">
+          <div className="bg-card rounded-xl border border-teal-200">
+            <div className="px-6 py-4 border-b border-border bg-teal-50">
               <h2 className="font-semibold">표본 크기</h2>
             </div>
             <div className="px-6 py-4">
@@ -236,8 +236,8 @@ export default function DataGenerationPage() {
           </div>
 
           {/* Generation Options */}
-          <div className="bg-card rounded-xl border border-border">
-            <div className="px-6 py-4 border-b border-border">
+          <div className="bg-card rounded-xl border border-teal-200">
+            <div className="px-6 py-4 border-b border-border bg-teal-50">
               <h2 className="font-semibold">생성 옵션</h2>
             </div>
             <div className="px-6 py-4 space-y-4">
@@ -318,7 +318,7 @@ export default function DataGenerationPage() {
       </div>
 
       {/* Output Preview */}
-      <div className="bg-card rounded-xl border border-border mt-6">
+      <div className="bg-card rounded-xl border border-teal-200 mt-6">
         <div className="px-6 py-4 border-b border-border flex items-center justify-between">
           <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1 w-fit">
             {outputTabs.map((tab) => (

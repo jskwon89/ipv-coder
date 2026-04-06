@@ -11,9 +11,11 @@ interface PageHeaderProps {
   breadcrumbs?: BreadcrumbItem[];
   action?: React.ReactNode;
   icon?: React.ReactNode;
+  iconBgClass?: string;
+  iconTextClass?: string;
 }
 
-export default function PageHeader({ title, subtitle, breadcrumbs, action, icon }: PageHeaderProps) {
+export default function PageHeader({ title, subtitle, breadcrumbs, action, icon, iconBgClass, iconTextClass }: PageHeaderProps) {
   return (
     <div className="mb-8">
       {/* Breadcrumbs */}
@@ -45,7 +47,7 @@ export default function PageHeader({ title, subtitle, breadcrumbs, action, icon 
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-4">
           {icon && (
-            <div className="w-12 h-12 rounded-xl bg-[#c49a2e]/10 flex items-center justify-center text-[#c49a2e] shrink-0">
+            <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${iconBgClass || "bg-[#c49a2e]/10"} ${iconTextClass || "text-[#c49a2e]"}`}>
               {icon}
             </div>
           )}

@@ -240,10 +240,10 @@ export default function UploadPage() {
                 </div>
               </div>
 
-              <div className="bg-card rounded-xl border border-border overflow-hidden">
+              <div className="bg-card rounded-xl border border-amber-200 overflow-hidden">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-border bg-gray-100">
+                    <tr className="border-b border-border bg-amber-50">
                       <th className="text-left px-4 py-3 font-medium">번호</th>
                       <th className="text-left px-4 py-3 font-medium">법원</th>
                       <th className="text-left px-4 py-3 font-medium">사건번호</th>
@@ -353,10 +353,10 @@ export default function UploadPage() {
                 <div className="mb-3 px-4 py-2 bg-gray-50 rounded-lg text-sm">{pdfProgress}</div>
               )}
 
-              <div className="bg-card rounded-xl border border-border overflow-hidden">
+              <div className="bg-card rounded-xl border border-amber-200 overflow-hidden">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-border bg-gray-100">
+                    <tr className="border-b border-border bg-amber-50">
                       <th className="text-left px-4 py-3 font-medium">파일명</th>
                       <th className="text-left px-4 py-3 font-medium">크기</th>
                       <th className="text-left px-4 py-3 font-medium">페이지</th>

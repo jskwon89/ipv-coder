@@ -65,6 +65,8 @@ export default function JudgmentPage() {
           { label: "문서 코딩" },
           { label: "판결문 코딩" },
         ]}
+        iconBgClass="bg-blue-50"
+        iconTextClass="text-blue-600"
         icon={
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
@@ -86,11 +88,11 @@ export default function JudgmentPage() {
       {/* Project list */}
       <div className="space-y-4">
         {loading ? (
-          <div className="bg-white rounded-xl border border-gray-200 shadow-md p-12 text-center text-gray-400">
+          <div className="bg-white rounded-xl border border-blue-200 shadow-md p-12 text-center text-gray-400">
             로딩 중...
           </div>
         ) : projects.length === 0 ? (
-          <div className="bg-white rounded-xl border border-gray-200 shadow-md p-16 text-center">
+          <div className="bg-white rounded-xl border border-blue-200 shadow-md p-16 text-center">
             <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
             </svg>
@@ -109,7 +111,7 @@ export default function JudgmentPage() {
               <Link
                 key={project.id}
                 href={`/project/${project.id}`}
-                className="block bg-white rounded-xl border border-gray-200 shadow-md hover:shadow-lg transition-all p-6 group"
+                className="block bg-white rounded-xl border border-blue-200 shadow-md hover:shadow-lg transition-all p-6 group"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">

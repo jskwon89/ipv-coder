@@ -120,6 +120,8 @@ export default function CreditsPage() {
           { label: "연구 지원" },
           { label: "크레딧 관리" },
         ]}
+        iconBgClass="bg-teal-50"
+        iconTextClass="text-teal-600"
         icon={
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -140,7 +142,7 @@ export default function CreditsPage() {
       </div>
 
       {/* Charge Section */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-5">
+      <div className="bg-white rounded-xl border border-teal-200 p-6 space-y-5">
         <h2 className="text-lg font-semibold text-gray-900">크레딧 충전</h2>
 
         {/* Quick amounts */}
@@ -189,7 +191,7 @@ export default function CreditsPage() {
       </div>
 
       {/* Price Table */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <div className="bg-white rounded-xl border border-teal-200 p-6">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">서비스 요금표</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -220,7 +222,7 @@ export default function CreditsPage() {
       </div>
 
       {/* Transaction History */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <div className="bg-white rounded-xl border border-teal-200 p-6">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">거래 내역</h2>
 
         {transactions.length === 0 ? (

@@ -217,11 +217,11 @@ export default function ProjectDetailPage() {
       </div>
 
       {/* Cases table */}
-      <div className="bg-card rounded-xl border border-border overflow-hidden">
+      <div className="bg-card rounded-xl border border-amber-200 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-border bg-gray-100">
+              <tr className="border-b border-border bg-amber-50">
                 <th className="text-left px-4 py-3 font-medium">번호</th>
                 <th className="text-left px-4 py-3 font-medium">법원</th>
                 <th className="text-left px-4 py-3 font-medium">사건번호</th>

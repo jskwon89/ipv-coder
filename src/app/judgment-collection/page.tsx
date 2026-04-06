@@ -140,8 +140,8 @@ export default function JudgmentCollectionPage() {
         </div>
 
         {/* Section 1: Search Mode Tabs */}
-        <div className="bg-white rounded-2xl shadow-md border border-gray-200 mb-6 overflow-hidden">
-          <div className="flex items-center gap-3 px-6 pt-6 pb-4">
+        <div className="bg-white rounded-2xl shadow-md border border-blue-200 mb-6 overflow-hidden">
+          <div className="flex items-center gap-3 px-6 pt-6 pb-4 bg-blue-50">
             <span className="w-7 h-7 bg-indigo-600 text-white rounded-full flex items-center justify-center text-sm font-bold shrink-0">1</span>
             <h2 className="text-lg font-semibold text-gray-900">검색 방식 선택</h2>
           </div>
@@ -381,8 +381,8 @@ export default function JudgmentCollectionPage() {
         </div>
 
         {/* Section 2: Requester info */}
-        <div className="bg-white rounded-2xl shadow-md border border-gray-200 mb-6 overflow-hidden">
-          <div className="flex items-center gap-3 px-6 pt-6 pb-4">
+        <div className="bg-white rounded-2xl shadow-md border border-blue-200 mb-6 overflow-hidden">
+          <div className="flex items-center gap-3 px-6 pt-6 pb-4 bg-blue-50">
             <span className="w-7 h-7 bg-indigo-600 text-white rounded-full flex items-center justify-center text-sm font-bold shrink-0">2</span>
             <h2 className="text-lg font-semibold text-gray-900">의뢰자 정보</h2>
           </div>
@@ -438,8 +438,8 @@ export default function JudgmentCollectionPage() {
         </div>
 
         {/* Section 3: Additional notes */}
-        <div className="bg-white rounded-2xl shadow-md border border-gray-200 mb-6 overflow-hidden">
-          <div className="flex items-center gap-3 px-6 pt-6 pb-4">
+        <div className="bg-white rounded-2xl shadow-md border border-blue-200 mb-6 overflow-hidden">
+          <div className="flex items-center gap-3 px-6 pt-6 pb-4 bg-blue-50">
             <span className="w-7 h-7 bg-indigo-600 text-white rounded-full flex items-center justify-center text-sm font-bold shrink-0">3</span>
             <h2 className="text-lg font-semibold text-gray-900">추가 요청사항</h2>
           </div>

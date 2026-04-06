@@ -25,8 +25,8 @@ export default function PolicyTemplatePage() {
       </Link>
 
       <div className="mt-6 flex items-center gap-3">
-        <div className="w-10 h-10 rounded-lg bg-orange-900/30 flex items-center justify-center">
-          <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
+          <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
         </div>
@@ -42,7 +42,7 @@ export default function PolicyTemplatePage() {
       </div>
 
       {/* Upload / Text input area */}
-      <div className="mt-6 bg-card rounded-xl border border-border p-6">
+      <div className="mt-6 bg-card rounded-xl border border-blue-200 p-6">
         <h2 className="text-sm font-semibold mb-3">문서 입력</h2>
 
         {/* File upload */}
@@ -73,7 +73,7 @@ export default function PolicyTemplatePage() {
       </div>
 
       {/* Question area */}
-      <div className="mt-4 bg-card rounded-xl border border-border p-6">
+      <div className="mt-4 bg-card rounded-xl border border-blue-200 p-6">
         <h2 className="text-sm font-semibold mb-3">분석 질문</h2>
         <textarea
           value={question}
@@ -104,7 +104,7 @@ export default function PolicyTemplatePage() {
       </div>
 
       {/* Results placeholder */}
-      <div className="mt-4 bg-card rounded-xl border border-border p-6">
+      <div className="mt-4 bg-card rounded-xl border border-blue-200 p-6">
         <h2 className="text-sm font-semibold mb-3">분석 결과</h2>
         <div className="flex items-center justify-center h-40 text-sm text-muted-foreground border border-dashed border-border rounded-lg">
           문서를 입력하고 질문을 작성하면 분석 결과가 여기에 표시됩니다

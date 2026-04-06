@@ -197,8 +197,8 @@ export default function CaseDetailPage() {
       {/* Split layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left: Full text viewer */}
-        <div className="bg-card rounded-xl border border-border overflow-hidden">
-          <div className="px-4 py-3 border-b border-border bg-gray-100 font-medium text-sm">
+        <div className="bg-card rounded-xl border border-amber-200 overflow-hidden">
+          <div className="px-4 py-3 border-b border-border bg-amber-50 font-medium text-sm">
             판결문 전문
           </div>
           <div className="p-4 h-[calc(100vh-250px)] overflow-y-auto text-sm leading-relaxed font-mono whitespace-pre-wrap">
@@ -213,8 +213,8 @@ export default function CaseDetailPage() {
         </div>
 
         {/* Right: Coding form */}
-        <div className="bg-card rounded-xl border border-border overflow-hidden">
-          <div className="px-4 py-3 border-b border-border bg-gray-100 font-medium text-sm">
+        <div className="bg-card rounded-xl border border-amber-200 overflow-hidden">
+          <div className="px-4 py-3 border-b border-border bg-amber-50 font-medium text-sm">
             코딩 폼
           </div>
           <div className="p-4 h-[calc(100vh-250px)] overflow-y-auto space-y-6">

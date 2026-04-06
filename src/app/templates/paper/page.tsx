@@ -25,8 +25,8 @@ export default function PaperTemplatePage() {
       </Link>
 
       <div className="mt-6 flex items-center gap-3">
-        <div className="w-10 h-10 rounded-lg bg-purple-900/30 flex items-center justify-center">
-          <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
+          <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
           </svg>
         </div>
@@ -42,7 +42,7 @@ export default function PaperTemplatePage() {
       </div>
 
       {/* Upload / Text input area */}
-      <div className="mt-6 bg-card rounded-xl border border-border p-6">
+      <div className="mt-6 bg-card rounded-xl border border-blue-200 p-6">
         <h2 className="text-sm font-semibold mb-3">논문 입력</h2>
 
         {/* File upload */}
@@ -73,7 +73,7 @@ export default function PaperTemplatePage() {
       </div>
 
       {/* Question area */}
-      <div className="mt-4 bg-card rounded-xl border border-border p-6">
+      <div className="mt-4 bg-card rounded-xl border border-blue-200 p-6">
         <h2 className="text-sm font-semibold mb-3">분석 질문</h2>
         <textarea
           value={question}
@@ -104,7 +104,7 @@ export default function PaperTemplatePage() {
       </div>
 
       {/* Results placeholder */}
-      <div className="mt-4 bg-card rounded-xl border border-border p-6">
+      <div className="mt-4 bg-card rounded-xl border border-blue-200 p-6">
         <h2 className="text-sm font-semibold mb-3">분석 결과</h2>
         <div className="flex items-center justify-center h-40 text-sm text-muted-foreground border border-dashed border-border rounded-lg">
           논문을 입력하고 질문을 작성하면 분석 결과가 여기에 표시됩니다

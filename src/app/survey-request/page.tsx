@@ -208,6 +208,8 @@ export default function SurveyRequestPage() {
           { label: "설문조사" },
           { label: "설문조사 의뢰" },
         ]}
+        iconBgClass="bg-purple-50"
+        iconTextClass="text-purple-600"
         icon={
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
@@ -245,8 +247,8 @@ export default function SurveyRequestPage() {
       {activeTab === "request" && (
         <form onSubmit={handleSubmit} className="space-y-6 max-w-4xl">
           {/* Section 1 */}
-          <section className="bg-card rounded-xl border border-border overflow-hidden">
-            <div className="px-6 py-4 border-b border-border flex items-center gap-3">
+          <section className="bg-card rounded-xl border border-purple-200 overflow-hidden">
+            <div className="px-6 py-4 border-b border-border bg-purple-50 flex items-center gap-3">
               <span className="w-7 h-7 rounded-full bg-indigo-500 text-white text-xs font-bold flex items-center justify-center">1</span>
               <h2 className="font-semibold">기본 정보</h2>
             </div>
@@ -313,8 +315,8 @@ export default function SurveyRequestPage() {
           </section>
 
           {/* Section 2 */}
-          <section className="bg-card rounded-xl border border-border overflow-hidden">
-            <div className="px-6 py-4 border-b border-border flex items-center gap-3">
+          <section className="bg-card rounded-xl border border-purple-200 overflow-hidden">
+            <div className="px-6 py-4 border-b border-border bg-purple-50 flex items-center gap-3">
               <span className="w-7 h-7 rounded-full bg-indigo-500 text-white text-xs font-bold flex items-center justify-center">2</span>
               <h2 className="font-semibold">조사 대상</h2>
             </div>
@@ -373,8 +375,8 @@ export default function SurveyRequestPage() {
           </section>
 
           {/* Section 3 */}
-          <section className="bg-card rounded-xl border border-border overflow-hidden">
-            <div className="px-6 py-4 border-b border-border flex items-center gap-3">
+          <section className="bg-card rounded-xl border border-purple-200 overflow-hidden">
+            <div className="px-6 py-4 border-b border-border bg-purple-50 flex items-center gap-3">
               <span className="w-7 h-7 rounded-full bg-indigo-500 text-white text-xs font-bold flex items-center justify-center">3</span>
               <h2 className="font-semibold">설문 문항</h2>
             </div>
@@ -442,8 +444,8 @@ export default function SurveyRequestPage() {
           </section>
 
           {/* Section 4 */}
-          <section className="bg-card rounded-xl border border-border overflow-hidden">
-            <div className="px-6 py-4 border-b border-border flex items-center gap-3">
+          <section className="bg-card rounded-xl border border-purple-200 overflow-hidden">
+            <div className="px-6 py-4 border-b border-border bg-purple-50 flex items-center gap-3">
               <span className="w-7 h-7 rounded-full bg-indigo-500 text-white text-xs font-bold flex items-center justify-center">4</span>
               <h2 className="font-semibold">조사 방식</h2>
             </div>
@@ -520,8 +522,8 @@ export default function SurveyRequestPage() {
           </section>
 
           {/* Section 5 */}
-          <section className="bg-card rounded-xl border border-border overflow-hidden">
-            <div className="px-6 py-4 border-b border-border flex items-center gap-3">
+          <section className="bg-card rounded-xl border border-purple-200 overflow-hidden">
+            <div className="px-6 py-4 border-b border-border bg-purple-50 flex items-center gap-3">
               <span className="w-7 h-7 rounded-full bg-indigo-500 text-white text-xs font-bold flex items-center justify-center">5</span>
               <h2 className="font-semibold">추가 요청사항</h2>
             </div>
@@ -568,7 +570,7 @@ export default function SurveyRequestPage() {
       {activeTab === "builder" && (
         <div>
           {/* Template presets + import/export */}
-          <div className="mb-6 bg-card rounded-xl border border-border p-5">
+          <div className="mb-6 bg-card rounded-xl border border-purple-200 p-5">
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-sm font-semibold">템플릿 프리셋</h3>
               <div className="flex items-center gap-2">
