@@ -303,7 +303,7 @@ function StepCard({
 }) {
   return (
     <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 text-center flex flex-col items-center">
-      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#c49a2e] to-[#d4a843] text-white flex items-center justify-center text-lg font-bold mb-4 shadow-md">
+      <div className="text-5xl font-extrabold text-[#c49a2e] mb-4 tracking-tight" style={{ fontFamily: "'Georgia', serif" }}>
         {step}
       </div>
       <h3 className="font-semibold text-gray-900 mb-1">{title}</h3>
