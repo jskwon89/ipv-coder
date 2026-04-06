@@ -22,11 +22,16 @@ interface ClassificationResult {
   total: number;
 }
 
+type UploadMode = "list" | "pdf";
+
 export default function UploadPage() {
   const params = useParams();
   const router = useRouter();
   const projectId = params.id as string;
 
+  const [mode, setMode] = useState<UploadMode>("list");
+
+  // 목록 업로드 상태
   const [file, setFile] = useState<File | null>(null);
   const [fileContent, setFileContent] = useState<string>("");
   const [fileType, setFileType] = useState<"txt" | "xlsx">("txt");
@@ -36,7 +41,17 @@ export default function UploadPage() {
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string>("");
 
+  // PDF 업로드 상태
+  const [pdfFiles, setPdfFiles] = useState<File[]>([]);
+  const [pdfResults, setPdfResults] = useState<{ name: string; pages: number; chars: number; status: string }[]>([]);
+  const [pdfProcessing, setPdfProcessing] = useState(false);
+  const [pdfProgress, setPdfProgress] = useState("");
+
   const handleFileSelected = (f: File) => {
+    if (mode === "pdf") {
+      setPdfFiles((prev) => [...prev, f]);
+      return;
+    }
     setFile(f);
     setResult(null);
     setSaved(false);
@@ -113,6 +128,41 @@ export default function UploadPage() {
     }
   };
 
+  const handlePdfUpload = async () => {
+    if (pdfFiles.length === 0) return;
+    setPdfProcessing(true);
+    setPdfResults([]);
+
+    for (let i = 0; i < pdfFiles.length; i++) {
+      const f = pdfFiles[i];
+      setPdfProgress(`처리 중... (${i + 1}/${pdfFiles.length}) ${f.name}`);
+
+      const formData = new FormData();
+      formData.append("file", f);
+      formData.append("projectId", projectId);
+
+      try {
+        const res = await fetch("/api/upload-pdf", { method: "POST", body: formData });
+        const data = await res.json();
+        if (res.ok) {
+          setPdfResults((prev) => [...prev, {
+            name: f.name, pages: data.pages, chars: data.chars, status: "성공"
+          }]);
+        } else {
+          setPdfResults((prev) => [...prev, {
+            name: f.name, pages: 0, chars: 0, status: `오류: ${data.error}`
+          }]);
+        }
+      } catch {
+        setPdfResults((prev) => [...prev, {
+          name: f.name, pages: 0, chars: 0, status: "네트워크 오류"
+        }]);
+      }
+    }
+    setPdfProcessing(false);
+    setPdfProgress(`완료: ${pdfFiles.length}건 처리됨`);
+  };
+
   const allCases = result ? [...result.ipv, ...result.ambiguous, ...result.nonIpv] : [];
 
   return (
@@ -123,146 +173,226 @@ export default function UploadPage() {
         <span>/</span>
         <Link href={`/project/${projectId}`} className="hover:text-foreground transition-colors">프로젝트</Link>
         <span>/</span>
-        <span>목록 업로드</span>
+        <span>업로드</span>
       </div>
 
-      <h1 className="text-2xl font-bold mb-2">사건 목록 업로드</h1>
-      <p className="text-muted-foreground text-sm mb-8">
-        .txt 또는 .xlsx 파일을 업로드하여 사건 목록을 추가합니다.
+      <h1 className="text-2xl font-bold mb-2">사건 업로드</h1>
+      <p className="text-muted-foreground text-sm mb-6">
+        사건 목록 파일 또는 판결문 PDF를 업로드합니다.
       </p>
 
-      {/* Upload area */}
-      <FileUpload onFileSelected={handleFileSelected} />
+      {/* Mode tabs */}
+      <div className="flex gap-1 bg-secondary rounded-lg p-1 mb-8 w-fit">
+        <button
+          onClick={() => setMode("list")}
+          className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+            mode === "list" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          사건 목록 (.txt / .xlsx)
+        </button>
+        <button
+          onClick={() => setMode("pdf")}
+          className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+            mode === "pdf" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          판결문 PDF 직접 업로드
+        </button>
+      </div>
 
-      {/* Error */}
-      {error && (
-        <div className="mt-4 px-4 py-3 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg text-sm">
-          {error}
-        </div>
-      )}
+      {mode === "list" ? (
+        <>
+          {/* 목록 업로드 */}
+          <div className="mb-4 px-4 py-3 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-lg text-sm">
+            사건 목록을 업로드하면 casenote.kr에서 판결문 전문을 자동으로 가져옵니다.
+            casenote에 없는 판결문은 &quot;미등록&quot;으로 표시되며, PDF 직접 업로드가 필요합니다.
+          </div>
 
-      {/* Parse button */}
-      {file && !result && (
-        <div className="mt-6 flex justify-center">
-          <button
-            onClick={handleParse}
-            disabled={parsing || !fileContent}
-            className="inline-flex items-center gap-2 px-6 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
-          >
-            {parsing ? (
-              <>
-                <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                </svg>
-                파싱 중...
-              </>
-            ) : (
-              <>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-                파일 분석
-              </>
-            )}
-          </button>
-        </div>
-      )}
+          <FileUpload onFileSelected={handleFileSelected} accept=".txt,.xlsx,.xls" />
 
-      {/* Parsed results */}
-      {result && (
-        <div className="mt-8">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold">
-              분석 결과 ({result.total}건)
-            </h2>
-            <div className="flex items-center gap-4 text-sm">
-              <span className="text-green-600 dark:text-green-400">
-                IPV: {result.ipv.length}건
-              </span>
-              <span className="text-yellow-600 dark:text-yellow-400">
-                판단보류: {result.ambiguous.length}건
-              </span>
-              <span className="text-muted-foreground">
-                비IPV: {result.nonIpv.length}건
-              </span>
+          {error && (
+            <div className="mt-4 px-4 py-3 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg text-sm">
+              {error}
             </div>
-          </div>
+          )}
 
-          <div className="bg-card rounded-xl border border-border overflow-hidden">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border bg-secondary/50">
-                  <th className="text-left px-4 py-3 font-medium">번호</th>
-                  <th className="text-left px-4 py-3 font-medium">법원</th>
-                  <th className="text-left px-4 py-3 font-medium">사건번호</th>
-                  <th className="text-left px-4 py-3 font-medium">죄명</th>
-                  <th className="text-left px-4 py-3 font-medium">IPV 분류</th>
-                  <th className="text-left px-4 py-3 font-medium">사유</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {allCases.map((c, idx) => {
-                  const isAmbiguous = result.ambiguous.includes(c);
-                  return (
-                    <tr key={idx} className={!c.is_ipv && !isAmbiguous ? "opacity-50" : ""}>
-                      <td className="px-4 py-3">{idx + 1}</td>
-                      <td className="px-4 py-3">{c.court}</td>
-                      <td className="px-4 py-3 font-mono text-xs">{c.case_no}</td>
-                      <td className="px-4 py-3">{c.charge}</td>
-                      <td className="px-4 py-3">
-                        {isAmbiguous ? (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 text-xs rounded-full font-medium">
-                            판단보류
-                          </span>
-                        ) : c.is_ipv ? (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs rounded-full font-medium">
-                            IPV
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-xs rounded-full font-medium">
-                            비IPV
-                          </span>
-                        )}
-                      </td>
-                      <td className="px-4 py-3 text-xs text-muted-foreground max-w-xs truncate">
-                        {c.reason}
-                      </td>
+          {file && !result && (
+            <div className="mt-6 flex justify-center">
+              <button
+                onClick={handleParse}
+                disabled={parsing || !fileContent}
+                className="inline-flex items-center gap-2 px-6 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+              >
+                {parsing ? "파싱 중..." : "파일 분석"}
+              </button>
+            </div>
+          )}
+
+          {result && (
+            <div className="mt-8">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold">분석 결과 ({result.total}건)</h2>
+                <div className="flex items-center gap-4 text-sm">
+                  <span className="text-green-600 dark:text-green-400">IPV: {result.ipv.length}건</span>
+                  <span className="text-yellow-600 dark:text-yellow-400">판단보류: {result.ambiguous.length}건</span>
+                  <span className="text-muted-foreground">비IPV: {result.nonIpv.length}건</span>
+                </div>
+              </div>
+
+              <div className="bg-card rounded-xl border border-border overflow-hidden">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-border bg-secondary/50">
+                      <th className="text-left px-4 py-3 font-medium">번호</th>
+                      <th className="text-left px-4 py-3 font-medium">법원</th>
+                      <th className="text-left px-4 py-3 font-medium">사건번호</th>
+                      <th className="text-left px-4 py-3 font-medium">죄명</th>
+                      <th className="text-left px-4 py-3 font-medium">분류</th>
+                      <th className="text-left px-4 py-3 font-medium">사유</th>
                     </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                  </thead>
+                  <tbody className="divide-y divide-border">
+                    {allCases.map((c, idx) => {
+                      const isAmbiguous = result.ambiguous.includes(c);
+                      return (
+                        <tr key={idx} className={!c.is_ipv && !isAmbiguous ? "opacity-50" : ""}>
+                          <td className="px-4 py-3">{idx + 1}</td>
+                          <td className="px-4 py-3">{c.court}</td>
+                          <td className="px-4 py-3 font-mono text-xs">{c.case_no}</td>
+                          <td className="px-4 py-3">{c.charge}</td>
+                          <td className="px-4 py-3">
+                            {isAmbiguous ? (
+                              <span className="inline-flex px-2 py-0.5 bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 text-xs rounded-full font-medium">판단보류</span>
+                            ) : c.is_ipv ? (
+                              <span className="inline-flex px-2 py-0.5 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs rounded-full font-medium">IPV</span>
+                            ) : (
+                              <span className="inline-flex px-2 py-0.5 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-xs rounded-full font-medium">비IPV</span>
+                            )}
+                          </td>
+                          <td className="px-4 py-3 text-xs text-muted-foreground max-w-xs truncate">{c.reason}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="mt-6 flex justify-end gap-3">
+                <Link href={`/project/${projectId}`} className="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg text-sm font-medium hover:bg-border transition-colors">
+                  취소
+                </Link>
+                <button
+                  onClick={handleSave}
+                  disabled={saved || saving}
+                  className="inline-flex items-center gap-2 px-6 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+                >
+                  {saved ? "저장 완료 (이동 중...)" : saving ? "저장 중..." : `저장 (IPV ${result.ipv.length}건 + 판단보류 ${result.ambiguous.length}건)`}
+                </button>
+              </div>
+            </div>
+          )}
+        </>
+      ) : (
+        <>
+          {/* PDF 직접 업로드 */}
+          <div className="mb-4 px-4 py-3 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 rounded-lg text-sm">
+            casenote에 미등록된 판결문을 PDF로 직접 업로드합니다. 텍스트가 자동 추출되어 코딩에 사용됩니다.
           </div>
 
-          {/* Save button */}
-          <div className="mt-6 flex justify-end gap-3">
-            <Link
-              href={`/project/${projectId}`}
-              className="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg text-sm font-medium hover:bg-border transition-colors"
-            >
-              취소
-            </Link>
-            <button
-              onClick={handleSave}
-              disabled={saved || saving}
-              className="inline-flex items-center gap-2 px-6 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
-            >
-              {saved ? (
-                <>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  저장 완료 (이동 중...)
-                </>
-              ) : saving ? (
-                "저장 중..."
-              ) : (
-                `저장 (IPV ${result.ipv.length}건 + 판단보류 ${result.ambiguous.length}건)`
-              )}
-            </button>
+          <div
+            className="border-2 border-dashed border-border rounded-xl p-8 text-center hover:border-primary/50 transition-colors cursor-pointer"
+            onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+            onDrop={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              const files = Array.from(e.dataTransfer.files).filter((f) => f.name.endsWith(".pdf"));
+              files.forEach((f) => setPdfFiles((prev) => [...prev, f]));
+            }}
+            onClick={() => {
+              const input = document.createElement("input");
+              input.type = "file";
+              input.accept = ".pdf";
+              input.multiple = true;
+              input.onchange = (e) => {
+                const files = Array.from((e.target as HTMLInputElement).files || []);
+                files.forEach((f) => setPdfFiles((prev) => [...prev, f]));
+              };
+              input.click();
+            }}
+          >
+            <svg className="w-12 h-12 mx-auto text-muted-foreground mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+            </svg>
+            <p className="text-sm text-muted-foreground">PDF 파일을 드래그하거나 클릭하여 선택 (복수 선택 가능)</p>
           </div>
-        </div>
+
+          {/* 선택된 PDF 목록 */}
+          {pdfFiles.length > 0 && (
+            <div className="mt-6">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-medium">선택된 파일 ({pdfFiles.length}개)</h3>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => { setPdfFiles([]); setPdfResults([]); setPdfProgress(""); }}
+                    className="px-3 py-1.5 text-xs bg-secondary text-secondary-foreground rounded-lg hover:bg-border transition-colors"
+                  >
+                    초기화
+                  </button>
+                  <button
+                    onClick={handlePdfUpload}
+                    disabled={pdfProcessing}
+                    className="px-4 py-1.5 text-xs bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50"
+                  >
+                    {pdfProcessing ? "처리 중..." : "텍스트 추출 시작"}
+                  </button>
+                </div>
+              </div>
+
+              {pdfProgress && (
+                <div className="mb-3 px-4 py-2 bg-secondary rounded-lg text-sm">{pdfProgress}</div>
+              )}
+
+              <div className="bg-card rounded-xl border border-border overflow-hidden">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-border bg-secondary/50">
+                      <th className="text-left px-4 py-3 font-medium">파일명</th>
+                      <th className="text-left px-4 py-3 font-medium">크기</th>
+                      <th className="text-left px-4 py-3 font-medium">페이지</th>
+                      <th className="text-left px-4 py-3 font-medium">추출 글자</th>
+                      <th className="text-left px-4 py-3 font-medium">상태</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border">
+                    {pdfFiles.map((f, idx) => {
+                      const r = pdfResults[idx];
+                      return (
+                        <tr key={idx}>
+                          <td className="px-4 py-3 font-mono text-xs">{f.name}</td>
+                          <td className="px-4 py-3 text-xs">{(f.size / 1024).toFixed(0)}KB</td>
+                          <td className="px-4 py-3 text-xs">{r ? r.pages : "-"}</td>
+                          <td className="px-4 py-3 text-xs">{r ? `${r.chars.toLocaleString()}자` : "-"}</td>
+                          <td className="px-4 py-3 text-xs">
+                            {r ? (
+                              r.status === "성공" ? (
+                                <span className="text-green-600 dark:text-green-400">성공</span>
+                              ) : (
+                                <span className="text-red-600 dark:text-red-400">{r.status}</span>
+                              )
+                            ) : (
+                              <span className="text-muted-foreground">대기</span>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
