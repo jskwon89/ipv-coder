@@ -18,38 +18,38 @@ const serviceCards = [
     title: "판결문 코딩",
     desc: "AI 기반 판결문 자동 코딩",
     href: "/judgment",
-    image: "/images/판결문1.png",
+    image: "/images/판결문코딩3.png",
   },
   {
     title: "계량통계분석",
     desc: "기초통계부터 고급분석까지",
     href: "/stats-analysis",
-    image: "/images/계량통계분석1.png",
+    image: "/images/계량통계분석2.png",
     badge: "준비 중",
   },
   {
     title: "텍스트 분석",
     desc: "토픽모델링, 감성분석, 워드클라우드",
     href: "/text-analysis",
-    image: "/images/텍스트분석1.png",
+    image: "/images/텍스트분석2.png",
   },
   {
     title: "설문조사",
     desc: "설문 설계부터 데이터 수집까지",
     href: "/survey-request",
-    image: "/images/설문조사1.png",
+    image: "/images/설문조사2.png",
   },
   {
     title: "기사 검색",
     desc: "키워드 기반 뉴스 검색 및 요약",
     href: "/news-search",
-    image: "/images/기사검색1.png",
+    image: "/images/기사검색2.png",
   },
   {
     title: "연구 설계 지원",
     desc: "검정력 분석, 시뮬레이션",
     href: "/data-generation",
-    image: "/images/연구설계지원1.png",
+    image: "/images/연구지원3.png",
     badge: "준비 중",
   },
 ];
@@ -106,7 +106,13 @@ export default function DashboardPage() {
   const completionRate = totalCases > 0 ? ((totalCoded / totalCases) * 100).toFixed(1) : "0.0";
 
   return (
-    <div className="p-6 lg:p-8 max-w-7xl mx-auto min-h-screen">
+    <div className="relative p-6 lg:p-8 max-w-7xl mx-auto min-h-screen">
+      {/* Background image */}
+      <div className="fixed inset-0 z-0">
+        <Image src="/images/배경옵션1.png" alt="" fill className="object-cover opacity-15" />
+        <div className="absolute inset-0 bg-black/70" />
+      </div>
+      <div className="relative z-10">
       {/* Welcome Banner */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#111111] to-[#1a1a1a] p-8 lg:p-10 mb-8 shadow-lg border border-[#2a2a2a]">
         <div className="relative z-10 flex items-center justify-between">
@@ -337,6 +343,7 @@ export default function DashboardPage() {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }
