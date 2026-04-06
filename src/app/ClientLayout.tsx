@@ -156,7 +156,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 min-h-screen overflow-auto bg-background">
+      <main className="flex-1 min-h-screen overflow-auto">
         {children}
       </main>
     </div>
