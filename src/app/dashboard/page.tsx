@@ -208,7 +208,7 @@ export default function DashboardPage() {
     >
       <div className="absolute inset-0 bg-black/40 pointer-events-none" />
 
-      <div className="p-6 lg:p-8 max-w-7xl mx-auto relative z-10">
+      <div className="p-4 lg:p-6 max-w-full mx-4 lg:mx-6 relative z-10">
         {/* Welcome Banner */}
         <div className="relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-xl p-8 lg:p-10 mb-8 border border-white/20 shadow-lg">
           <div className="relative z-10 flex items-center justify-between">
