@@ -257,7 +257,7 @@ export default function DashboardPage() {
   const completionRate = totalCases > 0 ? ((totalCoded / totalCases) * 100).toFixed(1) : "0.0";
 
   return (
-    <div className="p-6 lg:p-8 max-w-7xl mx-auto">
+    <div className="p-6 lg:p-8 max-w-7xl mx-auto min-h-screen bg-gradient-to-br from-slate-100 via-gray-100 to-slate-200">
       {/* Welcome Banner */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#1e3a5f] via-[#264d7a] to-[#2d6cb4] p-8 lg:p-10 mb-8 shadow-lg">
         <div className="relative z-10 flex items-center justify-between">
