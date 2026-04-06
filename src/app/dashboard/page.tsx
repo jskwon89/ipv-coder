@@ -106,7 +106,7 @@ export default function DashboardPage() {
   const completionRate = totalCases > 0 ? ((totalCoded / totalCases) * 100).toFixed(1) : "0.0";
 
   return (
-    <div className="p-6 lg:p-8 max-w-7xl mx-auto min-h-screen bg-[#0f1a2e]">
+    <div className="p-6 lg:p-8 max-w-7xl mx-auto min-h-screen">
       {/* Welcome Banner */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#1a2744] to-[#243350] p-8 lg:p-10 mb-8 shadow-lg border border-[#2a3a54]">
         <div className="relative z-10 flex items-center justify-between">
@@ -154,26 +154,23 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {serviceCards.map((card) => (
             <Link key={card.title} href={card.href} className="group block">
-              <div className="rounded-2xl overflow-hidden border border-[#3a4f6f] bg-[#1a2744] hover:border-[#c49a2e]/50 hover:shadow-xl hover:shadow-[#c49a2e]/5 transition-all duration-300 transform hover:scale-[1.02]">
-                {/* Image area */}
-                <div className="relative h-36 bg-[#0f1a2e] overflow-hidden">
-                  <Image
-                    src={card.image}
-                    alt={card.title}
-                    fill
-                    className="object-contain p-2 group-hover:scale-105 transition-transform duration-500"
-                  />
-                  {card.badge && (
-                    <span className="absolute top-3 right-3 z-10 text-[10px] font-semibold bg-[#c49a2e]/20 text-[#d4a843] px-2.5 py-1 rounded-full border border-[#c49a2e]/30">
-                      {card.badge}
-                    </span>
-                  )}
-                </div>
-                {/* Content */}
-                <div className="p-5 border-t border-[#2a3a54]">
-                  <h3 className="text-base font-bold text-white">{card.title}</h3>
-                  <p className="text-sm text-gray-400 mt-1">{card.desc}</p>
-                  <span className="inline-block text-sm text-[#c49a2e] font-medium group-hover:underline underline-offset-4 mt-3">시작하기 &rarr;</span>
+              <div className="relative h-52 rounded-2xl overflow-hidden hover:shadow-2xl hover:shadow-black/40 transition-all duration-300 transform hover:scale-[1.02]">
+                <Image
+                  src={card.image}
+                  alt={card.title}
+                  fill
+                  className="object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/10" />
+                {card.badge && (
+                  <span className="absolute top-4 right-4 z-10 text-[10px] font-semibold bg-[#c49a2e] text-[#0f1a2e] px-2.5 py-1 rounded-full">
+                    {card.badge}
+                  </span>
+                )}
+                <div className="absolute bottom-0 left-0 right-0 p-5 z-10">
+                  <h3 className="text-lg font-bold text-white drop-shadow-lg">{card.title}</h3>
+                  <p className="text-sm text-white/70 mt-1 drop-shadow">{card.desc}</p>
+                  <span className="inline-block text-sm text-[#d4a843] font-medium group-hover:underline underline-offset-4 mt-2">시작하기 &rarr;</span>
                 </div>
               </div>
             </Link>
