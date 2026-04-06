@@ -13,15 +13,15 @@ const statusConfig: Record<
   CaseStatus,
   { label: string; bg: string; text: string; dot: string }
 > = {
-  pending: { label: "대기", bg: "bg-gray-100 dark:bg-gray-800", text: "text-gray-700 dark:text-gray-300", dot: "bg-gray-400" },
-  checking: { label: "확인중", bg: "bg-blue-50 dark:bg-blue-900/30", text: "text-blue-700 dark:text-blue-300", dot: "bg-blue-400" },
-  available: { label: "전문있음", bg: "bg-green-50 dark:bg-green-900/30", text: "text-green-700 dark:text-green-300", dot: "bg-green-400" },
-  unavailable: { label: "미등록", bg: "bg-red-50 dark:bg-red-900/30", text: "text-red-700 dark:text-red-300", dot: "bg-red-400" },
-  fetched: { label: "전문확보", bg: "bg-teal-50 dark:bg-teal-900/30", text: "text-teal-700 dark:text-teal-300", dot: "bg-teal-400" },
-  coding: { label: "코딩중", bg: "bg-yellow-50 dark:bg-yellow-900/30", text: "text-yellow-700 dark:text-yellow-300", dot: "bg-yellow-400" },
-  coded: { label: "코딩완료", bg: "bg-green-50 dark:bg-green-900/30", text: "text-green-700 dark:text-green-300", dot: "bg-green-500" },
-  reviewed: { label: "검토완료", bg: "bg-purple-50 dark:bg-purple-900/30", text: "text-purple-700 dark:text-purple-300", dot: "bg-purple-400" },
-  error: { label: "오류", bg: "bg-red-50 dark:bg-red-900/30", text: "text-red-700 dark:text-red-300", dot: "bg-red-500" },
+  pending: { label: "대기", bg: "bg-gray-100", text: "text-gray-700", dot: "bg-gray-400" },
+  checking: { label: "확인중", bg: "bg-blue-50", text: "text-blue-700", dot: "bg-blue-400" },
+  available: { label: "전문있음", bg: "bg-green-50", text: "text-green-700", dot: "bg-green-400" },
+  unavailable: { label: "미등록", bg: "bg-red-50", text: "text-red-700", dot: "bg-red-400" },
+  fetched: { label: "전문확보", bg: "bg-teal-50", text: "text-teal-700", dot: "bg-teal-400" },
+  coding: { label: "코딩중", bg: "bg-yellow-50", text: "text-yellow-700", dot: "bg-yellow-400" },
+  coded: { label: "코딩완료", bg: "bg-green-50", text: "text-green-700", dot: "bg-green-500" },
+  reviewed: { label: "검토완료", bg: "bg-purple-50", text: "text-purple-700", dot: "bg-purple-400" },
+  error: { label: "오류", bg: "bg-red-50", text: "text-red-700", dot: "bg-red-500" },
 };
 
 export default function StatusBadge({

@@ -154,8 +154,8 @@ export default function SurveyRequestPage() {
     return (
       <div className="p-8 max-w-3xl mx-auto">
         <div className="bg-card rounded-xl border border-border p-12 text-center">
-          <div className="w-16 h-16 rounded-full bg-green-500/10 flex items-center justify-center mx-auto mb-4">
-            <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-16 h-16 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
@@ -208,7 +208,7 @@ export default function SurveyRequestPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 mb-6 bg-muted/50 p-1 rounded-lg w-fit">
+      <div className="flex gap-1 mb-6 bg-gray-100 p-1 rounded-lg w-fit">
         <button
           type="button"
           onClick={() => setActiveTab("request")}
@@ -244,7 +244,7 @@ export default function SurveyRequestPage() {
             </div>
             <div className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-1.5">설문 제목 <span className="text-red-400">*</span></label>
+                <label className="block text-sm font-medium mb-1.5">설문 제목 <span className="text-red-500">*</span></label>
                 <input
                   type="text"
                   name="title"
@@ -255,7 +255,7 @@ export default function SurveyRequestPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1.5">연구 목적 <span className="text-red-400">*</span></label>
+                <label className="block text-sm font-medium mb-1.5">연구 목적 <span className="text-red-500">*</span></label>
                 <textarea
                   name="purpose"
                   value={formData.purpose}
@@ -268,7 +268,7 @@ export default function SurveyRequestPage() {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1.5">의뢰자 이름 <span className="text-red-400">*</span></label>
+                  <label className="block text-sm font-medium mb-1.5">의뢰자 이름 <span className="text-red-500">*</span></label>
                   <input
                     type="text"
                     name="requesterName"
@@ -279,7 +279,7 @@ export default function SurveyRequestPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1.5">연락처 <span className="text-red-400">*</span></label>
+                  <label className="block text-sm font-medium mb-1.5">연락처 <span className="text-red-500">*</span></label>
                   <input
                     type="text"
                     name="contact"
@@ -404,7 +404,7 @@ export default function SurveyRequestPage() {
                   type="file"
                   accept=".pdf,.docx,.hwp,.xlsx"
                   onChange={(e) => setFile(e.target.files?.[0] || null)}
-                  className="w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-indigo-500/10 file:text-indigo-400 hover:file:bg-indigo-500/20"
+                  className="w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-indigo-50 file:text-indigo-600 hover:file:bg-indigo-100"
                 />
                 <p className="text-xs text-muted-foreground mt-1">PDF, DOCX, HWP, XLSX 파일 지원</p>
               </div>
@@ -530,13 +530,13 @@ export default function SurveyRequestPage() {
           </section>
 
           {/* Cost notice */}
-          <div className="bg-indigo-500/5 border border-indigo-500/20 rounded-xl p-5">
+          <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-5">
             <div className="flex items-start gap-3">
-              <svg className="w-5 h-5 text-indigo-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-indigo-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <div>
-                <p className="text-sm font-medium text-indigo-400">예상 비용 안내</p>
+                <p className="text-sm font-medium text-indigo-700">예상 비용 안내</p>
                 <p className="text-sm text-muted-foreground mt-1">
                   설문 규모와 방식에 따라 비용이 달라집니다. 의뢰 접수 후 1-2일 내 견적을 안내해드립니다.
                 </p>
@@ -590,28 +590,28 @@ export default function SurveyRequestPage() {
               <button
                 type="button"
                 onClick={() => applyTemplate("satisfaction")}
-                className="px-4 py-2 rounded-lg border border-border text-sm hover:bg-indigo-500/10 hover:border-indigo-500/50 hover:text-indigo-400 transition-colors"
+                className="px-4 py-2 rounded-lg border border-border text-sm hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-600 transition-colors"
               >
                 만족도 조사
               </button>
               <button
                 type="button"
                 onClick={() => applyTemplate("perception")}
-                className="px-4 py-2 rounded-lg border border-border text-sm hover:bg-purple-500/10 hover:border-purple-500/50 hover:text-purple-400 transition-colors"
+                className="px-4 py-2 rounded-lg border border-border text-sm hover:bg-purple-50 hover:border-purple-200 hover:text-purple-600 transition-colors"
               >
                 인식 조사
               </button>
               <button
                 type="button"
                 onClick={() => applyTemplate("prepost")}
-                className="px-4 py-2 rounded-lg border border-border text-sm hover:bg-green-500/10 hover:border-green-500/50 hover:text-green-400 transition-colors"
+                className="px-4 py-2 rounded-lg border border-border text-sm hover:bg-green-50 hover:border-green-200 hover:text-green-600 transition-colors"
               >
                 사전-사후 검사
               </button>
               <button
                 type="button"
                 onClick={() => applyTemplate("empty")}
-                className="px-4 py-2 rounded-lg border border-border text-sm hover:bg-red-500/10 hover:border-red-500/50 hover:text-red-400 transition-colors"
+                className="px-4 py-2 rounded-lg border border-border text-sm hover:bg-red-50 hover:border-red-200 hover:text-red-600 transition-colors"
               >
                 빈 설문
               </button>

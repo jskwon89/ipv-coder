@@ -68,12 +68,12 @@ const TYPE_BORDER_COLORS: Record<SurveyQuestion["type"], string> = {
 };
 
 const TYPE_BADGE_COLORS: Record<SurveyQuestion["type"], string> = {
-  radio: "bg-blue-500/10 text-blue-400",
-  checkbox: "bg-green-500/10 text-green-400",
-  scale: "bg-purple-500/10 text-purple-400",
-  short: "bg-orange-500/10 text-orange-400",
-  long: "bg-amber-500/10 text-amber-400",
-  number: "bg-teal-500/10 text-teal-400",
+  radio: "bg-blue-50 text-blue-600",
+  checkbox: "bg-green-50 text-green-600",
+  scale: "bg-purple-50 text-purple-600",
+  short: "bg-orange-50 text-orange-600",
+  long: "bg-amber-50 text-amber-600",
+  number: "bg-teal-50 text-teal-600",
 };
 
 interface Props {
@@ -270,7 +270,7 @@ export default function QuestionEditor({ questions, onChange }: Props) {
                     <circle cx="13" cy="16" r="1.5" />
                   </svg>
                 </span>
-                <span className="text-sm font-bold text-indigo-400 shrink-0">Q{idx + 1}</span>
+                <span className="text-sm font-bold text-indigo-600 shrink-0">Q{idx + 1}</span>
                 {isCollapsed && (
                   <span className="text-sm text-muted-foreground truncate">
                     {q.text || "(질문 미입력)"}
@@ -284,7 +284,7 @@ export default function QuestionEditor({ questions, onChange }: Props) {
                   {typeMeta?.label}
                 </span>
                 {q.required && (
-                  <span className="text-[10px] font-medium bg-red-500/10 text-red-400 px-1.5 py-0.5 rounded shrink-0">
+                  <span className="text-[10px] font-medium bg-red-50 text-red-600 px-1.5 py-0.5 rounded shrink-0">
                     필수
                   </span>
                 )}
@@ -327,7 +327,7 @@ export default function QuestionEditor({ questions, onChange }: Props) {
                 <button
                   type="button"
                   onClick={() => duplicateQuestion(q.id)}
-                  className="p-1.5 rounded-md hover:bg-indigo-500/10 text-muted-foreground hover:text-indigo-400 transition-colors"
+                  className="p-1.5 rounded-md hover:bg-indigo-50 text-muted-foreground hover:text-indigo-600 transition-colors"
                   title="복제"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -338,7 +338,7 @@ export default function QuestionEditor({ questions, onChange }: Props) {
                 <button
                   type="button"
                   onClick={() => removeQuestion(q.id)}
-                  className="p-1.5 rounded-md hover:bg-red-500/10 text-muted-foreground hover:text-red-400 transition-colors"
+                  className="p-1.5 rounded-md hover:bg-red-50 text-muted-foreground hover:text-red-600 transition-colors"
                   title="삭제"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -404,7 +404,7 @@ export default function QuestionEditor({ questions, onChange }: Props) {
                         <button
                           type="button"
                           onClick={() => removeOption(q.id, optIdx)}
-                          className="p-1 rounded hover:bg-red-500/10 text-muted-foreground hover:text-red-400 transition-colors"
+                          className="p-1 rounded hover:bg-red-50 text-muted-foreground hover:text-red-600 transition-colors"
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -429,7 +429,7 @@ export default function QuestionEditor({ questions, onChange }: Props) {
                       <button
                         type="button"
                         onClick={() => addOption(q.id)}
-                        className="text-xs text-indigo-400 hover:text-indigo-300 font-medium flex items-center gap-1"
+                        className="text-xs text-indigo-600 hover:text-indigo-700 font-medium flex items-center gap-1"
                       >
                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />

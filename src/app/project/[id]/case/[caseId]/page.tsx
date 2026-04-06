@@ -150,17 +150,17 @@ export default function CaseDetailPage() {
 
       {/* Unavailable warning banner */}
       {mockStatus === "unavailable" && (
-        <div className="mb-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
+        <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-xl">
           <div className="flex items-start gap-3">
             <svg className="w-6 h-6 text-red-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
             </svg>
             <div>
-              <h3 className="font-semibold text-red-800 dark:text-red-300">판결문 미등록</h3>
-              <p className="text-sm text-red-700 dark:text-red-400 mt-1">
+              <h3 className="font-semibold text-red-800">판결문 미등록</h3>
+              <p className="text-sm text-red-700 mt-1">
                 이 판결문은 casenote/lbox에 미등록 상태입니다. 아래 절차에 따라 등록을 요청해주세요:
               </p>
-              <ol className="text-sm text-red-700 dark:text-red-400 mt-2 list-decimal list-inside space-y-1">
+              <ol className="text-sm text-red-700 mt-2 list-decimal list-inside space-y-1">
                 <li>casenote.kr에 접속하여 로그인합니다.</li>
                 <li>{"'판결문 등록 요청'"} 메뉴에서 사건번호를 입력합니다.</li>
                 <li>등록 요청 후 3-5일 내에 확인 가능합니다.</li>
@@ -198,7 +198,7 @@ export default function CaseDetailPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left: Full text viewer */}
         <div className="bg-card rounded-xl border border-border overflow-hidden">
-          <div className="px-4 py-3 border-b border-border bg-secondary/50 font-medium text-sm">
+          <div className="px-4 py-3 border-b border-border bg-gray-50 font-medium text-sm">
             판결문 전문
           </div>
           <div className="p-4 h-[calc(100vh-250px)] overflow-y-auto text-sm leading-relaxed font-mono whitespace-pre-wrap">
@@ -214,7 +214,7 @@ export default function CaseDetailPage() {
 
         {/* Right: Coding form */}
         <div className="bg-card rounded-xl border border-border overflow-hidden">
-          <div className="px-4 py-3 border-b border-border bg-secondary/50 font-medium text-sm">
+          <div className="px-4 py-3 border-b border-border bg-gray-50 font-medium text-sm">
             코딩 폼
           </div>
           <div className="p-4 h-[calc(100vh-250px)] overflow-y-auto space-y-6">
@@ -286,7 +286,7 @@ export default function CaseDetailPage() {
                 <div key={n} className="border border-border rounded-lg overflow-hidden mb-2">
                   <button
                     onClick={() => toggleIncident(n)}
-                    className="w-full flex items-center justify-between px-3 py-2 bg-secondary/50 text-sm font-medium hover:bg-secondary transition-colors"
+                    className="w-full flex items-center justify-between px-3 py-2 bg-gray-50 text-sm font-medium hover:bg-secondary transition-colors"
                   >
                     <span>제 {n} 차 범행</span>
                     <svg

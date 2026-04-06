@@ -172,11 +172,11 @@ export default function NewsSearchPage() {
                         {operator}
                       </button>
                     )}
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full text-sm">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm">
                       {kw}
                       <button
                         onClick={() => removeKeyword(kw)}
-                        className="hover:text-blue-300"
+                        className="hover:text-blue-800"
                       >
                         <svg
                           className="w-3.5 h-3.5"
@@ -252,8 +252,8 @@ export default function NewsSearchPage() {
 
       {/* Selected export bar */}
       {selected.size > 0 && (
-        <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4 mb-6 flex items-center justify-between">
-          <span className="text-sm text-blue-400">
+        <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6 flex items-center justify-between">
+          <span className="text-sm text-blue-700">
             {selected.size}건 선택됨
           </span>
           <button
@@ -294,7 +294,7 @@ export default function NewsSearchPage() {
                   href={article.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-semibold text-blue-400 hover:underline line-clamp-1"
+                  className="font-semibold text-blue-600 hover:underline line-clamp-1"
                 >
                   {article.title}
                 </a>

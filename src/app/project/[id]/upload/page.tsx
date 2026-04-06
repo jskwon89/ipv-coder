@@ -204,7 +204,7 @@ export default function UploadPage() {
       {mode === "list" ? (
         <>
           {/* 목록 업로드 */}
-          <div className="mb-4 px-4 py-3 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-lg text-sm">
+          <div className="mb-4 px-4 py-3 bg-blue-50 text-blue-700 rounded-lg text-sm border border-blue-100">
             사건 목록을 업로드하면 casenote.kr에서 판결문 전문을 자동으로 가져옵니다.
             casenote에 없는 판결문은 &quot;미등록&quot;으로 표시되며, PDF 직접 업로드가 필요합니다.
           </div>
@@ -212,7 +212,7 @@ export default function UploadPage() {
           <FileUpload onFileSelected={handleFileSelected} accept=".txt,.xlsx,.xls" />
 
           {error && (
-            <div className="mt-4 px-4 py-3 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg text-sm">
+            <div className="mt-4 px-4 py-3 bg-red-50 text-red-700 rounded-lg text-sm border border-red-100">
               {error}
             </div>
           )}
@@ -234,8 +234,8 @@ export default function UploadPage() {
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold">분석 결과 ({result.total}건)</h2>
                 <div className="flex items-center gap-4 text-sm">
-                  <span className="text-green-600 dark:text-green-400">IPV: {result.ipv.length}건</span>
-                  <span className="text-yellow-600 dark:text-yellow-400">판단보류: {result.ambiguous.length}건</span>
+                  <span className="text-green-600">IPV: {result.ipv.length}건</span>
+                  <span className="text-yellow-600">판단보류: {result.ambiguous.length}건</span>
                   <span className="text-muted-foreground">비IPV: {result.nonIpv.length}건</span>
                 </div>
               </div>
@@ -243,7 +243,7 @@ export default function UploadPage() {
               <div className="bg-card rounded-xl border border-border overflow-hidden">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-border bg-secondary/50">
+                    <tr className="border-b border-border bg-gray-50">
                       <th className="text-left px-4 py-3 font-medium">번호</th>
                       <th className="text-left px-4 py-3 font-medium">법원</th>
                       <th className="text-left px-4 py-3 font-medium">사건번호</th>
@@ -263,11 +263,11 @@ export default function UploadPage() {
                           <td className="px-4 py-3">{c.charge}</td>
                           <td className="px-4 py-3">
                             {isAmbiguous ? (
-                              <span className="inline-flex px-2 py-0.5 bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 text-xs rounded-full font-medium">판단보류</span>
+                              <span className="inline-flex px-2 py-0.5 bg-yellow-50 text-yellow-700 text-xs rounded-full font-medium">판단보류</span>
                             ) : c.is_ipv ? (
-                              <span className="inline-flex px-2 py-0.5 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs rounded-full font-medium">IPV</span>
+                              <span className="inline-flex px-2 py-0.5 bg-green-50 text-green-700 text-xs rounded-full font-medium">IPV</span>
                             ) : (
-                              <span className="inline-flex px-2 py-0.5 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-xs rounded-full font-medium">비IPV</span>
+                              <span className="inline-flex px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full font-medium">비IPV</span>
                             )}
                           </td>
                           <td className="px-4 py-3 text-xs text-muted-foreground max-w-xs truncate">{c.reason}</td>
@@ -296,7 +296,7 @@ export default function UploadPage() {
       ) : (
         <>
           {/* PDF 직접 업로드 */}
-          <div className="mb-4 px-4 py-3 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 rounded-lg text-sm">
+          <div className="mb-4 px-4 py-3 bg-amber-50 text-amber-700 rounded-lg text-sm border border-amber-100">
             casenote에 미등록된 판결문을 PDF로 직접 업로드합니다. 텍스트가 자동 추출되어 코딩에 사용됩니다.
           </div>
 
@@ -356,7 +356,7 @@ export default function UploadPage() {
               <div className="bg-card rounded-xl border border-border overflow-hidden">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-border bg-secondary/50">
+                    <tr className="border-b border-border bg-gray-50">
                       <th className="text-left px-4 py-3 font-medium">파일명</th>
                       <th className="text-left px-4 py-3 font-medium">크기</th>
                       <th className="text-left px-4 py-3 font-medium">페이지</th>
@@ -376,9 +376,9 @@ export default function UploadPage() {
                           <td className="px-4 py-3 text-xs">
                             {r ? (
                               r.status === "성공" ? (
-                                <span className="text-green-600 dark:text-green-400">성공</span>
+                                <span className="text-green-600">성공</span>
                               ) : (
-                                <span className="text-red-600 dark:text-red-400">{r.status}</span>
+                                <span className="text-red-600">{r.status}</span>
                               )
                             ) : (
                               <span className="text-muted-foreground">대기</span>

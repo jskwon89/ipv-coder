@@ -467,15 +467,15 @@ export default function JudgmentCollectionPage() {
               </p>
               <ul className="space-y-1.5 text-sm text-indigo-700">
                 <li className="flex items-start gap-2">
-                  <span className="text-indigo-400 mt-1">&#8226;</span>
+                  <span className="text-indigo-500 mt-1">&#8226;</span>
                   <span><strong>사건번호 지정:</strong> ~100 크레딧/건</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-indigo-400 mt-1">&#8226;</span>
+                  <span className="text-indigo-500 mt-1">&#8226;</span>
                   <span><strong>키워드 검색 수집:</strong> ~200 크레딧/건 (검색 포함)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-indigo-400 mt-1">&#8226;</span>
+                  <span className="text-indigo-500 mt-1">&#8226;</span>
                   <span><strong>대량 수집 (50건 이상):</strong> 별도 견적</span>
                 </li>
               </ul>

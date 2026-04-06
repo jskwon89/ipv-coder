@@ -221,7 +221,7 @@ export default function ProjectDetailPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-border bg-secondary/50">
+              <tr className="border-b border-border bg-gray-50">
                 <th className="text-left px-4 py-3 font-medium">번호</th>
                 <th className="text-left px-4 py-3 font-medium">법원</th>
                 <th className="text-left px-4 py-3 font-medium">사건번호</th>
@@ -239,7 +239,7 @@ export default function ProjectDetailPage() {
                 </tr>
               ) : (
                 filteredCases.map((c) => (
-                  <tr key={c.id} className="hover:bg-secondary/30 transition-colors">
+                  <tr key={c.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-4 py-3 text-muted-foreground">{c.key}</td>
                     <td className="px-4 py-3">{c.court}</td>
                     <td className="px-4 py-3 font-mono text-xs">{c.case_no}</td>
@@ -248,7 +248,7 @@ export default function ProjectDetailPage() {
                     </td>
                     <td className="px-4 py-3">
                       {c.sourceText ? (
-                        <span className="text-green-600 dark:text-green-400 text-xs">확인됨</span>
+                        <span className="text-green-600 text-xs">확인됨</span>
                       ) : (
                         <span className="text-muted-foreground text-xs">미확인</span>
                       )}

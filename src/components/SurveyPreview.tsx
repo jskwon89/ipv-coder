@@ -25,7 +25,7 @@ export default function SurveyPreview({ title, onTitleChange, questions }: Props
           onClick={() => setIsMobile(!isMobile)}
           className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium border transition-colors ${
             isMobile
-              ? "border-indigo-500 bg-indigo-500/10 text-indigo-400"
+              ? "border-indigo-500 bg-indigo-50 text-indigo-600"
               : "border-border text-muted-foreground hover:text-foreground"
           }`}
         >
@@ -84,7 +84,7 @@ export default function SurveyPreview({ title, onTitleChange, questions }: Props
               {/* Section divider */}
               {isSection && (
                 <div className="border-t-2 border-indigo-500/20 pt-4 mt-4">
-                  <p className="text-xs font-semibold text-indigo-400 uppercase tracking-wide">
+                  <p className="text-xs font-semibold text-indigo-600 uppercase tracking-wide">
                     {q.description?.replace(/^---\s*/, "") || "새 섹션"}
                   </p>
                 </div>
@@ -96,7 +96,7 @@ export default function SurveyPreview({ title, onTitleChange, questions }: Props
               >
                 <p className="text-sm font-medium">
                   {idx + 1}. {q.text || "(질문 미입력)"}
-                  {q.required && <span className="text-red-400 ml-1 text-base font-bold">*</span>}
+                  {q.required && <span className="text-red-600 ml-1 text-base font-bold">*</span>}
                 </p>
 
                 {/* Description */}
@@ -124,7 +124,7 @@ export default function SurveyPreview({ title, onTitleChange, questions }: Props
                           value={otherTexts[q.id] || ""}
                           onChange={(e) => setOtherTexts((prev) => ({ ...prev, [q.id]: e.target.value }))}
                           placeholder="직접 입력..."
-                          className="ml-6 w-[calc(100%-1.5rem)] px-3 py-1.5 border border-border rounded-lg text-sm bg-muted/30 focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                          className="ml-6 w-[calc(100%-1.5rem)] px-3 py-1.5 border border-border rounded-lg text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
                         />
                       </div>
                     )}
@@ -151,7 +151,7 @@ export default function SurveyPreview({ title, onTitleChange, questions }: Props
                           value={otherTexts[q.id] || ""}
                           onChange={(e) => setOtherTexts((prev) => ({ ...prev, [q.id]: e.target.value }))}
                           placeholder="직접 입력..."
-                          className="ml-6 w-[calc(100%-1.5rem)] px-3 py-1.5 border border-border rounded-lg text-sm bg-muted/30 focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                          className="ml-6 w-[calc(100%-1.5rem)] px-3 py-1.5 border border-border rounded-lg text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
                         />
                       </div>
                     )}
@@ -186,7 +186,7 @@ export default function SurveyPreview({ title, onTitleChange, questions }: Props
                     type="text"
                     disabled
                     placeholder="단답형 텍스트"
-                    className="w-full px-3 py-2 border border-border rounded-lg text-sm bg-muted/30"
+                    className="w-full px-3 py-2 border border-border rounded-lg text-sm bg-gray-50"
                   />
                 )}
 
@@ -196,7 +196,7 @@ export default function SurveyPreview({ title, onTitleChange, questions }: Props
                     disabled
                     rows={3}
                     placeholder="장문형 텍스트"
-                    className="w-full px-3 py-2 border border-border rounded-lg text-sm bg-muted/30 resize-none"
+                    className="w-full px-3 py-2 border border-border rounded-lg text-sm bg-gray-50 resize-none"
                   />
                 )}
 
@@ -206,7 +206,7 @@ export default function SurveyPreview({ title, onTitleChange, questions }: Props
                     type="number"
                     disabled
                     placeholder="숫자 입력"
-                    className="w-full max-w-[200px] px-3 py-2 border border-border rounded-lg text-sm bg-muted/30"
+                    className="w-full max-w-[200px] px-3 py-2 border border-border rounded-lg text-sm bg-gray-50"
                   />
                 )}
               </div>
@@ -220,7 +220,7 @@ export default function SurveyPreview({ title, onTitleChange, questions }: Props
             <button
               type="button"
               disabled
-              className="px-6 py-2.5 bg-indigo-500/50 text-white/70 rounded-lg text-sm font-medium cursor-not-allowed"
+              className="px-6 py-2.5 bg-indigo-400 text-white rounded-lg text-sm font-medium cursor-not-allowed opacity-60"
             >
               제출
             </button>
