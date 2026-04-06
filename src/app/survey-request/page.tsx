@@ -4,6 +4,37 @@ import { useState } from "react";
 import QuestionEditor, { type SurveyQuestion } from "@/components/QuestionEditor";
 import SurveyPreview from "@/components/SurveyPreview";
 
+function generateSatisfactionTemplate(): SurveyQuestion[] {
+  return [
+    { id: crypto.randomUUID(), text: "전반적인 만족도를 평가해주세요.", type: "scale", required: true, scaleSize: 5, scaleLabels: { left: "매우 불만족", right: "매우 만족" } },
+    { id: crypto.randomUUID(), text: "서비스 품질에 대해 얼마나 만족하십니까?", type: "scale", required: true, scaleSize: 5, scaleLabels: { left: "매우 불만족", right: "매우 만족" } },
+    { id: crypto.randomUUID(), text: "다른 사람에게 추천할 의향이 있으십니까?", type: "scale", required: true, scaleSize: 5, scaleLabels: { left: "전혀 없다", right: "매우 그렇다" } },
+    { id: crypto.randomUUID(), text: "가장 만족스러운 부분은 무엇입니까?", type: "radio", required: false, options: ["품질", "가격", "서비스", "접근성"], hasOtherOption: true },
+    { id: crypto.randomUUID(), text: "개선이 필요한 사항을 자유롭게 작성해주세요.", type: "long", required: false },
+  ];
+}
+
+function generatePerceptionTemplate(): SurveyQuestion[] {
+  return [
+    { id: crypto.randomUUID(), text: "해당 주제에 대해 얼마나 잘 알고 계십니까?", type: "scale", required: true, scaleSize: 5, scaleLabels: { left: "전혀 모른다", right: "매우 잘 안다" } },
+    { id: crypto.randomUUID(), text: "이 주제가 중요하다고 생각하십니까?", type: "scale", required: true, scaleSize: 5, scaleLabels: { left: "전혀 그렇지 않다", right: "매우 그렇다" } },
+    { id: crypto.randomUUID(), text: "관련 정보를 주로 어디서 얻으십니까?", type: "radio", required: true, options: ["뉴스/미디어", "SNS", "지인", "전문자료", "교육/강의"], hasOtherOption: true },
+    { id: crypto.randomUUID(), text: "현재 정책/제도에 대한 인식은 어떠합니까?", type: "scale", required: true, scaleSize: 5, scaleLabels: { left: "매우 부정적", right: "매우 긍정적" } },
+    { id: crypto.randomUUID(), text: "추가로 의견이 있으시면 작성해주세요.", type: "long", required: false },
+  ];
+}
+
+function generatePrePostTemplate(): SurveyQuestion[] {
+  return [
+    { id: crypto.randomUUID(), text: "[사전] 해당 주제에 대한 이해도를 평가해주세요.", type: "scale", required: true, scaleSize: 5, scaleLabels: { left: "전혀 이해 못함", right: "완전히 이해" }, description: "--- 사전 검사" },
+    { id: crypto.randomUUID(), text: "[사전] 해당 주제에 대한 관심도를 평가해주세요.", type: "scale", required: true, scaleSize: 5, scaleLabels: { left: "전혀 관심 없음", right: "매우 관심 있음" } },
+    { id: crypto.randomUUID(), text: "[사전] 관련 경험이 있으십니까?", type: "radio", required: true, options: ["있다", "없다"] },
+    { id: crypto.randomUUID(), text: "[사후] 해당 주제에 대한 이해도를 평가해주세요.", type: "scale", required: true, scaleSize: 5, scaleLabels: { left: "전혀 이해 못함", right: "완전히 이해" }, description: "--- 사후 검사" },
+    { id: crypto.randomUUID(), text: "[사후] 해당 주제에 대한 관심도를 평가해주세요.", type: "scale", required: true, scaleSize: 5, scaleLabels: { left: "전혀 관심 없음", right: "매우 관심 있음" } },
+    { id: crypto.randomUUID(), text: "[사후] 프로그램 참여 후 변화가 있었습니까?", type: "radio", required: true, options: ["매우 그렇다", "그렇다", "보통이다", "그렇지 않다", "전혀 그렇지 않다"] },
+  ];
+}
+
 export default function SurveyRequestPage() {
   const [activeTab, setActiveTab] = useState<"request" | "builder">("request");
   const [formData, setFormData] = useState({
@@ -29,6 +60,9 @@ export default function SurveyRequestPage() {
   });
   const [file, setFile] = useState<File | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [exportCopied, setExportCopied] = useState(false);
+  const [importJson, setImportJson] = useState("");
+  const [showImportDialog, setShowImportDialog] = useState(false);
 
   // Survey builder state
   const [surveyTitle, setSurveyTitle] = useState("");
@@ -66,6 +100,54 @@ export default function SurveyRequestPage() {
     console.log("Full submission:", { formData, survey: { title: surveyTitle, questions } });
     if (file) console.log("Attached file:", file.name);
     setSubmitted(true);
+  };
+
+  const handleExportSurvey = () => {
+    const data = JSON.stringify({ title: surveyTitle, questions }, null, 2);
+    navigator.clipboard.writeText(data).then(() => {
+      setExportCopied(true);
+      setTimeout(() => setExportCopied(false), 2000);
+    });
+  };
+
+  const handleImportSurvey = () => {
+    try {
+      const data = JSON.parse(importJson);
+      if (data.title !== undefined) setSurveyTitle(data.title);
+      if (Array.isArray(data.questions)) {
+        setQuestions(
+          data.questions.map((q: SurveyQuestion) => ({
+            ...q,
+            id: crypto.randomUUID(),
+          }))
+        );
+      }
+      setShowImportDialog(false);
+      setImportJson("");
+    } catch {
+      alert("올바른 JSON 형식이 아닙니다.");
+    }
+  };
+
+  const applyTemplate = (template: "satisfaction" | "perception" | "prepost" | "empty") => {
+    switch (template) {
+      case "satisfaction":
+        setQuestions(generateSatisfactionTemplate());
+        setSurveyTitle("만족도 조사");
+        break;
+      case "perception":
+        setQuestions(generatePerceptionTemplate());
+        setSurveyTitle("인식 조사");
+        break;
+      case "prepost":
+        setQuestions(generatePrePostTemplate());
+        setSurveyTitle("사전-사후 검사");
+        break;
+      case "empty":
+        setQuestions([]);
+        setSurveyTitle("");
+        break;
+    }
   };
 
   if (submitted) {
@@ -477,6 +559,95 @@ export default function SurveyRequestPage() {
       {/* Tab 2: Survey Builder */}
       {activeTab === "builder" && (
         <div>
+          {/* Template presets + import/export */}
+          <div className="mb-6 bg-card rounded-xl border border-border p-5">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-semibold">템플릿 프리셋</h3>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleExportSurvey}
+                  className="px-3 py-1.5 border border-border rounded-lg text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors flex items-center gap-1.5"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                  </svg>
+                  {exportCopied ? "복사 완료!" : "설문 내보내기"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowImportDialog(!showImportDialog)}
+                  className="px-3 py-1.5 border border-border rounded-lg text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors flex items-center gap-1.5"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  설문 불러오기
+                </button>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => applyTemplate("satisfaction")}
+                className="px-4 py-2 rounded-lg border border-border text-sm hover:bg-indigo-500/10 hover:border-indigo-500/50 hover:text-indigo-400 transition-colors"
+              >
+                만족도 조사
+              </button>
+              <button
+                type="button"
+                onClick={() => applyTemplate("perception")}
+                className="px-4 py-2 rounded-lg border border-border text-sm hover:bg-purple-500/10 hover:border-purple-500/50 hover:text-purple-400 transition-colors"
+              >
+                인식 조사
+              </button>
+              <button
+                type="button"
+                onClick={() => applyTemplate("prepost")}
+                className="px-4 py-2 rounded-lg border border-border text-sm hover:bg-green-500/10 hover:border-green-500/50 hover:text-green-400 transition-colors"
+              >
+                사전-사후 검사
+              </button>
+              <button
+                type="button"
+                onClick={() => applyTemplate("empty")}
+                className="px-4 py-2 rounded-lg border border-border text-sm hover:bg-red-500/10 hover:border-red-500/50 hover:text-red-400 transition-colors"
+              >
+                빈 설문
+              </button>
+            </div>
+
+            {/* Import dialog */}
+            {showImportDialog && (
+              <div className="mt-4 space-y-2">
+                <textarea
+                  value={importJson}
+                  onChange={(e) => setImportJson(e.target.value)}
+                  placeholder="내보내기한 JSON을 여기에 붙여넣으세요"
+                  rows={4}
+                  className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-indigo-500/50 resize-none font-mono"
+                />
+                <div className="flex justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={() => { setShowImportDialog(false); setImportJson(""); }}
+                    className="px-4 py-2 border border-border rounded-lg text-sm hover:bg-muted transition-colors"
+                  >
+                    취소
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleImportSurvey}
+                    disabled={!importJson.trim()}
+                    className="px-4 py-2 bg-indigo-500 text-white rounded-lg text-sm font-medium hover:bg-indigo-600 transition-colors disabled:opacity-50"
+                  >
+                    불러오기
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
           <div className="flex flex-col lg:flex-row gap-6">
             {/* Left: Question Editor (~60%) */}
             <div className="w-full lg:w-[60%]">

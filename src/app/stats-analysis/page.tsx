@@ -28,6 +28,9 @@ export default function StatsAnalysisPage() {
   const [selectedRequest, setSelectedRequest] = useState<string[]>([]);
   const [requestDetail, setRequestDetail] = useState("");
   const [requestSubmitted, setRequestSubmitted] = useState(false);
+  const [excelConfirmOpen, setExcelConfirmOpen] = useState(false);
+  const [excelExporting, setExcelExporting] = useState(false);
+  const [excelDone, setExcelDone] = useState(false);
 
   const toggleInstant = (label: string) => {
     setSelectedInstant((prev) =>
@@ -44,6 +47,16 @@ export default function StatsAnalysisPage() {
   const handleRequestSubmit = () => {
     setRequestSubmitted(true);
     setTimeout(() => setRequestSubmitted(false), 3000);
+  };
+
+  const handleExcelExport = () => {
+    setExcelConfirmOpen(false);
+    setExcelExporting(true);
+    setTimeout(() => {
+      setExcelExporting(false);
+      setExcelDone(true);
+      setTimeout(() => setExcelDone(false), 3000);
+    }, 2000);
   };
 
   return (
@@ -142,6 +155,52 @@ export default function StatsAnalysisPage() {
               >
                 분석 실행 ({selectedInstant.length}개 선택)
               </button>
+
+              {/* Excel export button */}
+              <button
+                type="button"
+                onClick={() => setExcelConfirmOpen(true)}
+                disabled={excelExporting}
+                className="w-full px-4 py-2.5 bg-emerald-600 text-white rounded-lg text-sm font-medium hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                {excelExporting ? "다운로드 준비 중..." : "기술통계표 Excel 내보내기"}
+                <span className="text-[10px] font-medium bg-white/20 px-1.5 py-0.5 rounded-full">~50 크레딧</span>
+              </button>
+
+              {/* Excel export success message */}
+              {excelDone && (
+                <div className="w-full px-4 py-2.5 bg-green-600/20 text-green-400 rounded-lg text-sm font-medium text-center">
+                  기술통계표 Excel 파일이 다운로드되었습니다.
+                </div>
+              )}
+
+              {/* Excel export confirmation dialog */}
+              {excelConfirmOpen && (
+                <div className="border border-amber-500/30 bg-amber-500/5 rounded-lg p-4 space-y-3">
+                  <p className="text-sm text-foreground">
+                    기술통계표 Excel 내보내기에 <span className="font-bold text-amber-400">50 크레딧</span>이 소모됩니다. 진행하시겠습니까?
+                  </p>
+                  <div className="flex justify-end gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setExcelConfirmOpen(false)}
+                      className="px-4 py-2 border border-border rounded-lg text-sm hover:bg-muted transition-colors"
+                    >
+                      취소
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleExcelExport}
+                      className="px-4 py-2 bg-emerald-600 text-white rounded-lg text-sm font-medium hover:bg-emerald-700 transition-colors"
+                    >
+                      진행
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
