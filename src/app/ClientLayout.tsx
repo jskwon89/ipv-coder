@@ -6,7 +6,7 @@ import Image from "next/image";
 import { CreditBalance } from "./credits/CreditBalance";
 
 function NavLink({ href, icon, label, pathname }: { href: string; icon: React.ReactNode; label: string; pathname: string }) {
-  const isActive = pathname === href || (href !== "/dashboard" && pathname.startsWith(href));
+  const isActive = pathname === href || (href !== "/dashboard" && pathname.startsWith(href + "/"));
   return (
     <Link
       href={href}
@@ -150,7 +150,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 min-h-screen overflow-auto">
+      <main className="flex-1 min-h-screen overflow-auto bg-gray-100">
         {children}
       </main>
     </div>
