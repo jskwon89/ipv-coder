@@ -85,16 +85,6 @@ export default function RootLayout({
               </svg>
               정책문서
             </Link>
-            <Link
-              href="/templates/custom"
-              className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-sidebar-hover transition-colors text-sm font-medium"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
-              </svg>
-              커스텀 코딩
-            </Link>
           </nav>
           <div className="p-4 border-t border-white/10 text-xs text-white/40">
             v0.1.0

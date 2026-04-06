@@ -81,7 +81,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Template cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <Link href="/?type=judgment" className="group block">
           <div className="bg-card rounded-xl border-2 border-green-500/30 p-5 hover:border-green-500/60 transition-colors">
             <div className="flex items-center justify-between mb-3">
@@ -140,21 +140,6 @@ export default function DashboardPage() {
           </div>
         </Link>
 
-        <Link href="/templates/custom" className="group block">
-          <div className="bg-card rounded-xl border-2 border-gray-500/30 p-5 hover:border-gray-500/60 transition-colors relative">
-            <span className="absolute top-3 right-3 text-[10px] font-medium bg-gray-500/20 text-gray-400 px-2 py-0.5 rounded-full">준비 중</span>
-            <div className="flex items-center justify-between mb-3">
-              <div className="w-10 h-10 rounded-lg bg-gray-500/10 flex items-center justify-center">
-                <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
-                </svg>
-              </div>
-            </div>
-            <h3 className="font-semibold text-sm">커스텀 코딩</h3>
-            <p className="text-xs text-muted-foreground mt-1">나만의 코딩 변수 정의</p>
-          </div>
-        </Link>
       </div>
 
       {/* Stats cards */}
@@ -254,12 +239,6 @@ export default function DashboardPage() {
                   className="px-3 py-2 rounded-lg text-sm border border-border opacity-40 cursor-not-allowed"
                 >
                   정책문서 (준비 중)
-                </button>
-                <button
-                  disabled
-                  className="px-3 py-2 rounded-lg text-sm border border-border opacity-40 cursor-not-allowed"
-                >
-                  커스텀 (준비 중)
                 </button>
               </div>
             </div>
