@@ -103,32 +103,32 @@ export default function LandingPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <ServiceCard
-              image="/images/icon_judgment.png"
+              image="/images/판결문1.png"
               title="판결문 코딩"
               description="AI 기반 판결문 자동 코딩으로 연구 시간을 절약하세요"
             />
             <ServiceCard
-              image="/images/icon_stats.png"
+              image="/images/계량통계분석1.png"
               title="계량통계분석"
               description="기초통계부터 고급분석까지, 전문가가 직접 분석합니다"
             />
             <ServiceCard
-              image="/images/icon_text.png"
+              image="/images/텍스트분석1.png"
               title="텍스트 분석"
               description="토픽모델링, 감성분석, 워드클라우드 등 텍스트 분석"
             />
             <ServiceCard
-              image="/images/icon_survey.png"
+              image="/images/설문조사1.png"
               title="설문조사"
               description="설문 설계부터 데이터 수집까지 원스톱 서비스"
             />
             <ServiceCard
-              image="/images/icon_news.png"
+              image="/images/기사검색1.png"
               title="기사 검색"
               description="키워드 기반 뉴스 검색 및 요약 수집"
             />
             <ServiceCard
-              image="/images/icon_research.png"
+              image="/images/연구설계지원1.png"
               title="연구 설계 지원"
               description="검정력 분석, 시뮬레이션 데이터 생성"
             />

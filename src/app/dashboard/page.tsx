@@ -18,38 +18,38 @@ const serviceCards = [
     title: "판결문 코딩",
     desc: "AI 기반 판결문 자동 코딩",
     href: "/judgment",
-    image: "/images/icon_judgment.png",
+    image: "/images/판결문1.png",
   },
   {
     title: "계량통계분석",
     desc: "기초통계부터 고급분석까지",
     href: "/stats-analysis",
-    image: "/images/icon_stats.png",
+    image: "/images/계량통계분석1.png",
     badge: "준비 중",
   },
   {
     title: "텍스트 분석",
     desc: "토픽모델링, 감성분석, 워드클라우드",
     href: "/text-analysis",
-    image: "/images/icon_text.png",
+    image: "/images/텍스트분석1.png",
   },
   {
     title: "설문조사",
     desc: "설문 설계부터 데이터 수집까지",
     href: "/survey-request",
-    image: "/images/icon_survey.png",
+    image: "/images/설문조사1.png",
   },
   {
     title: "기사 검색",
     desc: "키워드 기반 뉴스 검색 및 요약",
     href: "/news-search",
-    image: "/images/icon_news.png",
+    image: "/images/기사검색1.png",
   },
   {
     title: "연구 설계 지원",
     desc: "검정력 분석, 시뮬레이션",
     href: "/data-generation",
-    image: "/images/icon_research.png",
+    image: "/images/연구설계지원1.png",
     badge: "준비 중",
   },
 ];
@@ -154,27 +154,26 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {serviceCards.map((card) => (
             <Link key={card.title} href={card.href} className="group block">
-              <div className="relative h-48 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
-                {/* Background image */}
-                <Image
-                  src={card.image}
-                  alt={card.title}
-                  fill
-                  className="object-cover"
-                />
-                {/* Dark overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-                {/* Badge */}
-                {card.badge && (
-                  <span className="absolute top-4 right-4 z-10 text-[10px] font-semibold bg-white/20 backdrop-blur-sm text-white px-2.5 py-1 rounded-full border border-white/20">
-                    {card.badge}
-                  </span>
-                )}
+              <div className="rounded-2xl overflow-hidden border border-[#3a4f6f] bg-[#1a2744] hover:border-[#c49a2e]/50 hover:shadow-xl hover:shadow-[#c49a2e]/5 transition-all duration-300 transform hover:scale-[1.02]">
+                {/* Image area */}
+                <div className="relative h-36 bg-[#0f1a2e] overflow-hidden">
+                  <Image
+                    src={card.image}
+                    alt={card.title}
+                    fill
+                    className="object-contain p-2 group-hover:scale-105 transition-transform duration-500"
+                  />
+                  {card.badge && (
+                    <span className="absolute top-3 right-3 z-10 text-[10px] font-semibold bg-[#c49a2e]/20 text-[#d4a843] px-2.5 py-1 rounded-full border border-[#c49a2e]/30">
+                      {card.badge}
+                    </span>
+                  )}
+                </div>
                 {/* Content */}
-                <div className="relative z-10 p-6 h-full flex flex-col justify-end">
-                  <h3 className="text-lg font-bold text-white">{card.title}</h3>
-                  <p className="text-sm text-white/70 mt-1">{card.desc}</p>
-                  <span className="text-sm text-white/80 font-medium group-hover:underline underline-offset-4 mt-2">시작하기 &rarr;</span>
+                <div className="p-5 border-t border-[#2a3a54]">
+                  <h3 className="text-base font-bold text-white">{card.title}</h3>
+                  <p className="text-sm text-gray-400 mt-1">{card.desc}</p>
+                  <span className="inline-block text-sm text-[#c49a2e] font-medium group-hover:underline underline-offset-4 mt-3">시작하기 &rarr;</span>
                 </div>
               </div>
             </Link>
