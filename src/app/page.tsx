@@ -114,7 +114,8 @@ export default function LandingPage() {
               description="기초통계부터 고급분석까지, 전문가가 직접 분석합니다"
             />
             <ServiceCard
-              image="/images/텍스트분석.png"
+              image="/images/텍스트분석_2.png"
+              imageClassName="scale-125 object-center"
               title="텍스트 분석"
               description="토픽모델링, 감성분석, 워드클라우드 등 텍스트 분석"
             />
@@ -267,10 +268,12 @@ function ServiceCard({
   image,
   title,
   description,
+  imageClassName,
 }: {
   image: string;
   title: string;
   description: string;
+  imageClassName?: string;
 }) {
   return (
     <div className="group bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-lg transition-shadow overflow-hidden">
@@ -279,7 +282,7 @@ function ServiceCard({
           src={image}
           alt={title}
           fill
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
+          className={`object-cover group-hover:scale-105 transition-transform duration-500 ${imageClassName || ""}`}
         />
       </div>
       <div className="p-6">
