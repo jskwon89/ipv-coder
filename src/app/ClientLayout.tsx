@@ -44,7 +44,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   // All other pages: sidebar + main
   return (
-    <div className="flex min-h-full">
+    <div className="flex min-h-full bg-white">
       {/* Sidebar */}
       <aside className="w-64 bg-sidebar text-sidebar-foreground flex flex-col min-h-screen shrink-0">
         <div className="px-5 py-5 border-b border-white/8">

@@ -155,7 +155,7 @@ export default function DashboardPage() {
           {serviceCards.map((card) => (
             <Link key={card.title} href={card.href} className="group block">
               <div className="rounded-2xl border border-[#1e3050] hover:border-[#3a5580] bg-[#0f1a2e] overflow-hidden hover:shadow-2xl hover:shadow-blue-900/20 transition-all duration-300 transform hover:scale-[1.02]">
-                <div className="relative h-40 bg-[#0a1220] flex items-center justify-center p-3">
+                <div className="relative h-40 bg-[#0f1a2e] flex items-center justify-center p-3">
                   <Image
                     src={card.image}
                     alt={card.title}
