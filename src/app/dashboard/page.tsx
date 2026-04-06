@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import Image from "next/image";
 import Link from "next/link";
 interface Project {
   id: string;
@@ -10,198 +11,46 @@ interface Project {
   codedCount: number;
 }
 
-/* ---------- SVG Pictograms ---------- */
-
-const ScalesOfJustice = ({ size = 120, className = "" }: { size?: number; className?: string }) => (
-  <svg width={size} height={size} viewBox="0 0 120 120" fill="none" className={className}>
-    <line x1="60" y1="16" x2="60" y2="100" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-    <line x1="30" y1="36" x2="90" y2="36" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-    <circle cx="60" cy="16" r="4" stroke="white" strokeWidth="1.5" />
-    <path d="M30 36 L18 70 L42 70 Z" stroke="white" strokeWidth="1.5" strokeLinejoin="round" fill="none" />
-    <path d="M18 70 Q18 82 30 82 Q42 82 42 70" stroke="white" strokeWidth="1.5" fill="none" />
-    <path d="M90 36 L78 70 L102 70 Z" stroke="white" strokeWidth="1.5" strokeLinejoin="round" fill="none" />
-    <path d="M78 70 Q78 82 90 82 Q102 82 102 70" stroke="white" strokeWidth="1.5" fill="none" />
-    <rect x="50" y="96" width="20" height="6" rx="2" stroke="white" strokeWidth="1.5" fill="none" />
-  </svg>
-);
-
-const BarChartTrend = ({ size = 120, className = "" }: { size?: number; className?: string }) => (
-  <svg width={size} height={size} viewBox="0 0 120 120" fill="none" className={className}>
-    <rect x="14" y="70" width="14" height="34" rx="2" stroke="white" strokeWidth="1.5" fill="none" />
-    <rect x="34" y="50" width="14" height="54" rx="2" stroke="white" strokeWidth="1.5" fill="none" />
-    <rect x="54" y="58" width="14" height="46" rx="2" stroke="white" strokeWidth="1.5" fill="none" />
-    <rect x="74" y="36" width="14" height="68" rx="2" stroke="white" strokeWidth="1.5" fill="none" />
-    <rect x="94" y="22" width="14" height="82" rx="2" stroke="white" strokeWidth="1.5" fill="none" />
-    <path d="M18 66 L40 46 L60 52 L80 30 L100 18" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-    <circle cx="100" cy="18" r="3" stroke="white" strokeWidth="1.5" fill="none" />
-  </svg>
-);
-
-const TextDocument = ({ size = 120, className = "" }: { size?: number; className?: string }) => (
-  <svg width={size} height={size} viewBox="0 0 120 120" fill="none" className={className}>
-    <rect x="22" y="12" width="56" height="76" rx="4" stroke="white" strokeWidth="1.5" fill="none" />
-    <line x1="32" y1="28" x2="68" y2="28" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-    <line x1="32" y1="38" x2="62" y2="38" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-    <line x1="32" y1="48" x2="66" y2="48" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-    <line x1="32" y1="58" x2="56" y2="58" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-    <line x1="32" y1="68" x2="60" y2="68" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-    <rect x="72" y="32" width="30" height="20" rx="10" stroke="white" strokeWidth="1.5" fill="none" />
-    <text x="87" y="46" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">Aa</text>
-    <rect x="68" y="62" width="34" height="20" rx="10" stroke="white" strokeWidth="1.5" fill="none" />
-    <text x="85" y="76" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">NLP</text>
-    <rect x="76" y="90" width="26" height="18" rx="9" stroke="white" strokeWidth="1.5" fill="none" />
-    <text x="89" y="103" textAnchor="middle" fill="white" fontSize="8" fontWeight="bold">W</text>
-  </svg>
-);
-
-const ClipboardCheck = ({ size = 120, className = "" }: { size?: number; className?: string }) => (
-  <svg width={size} height={size} viewBox="0 0 120 120" fill="none" className={className}>
-    <rect x="28" y="20" width="64" height="88" rx="6" stroke="white" strokeWidth="1.5" fill="none" />
-    <rect x="44" y="12" width="32" height="16" rx="4" stroke="white" strokeWidth="1.5" fill="none" />
-    <circle cx="60" cy="20" r="2.5" stroke="white" strokeWidth="1.5" fill="none" />
-    <path d="M42 48 L50 56 L66 40" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    <line x1="72" y1="48" x2="82" y2="48" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-    <path d="M42 68 L50 76 L66 60" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    <line x1="72" y1="68" x2="82" y2="68" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-    <rect x="42" y="84" width="12" height="12" rx="2" stroke="white" strokeWidth="1.5" fill="none" />
-    <line x1="72" y1="90" x2="82" y2="90" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-  </svg>
-);
-
-const NewspaperSearch = ({ size = 120, className = "" }: { size?: number; className?: string }) => (
-  <svg width={size} height={size} viewBox="0 0 120 120" fill="none" className={className}>
-    <rect x="16" y="16" width="68" height="88" rx="4" stroke="white" strokeWidth="1.5" fill="none" />
-    <line x1="26" y1="30" x2="74" y2="30" stroke="white" strokeWidth="2" strokeLinecap="round" />
-    <line x1="26" y1="40" x2="60" y2="40" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-    <line x1="26" y1="50" x2="56" y2="50" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-    <line x1="26" y1="60" x2="50" y2="60" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-    <rect x="26" y="70" width="24" height="20" rx="2" stroke="white" strokeWidth="1.5" fill="none" />
-    <line x1="56" y1="74" x2="74" y2="74" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-    <line x1="56" y1="82" x2="70" y2="82" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-    <circle cx="90" cy="78" r="18" stroke="white" strokeWidth="1.5" fill="none" />
-    <line x1="103" y1="91" x2="112" y2="100" stroke="white" strokeWidth="2" strokeLinecap="round" />
-  </svg>
-);
-
-const FlaskGear = ({ size = 120, className = "" }: { size?: number; className?: string }) => (
-  <svg width={size} height={size} viewBox="0 0 120 120" fill="none" className={className}>
-    <path d="M44 16 L44 48 L20 96 Q18 102 24 106 L76 106 Q82 102 80 96 L56 48 L56 16" stroke="white" strokeWidth="1.5" strokeLinejoin="round" fill="none" />
-    <line x1="38" y1="16" x2="62" y2="16" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-    <line x1="34" y1="72" x2="66" y2="72" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="4 3" />
-    <circle cx="42" cy="84" r="3" stroke="white" strokeWidth="1.5" fill="none" />
-    <circle cx="54" cy="90" r="2.5" stroke="white" strokeWidth="1.5" fill="none" />
-    <circle cx="92" cy="44" r="16" stroke="white" strokeWidth="1.5" fill="none" />
-    <circle cx="92" cy="44" r="5" stroke="white" strokeWidth="1.5" fill="none" />
-    <path d="M92 24 L92 28" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-    <path d="M92 60 L92 64" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-    <path d="M72 44 L76 44" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-    <path d="M108 44 L112 44" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-    <path d="M78 30 L80.8 32.8" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-    <path d="M103.2 55.2 L106 58" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-    <path d="M106 30 L103.2 32.8" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-    <path d="M80.8 55.2 L78 58" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-  </svg>
-);
-
-/* ---------- Small Icons for frosted circles ---------- */
-
-const IconGavel = () => (
-  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-    <path d="M14.5 3.5L20.5 9.5M4 20L10.5 13.5M14 10L17 7M7 17L10 14" />
-    <rect x="12" y="2" width="8" height="4" rx="1" transform="rotate(45 16 4)" />
-  </svg>
-);
-
-const IconChart = () => (
-  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-    <rect x="3" y="12" width="4" height="9" rx="1" />
-    <rect x="10" y="7" width="4" height="14" rx="1" />
-    <rect x="17" y="3" width="4" height="18" rx="1" />
-  </svg>
-);
-
-const IconTextDoc = () => (
-  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-    <path d="M14 2v6h6" />
-    <line x1="8" y1="13" x2="16" y2="13" />
-    <line x1="8" y1="17" x2="13" y2="17" />
-  </svg>
-);
-
-const IconChecklist = () => (
-  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-    <rect x="3" y="3" width="18" height="18" rx="3" />
-    <path d="M8 10l2 2 4-4" />
-    <line x1="8" y1="16" x2="16" y2="16" />
-  </svg>
-);
-
-const IconSearch = () => (
-  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="11" cy="11" r="7" />
-    <line x1="16.5" y1="16.5" x2="21" y2="21" />
-  </svg>
-);
-
-const IconLightbulb = () => (
-  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-    <path d="M9 21h6M12 3a6 6 0 0 0-4 10.5V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3.5A6 6 0 0 0 12 3z" />
-  </svg>
-);
-
 /* ---------- Service Cards Data ---------- */
 
 const serviceCards = [
   {
     title: "판결문 코딩",
     desc: "AI 기반 판결문 자동 코딩",
-    href: "/dashboard?type=judgment",
-    gradient: "from-slate-700 to-slate-900",
-    LargeSvg: ScalesOfJustice,
-    SmallIcon: IconGavel,
+    href: "/judgment",
+    image: "/images/icon_judgment.png",
   },
   {
     title: "계량통계분석",
     desc: "기초통계부터 고급분석까지",
     href: "/stats-analysis",
-    gradient: "from-blue-600 to-indigo-700",
+    image: "/images/icon_stats.png",
     badge: "준비 중",
-    LargeSvg: BarChartTrend,
-    SmallIcon: IconChart,
   },
   {
     title: "텍스트 분석",
     desc: "토픽모델링, 감성분석, 워드클라우드",
     href: "/text-analysis",
-    gradient: "from-violet-600 to-purple-800",
-    LargeSvg: TextDocument,
-    SmallIcon: IconTextDoc,
+    image: "/images/icon_text.png",
   },
   {
     title: "설문조사",
     desc: "설문 설계부터 데이터 수집까지",
     href: "/survey-request",
-    gradient: "from-indigo-500 to-blue-700",
-    LargeSvg: ClipboardCheck,
-    SmallIcon: IconChecklist,
+    image: "/images/icon_survey.png",
   },
   {
     title: "기사 검색",
     desc: "키워드 기반 뉴스 검색 및 요약",
     href: "/news-search",
-    gradient: "from-emerald-600 to-teal-700",
-    LargeSvg: NewspaperSearch,
-    SmallIcon: IconSearch,
+    image: "/images/icon_news.png",
   },
   {
     title: "연구 설계 지원",
     desc: "검정력 분석, 시뮬레이션",
     href: "/data-generation",
-    gradient: "from-cyan-600 to-blue-800",
+    image: "/images/icon_research.png",
     badge: "준비 중",
-    LargeSvg: FlaskGear,
-    SmallIcon: IconLightbulb,
   },
 ];
 
@@ -305,11 +154,16 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {serviceCards.map((card) => (
             <Link key={card.title} href={card.href} className="group block">
-              <div className={`relative h-44 rounded-2xl bg-gradient-to-br ${card.gradient} overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]`}>
-                {/* Large decorative SVG - right side, subtle */}
-                <div className="absolute right-4 bottom-2 opacity-10 pointer-events-none">
-                  <card.LargeSvg size={120} />
-                </div>
+              <div className="relative h-48 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
+                {/* Background image */}
+                <Image
+                  src={card.image}
+                  alt={card.title}
+                  fill
+                  className="object-cover"
+                />
+                {/* Dark overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
                 {/* Badge */}
                 {card.badge && (
                   <span className="absolute top-4 right-4 z-10 text-[10px] font-semibold bg-white/20 backdrop-blur-sm text-white px-2.5 py-1 rounded-full border border-white/20">
@@ -317,15 +171,10 @@ export default function DashboardPage() {
                   </span>
                 )}
                 {/* Content */}
-                <div className="relative z-10 p-6 h-full flex flex-col justify-between">
-                  <div>
-                    <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center mb-3">
-                      <card.SmallIcon />
-                    </div>
-                    <h3 className="text-lg font-bold text-white">{card.title}</h3>
-                    <p className="text-sm text-white/70 mt-1">{card.desc}</p>
-                  </div>
-                  <span className="text-sm text-white/80 font-medium group-hover:underline underline-offset-4">시작하기 →</span>
+                <div className="relative z-10 p-6 h-full flex flex-col justify-end">
+                  <h3 className="text-lg font-bold text-white">{card.title}</h3>
+                  <p className="text-sm text-white/70 mt-1">{card.desc}</p>
+                  <span className="text-sm text-white/80 font-medium group-hover:underline underline-offset-4 mt-2">시작하기 &rarr;</span>
                 </div>
               </div>
             </Link>
