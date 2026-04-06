@@ -81,7 +81,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Template cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
         <Link href="/?type=judgment" className="group block">
           <div className="bg-card rounded-xl border-2 border-green-500/30 p-5 hover:border-green-500/60 transition-colors">
             <div className="flex items-center justify-between mb-3">
@@ -137,6 +137,36 @@ export default function DashboardPage() {
             </div>
             <h3 className="font-semibold text-sm">정책문서 코딩</h3>
             <p className="text-xs text-muted-foreground mt-1">정책 보고서 분석</p>
+          </div>
+        </Link>
+
+        <Link href="/stats-analysis" className="group block">
+          <div className="bg-card rounded-xl border-2 border-rose-500/30 p-5 hover:border-rose-500/60 transition-colors relative">
+            <span className="absolute top-3 right-3 text-[10px] font-medium bg-rose-500/20 text-rose-400 px-2 py-0.5 rounded-full">준비 중</span>
+            <div className="flex items-center justify-between mb-3">
+              <div className="w-10 h-10 rounded-lg bg-rose-500/10 flex items-center justify-center">
+                <svg className="w-5 h-5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+            </div>
+            <h3 className="font-semibold text-sm">통계분석/시각화</h3>
+            <p className="text-xs text-muted-foreground mt-1">데이터 분석 및 시각화</p>
+          </div>
+        </Link>
+
+        <Link href="/data-generation" className="group block">
+          <div className="bg-card rounded-xl border-2 border-cyan-500/30 p-5 hover:border-cyan-500/60 transition-colors relative">
+            <span className="absolute top-3 right-3 text-[10px] font-medium bg-cyan-500/20 text-cyan-400 px-2 py-0.5 rounded-full">준비 중</span>
+            <div className="flex items-center justify-between mb-3">
+              <div className="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center">
+                <svg className="w-5 h-5 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                </svg>
+              </div>
+            </div>
+            <h3 className="font-semibold text-sm">연구 설계 지원</h3>
+            <p className="text-xs text-muted-foreground mt-1">검정력 분석, 시뮬레이션 데이터, 설문 설계</p>
           </div>
         </Link>
 
