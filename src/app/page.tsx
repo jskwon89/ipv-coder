@@ -155,6 +155,20 @@ export default function DashboardPage() {
           </div>
         </Link>
 
+        <Link href="/survey-request" className="group block">
+          <div className="bg-card rounded-xl border-2 border-indigo-500/30 p-5 hover:border-indigo-500/60 transition-colors">
+            <div className="flex items-center justify-between mb-3">
+              <div className="w-10 h-10 rounded-lg bg-indigo-500/10 flex items-center justify-center">
+                <svg className="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                </svg>
+              </div>
+            </div>
+            <h3 className="font-semibold text-sm">설문조사 의뢰</h3>
+            <p className="text-xs text-muted-foreground mt-1">설문조사 설계 및 의뢰</p>
+          </div>
+        </Link>
+
         <Link href="/data-generation" className="group block">
           <div className="bg-card rounded-xl border-2 border-cyan-500/30 p-5 hover:border-cyan-500/60 transition-colors relative">
             <span className="absolute top-3 right-3 text-[10px] font-medium bg-cyan-500/20 text-cyan-400 px-2 py-0.5 rounded-full">준비 중</span>
