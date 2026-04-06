@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import Image from "next/image";
 import Link from "next/link";
+
 interface Project {
   id: string;
   name: string;
@@ -11,45 +11,136 @@ interface Project {
   codedCount: number;
 }
 
-/* ---------- Service Cards Data ---------- */
+/* ---------- Service SVG Icons ---------- */
+
+function IconJudgment() {
+  return (
+    <svg viewBox="0 0 80 80" fill="none" className="w-20 h-20">
+      <rect x="18" y="30" width="44" height="36" rx="3" fill="#0f1a2e" stroke="#c49a2e" strokeWidth="2"/>
+      <line x1="26" y1="42" x2="54" y2="42" stroke="#5ba0e8" strokeWidth="2" strokeLinecap="round"/>
+      <line x1="26" y1="50" x2="48" y2="50" stroke="#5ba0e8" strokeWidth="2" strokeLinecap="round"/>
+      <line x1="26" y1="58" x2="42" y2="58" stroke="#5ba0e8" strokeWidth="2" strokeLinecap="round"/>
+      <circle cx="52" cy="22" r="12" fill="#c49a2e"/>
+      <path d="M48 22h8M52 18v8" stroke="#0f1a2e" strokeWidth="2.5" strokeLinecap="round"/>
+      <rect x="46" y="14" width="12" height="4" rx="1" fill="#d4a843"/>
+    </svg>
+  );
+}
+
+function IconStats() {
+  return (
+    <svg viewBox="0 0 80 80" fill="none" className="w-20 h-20">
+      <rect x="14" y="50" width="12" height="20" rx="2" fill="#5ba0e8"/>
+      <rect x="34" y="35" width="12" height="35" rx="2" fill="#c49a2e"/>
+      <rect x="54" y="20" width="12" height="50" rx="2" fill="#d4a843"/>
+      <path d="M18 48L40 30L60 18" stroke="#5ba0e8" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="4 3"/>
+      <circle cx="60" cy="18" r="4" fill="#5ba0e8" stroke="#0f1a2e" strokeWidth="2"/>
+      <line x1="10" y1="72" x2="70" y2="72" stroke="white" strokeWidth="1.5" opacity="0.3"/>
+    </svg>
+  );
+}
+
+function IconTextAnalysis() {
+  return (
+    <svg viewBox="0 0 80 80" fill="none" className="w-20 h-20">
+      <rect x="12" y="16" width="40" height="50" rx="4" fill="#0f1a2e" stroke="#5ba0e8" strokeWidth="1.5"/>
+      <line x1="20" y1="28" x2="44" y2="28" stroke="#5ba0e8" strokeWidth="2" strokeLinecap="round"/>
+      <line x1="20" y1="36" x2="40" y2="36" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.4"/>
+      <line x1="20" y1="44" x2="36" y2="44" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.4"/>
+      <line x1="20" y1="52" x2="38" y2="52" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.4"/>
+      <circle cx="56" cy="50" r="14" stroke="#c49a2e" strokeWidth="2.5" fill="none"/>
+      <line x1="66" y1="60" x2="72" y2="66" stroke="#c49a2e" strokeWidth="3" strokeLinecap="round"/>
+      <circle cx="56" cy="50" r="6" fill="#c49a2e" opacity="0.2"/>
+    </svg>
+  );
+}
+
+function IconSurvey() {
+  return (
+    <svg viewBox="0 0 80 80" fill="none" className="w-20 h-20">
+      <rect x="16" y="10" width="48" height="60" rx="4" fill="#0f1a2e" stroke="#c49a2e" strokeWidth="1.5"/>
+      <rect x="14" y="6" width="24" height="10" rx="3" fill="#c49a2e"/>
+      <rect x="26" y="26" width="12" height="12" rx="2" stroke="#5ba0e8" strokeWidth="2" fill="none"/>
+      <path d="M29 32l3 3 5-5" stroke="#5ba0e8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <line x1="44" y1="32" x2="56" y2="32" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.5"/>
+      <rect x="26" y="46" width="12" height="12" rx="2" stroke="#d4a843" strokeWidth="2" fill="none"/>
+      <path d="M29 52l3 3 5-5" stroke="#d4a843" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <line x1="44" y1="52" x2="56" y2="52" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.5"/>
+    </svg>
+  );
+}
+
+function IconNewsSearch() {
+  return (
+    <svg viewBox="0 0 80 80" fill="none" className="w-20 h-20">
+      <rect x="10" y="14" width="48" height="52" rx="4" fill="#0f1a2e" stroke="#5ba0e8" strokeWidth="1.5"/>
+      <rect x="18" y="22" width="20" height="14" rx="2" fill="#5ba0e8" opacity="0.3"/>
+      <line x1="18" y1="42" x2="50" y2="42" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.4"/>
+      <line x1="18" y1="48" x2="44" y2="48" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.3"/>
+      <line x1="18" y1="54" x2="40" y2="54" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.3"/>
+      <line x1="42" y1="22" x2="50" y2="22" stroke="#c49a2e" strokeWidth="2" strokeLinecap="round"/>
+      <line x1="42" y1="28" x2="50" y2="28" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.3"/>
+      <circle cx="58" cy="52" r="12" stroke="#c49a2e" strokeWidth="2.5" fill="none"/>
+      <line x1="67" y1="61" x2="72" y2="66" stroke="#c49a2e" strokeWidth="3" strokeLinecap="round"/>
+    </svg>
+  );
+}
+
+function IconResearchDesign() {
+  return (
+    <svg viewBox="0 0 80 80" fill="none" className="w-20 h-20">
+      <path d="M40 10C32 10 28 16 28 22c0 6 4 10 8 12v4h8v-4c4-2 8-6 8-12 0-6-4-12-12-12z" fill="#c49a2e"/>
+      <rect x="34" y="38" width="12" height="4" rx="1" fill="#d4a843"/>
+      <rect x="36" y="42" width="8" height="3" rx="1" fill="#d4a843"/>
+      <circle cx="24" cy="58" r="8" fill="#0f1a2e" stroke="#5ba0e8" strokeWidth="2"/>
+      <circle cx="56" cy="58" r="8" fill="#0f1a2e" stroke="#5ba0e8" strokeWidth="2"/>
+      <circle cx="40" cy="68" r="6" fill="#0f1a2e" stroke="#c49a2e" strokeWidth="2"/>
+      <line x1="32" y1="54" x2="36" y2="64" stroke="#5ba0e8" strokeWidth="1.5" strokeLinecap="round"/>
+      <line x1="48" y1="54" x2="44" y2="64" stroke="#5ba0e8" strokeWidth="1.5" strokeLinecap="round"/>
+      <line x1="40" y1="45" x2="40" y2="50" stroke="#d4a843" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="2 2"/>
+      <line x1="40" y1="50" x2="24" y2="50" stroke="#5ba0e8" strokeWidth="1.5" strokeLinecap="round"/>
+      <line x1="40" y1="50" x2="56" y2="50" stroke="#5ba0e8" strokeWidth="1.5" strokeLinecap="round"/>
+    </svg>
+  );
+}
 
 const serviceCards = [
   {
     title: "판결문 코딩",
     desc: "AI 기반 판결문 자동 코딩",
     href: "/judgment",
-    image: "/images/svc-판결문.png",
+    icon: <IconJudgment />,
   },
   {
     title: "계량통계분석",
     desc: "기초통계부터 고급분석까지",
     href: "/stats-analysis",
-    image: "/images/svc-계량통계.png",
+    icon: <IconStats />,
     badge: "준비 중",
   },
   {
     title: "텍스트 분석",
     desc: "토픽모델링, 감성분석, 워드클라우드",
     href: "/text-analysis",
-    image: "/images/svc-텍스트분석.png",
+    icon: <IconTextAnalysis />,
   },
   {
     title: "설문조사",
     desc: "설문 설계부터 데이터 수집까지",
     href: "/survey-request",
-    image: "/images/svc-설문조사.png",
+    icon: <IconSurvey />,
   },
   {
     title: "기사 검색",
     desc: "키워드 기반 뉴스 검색 및 요약",
     href: "/news-search",
-    image: "/images/svc-기사검색.png",
+    icon: <IconNewsSearch />,
   },
   {
     title: "연구 설계 지원",
     desc: "검정력 분석, 시뮬레이션",
     href: "/data-generation",
-    image: "/images/svc-연구설계.png",
+    icon: <IconResearchDesign />,
     badge: "준비 중",
   },
 ];
@@ -115,11 +206,11 @@ export default function DashboardPage() {
         backgroundAttachment: "fixed",
       }}
     >
-      <div className="absolute inset-0 bg-black/30 pointer-events-none" />
+      <div className="absolute inset-0 bg-black/40 pointer-events-none" />
 
       <div className="p-6 lg:p-8 max-w-7xl mx-auto relative z-10">
         {/* Welcome Banner */}
-        <div className="relative overflow-hidden rounded-2xl bg-[#0f1a2e]/80 backdrop-blur-md p-8 lg:p-10 mb-8 border border-[#1e3050]">
+        <div className="relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-xl p-8 lg:p-10 mb-8 border border-white/20 shadow-lg">
           <div className="relative z-10 flex items-center justify-between">
             <div>
               <h1 className="text-2xl lg:text-3xl font-bold text-white tracking-tight">
@@ -130,7 +221,7 @@ export default function DashboardPage() {
               </p>
               <button
                 onClick={() => setShowModal(true)}
-                className="mt-5 inline-flex items-center gap-2 px-5 py-2.5 bg-[#c49a2e] text-white rounded-lg text-sm font-semibold hover:bg-[#d4a843] transition-colors shadow-sm"
+                className="mt-5 inline-flex items-center gap-2 px-5 py-2.5 bg-[#c49a2e] text-white rounded-lg text-sm font-semibold hover:bg-[#d4a843] transition-colors shadow-md"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -138,14 +229,14 @@ export default function DashboardPage() {
                 새 프로젝트 만들기
               </button>
             </div>
-            <div className="hidden lg:flex items-center justify-center w-32 h-32 rounded-full bg-[#1a2744] backdrop-blur-sm">
-              <svg className="w-16 h-16 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="hidden lg:flex items-center justify-center w-32 h-32 rounded-full bg-white/5 border border-white/10">
+              <svg className="w-16 h-16 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </div>
           </div>
-          <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/5" />
-          <div className="absolute -bottom-16 -left-8 w-48 h-48 rounded-full bg-[#c49a2e]/10" />
+          <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-[#c49a2e]/5" />
+          <div className="absolute -bottom-16 -left-8 w-48 h-48 rounded-full bg-[#5ba0e8]/5" />
         </div>
 
         {/* Stats Row */}
@@ -159,29 +250,23 @@ export default function DashboardPage() {
         {/* Service Cards */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-5">
-            <h2 className="text-lg font-bold text-white">서비스</h2>
+            <h2 className="text-lg font-bold text-white/90">서비스</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {serviceCards.map((card) => (
               <Link key={card.title} href={card.href} className="group block">
-                <div className="rounded-2xl border border-[#1e3050] bg-[#0f1a2e]/80 backdrop-blur-md overflow-hidden hover:bg-[#0f1a2e] hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
-                  <div className="relative h-52 flex items-center justify-center p-4">
-                    <Image
-                      src={card.image}
-                      alt={card.title}
-                      width={400}
-                      height={400}
-                      className="object-contain max-h-full group-hover:scale-105 transition-transform duration-500"
-                    />
+                <div className="rounded-2xl border border-white/15 bg-white/8 backdrop-blur-xl overflow-hidden hover:bg-white/15 hover:border-[#c49a2e]/30 hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
+                  <div className="flex items-center justify-center py-8 relative">
+                    {card.icon}
                     {card.badge && (
                       <span className="absolute top-3 right-3 z-10 text-[10px] font-semibold bg-[#c49a2e] text-white px-2.5 py-1 rounded-full">
                         {card.badge}
                       </span>
                     )}
                   </div>
-                  <div className="p-4 border-t border-[#1e3050]">
+                  <div className="p-4 border-t border-white/10">
                     <h3 className="text-base font-bold text-white">{card.title}</h3>
-                    <p className="text-sm text-white/60 mt-1">{card.desc}</p>
+                    <p className="text-sm text-white/50 mt-1">{card.desc}</p>
                     <span className="inline-block text-sm text-[#d4a843] font-medium group-hover:underline underline-offset-4 mt-2">시작하기 &rarr;</span>
                   </div>
                 </div>
@@ -191,11 +276,11 @@ export default function DashboardPage() {
         </div>
 
         {/* Projects list */}
-        <div className="bg-[#0f1a2e]/80 backdrop-blur-md rounded-xl border border-[#1e3050]">
-          <div className="px-6 py-5 border-b border-[#1e3050] flex items-center justify-between">
+        <div className="bg-white/8 backdrop-blur-xl rounded-xl border border-white/15 shadow-lg">
+          <div className="px-6 py-5 border-b border-white/10 flex items-center justify-between">
             <div>
               <h2 className="text-lg font-bold text-white">프로젝트 목록</h2>
-              <p className="text-xs text-white/50 mt-0.5">생성된 프로젝트를 관리합니다</p>
+              <p className="text-xs text-white/40 mt-0.5">생성된 프로젝트를 관리합니다</p>
             </div>
             <button
               onClick={() => setShowModal(true)}
@@ -207,7 +292,7 @@ export default function DashboardPage() {
               추가
             </button>
           </div>
-          <div className="divide-y divide-[#1e3050]">
+          <div className="divide-y divide-white/5">
             {loading ? (
               <div className="px-6 py-16 text-center">
                 <div className="inline-flex items-center gap-2 text-white/50 text-sm">
@@ -220,13 +305,13 @@ export default function DashboardPage() {
               </div>
             ) : projects.length === 0 ? (
               <div className="px-6 py-16 text-center">
-                <div className="w-16 h-16 rounded-full bg-[#1a2744] flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                   </svg>
                 </div>
-                <p className="text-white/80 text-sm font-medium mb-1">프로젝트가 없습니다</p>
-                <p className="text-white/40 text-xs">새 프로젝트를 만들어 연구를 시작하세요</p>
+                <p className="text-white/70 text-sm font-medium mb-1">프로젝트가 없습니다</p>
+                <p className="text-white/30 text-xs">새 프로젝트를 만들어 연구를 시작하세요</p>
               </div>
             ) : (
               projects.map((project) => {
@@ -237,17 +322,17 @@ export default function DashboardPage() {
                   <Link
                     key={project.id}
                     href={`/project/${project.id}`}
-                    className="flex items-center justify-between px-6 py-4 hover:bg-[#1a2744] transition-colors group"
+                    className="flex items-center justify-between px-6 py-4 hover:bg-white/5 transition-colors group"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-lg bg-[#1a2744] flex items-center justify-center shrink-0">
+                      <div className="w-10 h-10 rounded-lg bg-[#c49a2e]/10 border border-[#c49a2e]/20 flex items-center justify-center shrink-0">
                         <svg className="w-5 h-5 text-[#d4a843]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                         </svg>
                       </div>
                       <div>
                         <h3 className="font-semibold text-white group-hover:text-[#d4a843] transition-colors">{project.name}</h3>
-                        <p className="text-xs text-white/50 mt-0.5">
+                        <p className="text-xs text-white/40 mt-0.5">
                           {project.caseCount}건 중 {project.codedCount}건 완료 &middot; {project.createdAt.slice(0, 10)}
                         </p>
                       </div>
@@ -256,7 +341,7 @@ export default function DashboardPage() {
                       <div className="text-right hidden sm:block">
                         <div className="text-sm font-bold text-white">{pct}%</div>
                       </div>
-                      <div className="w-24 h-2 bg-[#1a2744] rounded-full overflow-hidden hidden sm:block">
+                      <div className="w-24 h-2 bg-white/10 rounded-full overflow-hidden hidden sm:block">
                         <div
                           className="h-full bg-gradient-to-r from-[#c49a2e] to-[#d4a843] rounded-full transition-all"
                           style={{
@@ -264,7 +349,7 @@ export default function DashboardPage() {
                           }}
                         />
                       </div>
-                      <svg className="w-5 h-5 text-white/40 group-hover:text-[#d4a843] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-5 h-5 text-white/30 group-hover:text-[#d4a843] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                     </div>
@@ -278,7 +363,7 @@ export default function DashboardPage() {
         {/* New project modal */}
         {showModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-            <div className="bg-[#0f1a2e] rounded-2xl shadow-2xl p-8 w-full max-w-md mx-4 border border-white/10">
+            <div className="bg-[#0f1a2e]/95 backdrop-blur-xl rounded-2xl shadow-2xl p-8 w-full max-w-md mx-4 border border-white/10">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 rounded-xl bg-[#c49a2e]/10 flex items-center justify-center">
                   <svg className="w-5 h-5 text-[#c49a2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -287,33 +372,27 @@ export default function DashboardPage() {
                 </div>
                 <div>
                   <h2 className="text-lg font-bold text-white">새 프로젝트 만들기</h2>
-                  <p className="text-xs text-white/50">프로젝트 정보를 입력하세요</p>
+                  <p className="text-xs text-white/40">프로젝트 정보를 입력하세요</p>
                 </div>
               </div>
 
               <div className="mb-5">
-                <label className="block text-sm font-medium text-white/80 mb-2">템플릿 선택</label>
+                <label className="block text-sm font-medium text-white/70 mb-2">템플릿 선택</label>
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     onClick={() => setSelectedTemplate("judgment")}
                     className={`px-3 py-2.5 rounded-xl text-sm border-2 transition-all ${
                       selectedTemplate === "judgment"
                         ? "border-[#c49a2e] bg-[#c49a2e]/10 text-[#d4a843] font-medium"
-                        : "border-white/10 hover:bg-white/5 text-white/60"
+                        : "border-white/10 hover:bg-white/5 text-white/50"
                     }`}
                   >
                     판결문
                   </button>
-                  <button
-                    disabled
-                    className="px-3 py-2.5 rounded-xl text-sm border-2 border-white/10 opacity-40 cursor-not-allowed text-white/40"
-                  >
+                  <button disabled className="px-3 py-2.5 rounded-xl text-sm border-2 border-white/5 opacity-40 cursor-not-allowed text-white/30">
                     학술논문 (준비 중)
                   </button>
-                  <button
-                    disabled
-                    className="px-3 py-2.5 rounded-xl text-sm border-2 border-white/10 opacity-40 cursor-not-allowed text-white/40"
-                  >
+                  <button disabled className="px-3 py-2.5 rounded-xl text-sm border-2 border-white/5 opacity-40 cursor-not-allowed text-white/30">
                     정책문서 (준비 중)
                   </button>
                 </div>
@@ -326,12 +405,12 @@ export default function DashboardPage() {
                 onKeyDown={(e) => e.key === "Enter" && handleCreate()}
                 placeholder="프로젝트 이름 입력"
                 autoFocus
-                className="w-full px-4 py-3 border border-white/10 rounded-xl text-sm bg-white/5 text-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/30 focus:border-[#c49a2e] transition-shadow placeholder-white/30"
+                className="w-full px-4 py-3 border border-white/10 rounded-xl text-sm bg-white/5 text-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/30 focus:border-[#c49a2e] transition-shadow placeholder-white/25"
               />
               <div className="flex justify-end gap-3 mt-6">
                 <button
                   onClick={() => { setShowModal(false); setNewName(""); setSelectedTemplate("judgment"); }}
-                  className="px-5 py-2.5 border border-white/10 text-white/60 rounded-xl text-sm font-medium hover:bg-white/5 transition-colors"
+                  className="px-5 py-2.5 border border-white/10 text-white/50 rounded-xl text-sm font-medium hover:bg-white/5 transition-colors"
                 >
                   취소
                 </button>
@@ -363,10 +442,10 @@ function StatCard({
   color: string;
 }) {
   const colorMap: Record<string, { text: string; iconBg: string }> = {
-    blue: { text: "text-[#5ba0e8]", iconBg: "bg-[#5ba0e8]/20" },
-    amber: { text: "text-[#d4a843]", iconBg: "bg-[#d4a843]/20" },
-    green: { text: "text-emerald-400", iconBg: "bg-emerald-400/20" },
-    purple: { text: "text-purple-400", iconBg: "bg-purple-400/20" },
+    blue: { text: "text-[#5ba0e8]", iconBg: "bg-[#5ba0e8]/15" },
+    amber: { text: "text-[#d4a843]", iconBg: "bg-[#d4a843]/15" },
+    green: { text: "text-emerald-400", iconBg: "bg-emerald-400/15" },
+    purple: { text: "text-purple-400", iconBg: "bg-purple-400/15" },
   };
 
   const c = colorMap[color] || colorMap.blue;
@@ -395,14 +474,14 @@ function StatCard({
   };
 
   return (
-    <div className="bg-[#0f1a2e]/80 backdrop-blur-md rounded-xl border border-[#1e3050] p-5 hover:bg-[#0f1a2e] transition-all">
+    <div className="bg-white/8 backdrop-blur-xl rounded-xl border border-white/15 p-5 hover:bg-white/12 transition-all">
       <div className="flex items-center gap-3 mb-3">
-        <div className={`w-10 h-10 rounded-xl ${c.iconBg} ${c.text} flex items-center justify-center`}>
+        <div className={`w-10 h-10 rounded-xl ${c.iconBg} ${c.text} flex items-center justify-center border border-white/5`}>
           {icons[icon]}
         </div>
       </div>
       <div className="text-3xl font-bold text-white tracking-tight">{value}</div>
-      <span className="text-xs text-white/50 font-medium mt-1 block">{label}</span>
+      <span className="text-xs text-white/40 font-medium mt-1 block">{label}</span>
     </div>
   );
 }
