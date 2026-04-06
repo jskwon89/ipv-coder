@@ -148,14 +148,14 @@ export default function ProjectDetailPage() {
         <button
           onClick={handleBulkCheck}
           disabled={checking}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-card border border-border rounded-lg text-sm font-medium hover:bg-secondary transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-card border border-border rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors disabled:opacity-50"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
           {checking ? "확인 중..." : "전문 일괄확인"}
         </button>
-        <button className="inline-flex items-center gap-2 px-4 py-2 bg-card border border-border rounded-lg text-sm font-medium hover:bg-secondary transition-colors">
+        <button className="inline-flex items-center gap-2 px-4 py-2 bg-card border border-border rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
           </svg>
@@ -163,7 +163,7 @@ export default function ProjectDetailPage() {
         </button>
         <Link
           href={`/project/${projectId}/stats`}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-card border border-border rounded-lg text-sm font-medium hover:bg-secondary transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-card border border-border rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -173,7 +173,7 @@ export default function ProjectDetailPage() {
         <button
           onClick={handleExport}
           disabled={exporting}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-card border border-border rounded-lg text-sm font-medium hover:bg-secondary transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-card border border-border rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors disabled:opacity-50"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -184,7 +184,7 @@ export default function ProjectDetailPage() {
 
       {/* Check progress */}
       {checkProgress && (
-        <div className="mb-4 px-4 py-2 bg-secondary rounded-lg text-sm">
+        <div className="mb-4 px-4 py-2 bg-gray-50 rounded-lg text-sm">
           {checkProgress}
         </div>
       )}
@@ -194,7 +194,7 @@ export default function ProjectDetailPage() {
         <button
           onClick={() => setFilter("all")}
           className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-            filter === "all" ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-border"
+            filter === "all" ? "bg-primary text-primary-foreground" : "bg-gray-50 text-secondary-foreground hover:bg-border"
           }`}
         >
           전체 ({cases.length})
@@ -207,7 +207,7 @@ export default function ProjectDetailPage() {
               key={s}
               onClick={() => setFilter(s)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                filter === s ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-border"
+                filter === s ? "bg-primary text-primary-foreground" : "bg-gray-50 text-secondary-foreground hover:bg-border"
               }`}
             >
               <StatusBadge status={s} /> ({count})
@@ -221,7 +221,7 @@ export default function ProjectDetailPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-border bg-[#0f1a2e]">
+              <tr className="border-b border-border bg-gray-100">
                 <th className="text-left px-4 py-3 font-medium">번호</th>
                 <th className="text-left px-4 py-3 font-medium">법원</th>
                 <th className="text-left px-4 py-3 font-medium">사건번호</th>
@@ -239,7 +239,7 @@ export default function ProjectDetailPage() {
                 </tr>
               ) : (
                 filteredCases.map((c) => (
-                  <tr key={c.id} className="hover:bg-[#0f1a2e] transition-colors">
+                  <tr key={c.id} className="hover:bg-gray-100 transition-colors">
                     <td className="px-4 py-3 text-muted-foreground">{c.key}</td>
                     <td className="px-4 py-3">{c.court}</td>
                     <td className="px-4 py-3 font-mono text-xs">{c.case_no}</td>

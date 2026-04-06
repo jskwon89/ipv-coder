@@ -182,11 +182,11 @@ export default function UploadPage() {
       </p>
 
       {/* Mode tabs */}
-      <div className="flex gap-1 bg-secondary rounded-lg p-1 mb-8 w-fit">
+      <div className="flex gap-1 bg-gray-50 rounded-lg p-1 mb-8 w-fit">
         <button
           onClick={() => setMode("list")}
           className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-            mode === "list" ? "bg-card text-foreground shadow-md shadow-black/20" : "text-muted-foreground hover:text-foreground"
+            mode === "list" ? "bg-card text-foreground shadow-md" : "text-muted-foreground hover:text-foreground"
           }`}
         >
           사건 목록 (.txt / .xlsx)
@@ -194,7 +194,7 @@ export default function UploadPage() {
         <button
           onClick={() => setMode("pdf")}
           className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-            mode === "pdf" ? "bg-card text-foreground shadow-md shadow-black/20" : "text-muted-foreground hover:text-foreground"
+            mode === "pdf" ? "bg-card text-foreground shadow-md" : "text-muted-foreground hover:text-foreground"
           }`}
         >
           판결문 PDF 직접 업로드
@@ -243,7 +243,7 @@ export default function UploadPage() {
               <div className="bg-card rounded-xl border border-border overflow-hidden">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-border bg-[#0f1a2e]">
+                    <tr className="border-b border-border bg-gray-100">
                       <th className="text-left px-4 py-3 font-medium">번호</th>
                       <th className="text-left px-4 py-3 font-medium">법원</th>
                       <th className="text-left px-4 py-3 font-medium">사건번호</th>
@@ -267,7 +267,7 @@ export default function UploadPage() {
                             ) : c.is_ipv ? (
                               <span className="inline-flex px-2 py-0.5 bg-green-50 text-green-700 text-xs rounded-full font-medium">IPV</span>
                             ) : (
-                              <span className="inline-flex px-2 py-0.5 bg-[#243350] text-gray-300 text-xs rounded-full font-medium">비IPV</span>
+                              <span className="inline-flex px-2 py-0.5 bg-gray-200 text-gray-600 text-xs rounded-full font-medium">비IPV</span>
                             )}
                           </td>
                           <td className="px-4 py-3 text-xs text-muted-foreground max-w-xs truncate">{c.reason}</td>
@@ -279,7 +279,7 @@ export default function UploadPage() {
               </div>
 
               <div className="mt-6 flex justify-end gap-3">
-                <Link href={`/project/${projectId}`} className="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg text-sm font-medium hover:bg-border transition-colors">
+                <Link href={`/project/${projectId}`} className="px-4 py-2 bg-gray-50 text-secondary-foreground rounded-lg text-sm font-medium hover:bg-border transition-colors">
                   취소
                 </Link>
                 <button
@@ -335,7 +335,7 @@ export default function UploadPage() {
                 <div className="flex gap-2">
                   <button
                     onClick={() => { setPdfFiles([]); setPdfResults([]); setPdfProgress(""); }}
-                    className="px-3 py-1.5 text-xs bg-secondary text-secondary-foreground rounded-lg hover:bg-border transition-colors"
+                    className="px-3 py-1.5 text-xs bg-gray-50 text-secondary-foreground rounded-lg hover:bg-border transition-colors"
                   >
                     초기화
                   </button>
@@ -350,13 +350,13 @@ export default function UploadPage() {
               </div>
 
               {pdfProgress && (
-                <div className="mb-3 px-4 py-2 bg-secondary rounded-lg text-sm">{pdfProgress}</div>
+                <div className="mb-3 px-4 py-2 bg-gray-50 rounded-lg text-sm">{pdfProgress}</div>
               )}
 
               <div className="bg-card rounded-xl border border-border overflow-hidden">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-border bg-[#0f1a2e]">
+                    <tr className="border-b border-border bg-gray-100">
                       <th className="text-left px-4 py-3 font-medium">파일명</th>
                       <th className="text-left px-4 py-3 font-medium">크기</th>
                       <th className="text-left px-4 py-3 font-medium">페이지</th>

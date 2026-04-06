@@ -115,7 +115,7 @@ export default function DataGenerationPage() {
                       className={`text-left px-3 py-2.5 rounded-lg border transition-colors ${
                         selectedScales.includes(scale.label)
                           ? "border-cyan-500 bg-cyan-900/20"
-                          : "border-border hover:bg-[#0f1a2e]"
+                          : "border-border hover:bg-gray-50"
                       }`}
                     >
                       <div className="text-sm font-medium">{scale.label}</div>
@@ -320,14 +320,14 @@ export default function DataGenerationPage() {
       {/* Output Preview */}
       <div className="bg-card rounded-xl border border-border mt-6">
         <div className="px-6 py-4 border-b border-border flex items-center justify-between">
-          <div className="flex items-center gap-1 bg-[#0f1a2e] rounded-lg p-1 w-fit">
+          <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1 w-fit">
             {outputTabs.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveOutputTab(tab)}
                 className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${
                   activeOutputTab === tab
-                    ? "bg-card text-foreground shadow-md shadow-black/20"
+                    ? "bg-card text-foreground shadow-md"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -338,19 +338,19 @@ export default function DataGenerationPage() {
           <div className="flex gap-2">
             <button
               disabled
-              className="px-3 py-1.5 border border-border rounded-lg text-xs font-medium hover:bg-[#0f1a2e] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 py-1.5 border border-border rounded-lg text-xs font-medium hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Excel
             </button>
             <button
               disabled
-              className="px-3 py-1.5 border border-border rounded-lg text-xs font-medium hover:bg-[#0f1a2e] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 py-1.5 border border-border rounded-lg text-xs font-medium hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               CSV
             </button>
             <button
               disabled
-              className="px-3 py-1.5 border border-border rounded-lg text-xs font-medium hover:bg-[#0f1a2e] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 py-1.5 border border-border rounded-lg text-xs font-medium hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               SPSS (.sav)
             </button>

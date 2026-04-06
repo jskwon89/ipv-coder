@@ -118,7 +118,7 @@ export default function NewsSearchPage() {
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               searchType === "keyword"
                 ? "bg-blue-500 text-white"
-                : "bg-secondary text-secondary-foreground hover:bg-border"
+                : "bg-gray-50 text-secondary-foreground hover:bg-border"
             }`}
           >
             키워드 조합
@@ -128,7 +128,7 @@ export default function NewsSearchPage() {
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               searchType === "sentence"
                 ? "bg-blue-500 text-white"
-                : "bg-secondary text-secondary-foreground hover:bg-border"
+                : "bg-gray-50 text-secondary-foreground hover:bg-border"
             }`}
           >
             문장 검색
@@ -167,7 +167,7 @@ export default function NewsSearchPage() {
                         onClick={() =>
                           setOperator(operator === "AND" ? "OR" : "AND")
                         }
-                        className="mx-1 px-2 py-0.5 rounded text-xs font-bold bg-secondary text-muted-foreground hover:bg-border transition-colors"
+                        className="mx-1 px-2 py-0.5 rounded text-xs font-bold bg-gray-50 text-muted-foreground hover:bg-border transition-colors"
                       >
                         {operator}
                       </button>
@@ -308,7 +308,7 @@ export default function NewsSearchPage() {
                 <div className="flex gap-2 mt-3">
                   <button
                     onClick={() => copyCitation(article)}
-                    className="px-3 py-1.5 text-xs font-medium bg-secondary text-secondary-foreground rounded-lg hover:bg-border transition-colors"
+                    className="px-3 py-1.5 text-xs font-medium bg-gray-50 text-secondary-foreground rounded-lg hover:bg-border transition-colors"
                   >
                     논문에 인용
                   </button>
@@ -316,7 +316,7 @@ export default function NewsSearchPage() {
                     href={article.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-3 py-1.5 text-xs font-medium bg-secondary text-secondary-foreground rounded-lg hover:bg-border transition-colors"
+                    className="px-3 py-1.5 text-xs font-medium bg-gray-50 text-secondary-foreground rounded-lg hover:bg-border transition-colors"
                   >
                     전문 보기
                   </a>

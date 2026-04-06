@@ -123,7 +123,7 @@ export default function CaseDetailPage() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setShowVariableSelector((v) => !v)}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-secondary text-secondary-foreground rounded-lg text-sm font-medium hover:opacity-80 transition-opacity border border-border"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 text-secondary-foreground rounded-lg text-sm font-medium hover:opacity-80 transition-opacity border border-border"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
@@ -198,7 +198,7 @@ export default function CaseDetailPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left: Full text viewer */}
         <div className="bg-card rounded-xl border border-border overflow-hidden">
-          <div className="px-4 py-3 border-b border-border bg-[#0f1a2e] font-medium text-sm">
+          <div className="px-4 py-3 border-b border-border bg-gray-100 font-medium text-sm">
             판결문 전문
           </div>
           <div className="p-4 h-[calc(100vh-250px)] overflow-y-auto text-sm leading-relaxed font-mono whitespace-pre-wrap">
@@ -214,7 +214,7 @@ export default function CaseDetailPage() {
 
         {/* Right: Coding form */}
         <div className="bg-card rounded-xl border border-border overflow-hidden">
-          <div className="px-4 py-3 border-b border-border bg-[#0f1a2e] font-medium text-sm">
+          <div className="px-4 py-3 border-b border-border bg-gray-100 font-medium text-sm">
             코딩 폼
           </div>
           <div className="p-4 h-[calc(100vh-250px)] overflow-y-auto space-y-6">
@@ -286,7 +286,7 @@ export default function CaseDetailPage() {
                 <div key={n} className="border border-border rounded-lg overflow-hidden mb-2">
                   <button
                     onClick={() => toggleIncident(n)}
-                    className="w-full flex items-center justify-between px-3 py-2 bg-[#0f1a2e] text-sm font-medium hover:bg-secondary transition-colors"
+                    className="w-full flex items-center justify-between px-3 py-2 bg-gray-100 text-sm font-medium hover:bg-gray-50 transition-colors"
                   >
                     <span>제 {n} 차 범행</span>
                     <svg

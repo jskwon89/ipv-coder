@@ -73,7 +73,7 @@ export default function JudgmentPage() {
         action={
           <button
             onClick={() => setShowModal(true)}
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#c49a2e] text-white rounded-xl text-sm font-medium hover:bg-[#d4a843] transition-colors shadow-md shadow-black/20"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#c49a2e] text-white rounded-xl text-sm font-medium hover:bg-[#d4a843] transition-colors shadow-md"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -86,12 +86,12 @@ export default function JudgmentPage() {
       {/* Project list */}
       <div className="space-y-4">
         {loading ? (
-          <div className="bg-[#1e2d47] rounded-xl border border-[#2a3a54] shadow-md shadow-black/20 p-12 text-center text-gray-400">
+          <div className="bg-white rounded-xl border border-gray-200 shadow-md p-12 text-center text-gray-400">
             로딩 중...
           </div>
         ) : projects.length === 0 ? (
-          <div className="bg-[#1e2d47] rounded-xl border border-[#2a3a54] shadow-md shadow-black/20 p-16 text-center">
-            <svg className="w-16 h-16 text-gray-200 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="bg-white rounded-xl border border-gray-200 shadow-md p-16 text-center">
+            <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
             </svg>
             <p className="text-gray-400 mb-4">아직 프로젝트가 없습니다</p>
@@ -109,17 +109,17 @@ export default function JudgmentPage() {
               <Link
                 key={project.id}
                 href={`/project/${project.id}`}
-                className="block bg-[#1e2d47] rounded-xl border border-[#2a3a54] shadow-md shadow-black/20 hover:shadow-md transition-all p-6 group"
+                className="block bg-white rounded-xl border border-gray-200 shadow-md hover:shadow-lg transition-all p-6 group"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-[#243350] flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-xl bg-gray-200 flex items-center justify-center">
                       <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                       </svg>
                     </div>
                     <div>
-                      <h3 className="font-semibold text-white group-hover:text-[#c49a2e] transition-colors">{project.name}</h3>
+                      <h3 className="font-semibold text-gray-900 group-hover:text-[#c49a2e] transition-colors">{project.name}</h3>
                       <p className="text-sm text-gray-400 mt-0.5">
                         {project.caseCount}건 중 {project.codedCount}건 완료 · 생성일 {project.createdAt.slice(0, 10)}
                       </p>
@@ -127,12 +127,12 @@ export default function JudgmentPage() {
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="text-right">
-                      <span className="text-lg font-bold text-white">{pct}%</span>
+                      <span className="text-lg font-bold text-gray-900">{pct}%</span>
                     </div>
-                    <div className="w-24 h-2 bg-[#243350] rounded-full overflow-hidden">
+                    <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
                       <div className="h-full bg-[#c49a2e] rounded-full" style={{ width: `${pct}%` }} />
                     </div>
-                    <svg className="w-5 h-5 text-gray-300 group-hover:text-gray-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-gray-400 group-hover:text-gray-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </div>
@@ -146,8 +146,8 @@ export default function JudgmentPage() {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-          <div className="bg-[#1e2d47] rounded-2xl border border-[#2a3a54] shadow-2xl p-8 w-full max-w-md mx-4">
-            <h2 className="text-lg font-bold text-white mb-4">새 판결문 코딩 프로젝트</h2>
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-2xl p-8 w-full max-w-md mx-4">
+            <h2 className="text-lg font-bold text-gray-900 mb-4">새 판결문 코딩 프로젝트</h2>
             <input
               type="text"
               value={newName}
@@ -155,12 +155,12 @@ export default function JudgmentPage() {
               onKeyDown={(e) => e.key === "Enter" && handleCreate()}
               placeholder="프로젝트 이름 입력 (예: 2024년 IPV 판결문 연구)"
               autoFocus
-              className="w-full px-4 py-3 border border-[#2a3a54] rounded-xl text-sm bg-[#1e2d47] focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/30 focus:border-[#c49a2e]"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/30 focus:border-[#c49a2e]"
             />
             <div className="flex justify-end gap-3 mt-6">
               <button
                 onClick={() => { setShowModal(false); setNewName(""); }}
-                className="px-5 py-2.5 text-gray-300 bg-[#243350] rounded-xl text-sm font-medium hover:bg-[#2a3a54] transition-colors"
+                className="px-5 py-2.5 text-gray-600 bg-gray-200 rounded-xl text-sm font-medium hover:bg-gray-300 transition-colors"
               >
                 취소
               </button>
