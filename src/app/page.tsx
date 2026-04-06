@@ -227,7 +227,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
             <h3 className="text-lg font-bold text-white mb-1">ResearchOn</h3>
-            <p className="text-sm">연구자를 위한 올인원 문서 코딩 플랫폼</p>
+            <p className="text-sm">연구자를 위한 올인원 연구 지원 플랫폼</p>
           </div>
           <div className="flex items-center gap-6 text-sm">
             <a href="#services" className="hover:text-white transition-colors">서비스</a>
