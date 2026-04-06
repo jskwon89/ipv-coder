@@ -14,7 +14,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   // All other pages: sidebar + main
   return (
-    <>
+    <div className="flex min-h-full">
       {/* Sidebar */}
       <aside className="w-64 bg-sidebar text-sidebar-foreground flex flex-col min-h-screen shrink-0">
         <div className="px-6 py-5 border-b border-white/10">
@@ -121,6 +121,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       <main className="flex-1 min-h-screen overflow-auto bg-background">
         {children}
       </main>
-    </>
+    </div>
   );
 }
