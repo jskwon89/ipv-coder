@@ -28,11 +28,12 @@ export default function NewsSearchPage() {
   const [dateTo, setDateTo] = useState("");
 
   const addKeyword = () => {
-    const trimmed = keywordInput.trim();
-    if (trimmed && !keywords.includes(trimmed)) {
-      setKeywords([...keywords, trimmed]);
-      setKeywordInput("");
+    const parts = keywordInput.split(",").map((s) => s.trim()).filter(Boolean);
+    const newKeywords = parts.filter((p) => !keywords.includes(p));
+    if (newKeywords.length > 0) {
+      setKeywords([...keywords, ...newKeywords]);
     }
+    setKeywordInput("");
   };
 
   const removeKeyword = (kw: string) => {
@@ -147,7 +148,7 @@ export default function NewsSearchPage() {
                     addKeyword();
                   }
                 }}
-                placeholder="키워드 입력 후 Enter"
+                placeholder="키워드를 하나씩 입력 후 Enter (쉼표로 여러 개 동시 입력 가능)"
                 className="flex-1 px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <button
@@ -205,7 +206,7 @@ export default function NewsSearchPage() {
             onKeyDown={(e) => {
               if (e.key === "Enter") handleSearch();
             }}
-            placeholder="키워드 또는 문장으로 검색..."
+            placeholder="필요로 하는 사건 내용을 입력하세요 (예: 가정폭력 가해자에 대한 법원의 양형 기준 변화)"
             className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-blue-500 mb-3"
           />
         )}

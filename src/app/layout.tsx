@@ -46,10 +46,14 @@ export default function RootLayout({
             </Link>
 
             {/* 문서 코딩 */}
-            <div className="pt-4 pb-1 px-3"><span className="text-[10px] font-semibold uppercase tracking-wider text-white/30">문서 코딩</span></div>
+            <div className="pt-5 pb-2 px-3 flex items-center gap-2"><div className="w-1 h-4 rounded-full bg-blue-400"></div><span className="text-xs font-bold tracking-wide text-white/70">문서 코딩</span></div>
             <Link href="/?type=judgment" className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-sidebar-hover transition-colors text-sm">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" /></svg>
               판결문 코딩
+            </Link>
+            <Link href="/judgment-collection" className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-sidebar-hover transition-colors text-sm">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" /></svg>
+              판결문 수집 의뢰
             </Link>
             <Link href="/news-search" className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-sidebar-hover transition-colors text-sm">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" /></svg>
@@ -65,7 +69,7 @@ export default function RootLayout({
             </Link>
 
             {/* 통계분석 */}
-            <div className="pt-4 pb-1 px-3"><span className="text-[10px] font-semibold uppercase tracking-wider text-white/30">통계분석</span></div>
+            <div className="pt-5 pb-2 px-3 flex items-center gap-2"><div className="w-1 h-4 rounded-full bg-rose-400"></div><span className="text-xs font-bold tracking-wide text-white/70">통계분석</span></div>
             <Link href="/stats-analysis" className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-sidebar-hover transition-colors text-sm">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
               기초통계 및 시각화
@@ -76,7 +80,7 @@ export default function RootLayout({
             </Link>
 
             {/* 설문조사 */}
-            <div className="pt-4 pb-1 px-3"><span className="text-[10px] font-semibold uppercase tracking-wider text-white/30">설문조사</span></div>
+            <div className="pt-5 pb-2 px-3 flex items-center gap-2"><div className="w-1 h-4 rounded-full bg-indigo-400"></div><span className="text-xs font-bold tracking-wide text-white/70">설문조사</span></div>
             <Link href="/survey-request" className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-sidebar-hover transition-colors text-sm">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg>
               설문조사 의뢰
@@ -87,7 +91,7 @@ export default function RootLayout({
             </Link>
 
             {/* 연구 지원 */}
-            <div className="pt-4 pb-1 px-3"><span className="text-[10px] font-semibold uppercase tracking-wider text-white/30">연구 지원</span></div>
+            <div className="pt-5 pb-2 px-3 flex items-center gap-2"><div className="w-1 h-4 rounded-full bg-cyan-400"></div><span className="text-xs font-bold tracking-wide text-white/70">연구 지원</span></div>
             <Link href="/data-generation" className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-sidebar-hover transition-colors text-sm">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" /></svg>
               연구 설계 지원
