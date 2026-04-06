@@ -23,10 +23,10 @@ function NavLink({ href, icon, label, pathname }: { href: string; icon: React.Re
 
 function SectionDivider({ color, label }: { color: string; label: string }) {
   return (
-    <div className="pt-5 pb-2 px-3">
+    <div className="pt-6 pb-2 px-3">
       <div className="flex items-center gap-2 mb-1">
-        <div className={`w-1 h-3.5 rounded-full ${color}`} />
-        <span className="text-[10px] font-bold tracking-widest text-white/40 uppercase">{label}</span>
+        <div className={`w-1.5 h-4 rounded-full ${color}`} />
+        <span className="text-xs font-bold tracking-wider text-white/60 uppercase">{label}</span>
       </div>
       <div className="border-b border-white/5 mt-1" />
     </div>

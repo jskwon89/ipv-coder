@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface Project {
   id: string;
@@ -16,81 +17,45 @@ const serviceCards = [
     title: "판결문 코딩",
     desc: "AI 기반 판결문 자동 코딩 및 변수 추출",
     href: "/dashboard?type=judgment",
-    color: "emerald",
-    iconBg: "bg-emerald-100",
-    iconColor: "text-emerald-600",
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
-      </svg>
-    ),
+    image: "/images/판결문코딩.jpg",
+    gradient: "",
   },
   {
     title: "계량통계분석",
     desc: "기술통계, 시각화, 고급 분석 의뢰",
     href: "/stats-analysis",
-    color: "rose",
-    iconBg: "bg-rose-100",
-    iconColor: "text-rose-600",
+    image: "",
+    gradient: "bg-gradient-to-br from-blue-600 to-blue-800",
     badge: "준비 중",
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-      </svg>
-    ),
   },
   {
     title: "텍스트 분석",
     desc: "토픽모델링, 감성분석, 워드클라우드",
     href: "/text-analysis",
-    color: "purple",
-    iconBg: "bg-purple-100",
-    iconColor: "text-purple-600",
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-      </svg>
-    ),
+    image: "/images/텍스트분석_2.png",
+    gradient: "",
   },
   {
     title: "설문조사",
     desc: "설문지 작성, 조사 설계 및 의뢰",
     href: "/survey-request",
-    color: "indigo",
-    iconBg: "bg-indigo-100",
-    iconColor: "text-indigo-600",
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-      </svg>
-    ),
+    image: "/images/설문조사.png",
+    gradient: "",
   },
   {
     title: "기사 검색",
     desc: "뉴스 기사 검색, 수집 및 인용",
     href: "/news-search",
-    color: "blue",
-    iconBg: "bg-blue-100",
-    iconColor: "text-blue-600",
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-      </svg>
-    ),
+    image: "",
+    gradient: "bg-gradient-to-br from-emerald-600 to-emerald-800",
   },
   {
     title: "연구 설계 지원",
     desc: "검정력 분석, 시뮬레이션, 설문 설계",
     href: "/data-generation",
-    color: "cyan",
-    iconBg: "bg-cyan-100",
-    iconColor: "text-cyan-600",
+    image: "",
+    gradient: "bg-gradient-to-br from-cyan-600 to-cyan-800",
     badge: "준비 중",
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
-      </svg>
-    ),
   },
 ];
 
@@ -191,26 +156,38 @@ export default function DashboardPage() {
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-lg font-bold text-gray-900">서비스</h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {serviceCards.map((card) => (
             <Link key={card.title} href={card.href} className="group block">
-              <div className="relative bg-white rounded-xl border border-gray-100 p-6 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+              <div className={`relative h-48 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] ${!card.image ? card.gradient : ""}`}>
+                {card.image && (
+                  <Image
+                    src={card.image}
+                    alt={card.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                )}
+                {/* Dark overlay */}
+                <div className={`absolute inset-0 ${card.image ? "bg-gradient-to-t from-black/80 via-black/40 to-black/20" : "bg-black/10"}`} />
+                {/* Badge */}
                 {card.badge && (
-                  <span className="absolute top-4 right-4 text-[10px] font-medium bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">
+                  <span className="absolute top-4 right-4 z-10 text-[10px] font-semibold bg-white/20 backdrop-blur-sm text-white px-2.5 py-1 rounded-full border border-white/20">
                     {card.badge}
                   </span>
                 )}
-                <div className={`w-12 h-12 rounded-xl ${card.iconBg} ${card.iconColor} flex items-center justify-center mb-4`}>
-                  {card.icon}
+                {/* Content overlay */}
+                <div className="absolute inset-0 z-10 flex flex-col justify-end p-5">
+                  <h3 className="font-bold text-lg text-white mb-1">{card.title}</h3>
+                  <p className="text-sm text-white/80 leading-relaxed mb-3">{card.desc}</p>
+                  <span className="text-sm font-medium text-white group-hover:underline underline-offset-4 inline-flex items-center gap-1">
+                    시작하기
+                    <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </span>
                 </div>
-                <h3 className="font-bold text-lg text-gray-900 mb-1">{card.title}</h3>
-                <p className="text-sm text-gray-500 leading-relaxed mb-3">{card.desc}</p>
-                <span className="text-sm font-medium text-[#1e3a5f] group-hover:text-[#2d6cb4] transition-colors inline-flex items-center gap-1">
-                  시작하기
-                  <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </span>
               </div>
             </Link>
           ))}
