@@ -106,20 +106,20 @@ export default function DashboardPage() {
   const completionRate = totalCases > 0 ? ((totalCoded / totalCases) * 100).toFixed(1) : "0.0";
 
   return (
-    <div className="relative min-h-screen">
-      {/* Background Image - fixed behind everything */}
-      <Image
-        src="/images/dashboard-bg.png"
-        alt=""
-        fill
-        className="object-cover fixed inset-0 -z-10"
-        priority
-      />
-      <div className="fixed inset-0 -z-10 bg-black/30" />
+    <div
+      className="relative min-h-screen"
+      style={{
+        backgroundImage: "url('/images/dashboard-bg.png')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed",
+      }}
+    >
+      <div className="absolute inset-0 bg-black/30 pointer-events-none" />
 
       <div className="p-6 lg:p-8 max-w-7xl mx-auto relative z-10">
         {/* Welcome Banner */}
-        <div className="relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md p-8 lg:p-10 mb-8 border border-white/20">
+        <div className="relative overflow-hidden rounded-2xl bg-[#0f1a2e]/80 backdrop-blur-md p-8 lg:p-10 mb-8 border border-[#1e3050]">
           <div className="relative z-10 flex items-center justify-between">
             <div>
               <h1 className="text-2xl lg:text-3xl font-bold text-white tracking-tight">
@@ -138,7 +138,7 @@ export default function DashboardPage() {
                 새 프로젝트 만들기
               </button>
             </div>
-            <div className="hidden lg:flex items-center justify-center w-32 h-32 rounded-full bg-white/10 backdrop-blur-sm">
+            <div className="hidden lg:flex items-center justify-center w-32 h-32 rounded-full bg-[#1a2744] backdrop-blur-sm">
               <svg className="w-16 h-16 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
@@ -164,7 +164,7 @@ export default function DashboardPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {serviceCards.map((card) => (
               <Link key={card.title} href={card.href} className="group block">
-                <div className="rounded-2xl border border-white/15 bg-white/10 backdrop-blur-md overflow-hidden hover:bg-white/20 hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
+                <div className="rounded-2xl border border-[#1e3050] bg-[#0f1a2e]/80 backdrop-blur-md overflow-hidden hover:bg-[#0f1a2e] hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
                   <div className="relative h-52 flex items-center justify-center p-4">
                     <Image
                       src={card.image}
@@ -179,7 +179,7 @@ export default function DashboardPage() {
                       </span>
                     )}
                   </div>
-                  <div className="p-4 border-t border-white/10">
+                  <div className="p-4 border-t border-[#1e3050]">
                     <h3 className="text-base font-bold text-white">{card.title}</h3>
                     <p className="text-sm text-white/60 mt-1">{card.desc}</p>
                     <span className="inline-block text-sm text-[#d4a843] font-medium group-hover:underline underline-offset-4 mt-2">시작하기 &rarr;</span>
@@ -191,8 +191,8 @@ export default function DashboardPage() {
         </div>
 
         {/* Projects list */}
-        <div className="bg-white/10 backdrop-blur-md rounded-xl border border-white/15">
-          <div className="px-6 py-5 border-b border-white/10 flex items-center justify-between">
+        <div className="bg-[#0f1a2e]/80 backdrop-blur-md rounded-xl border border-[#1e3050]">
+          <div className="px-6 py-5 border-b border-[#1e3050] flex items-center justify-between">
             <div>
               <h2 className="text-lg font-bold text-white">프로젝트 목록</h2>
               <p className="text-xs text-white/50 mt-0.5">생성된 프로젝트를 관리합니다</p>
@@ -207,7 +207,7 @@ export default function DashboardPage() {
               추가
             </button>
           </div>
-          <div className="divide-y divide-white/10">
+          <div className="divide-y divide-[#1e3050]">
             {loading ? (
               <div className="px-6 py-16 text-center">
                 <div className="inline-flex items-center gap-2 text-white/50 text-sm">
@@ -220,7 +220,7 @@ export default function DashboardPage() {
               </div>
             ) : projects.length === 0 ? (
               <div className="px-6 py-16 text-center">
-                <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 rounded-full bg-[#1a2744] flex items-center justify-center mx-auto mb-4">
                   <svg className="w-8 h-8 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                   </svg>
@@ -237,10 +237,10 @@ export default function DashboardPage() {
                   <Link
                     key={project.id}
                     href={`/project/${project.id}`}
-                    className="flex items-center justify-between px-6 py-4 hover:bg-white/10 transition-colors group"
+                    className="flex items-center justify-between px-6 py-4 hover:bg-[#1a2744] transition-colors group"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
+                      <div className="w-10 h-10 rounded-lg bg-[#1a2744] flex items-center justify-center shrink-0">
                         <svg className="w-5 h-5 text-[#d4a843]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                         </svg>
@@ -256,7 +256,7 @@ export default function DashboardPage() {
                       <div className="text-right hidden sm:block">
                         <div className="text-sm font-bold text-white">{pct}%</div>
                       </div>
-                      <div className="w-24 h-2 bg-white/10 rounded-full overflow-hidden hidden sm:block">
+                      <div className="w-24 h-2 bg-[#1a2744] rounded-full overflow-hidden hidden sm:block">
                         <div
                           className="h-full bg-gradient-to-r from-[#c49a2e] to-[#d4a843] rounded-full transition-all"
                           style={{
@@ -395,7 +395,7 @@ function StatCard({
   };
 
   return (
-    <div className="bg-white/10 backdrop-blur-md rounded-xl border border-white/15 p-5 hover:bg-white/15 transition-all">
+    <div className="bg-[#0f1a2e]/80 backdrop-blur-md rounded-xl border border-[#1e3050] p-5 hover:bg-[#0f1a2e] transition-all">
       <div className="flex items-center gap-3 mb-3">
         <div className={`w-10 h-10 rounded-xl ${c.iconBg} ${c.text} flex items-center justify-center`}>
           {icons[icon]}
