@@ -1,30 +1,33 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from 'next/server';
+import { checkAvailability } from '@/lib/casenote';
 
 export async function POST(request: NextRequest) {
-  const body = await request.json();
-  const { caseNo } = body;
+  try {
+    const body = await request.json();
+    const { court, caseNo } = body;
 
-  // Mock: randomly assign availability
-  // In production, this would check casenote.kr and lbox APIs
-  const mockResults: Record<string, { available: boolean; source: string | null }> = {
-    "2024고단1234": { available: true, source: "casenote" },
-    "2024고단5678": { available: true, source: "lbox" },
-    "2024고합901": { available: true, source: "casenote" },
-    "2024고단2345": { available: true, source: "casenote" },
-    "2024고단6789": { available: true, source: "lbox" },
-    "2024고단3456": { available: false, source: null },
-    "2024고단7890": { available: false, source: null },
-  };
+    if (!court || !caseNo) {
+      return Response.json(
+        { error: '법원과 사건번호를 입력해주세요.' },
+        { status: 400 },
+      );
+    }
 
-  const result = mockResults[caseNo] || { available: false, source: null };
+    const result = await checkAvailability(court, caseNo);
 
-  return NextResponse.json({
-    caseNo,
-    available: result.available,
-    source: result.source,
-    checkedAt: new Date().toISOString(),
-    message: result.available
-      ? `${result.source}에서 전문 확인됨`
-      : "casenote/lbox에 미등록. 등록 요청 필요",
-  });
+    return Response.json({
+      caseNo,
+      available: result.available,
+      source: result.source,
+      checkedAt: new Date().toISOString(),
+      message: result.available
+        ? `${result.source}에서 전문 확인됨`
+        : 'casenote/lbox에 미등록. 등록 요청 필요',
+    });
+  } catch (error) {
+    return Response.json(
+      { error: '가용성 확인에 실패했습니다.' },
+      { status: 500 },
+    );
+  }
 }

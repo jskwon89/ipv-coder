@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "IPV 판결문 코딩 시스템",
-  description: "친밀한 파트너 폭력 판결문 코딩 및 분석 시스템",
+  title: "판결문 코딩 시스템",
+  description: "판결문 코딩 및 분석 시스템",
 };
 
 export default function RootLayout({
@@ -34,7 +34,7 @@ export default function RootLayout({
           <div className="p-6 border-b border-white/10">
             <Link href="/" className="block">
               <h1 className="text-lg font-bold tracking-tight">
-                IPV 판결문
+                판결문
                 <br />
                 코딩 시스템
               </h1>
