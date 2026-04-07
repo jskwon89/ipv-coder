@@ -846,3 +846,311 @@ export function addNewsCollectionMessage(requestId: string, sender: 'user' | 'ad
   writeJson(`news-collection-messages-${requestId}`, messages);
   return msg;
 }
+
+// ---------------------------------------------------------------------------
+// Data Transform Request (데이터 전처리)
+// ---------------------------------------------------------------------------
+
+export interface DataTransformRequest {
+  id: string;
+  email: string;
+  dataDescription: string;
+  dataFormat: string;
+  currentState: string;
+  transformationTypes: string; // JSON array
+  transformationDetail: string;
+  additionalNotes: string;
+  status: 'pending' | 'in_progress' | 'completed';
+  createdAt: string;
+  adminResponse: string;
+  respondedAt: string;
+}
+
+export function getDataTransformRequests(): DataTransformRequest[] {
+  return readJson<DataTransformRequest[]>('data-transform-requests', []);
+}
+
+export function getDataTransformRequest(id: string): DataTransformRequest | undefined {
+  return getDataTransformRequests().find((r) => r.id === id);
+}
+
+export function createDataTransformRequest(
+  data: Omit<DataTransformRequest, 'id' | 'status' | 'createdAt' | 'adminResponse' | 'respondedAt'>,
+): DataTransformRequest {
+  const requests = getDataTransformRequests();
+  const request: DataTransformRequest = {
+    id: generateId(),
+    email: data.email,
+    dataDescription: data.dataDescription,
+    dataFormat: data.dataFormat,
+    currentState: data.currentState,
+    transformationTypes: data.transformationTypes,
+    transformationDetail: data.transformationDetail,
+    additionalNotes: data.additionalNotes,
+    status: 'pending',
+    createdAt: new Date().toISOString(),
+    adminResponse: '',
+    respondedAt: '',
+  };
+  requests.push(request);
+  writeJson('data-transform-requests', requests);
+  return request;
+}
+
+export function updateDataTransformRequest(id: string, patch: Partial<DataTransformRequest>): DataTransformRequest | undefined {
+  const requests = getDataTransformRequests();
+  const idx = requests.findIndex((r) => r.id === id);
+  if (idx === -1) return undefined;
+  requests[idx] = { ...requests[idx], ...patch, id };
+  writeJson('data-transform-requests', requests);
+  return requests[idx];
+}
+
+// Data Transform Chat Messages
+export function getDataTransformMessages(requestId: string): ChatMessage[] {
+  return readJson<ChatMessage[]>(`data-transform-messages-${requestId}`, []);
+}
+
+export function addDataTransformMessage(requestId: string, sender: 'user' | 'admin', message: string): ChatMessage {
+  const messages = getDataTransformMessages(requestId);
+  const msg: ChatMessage = {
+    id: generateId(),
+    requestId,
+    sender,
+    message,
+    createdAt: new Date().toISOString(),
+  };
+  messages.push(msg);
+  writeJson(`data-transform-messages-${requestId}`, messages);
+  return msg;
+}
+
+// ---------------------------------------------------------------------------
+// Quant Analysis Request (계량분석)
+// ---------------------------------------------------------------------------
+
+export interface QuantAnalysisRequest {
+  id: string;
+  email: string;
+  analysisType: string;
+  dataDescription: string;
+  variables: string;
+  hypothesis: string;
+  dataFormat: string;
+  additionalNotes: string;
+  status: 'pending' | 'in_progress' | 'completed';
+  createdAt: string;
+  adminResponse: string;
+  respondedAt: string;
+}
+
+export function getQuantAnalysisRequests(): QuantAnalysisRequest[] {
+  return readJson<QuantAnalysisRequest[]>('quant-analysis-requests', []);
+}
+
+export function getQuantAnalysisRequest(id: string): QuantAnalysisRequest | undefined {
+  return getQuantAnalysisRequests().find((r) => r.id === id);
+}
+
+export function createQuantAnalysisRequest(
+  data: Omit<QuantAnalysisRequest, 'id' | 'status' | 'createdAt' | 'adminResponse' | 'respondedAt'>,
+): QuantAnalysisRequest {
+  const requests = getQuantAnalysisRequests();
+  const request: QuantAnalysisRequest = {
+    id: generateId(),
+    email: data.email,
+    analysisType: data.analysisType,
+    dataDescription: data.dataDescription,
+    variables: data.variables,
+    hypothesis: data.hypothesis,
+    dataFormat: data.dataFormat,
+    additionalNotes: data.additionalNotes,
+    status: 'pending',
+    createdAt: new Date().toISOString(),
+    adminResponse: '',
+    respondedAt: '',
+  };
+  requests.push(request);
+  writeJson('quant-analysis-requests', requests);
+  return request;
+}
+
+export function updateQuantAnalysisRequest(id: string, patch: Partial<QuantAnalysisRequest>): QuantAnalysisRequest | undefined {
+  const requests = getQuantAnalysisRequests();
+  const idx = requests.findIndex((r) => r.id === id);
+  if (idx === -1) return undefined;
+  requests[idx] = { ...requests[idx], ...patch, id };
+  writeJson('quant-analysis-requests', requests);
+  return requests[idx];
+}
+
+// Quant Analysis Chat Messages
+export function getQuantAnalysisMessages(requestId: string): ChatMessage[] {
+  return readJson<ChatMessage[]>(`quant-analysis-messages-${requestId}`, []);
+}
+
+export function addQuantAnalysisMessage(requestId: string, sender: 'user' | 'admin', message: string): ChatMessage {
+  const messages = getQuantAnalysisMessages(requestId);
+  const msg: ChatMessage = {
+    id: generateId(),
+    requestId,
+    sender,
+    message,
+    createdAt: new Date().toISOString(),
+  };
+  messages.push(msg);
+  writeJson(`quant-analysis-messages-${requestId}`, messages);
+  return msg;
+}
+
+// ---------------------------------------------------------------------------
+// Text Analysis Request (텍스트 분석 의뢰)
+// ---------------------------------------------------------------------------
+
+export interface TextAnalysisRequest {
+  id: string;
+  email: string;
+  analysisTypes: string; // JSON array of selected analysis types
+  dataInputMethod: string;
+  textContent: string;
+  analysisOptions: string; // JSON object of per-analysis options
+  additionalNotes: string;
+  status: 'pending' | 'in_progress' | 'completed';
+  createdAt: string;
+  adminResponse: string;
+  respondedAt: string;
+}
+
+export function getTextAnalysisRequests(): TextAnalysisRequest[] {
+  return readJson<TextAnalysisRequest[]>('text-analysis-requests', []);
+}
+
+export function getTextAnalysisRequest(id: string): TextAnalysisRequest | undefined {
+  return getTextAnalysisRequests().find((r) => r.id === id);
+}
+
+export function createTextAnalysisRequest(
+  data: Omit<TextAnalysisRequest, 'id' | 'status' | 'createdAt' | 'adminResponse' | 'respondedAt'>,
+): TextAnalysisRequest {
+  const requests = getTextAnalysisRequests();
+  const request: TextAnalysisRequest = {
+    id: generateId(),
+    email: data.email,
+    analysisTypes: data.analysisTypes,
+    dataInputMethod: data.dataInputMethod,
+    textContent: data.textContent,
+    analysisOptions: data.analysisOptions,
+    additionalNotes: data.additionalNotes,
+    status: 'pending',
+    createdAt: new Date().toISOString(),
+    adminResponse: '',
+    respondedAt: '',
+  };
+  requests.push(request);
+  writeJson('text-analysis-requests', requests);
+  return request;
+}
+
+export function updateTextAnalysisRequest(id: string, patch: Partial<TextAnalysisRequest>): TextAnalysisRequest | undefined {
+  const requests = getTextAnalysisRequests();
+  const idx = requests.findIndex((r) => r.id === id);
+  if (idx === -1) return undefined;
+  requests[idx] = { ...requests[idx], ...patch, id };
+  writeJson('text-analysis-requests', requests);
+  return requests[idx];
+}
+
+// Text Analysis Chat Messages
+export function getTextAnalysisMessages(requestId: string): ChatMessage[] {
+  return readJson<ChatMessage[]>(`text-analysis-messages-${requestId}`, []);
+}
+
+export function addTextAnalysisMessage(requestId: string, sender: 'user' | 'admin', message: string): ChatMessage {
+  const messages = getTextAnalysisMessages(requestId);
+  const msg: ChatMessage = {
+    id: generateId(),
+    requestId,
+    sender,
+    message,
+    createdAt: new Date().toISOString(),
+  };
+  messages.push(msg);
+  writeJson(`text-analysis-messages-${requestId}`, messages);
+  return msg;
+}
+
+// ---------------------------------------------------------------------------
+// Qual Analysis Request (질적분석)
+// ---------------------------------------------------------------------------
+
+export interface QualAnalysisRequest {
+  id: string;
+  email: string;
+  analysisType: string;
+  dataDescription: string;
+  dataFormat: string;
+  analysisGoal: string;
+  additionalNotes: string;
+  status: 'pending' | 'in_progress' | 'completed';
+  createdAt: string;
+  adminResponse: string;
+  respondedAt: string;
+}
+
+export function getQualAnalysisRequests(): QualAnalysisRequest[] {
+  return readJson<QualAnalysisRequest[]>('qual-analysis-requests', []);
+}
+
+export function getQualAnalysisRequest(id: string): QualAnalysisRequest | undefined {
+  return getQualAnalysisRequests().find((r) => r.id === id);
+}
+
+export function createQualAnalysisRequest(
+  data: Omit<QualAnalysisRequest, 'id' | 'status' | 'createdAt' | 'adminResponse' | 'respondedAt'>,
+): QualAnalysisRequest {
+  const requests = getQualAnalysisRequests();
+  const request: QualAnalysisRequest = {
+    id: generateId(),
+    email: data.email,
+    analysisType: data.analysisType,
+    dataDescription: data.dataDescription,
+    dataFormat: data.dataFormat,
+    analysisGoal: data.analysisGoal,
+    additionalNotes: data.additionalNotes,
+    status: 'pending',
+    createdAt: new Date().toISOString(),
+    adminResponse: '',
+    respondedAt: '',
+  };
+  requests.push(request);
+  writeJson('qual-analysis-requests', requests);
+  return request;
+}
+
+export function updateQualAnalysisRequest(id: string, patch: Partial<QualAnalysisRequest>): QualAnalysisRequest | undefined {
+  const requests = getQualAnalysisRequests();
+  const idx = requests.findIndex((r) => r.id === id);
+  if (idx === -1) return undefined;
+  requests[idx] = { ...requests[idx], ...patch, id };
+  writeJson('qual-analysis-requests', requests);
+  return requests[idx];
+}
+
+// Qual Analysis Chat Messages
+export function getQualAnalysisMessages(requestId: string): ChatMessage[] {
+  return readJson<ChatMessage[]>(`qual-analysis-messages-${requestId}`, []);
+}
+
+export function addQualAnalysisMessage(requestId: string, sender: 'user' | 'admin', message: string): ChatMessage {
+  const messages = getQualAnalysisMessages(requestId);
+  const msg: ChatMessage = {
+    id: generateId(),
+    requestId,
+    sender,
+    message,
+    createdAt: new Date().toISOString(),
+  };
+  messages.push(msg);
+  writeJson(`qual-analysis-messages-${requestId}`, messages);
+  return msg;
+}
