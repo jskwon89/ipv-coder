@@ -102,19 +102,9 @@ export default function LandingPage() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
             <ServiceCard
-              image="/images/landing-판결문.png"
-              title="판결문 코딩"
-              description="AI 기반 판결문 자동 코딩으로 연구 시간을 절약하세요"
-            />
-            <ServiceCard
-              image="/images/landing-계량통계.png"
-              title="계량통계분석"
-              description="기초통계부터 고급분석까지, 전문가가 직접 분석합니다"
-            />
-            <ServiceCard
-              image="/images/landing-텍스트분석.png"
-              title="텍스트 분석"
-              description="토픽모델링, 감성분석, 워드클라우드 등 텍스트 분석"
+              image="/images/landing-연구설계.png"
+              title="연구 설계 지원"
+              description="연구 주제 설계부터 통계분석 설계까지"
             />
             <ServiceCard
               image="/images/landing-설문조사.png"
@@ -122,14 +112,24 @@ export default function LandingPage() {
               description="설문 설계부터 데이터 수집까지 원스톱 서비스"
             />
             <ServiceCard
-              image="/images/landing-기사검색.png"
-              title="기사 검색"
-              description="키워드 기반 뉴스 검색 및 요약 수집"
+              image="/images/landing-판결문.png"
+              title="판결문 분석"
+              description="AI 기반 판결문 코딩 및 수집으로 연구 시간 절약"
             />
             <ServiceCard
-              image="/images/landing-연구설계.png"
-              title="연구 설계 지원"
-              description="검정력 분석, 시뮬레이션 데이터 생성"
+              image="/images/landing-기사검색.png"
+              title="뉴스/언론 보도"
+              description="키워드 기반 뉴스 수집 및 분석"
+            />
+            <ServiceCard
+              image="/images/landing-계량통계.png"
+              title="계량분석"
+              description="기초통계부터 고급 계량분석까지, 전문가가 직접 분석"
+            />
+            <ServiceCard
+              image="/images/landing-텍스트분석.png"
+              title="텍스트 분석"
+              description="토픽모델링, 감성분석, 워드클라우드 등 텍스트 분석"
             />
           </div>
         </div>

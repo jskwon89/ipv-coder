@@ -14,23 +14,10 @@ interface Project {
 
 const serviceCards = [
   {
-    title: "판결문 코딩",
-    desc: "AI 기반 판결문 자동 코딩",
-    href: "/judgment",
-    image: "/images/서비스_판결문 코딩.png",
-  },
-  {
-    title: "계량통계분석",
-    desc: "기초통계부터 고급분석까지",
-    href: "/stats-analysis",
-    image: "/images/서비스_계량통계분석.png",
-    badge: "준비 중",
-  },
-  {
-    title: "텍스트 분석",
-    desc: "토픽모델링, 감성분석, 워드클라우드",
-    href: "/text-analysis",
-    image: "/images/서비스_텍스트분석.png",
+    title: "연구 설계 지원",
+    desc: "연구 주제 설계, 통계분석 설계",
+    href: "/data-generation",
+    image: "/images/서비스_연구설계지원.png",
   },
   {
     title: "설문조사",
@@ -39,17 +26,28 @@ const serviceCards = [
     image: "/images/서비스_설문조사.png",
   },
   {
-    title: "기사 검색",
-    desc: "키워드 기반 뉴스 검색 및 요약",
+    title: "판결문 분석",
+    desc: "AI 기반 판결문 코딩 및 수집",
+    href: "/judgment",
+    image: "/images/서비스_판결문 코딩.png",
+  },
+  {
+    title: "뉴스/언론 보도",
+    desc: "키워드 기반 뉴스 수집 및 분석",
     href: "/news-search",
     image: "/images/서비스_기사분석.png",
   },
   {
-    title: "연구 설계 지원",
-    desc: "검정력 분석, 시뮬레이션",
-    href: "/data-generation",
-    image: "/images/서비스_연구설계지원.png",
-    badge: "준비 중",
+    title: "계량분석",
+    desc: "기초통계부터 고급 계량분석까지",
+    href: "/quant-analysis",
+    image: "/images/서비스_계량통계분석.png",
+  },
+  {
+    title: "텍스트 분석",
+    desc: "토픽모델링, 감성분석, 워드클라우드",
+    href: "/text-analysis",
+    image: "/images/서비스_텍스트분석.png",
   },
 ];
 
@@ -169,11 +167,6 @@ export default function DashboardPage() {
                       quality={90}
                       className="object-cover"
                     />
-                    {card.badge && (
-                      <span className="absolute top-2 right-2 sm:top-3 sm:right-3 z-10 text-[8px] sm:text-[10px] font-semibold bg-[#c49a2e] text-white px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full">
-                        {card.badge}
-                      </span>
-                    )}
                   </div>
                   <div className="p-3 sm:p-5 border-t border-gray-100">
                     <h3 className="text-sm sm:text-lg font-bold text-gray-900">{card.title}</h3>
