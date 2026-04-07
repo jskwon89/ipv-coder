@@ -51,29 +51,48 @@ const serviceCards = [
   },
 ];
 
+interface ServiceStats {
+  researchDesign: number;
+  judgment: number;
+  survey: number;
+  dataAnalysis: number;
+}
+
 export default function DashboardPage() {
   const [projects, setProjects] = useState<Project[]>([]);
+  const [stats, setStats] = useState<ServiceStats>({ researchDesign: 0, judgment: 0, survey: 0, dataAnalysis: 0 });
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [newName, setNewName] = useState("");
   const [creating, setCreating] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState("judgment");
 
-  const fetchProjects = useCallback(async () => {
+  const fetchData = useCallback(async () => {
     try {
-      const res = await fetch("/api/projects");
-      const data = await res.json();
-      setProjects(data.projects || []);
+      const [projRes, researchRes] = await Promise.all([
+        fetch("/api/projects"),
+        fetch("/api/research-design"),
+      ]);
+      const projData = await projRes.json();
+      const researchData = await researchRes.json();
+      const prjs = projData.projects || [];
+      setProjects(prjs);
+      setStats({
+        researchDesign: researchData.requests?.length || 0,
+        judgment: prjs.length,
+        survey: 0,  // TODO: connect when survey system is built
+        dataAnalysis: 0,  // TODO: connect when analysis system is built
+      });
     } catch {
-      console.error("프로젝트 목록 로드 실패");
+      console.error("데이터 로드 실패");
     } finally {
       setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    fetchProjects();
-  }, [fetchProjects]);
+    fetchData();
+  }, [fetchData]);
 
   const handleCreate = async () => {
     if (!newName.trim()) return;
@@ -88,7 +107,7 @@ export default function DashboardPage() {
         setNewName("");
         setSelectedTemplate("judgment");
         setShowModal(false);
-        await fetchProjects();
+        await fetchData();
       }
     } catch {
       console.error("프로젝트 생성 실패");
@@ -97,10 +116,7 @@ export default function DashboardPage() {
     }
   };
 
-  const totalProjects = projects.length;
-  const totalCases = projects.reduce((sum, p) => sum + p.caseCount, 0);
-  const totalCoded = projects.reduce((sum, p) => sum + p.codedCount, 0);
-  const completionRate = totalCases > 0 ? ((totalCoded / totalCases) * 100).toFixed(1) : "0.0";
+  const totalRequests = stats.researchDesign + stats.judgment + stats.survey + stats.dataAnalysis;
 
   return (
     <div
@@ -138,11 +154,12 @@ export default function DashboardPage() {
             </div>
 
             {/* Stats inside banner */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
-              <StatCard label="총 프로젝트" value={totalProjects} icon="folder" color="blue" />
-              <StatCard label="총 사건 수" value={totalCases} icon="document" color="amber" />
-              <StatCard label="코딩 완료" value={totalCoded} icon="check" color="green" />
-              <StatCard label="완료율" value={`${completionRate}%`} icon="chart" color="purple" />
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-2.5 sm:gap-3">
+              <StatCard label="전체 의뢰" value={totalRequests} icon="folder" color="blue" />
+              <StatCard label="연구설계" value={stats.researchDesign} icon="lightbulb" color="green" />
+              <StatCard label="판결문 분석" value={stats.judgment} icon="document" color="amber" />
+              <StatCard label="설문조사" value={stats.survey} icon="clipboard" color="purple" />
+              <StatCard label="데이터 분석" value={stats.dataAnalysis} icon="chart" color="rose" />
             </div>
           </div>
           <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/5" />
@@ -350,6 +367,7 @@ function StatCard({
     amber: { text: "text-[#d4a843]", iconBg: "bg-[#c49a2e]/20" },
     green: { text: "text-emerald-400", iconBg: "bg-emerald-400/20" },
     purple: { text: "text-purple-400", iconBg: "bg-purple-400/20" },
+    rose: { text: "text-rose-400", iconBg: "bg-rose-400/20" },
   };
 
   const c = colorMap[color] || colorMap.blue;
@@ -360,14 +378,19 @@ function StatCard({
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
       </svg>
     ),
-    document: (
+    lightbulb: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
       </svg>
     ),
-    check: (
+    document: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
+      </svg>
+    ),
+    clipboard: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
       </svg>
     ),
     chart: (
