@@ -297,31 +297,6 @@ export default function SurveyRequestPage() {
       {/* Tab 1: Request form */}
       {activeTab === "request" && (
         <form onSubmit={handleSubmit} className="space-y-6 max-w-4xl">
-          {/* Section 0: Email */}
-          <section className="bg-card rounded-xl border border-purple-200 overflow-hidden">
-            <div className="px-6 py-4 border-b border-border bg-purple-50 flex items-center gap-3">
-              <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-              <h2 className="font-semibold">이메일</h2>
-            </div>
-            <div className="p-6">
-              <div>
-                <label className="block text-sm font-medium mb-1.5">이메일 주소 <span className="text-red-500">*</span></label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  placeholder="결과 알림을 받을 이메일 주소"
-                  className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-purple-500/50"
-                />
-                <p className="text-xs text-muted-foreground mt-1">진행 상황 및 결과 알림을 받을 이메일을 입력해주세요.</p>
-              </div>
-            </div>
-          </section>
-
           {/* Section 1 */}
           <section className="bg-card rounded-xl border border-purple-200 overflow-hidden">
             <div className="px-6 py-4 border-b border-border bg-purple-50 flex items-center gap-3">
@@ -612,6 +587,31 @@ export default function SurveyRequestPage() {
                 placeholder="데이터 코딩, 기술통계 분석, 보고서 작성 등 추가 요청사항을 기재해주세요"
                 className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-purple-500/50 resize-none"
               />
+            </div>
+          </section>
+
+          {/* Email */}
+          <section className="bg-card rounded-xl border border-purple-200 overflow-hidden">
+            <div className="px-6 py-4 border-b border-border bg-purple-50 flex items-center gap-3">
+              <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              <h2 className="font-semibold">이메일</h2>
+            </div>
+            <div className="p-6">
+              <div>
+                <label className="block text-sm font-medium mb-1.5">이메일 주소 <span className="text-red-500">*</span></label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  placeholder="결과 알림을 받을 이메일 주소"
+                  className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                />
+                <p className="text-xs text-muted-foreground mt-1">진행 상황 및 결과 알림을 받을 이메일을 입력해주세요.</p>
+              </div>
             </div>
           </section>
 
