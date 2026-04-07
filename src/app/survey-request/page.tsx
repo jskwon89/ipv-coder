@@ -72,6 +72,10 @@ export default function SurveyRequestPage() {
   const [surveyTitle, setSurveyTitle] = useState("");
   const [questions, setQuestions] = useState<SurveyQuestion[]>([]);
 
+  // File upload parsing
+  const [parsing, setParsing] = useState(false);
+  const [parseError, setParseError] = useState("");
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
@@ -222,6 +226,39 @@ export default function SurveyRequestPage() {
         setQuestions([]);
         setSurveyTitle("");
         break;
+    }
+  };
+
+  const handleFileUploadParse = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const uploadedFile = e.target.files?.[0];
+    if (!uploadedFile) return;
+    setParsing(true);
+    setParseError("");
+    try {
+      const fd = new FormData();
+      fd.append("file", uploadedFile);
+      const res = await fetch("/api/survey-parse", { method: "POST", body: fd });
+      const data = await res.json();
+      if (!res.ok) {
+        setParseError(data.error || "파일 처리에 실패했습니다.");
+        return;
+      }
+      if (data.title) setSurveyTitle(data.title);
+      if (Array.isArray(data.questions) && data.questions.length > 0) {
+        setQuestions(
+          data.questions.map((q: SurveyQuestion) => ({
+            ...q,
+            id: crypto.randomUUID(),
+          }))
+        );
+      } else {
+        setParseError("문항을 자동으로 인식하지 못했습니다. 직접 입력하거나 다른 파일을 시도해주세요.");
+      }
+    } catch {
+      setParseError("파일 업로드 중 오류가 발생했습니다.");
+    } finally {
+      setParsing(false);
+      e.target.value = "";
     }
   };
 
@@ -702,6 +739,29 @@ export default function SurveyRequestPage() {
               >
                 빈 설문
               </button>
+            </div>
+
+            {/* File upload for auto-parsing */}
+            <div className="mt-4 pt-4 border-t border-gray-200">
+              <div className="flex items-center gap-3">
+                <label className="flex items-center gap-2 px-4 py-2 rounded-lg border border-purple-200 text-sm font-medium text-purple-600 bg-purple-50 hover:bg-purple-100 transition-colors cursor-pointer">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                  </svg>
+                  {parsing ? "분석 중..." : "파일에서 설문 불러오기"}
+                  <input
+                    type="file"
+                    accept=".pdf,.txt,.hwp,.hwpx"
+                    onChange={handleFileUploadParse}
+                    disabled={parsing}
+                    className="hidden"
+                  />
+                </label>
+                <span className="text-xs text-gray-400">PDF, TXT, HWP 파일을 업로드하면 설문 문항을 자동 추출합니다</span>
+              </div>
+              {parseError && (
+                <p className="mt-2 text-sm text-red-500">{parseError}</p>
+              )}
             </div>
 
             {/* Import dialog */}
