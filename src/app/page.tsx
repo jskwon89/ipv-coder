@@ -21,10 +21,10 @@ export default function LandingPage() {
           scrolled ? "bg-white shadow-md" : "bg-transparent"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14 sm:h-16">
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/images/main.png" alt="ResearchOn" width={32} height={32} className="rounded-lg" />
-            <span className={`text-xl font-bold tracking-tight ${scrolled ? "text-gray-900" : "text-white"}`}>
+            <Image src="/images/main.png" alt="ResearchOn" width={28} height={28} className="rounded-lg sm:w-8 sm:h-8" />
+            <span className={`text-lg sm:text-xl font-bold tracking-tight ${scrolled ? "text-gray-900" : "text-white"}`}>
               ResearchOn
             </span>
           </Link>
@@ -33,13 +33,13 @@ export default function LandingPage() {
             <a href="#how-it-works" className="hover:opacity-70 transition-opacity">이용절차</a>
             <a href="#contact" className="hover:opacity-70 transition-opacity">문의</a>
           </div>
-          <div className="flex items-center gap-3">
-            <button className={`text-sm font-medium px-4 py-2 rounded-lg transition-colors ${scrolled ? "text-gray-600 hover:bg-gray-100" : "text-white hover:bg-white/10"}`}>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <button className={`hidden sm:block text-sm font-medium px-4 py-2 rounded-lg transition-colors ${scrolled ? "text-gray-600 hover:bg-gray-100" : "text-white hover:bg-white/10"}`}>
               로그인
             </button>
             <Link
               href="/dashboard"
-              className="text-sm font-medium px-4 py-2 rounded-lg transition-colors bg-[#c49a2e] text-white hover:bg-[#d4a843]"
+              className="text-xs sm:text-sm font-medium px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-colors bg-[#c49a2e] text-white hover:bg-[#d4a843]"
             >
               시작하기
             </Link>
@@ -59,27 +59,27 @@ export default function LandingPage() {
           />
           <div className="absolute inset-0 bg-black/60" />
         </div>
-        <div className="relative z-10 text-center text-white px-6 max-w-4xl mx-auto animate-fade-in">
-          <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
+        <div className="relative z-10 text-center text-white px-5 sm:px-6 max-w-4xl mx-auto animate-fade-in">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold leading-tight mb-4 sm:mb-6">
             연구를 위한
             <br />
             올인원 플랫폼
           </h1>
-          <p className="text-lg md:text-xl text-white/80 mb-10 leading-relaxed">
+          <p className="text-sm sm:text-lg md:text-xl text-white/80 mb-6 sm:mb-10 leading-relaxed">
             판결문 코딩, 통계분석, 설문조사, 텍스트 분석까지
             <br />
             하나의 플랫폼에서 해결하세요
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
             <Link
               href="/dashboard"
-              className="px-8 py-4 bg-[#c49a2e] text-white rounded-xl text-base font-semibold hover:bg-[#d4a843] transition-colors shadow-lg"
+              className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-[#c49a2e] text-white rounded-xl text-sm sm:text-base font-semibold hover:bg-[#d4a843] transition-colors shadow-lg text-center"
             >
               무료로 시작하기
             </Link>
             <a
               href="#services"
-              className="px-8 py-4 border-2 border-white text-white rounded-xl text-base font-semibold hover:bg-white/10 transition-colors"
+              className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 border-2 border-white text-white rounded-xl text-sm sm:text-base font-semibold hover:bg-white/10 transition-colors text-center"
             >
               서비스 둘러보기
             </a>
@@ -94,13 +94,13 @@ export default function LandingPage() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-24 px-6 bg-white">
+      <section id="services" className="py-12 sm:py-24 px-4 sm:px-6 bg-white">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">제공 서비스</h2>
-            <div className="w-16 h-1 bg-[#c49a2e] mx-auto rounded-full" />
+          <div className="text-center mb-8 sm:mb-16">
+            <h2 className="text-2xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">제공 서비스</h2>
+            <div className="w-12 sm:w-16 h-1 bg-[#c49a2e] mx-auto rounded-full" />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
             <ServiceCard
               image="/images/landing-판결문.png"
               title="판결문 코딩"
@@ -136,20 +136,20 @@ export default function LandingPage() {
       </section>
 
       {/* How it Works */}
-      <section id="how-it-works" className="py-24 px-6 bg-gray-50">
+      <section id="how-it-works" className="py-12 sm:py-24 px-4 sm:px-6 bg-gray-50">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">이용 절차</h2>
-            <div className="w-16 h-1 bg-[#c49a2e] mx-auto rounded-full" />
+          <div className="text-center mb-8 sm:mb-16">
+            <h2 className="text-2xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">이용 절차</h2>
+            <div className="w-12 sm:w-16 h-1 bg-[#c49a2e] mx-auto rounded-full" />
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-16 items-center">
+            <div className="grid grid-cols-2 sm:grid-cols-2 gap-3 sm:gap-6">
               <StepCard step={1} title="회원가입" description="간편 가입 후 바로 시작" />
               <StepCard step={2} title="서비스 선택" description="필요한 분석/코딩 서비스 선택" />
               <StepCard step={3} title="자료 업로드" description="판결문, 설문지, 데이터 업로드" />
               <StepCard step={4} title="결과 확인" description="분석 결과 및 보고서 완성" />
             </div>
-            <div className="relative h-80 rounded-2xl overflow-hidden shadow-lg">
+            <div className="relative h-48 sm:h-80 rounded-xl sm:rounded-2xl overflow-hidden shadow-lg">
               <Image
                 src="/images/dylan-gillis-KdeqA3aTnBY-unsplash.jpg"
                 alt="이용 절차"
@@ -162,10 +162,10 @@ export default function LandingPage() {
       </section>
 
       {/* Contact / CTA Section */}
-      <section id="contact" className="py-24 px-6 bg-[#0f1a2e] text-white">
+      <section id="contact" className="py-12 sm:py-24 px-4 sm:px-6 bg-[#0f1a2e] text-white">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-4">연구의 새로운 시작</h2>
-          <p className="text-lg text-white/70 mb-10">
+          <h2 className="text-2xl sm:text-4xl font-bold mb-3 sm:mb-4">연구의 새로운 시작</h2>
+          <p className="text-sm sm:text-lg text-white/70 mb-6 sm:mb-10">
             ResearchOn과 함께 효율적인 연구를 시작하세요
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-8 max-w-md mx-auto">
@@ -190,8 +190,8 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#111827] text-white/60 py-12 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <footer className="bg-[#111827] text-white/60 py-8 sm:py-12 px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6">
           <div>
             <h3 className="text-lg font-bold text-white mb-1">ResearchOn</h3>
             <p className="text-sm">연구자를 위한 올인원 연구 지원 플랫폼</p>
@@ -238,8 +238,8 @@ function ServiceCard({
   description: string;
 }) {
   return (
-    <div className="group bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-xl transition-shadow overflow-hidden">
-      <div className="relative h-48 overflow-hidden">
+    <div className="group bg-white rounded-lg sm:rounded-xl border border-gray-200 shadow-sm hover:shadow-xl transition-shadow overflow-hidden">
+      <div className="relative h-32 sm:h-48 overflow-hidden">
         <Image
           src={image}
           alt={title}
@@ -247,10 +247,10 @@ function ServiceCard({
           className="object-cover group-hover:scale-105 transition-transform duration-500"
         />
       </div>
-      <div className="p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">{title}</h3>
-        <p className="text-sm text-gray-500 leading-relaxed mb-4">{description}</p>
-        <span className="text-sm font-medium text-[#c49a2e] group-hover:underline">
+      <div className="p-3 sm:p-6">
+        <h3 className="text-sm sm:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">{title}</h3>
+        <p className="text-xs sm:text-sm text-gray-500 leading-relaxed mb-2 sm:mb-4 line-clamp-2">{description}</p>
+        <span className="hidden sm:inline text-sm font-medium text-[#c49a2e] group-hover:underline">
           자세히 보기 &rarr;
         </span>
       </div>
@@ -268,12 +268,12 @@ function StepCard({
   description: string;
 }) {
   return (
-    <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 text-center flex flex-col items-center">
-      <div className="text-5xl font-extrabold text-[#c49a2e] mb-4 tracking-tight" style={{ fontFamily: "'Georgia', serif" }}>
+    <div className="bg-white rounded-lg sm:rounded-xl p-4 sm:p-6 shadow-sm border border-gray-200 text-center flex flex-col items-center">
+      <div className="text-3xl sm:text-5xl font-extrabold text-[#c49a2e] mb-2 sm:mb-4 tracking-tight" style={{ fontFamily: "'Georgia', serif" }}>
         {step}
       </div>
-      <h3 className="font-semibold text-gray-900 mb-1">{title}</h3>
-      <p className="text-sm text-gray-500">{description}</p>
+      <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-0.5 sm:mb-1">{title}</h3>
+      <p className="text-xs sm:text-sm text-gray-500">{description}</p>
     </div>
   );
 }
