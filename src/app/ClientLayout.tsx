@@ -14,13 +14,13 @@ function NavLink({ href, icon, label, pathname, onClick }: { href: string; icon:
     <Link
       href={href}
       onClick={onClick}
-      className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 ${
+      className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 ${
         isActive
-          ? "bg-white/10 text-white font-semibold border-l-[3px] border-blue-400 pl-[9px]"
-          : "text-white/70 hover:bg-white/5 hover:text-white border-l-[3px] border-transparent pl-[9px]"
+          ? "bg-[#c49a2e]/20 text-white font-semibold border-l-[3px] border-[#c49a2e] pl-[9px]"
+          : "text-white/80 hover:bg-white/10 hover:text-white hover:translate-x-0.5 border-l-[3px] border-transparent pl-[9px]"
       }`}
     >
-      <span className={isActive ? "opacity-100" : "opacity-60"}>{icon}</span>
+      <span className={isActive ? "opacity-100" : "opacity-70 group-hover:opacity-100"}>{icon}</span>
       {label}
     </Link>
   );
@@ -31,7 +31,7 @@ function SectionDivider({ color, label }: { color: string; label: string }) {
     <div className="pt-6 pb-2 px-3">
       <div className="flex items-center gap-2 mb-1">
         <div className={`w-1.5 h-4 rounded-full ${color}`} />
-        <span className="text-xs font-bold tracking-wider text-white/60 uppercase">{label}</span>
+        <span className="text-xs font-bold tracking-wider text-white/70 uppercase">{label}</span>
       </div>
       <div className="border-b border-white/5 mt-1" />
     </div>
@@ -115,7 +115,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           icon={<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>}
         />
       </nav>
-      <div className="px-3 py-4 border-t border-white/8 space-y-3">
+      <div className="px-3 py-4 border-t border-white/10 space-y-3 bg-[#0b1422] mt-auto">
         <CreditBalance />
 
         {/* Admin section */}
@@ -126,16 +126,16 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             />
             <button
               onClick={() => { logout(); closeSidebar(); }}
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-xs text-red-400/70 hover:text-red-400 hover:bg-white/5 transition-all w-full border-l-[3px] border-transparent pl-[9px]"
+              className="flex items-center gap-3 px-3 py-2 rounded-lg text-xs text-red-400/80 hover:text-red-300 hover:bg-white/10 transition-all w-full border-l-[3px] border-transparent pl-[9px]"
             >
-              <svg className="w-3.5 h-3.5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+              <svg className="w-3.5 h-3.5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
               로그아웃
             </button>
           </div>
         ) : (
           <button
             onClick={() => setShowLogin(true)}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-white/40 hover:text-white/60 hover:bg-white/5 transition-all w-full"
+            className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-white/50 hover:text-white/80 hover:bg-white/10 transition-all w-full"
           >
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
             관리자
@@ -143,8 +143,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         )}
 
         <div className="flex items-center justify-between px-3">
-          <span className="text-[10px] text-white/25 font-medium">v0.1.0</span>
-          <span className="text-[10px] text-white/25">ResearchOn</span>
+          <span className="text-[10px] text-white/30 font-medium">v0.1.0</span>
+          <span className="text-[10px] text-white/30">ResearchOn</span>
         </div>
       </div>
     </>
@@ -152,7 +152,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   // All other pages: sidebar + main
   return (
-    <div className="flex min-h-full bg-white overflow-x-hidden">
+    <div className="flex min-h-screen bg-white overflow-x-hidden">
       {/* Mobile top bar */}
       <div className="fixed top-0 left-0 right-0 z-40 bg-sidebar flex items-center justify-between px-4 py-3 md:hidden">
         <Link href="/" className="flex items-center gap-2">
@@ -179,7 +179,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       {/* Sidebar - desktop: always visible, mobile: slide-in */}
       <aside className={`
         fixed md:sticky top-0 left-0 z-50 md:z-auto
-        w-[260px] md:w-60 bg-sidebar text-sidebar-foreground flex flex-col h-screen shrink-0
+        w-[260px] md:w-60 bg-[#0f1a2e] text-sidebar-foreground flex flex-col h-full min-h-screen shrink-0
         transition-transform duration-300 ease-in-out
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0
       `}>
