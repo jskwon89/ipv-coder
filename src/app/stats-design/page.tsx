@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
+import InfoTooltip from "@/components/InfoTooltip";
 
 interface StatsDesignRequest {
   id: string;
@@ -190,10 +191,13 @@ export default function StatsDesignPage() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold">통계분석 설계</h1>
-        <p className="text-gray-600 text-sm mt-2 leading-relaxed">
-          연구 설계에 맞는 최적의 통계분석 방법을 제안해 드립니다. 검정력 분석,
-          표본 크기 산출, 분석 전략 수립 등을 포함합니다.
-        </p>
+        <div className="flex items-start gap-2 mt-2">
+          <p className="text-gray-600 text-sm leading-relaxed">
+            연구 설계에 맞는 최적의 통계분석 방법을 제안해 드립니다. 검정력 분석,
+            표본 크기 산출, 분석 전략 수립 등을 포함합니다.
+          </p>
+          <InfoTooltip text={"상세 지원 내용:\n• 연구 질문에 적합한 분석 방법 선정\n• 종속변수·독립변수·통제변수 설정 가이드\n• 표본 크기 산출 (검정력 분석)\n• 분석 전략 보고서 제공\n• SPSS, Stata, R 등 분석 도구별 안내"} />
+        </div>
       </div>
 
       {/* Request Form */}

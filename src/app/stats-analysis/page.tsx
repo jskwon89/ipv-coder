@@ -71,6 +71,7 @@ export default function StatsAnalysisPage() {
       <PageHeader
         title="통계분석 / 시각화"
         subtitle="기술통계와 시각화는 바로 실행, 고급 분석은 의뢰 형태로 진행됩니다"
+        detailTooltip={"기초통계 (직접 실행):\n• 기술통계량 (평균, 표준편차, 분위수 등)\n• 빈도표, 교차표\n• 히스토그램, 박스플롯 등 시각화\n\n고급 분석 (의뢰):\n• 회귀분석, ANOVA, 상관분석 등은\n  계량분석 의뢰 페이지를 이용해주세요."}
         breadcrumbs={[
           { label: "계량통계분석" },
           { label: "기초통계 및 시각화" },

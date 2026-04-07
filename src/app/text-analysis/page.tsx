@@ -463,6 +463,7 @@ export default function TextAnalysisPage() {
       <PageHeader
         title="텍스트 분석"
         subtitle="판결문, 기사, 문서 등의 텍스트를 분석합니다"
+        detailTooltip={"지원 분석 기법:\n• 토픽모델링: 주요 주제/토픽 자동 추출\n• 워드클라우드: 빈출 단어 시각화\n• 감성분석: 긍정/중립/부정 분류\n• 키워드 빈도분석 / 키워드 네트워크\n• 텍스트 요약: 긴 문서 자동 요약\n텍스트 직접 입력, 파일 업로드, 프로젝트 연결 가능"}
         breadcrumbs={[
           { label: "계량통계분석" },
           { label: "텍스트 분석" },

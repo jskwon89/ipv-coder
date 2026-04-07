@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 
 interface BreadcrumbItem {
@@ -8,6 +11,7 @@ interface BreadcrumbItem {
 interface PageHeaderProps {
   title: string;
   subtitle?: string;
+  detailTooltip?: string;
   breadcrumbs?: BreadcrumbItem[];
   action?: React.ReactNode;
   icon?: React.ReactNode;
@@ -15,7 +19,9 @@ interface PageHeaderProps {
   iconTextClass?: string;
 }
 
-export default function PageHeader({ title, subtitle, breadcrumbs, action, icon, iconBgClass, iconTextClass }: PageHeaderProps) {
+export default function PageHeader({ title, subtitle, detailTooltip, breadcrumbs, action, icon, iconBgClass, iconTextClass }: PageHeaderProps) {
+  const [showTooltip, setShowTooltip] = useState(false);
+
   return (
     <div className="mb-8">
       {/* Breadcrumbs */}
@@ -54,7 +60,29 @@ export default function PageHeader({ title, subtitle, breadcrumbs, action, icon,
           <div>
             <h1 className="text-2xl font-bold text-gray-900 tracking-tight">{title}</h1>
             {subtitle && (
-              <p className="text-gray-600 text-sm mt-1.5 leading-relaxed">{subtitle}</p>
+              <div className="flex items-center gap-2 mt-1.5">
+                <p className="text-gray-600 text-sm leading-relaxed">{subtitle}</p>
+                {detailTooltip && (
+                  <div className="relative">
+                    <button
+                      onMouseEnter={() => setShowTooltip(true)}
+                      onMouseLeave={() => setShowTooltip(false)}
+                      onClick={() => setShowTooltip(!showTooltip)}
+                      className="w-5 h-5 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center transition-colors shrink-0"
+                    >
+                      <svg className="w-3 h-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </button>
+                    {showTooltip && (
+                      <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-72 bg-gray-900 text-white text-xs rounded-xl p-4 shadow-2xl z-50 leading-relaxed whitespace-pre-line">
+                        {detailTooltip}
+                        <div className="absolute left-1/2 -translate-x-1/2 top-full w-2.5 h-2.5 bg-gray-900 rotate-45 -mt-1.5" />
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             )}
           </div>
         </div>

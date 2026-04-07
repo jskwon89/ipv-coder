@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
+import InfoTooltip from "@/components/InfoTooltip";
 
 interface ResearchRequest {
   id: string;
@@ -199,10 +200,13 @@ export default function ResearchDesignPage() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold">연구 주제 및 방향 설계</h1>
-        <p className="text-gray-600 text-sm mt-2 leading-relaxed">
-          연구 키워드를 입력하시면, 전문가가 선행연구 동향, 연구 방향, 변수 구성,
-          통계분석 방법 등을 종합적으로 분석하여 제공합니다.
-        </p>
+        <div className="flex items-start gap-2 mt-2">
+          <p className="text-gray-600 text-sm leading-relaxed">
+            연구 키워드를 입력하시면, 전문가가 선행연구 동향, 연구 방향, 변수 구성,
+            통계분석 방법 등을 종합적으로 분석하여 제공합니다.
+          </p>
+          <InfoTooltip text={"상세 지원 내용:\n• 연구 키워드 기반 선행연구 트렌드 분석\n• 연구 질문 및 가설 구체화\n• 이론적 프레임워크 제안\n• 변수 구성 및 조작적 정의 가이드\n• 적합한 연구 방법론 추천"} />
+        </div>
       </div>
 
       {/* Request Form */}

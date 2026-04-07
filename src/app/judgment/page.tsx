@@ -65,6 +65,7 @@ export default function JudgmentPage() {
       <PageHeader
         title="판결문 코딩"
         subtitle="AI 기반 판결문 자동 코딩 프로젝트를 관리합니다"
+        detailTooltip={"프로젝트 생성 후 사건번호를 업로드하면 자동 수집됩니다.\nAI가 피고인 정보, 범죄 유형, 양형 사항 등을 자동 추출하고,\n결과를 직접 검토·수정할 수 있습니다.\n통계 대시보드에서 프로젝트 코딩 현황도 확인 가능합니다."}
         breadcrumbs={[
           { label: "문서 코딩" },
           { label: "판결문 코딩" },

@@ -234,6 +234,7 @@ export default function SurveyRequestPage() {
       <PageHeader
         title="설문조사 의뢰"
         subtitle="설문조사에 필요한 정보를 입력해주세요. 검토 후 견적을 안내해드립니다."
+        detailTooltip={"지원 범위:\n• 설문 문항 설계 및 검토\n• 온라인/오프라인 설문지 제작\n• 표본 설계 및 응답자 모집\n• 데이터 수집 및 정리\n의뢰 접수 후 담당자가 연구 목적에 맞는\n최적의 설문 전략을 안내해 드립니다."}
         breadcrumbs={[
           { label: "설문조사" },
           { label: "설문조사 의뢰" },
