@@ -17,7 +17,7 @@ function NavLink({ href, icon, label, pathname, onClick }: { href: string; icon:
       className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 ${
         isActive
           ? "bg-[#c49a2e]/20 text-white font-semibold border-l-[3px] border-[#c49a2e] pl-[9px]"
-          : "text-white/80 hover:bg-white/10 hover:text-white hover:translate-x-0.5 border-l-[3px] border-transparent pl-[9px]"
+          : "text-white/90 hover:bg-white/10 hover:text-white hover:translate-x-0.5 border-l-[3px] border-transparent pl-[9px]"
       }`}
     >
       <span className={isActive ? "opacity-100" : "opacity-70 group-hover:opacity-100"}>{icon}</span>
@@ -30,10 +30,10 @@ function SectionDivider({ color, label }: { color: string; label: string }) {
   return (
     <div className="pt-6 pb-2 px-3">
       <div className="flex items-center gap-2 mb-1">
-        <div className={`w-1.5 h-4 rounded-full ${color}`} />
-        <span className="text-xs font-bold tracking-wider text-white/70 uppercase">{label}</span>
+        <div className={`w-1.5 h-5 rounded-full ${color}`} />
+        <span className="text-sm font-bold tracking-wide text-white/90">{label}</span>
       </div>
-      <div className="border-b border-white/5 mt-1" />
+      <div className="border-b border-white/8 mt-1" />
     </div>
   );
 }
@@ -65,7 +65,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             <h1 className="text-base font-bold tracking-tight text-white group-hover:text-[#d4a843] transition-colors">
               ResearchOn
             </h1>
-            <p className="text-[10px] text-white/35 tracking-wide">연구 및 데이터 플랫폼</p>
+            <p className="text-[10px] text-white/50 tracking-wide">연구 및 데이터 플랫폼</p>
           </div>
         </Link>
       </div>
@@ -154,7 +154,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   return (
     <div className="flex min-h-screen bg-white overflow-x-hidden">
       {/* Mobile top bar */}
-      <div className="fixed top-0 left-0 right-0 z-40 bg-sidebar flex items-center justify-between px-4 py-3 md:hidden">
+      <div className="fixed top-0 left-0 right-0 z-40 bg-[#0f1a2e] flex items-center justify-between px-4 py-3 md:hidden">
         <Link href="/" className="flex items-center gap-2">
           <Image src="/images/main.png" alt="ResearchOn" width={28} height={28} className="rounded-lg" />
           <span className="text-sm font-bold text-white">ResearchOn</span>
@@ -179,7 +179,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       {/* Sidebar - desktop: always visible, mobile: slide-in */}
       <aside className={`
         fixed md:sticky top-0 left-0 z-50 md:z-auto
-        w-[260px] md:w-60 bg-[#0f1a2e] text-sidebar-foreground flex flex-col h-full min-h-screen shrink-0
+        w-[260px] md:w-60 bg-[#0f1a2e] text-[#c8d6e5] flex flex-col h-full min-h-screen shrink-0
         transition-transform duration-300 ease-in-out
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0
       `}>

@@ -26,7 +26,7 @@ export function CreditBalance() {
   return (
     <Link
       href="/credits"
-      className="flex items-center justify-between gap-2 px-3 py-2 rounded-lg hover:bg-sidebar-hover transition-colors group"
+      className="flex items-center justify-between gap-2 px-3 py-2 rounded-lg hover:bg-[#1a2744] transition-colors group"
     >
       <div className="flex items-center gap-2 min-w-0">
         <svg
