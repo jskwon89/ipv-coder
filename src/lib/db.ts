@@ -761,3 +761,88 @@ export function addJudgmentCollectionMessage(requestId: string, sender: 'user' |
   writeJson(`judgment-collection-messages-${requestId}`, messages);
   return msg;
 }
+
+// ---------------------------------------------------------------------------
+// News Collection Request
+// ---------------------------------------------------------------------------
+
+export interface NewsCollectionRequest {
+  id: string;
+  email: string;
+  searchType: 'keyword' | 'sentence';
+  keywords: string;        // JSON array for keyword type, or sentence string
+  keywordLogic: string;    // AND/OR
+  dateFrom: string;
+  dateTo: string;
+  maxCount: number;
+  purpose: string;
+  additionalNotes: string;
+  status: 'pending' | 'in_progress' | 'completed';
+  createdAt: string;
+  adminResponse: string;
+  respondedAt: string;
+}
+
+export function getNewsCollectionRequests(): NewsCollectionRequest[] {
+  return readJson<NewsCollectionRequest[]>('news-collection-requests', []);
+}
+
+export function getNewsCollectionRequest(id: string): NewsCollectionRequest | undefined {
+  return getNewsCollectionRequests().find((r) => r.id === id);
+}
+
+export function createNewsCollectionRequest(
+  data: Omit<NewsCollectionRequest, 'id' | 'status' | 'createdAt' | 'adminResponse' | 'respondedAt'>,
+): NewsCollectionRequest {
+  const requests = getNewsCollectionRequests();
+  const request: NewsCollectionRequest = {
+    id: generateId(),
+    email: data.email,
+    searchType: data.searchType,
+    keywords: data.keywords,
+    keywordLogic: data.keywordLogic,
+    dateFrom: data.dateFrom,
+    dateTo: data.dateTo,
+    maxCount: data.maxCount,
+    purpose: data.purpose,
+    additionalNotes: data.additionalNotes,
+    status: 'pending',
+    createdAt: new Date().toISOString(),
+    adminResponse: '',
+    respondedAt: '',
+  };
+  requests.push(request);
+  writeJson('news-collection-requests', requests);
+  return request;
+}
+
+export function updateNewsCollectionRequest(id: string, patch: Partial<NewsCollectionRequest>): NewsCollectionRequest | undefined {
+  const requests = getNewsCollectionRequests();
+  const idx = requests.findIndex((r) => r.id === id);
+  if (idx === -1) return undefined;
+  requests[idx] = { ...requests[idx], ...patch, id };
+  writeJson('news-collection-requests', requests);
+  return requests[idx];
+}
+
+// ---------------------------------------------------------------------------
+// News Collection Chat Messages
+// ---------------------------------------------------------------------------
+
+export function getNewsCollectionMessages(requestId: string): ChatMessage[] {
+  return readJson<ChatMessage[]>(`news-collection-messages-${requestId}`, []);
+}
+
+export function addNewsCollectionMessage(requestId: string, sender: 'user' | 'admin', message: string): ChatMessage {
+  const messages = getNewsCollectionMessages(requestId);
+  const msg: ChatMessage = {
+    id: generateId(),
+    requestId,
+    sender,
+    message,
+    createdAt: new Date().toISOString(),
+  };
+  messages.push(msg);
+  writeJson(`news-collection-messages-${requestId}`, messages);
+  return msg;
+}

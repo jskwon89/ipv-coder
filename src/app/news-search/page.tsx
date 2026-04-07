@@ -4,16 +4,14 @@ import { useState } from "react";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
 
-interface NewsResult {
-  id: string;
-  title: string;
-  source: string;
-  date: string;
-  summary: string;
-  url: string;
-}
-
 type SearchType = "keyword" | "sentence";
+
+const purposeOptions = [
+  { value: "academic", label: "학술연구" },
+  { value: "policy", label: "정책분석" },
+  { value: "trend", label: "동향파악" },
+  { value: "other", label: "기타" },
+];
 
 export default function NewsSearchPage() {
   const [searchType, setSearchType] = useState<SearchType>("keyword");
@@ -21,12 +19,16 @@ export default function NewsSearchPage() {
   const [keywords, setKeywords] = useState<string[]>([]);
   const [keywordInput, setKeywordInput] = useState("");
   const [operator, setOperator] = useState<"AND" | "OR">("AND");
-  const [results, setResults] = useState<NewsResult[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [searched, setSearched] = useState(false);
-  const [selected, setSelected] = useState<Set<string>>(new Set());
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
+
+  // New fields for collection request
+  const [email, setEmail] = useState("");
+  const [purpose, setPurpose] = useState("academic");
+  const [maxCount, setMaxCount] = useState(100);
+  const [additionalNotes, setAdditionalNotes] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const addKeyword = () => {
     const parts = keywordInput.split(",").map((s) => s.trim()).filter(Boolean);
@@ -41,57 +43,39 @@ export default function NewsSearchPage() {
     setKeywords(keywords.filter((k) => k !== kw));
   };
 
-  const handleSearch = async () => {
-    const searchQuery =
-      searchType === "keyword" ? keywords.join(` ${operator} `) : query;
-    if (!searchQuery.trim()) return;
+  const handleSubmit = async () => {
+    if (!email.trim()) return;
+    if (searchType === "keyword" && keywords.length === 0) return;
+    if (searchType === "sentence" && !query.trim()) return;
 
-    setLoading(true);
-    setSearched(true);
+    setSubmitting(true);
     try {
-      const res = await fetch("/api/news-search", {
+      const res = await fetch("/api/news-collection", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          query: searchQuery,
-          type: searchType,
-          dateFrom: dateFrom || undefined,
-          dateTo: dateTo || undefined,
+          email: email.trim(),
+          searchType,
+          keywords:
+            searchType === "keyword"
+              ? JSON.stringify(keywords)
+              : query.trim(),
+          keywordLogic: operator,
+          dateFrom: dateFrom || "",
+          dateTo: dateTo || "",
+          maxCount,
+          purpose,
+          additionalNotes: additionalNotes.trim(),
         }),
       });
-      const data = await res.json();
-      setResults(data.results || []);
+      if (res.ok) {
+        setSubmitted(true);
+      }
     } catch {
-      console.error("검색 실패");
+      console.error("의뢰 실패");
     } finally {
-      setLoading(false);
+      setSubmitting(false);
     }
-  };
-
-  const toggleSelect = (id: string) => {
-    setSelected((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  };
-
-  const copyCitation = (article: NewsResult) => {
-    const citation = `${article.title}. ${article.source}. ${article.date}. ${article.url}`;
-    navigator.clipboard.writeText(citation);
-  };
-
-  const exportSelected = () => {
-    const selectedArticles = results.filter((r) => selected.has(r.id));
-    const text = selectedArticles
-      .map(
-        (a, i) =>
-          `[${i + 1}] ${a.title}\n    출처: ${a.source} | 날짜: ${a.date}\n    URL: ${a.url}\n    요약: ${a.summary}`
-      )
-      .join("\n\n");
-    navigator.clipboard.writeText(text);
-    alert(`${selectedArticles.length}건의 기사가 클립보드에 복사되었습니다.`);
   };
 
   return (
@@ -101,14 +85,14 @@ export default function NewsSearchPage() {
         대시보드로 돌아가기
       </Link>
       <PageHeader
-        title="기사 검색"
-        subtitle="뉴스 기사 검색 및 수집"
+        title="뉴스/언론 보도 수집 의뢰"
+        subtitle="키워드 또는 문장으로 뉴스 기사 수집을 의뢰합니다"
         breadcrumbs={[
           { label: "문서 코딩" },
-          { label: "기사 검색" },
+          { label: "뉴스 수집 의뢰" },
         ]}
-        iconBgClass="bg-blue-50"
-        iconTextClass="text-blue-600"
+        iconBgClass="bg-amber-50"
+        iconTextClass="text-[#c49a2e]"
         icon={
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
@@ -116,15 +100,42 @@ export default function NewsSearchPage() {
         }
       />
 
-      {/* Search type toggle */}
-      <div className="bg-card rounded-xl border border-blue-200 p-6 mb-6">
+      {/* Success banner */}
+      {submitted && (
+        <div className="bg-green-50 border border-green-200 rounded-xl p-6 mb-6">
+          <div className="flex items-start gap-3">
+            <svg className="w-6 h-6 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div>
+              <h3 className="font-semibold text-green-800">수집 의뢰가 접수되었습니다</h3>
+              <p className="text-sm text-green-700 mt-1">
+                담당자 검토 후 결과를 제공해 드리겠습니다. 진행 상황은 결과 확인 페이지에서 확인하실 수 있습니다.
+              </p>
+              <Link
+                href="/news-results"
+                className="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-[#c49a2e] text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors"
+              >
+                결과 확인 페이지로 이동
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Search type toggle + keyword builder */}
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 mb-6">
+        <h2 className="font-semibold text-gray-900 mb-4">검색 조건 설정</h2>
         <div className="flex gap-2 mb-4">
           <button
             onClick={() => setSearchType("keyword")}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               searchType === "keyword"
-                ? "bg-blue-600 text-white"
-                : "bg-gray-50 text-secondary-foreground hover:bg-border"
+                ? "bg-[#c49a2e] text-white"
+                : "bg-gray-50 text-gray-600 hover:bg-gray-100"
             }`}
           >
             키워드 조합
@@ -133,8 +144,8 @@ export default function NewsSearchPage() {
             onClick={() => setSearchType("sentence")}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               searchType === "sentence"
-                ? "bg-blue-600 text-white"
-                : "bg-gray-50 text-secondary-foreground hover:bg-border"
+                ? "bg-[#c49a2e] text-white"
+                : "bg-gray-50 text-gray-600 hover:bg-gray-100"
             }`}
           >
             문장 검색
@@ -155,11 +166,11 @@ export default function NewsSearchPage() {
                   }
                 }}
                 placeholder="키워드를 하나씩 입력 후 Enter (쉼표로 여러 개 동시 입력 가능)"
-                className="flex-1 px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="flex-1 px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
               />
               <button
                 onClick={addKeyword}
-                className="px-4 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+                className="px-4 py-2.5 bg-[#c49a2e] text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors"
               >
                 추가
               </button>
@@ -173,16 +184,16 @@ export default function NewsSearchPage() {
                         onClick={() =>
                           setOperator(operator === "AND" ? "OR" : "AND")
                         }
-                        className="mx-1 px-2 py-0.5 rounded text-xs font-bold bg-gray-50 text-muted-foreground hover:bg-border transition-colors"
+                        className="mx-1 px-2 py-0.5 rounded text-xs font-bold bg-gray-50 text-gray-500 hover:bg-gray-100 transition-colors"
                       >
                         {operator}
                       </button>
                     )}
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-[#c49a2e] rounded-full text-sm border border-[#c49a2e]/20">
                       {kw}
                       <button
                         onClick={() => removeKeyword(kw)}
-                        className="hover:text-blue-800"
+                        className="hover:text-[#b08a28]"
                       >
                         <svg
                           className="w-3.5 h-3.5"
@@ -209,128 +220,116 @@ export default function NewsSearchPage() {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") handleSearch();
-            }}
-            placeholder="필요로 하는 사건 내용을 입력하세요 (예: 가정폭력 가해자에 대한 법원의 양형 기준 변화)"
-            className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-blue-500 mb-3"
+            placeholder="필요로 하는 기사 내용을 입력하세요 (예: 가정폭력 가해자에 대한 법원의 양형 기준 변화)"
+            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e] mb-3"
           />
         )}
 
-        {/* Filters */}
-        <div className="flex flex-wrap items-end gap-4 mt-4 pt-4 border-t border-border">
+        {/* Date range */}
+        <div className="flex flex-wrap items-end gap-4 mt-4 pt-4 border-t border-gray-100">
           <div>
-            <label className="block text-xs text-muted-foreground mb-1">
+            <label className="block text-xs text-gray-500 mb-1">
               시작일
             </label>
             <input
               type="date"
               value={dateFrom}
               onChange={(e) => setDateFrom(e.target.value)}
-              className="px-3 py-2 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
             />
           </div>
           <div>
-            <label className="block text-xs text-muted-foreground mb-1">
+            <label className="block text-xs text-gray-500 mb-1">
               종료일
             </label>
             <input
               type="date"
               value={dateTo}
               onChange={(e) => setDateTo(e.target.value)}
-              className="px-3 py-2 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
             />
           </div>
-          <button
-            onClick={handleSearch}
-            disabled={
-              loading ||
-              (searchType === "keyword"
-                ? keywords.length === 0
-                : !query.trim())
-            }
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 ml-auto"
-          >
-            {loading ? "검색 중..." : "검색"}
-          </button>
         </div>
       </div>
 
-      {/* Selected export bar */}
-      {selected.size > 0 && (
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6 flex items-center justify-between">
-          <span className="text-sm text-blue-700">
-            {selected.size}건 선택됨
-          </span>
-          <button
-            onClick={exportSelected}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
-          >
-            선택한 기사 내보내기
-          </button>
-        </div>
-      )}
-
-      {/* Results */}
-      {searched && !loading && results.length === 0 && (
-        <div className="text-center py-12 text-muted-foreground text-sm">
-          검색 결과가 없습니다.
-        </div>
-      )}
-
-      <div className="space-y-4">
-        {results.map((article) => (
-          <div
-            key={article.id}
-            className={`bg-card rounded-xl border p-5 transition-colors ${
-              selected.has(article.id)
-                ? "border-blue-500/50"
-                : "border-border"
-            }`}
-          >
-            <div className="flex items-start gap-3">
-              <input
-                type="checkbox"
-                checked={selected.has(article.id)}
-                onChange={() => toggleSelect(article.id)}
-                className="mt-1 shrink-0"
-              />
-              <div className="flex-1 min-w-0">
-                <a
-                  href={article.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-semibold text-blue-600 hover:underline line-clamp-1"
-                >
-                  {article.title}
-                </a>
-                <div className="flex items-center gap-3 mt-1.5 text-xs text-muted-foreground">
-                  <span>{article.source}</span>
-                  <span>{article.date}</span>
-                </div>
-                <p className="text-sm text-muted-foreground mt-2 line-clamp-3">
-                  {article.summary}
-                </p>
-                <div className="flex gap-2 mt-3">
-                  <button
-                    onClick={() => copyCitation(article)}
-                    className="px-3 py-1.5 text-xs font-medium bg-gray-50 text-secondary-foreground rounded-lg hover:bg-border transition-colors"
-                  >
-                    논문에 인용
-                  </button>
-                  <a
-                    href={article.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-3 py-1.5 text-xs font-medium bg-gray-50 text-secondary-foreground rounded-lg hover:bg-border transition-colors"
-                  >
-                    전문 보기
-                  </a>
-                </div>
-              </div>
-            </div>
+      {/* Request details */}
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 mb-6">
+        <h2 className="font-semibold text-gray-900 mb-4">의뢰 정보</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              이메일 <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="결과를 받을 이메일 주소"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
+            />
           </div>
-        ))}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              수집 목적
+            </label>
+            <select
+              value={purpose}
+              onChange={(e) => setPurpose(e.target.value)}
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
+            >
+              {purposeOptions.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              수집 건수
+            </label>
+            <input
+              type="number"
+              value={maxCount}
+              onChange={(e) => setMaxCount(Number(e.target.value) || 100)}
+              min={1}
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
+            />
+          </div>
+        </div>
+        <div className="mt-4">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            추가 요청사항
+          </label>
+          <textarea
+            value={additionalNotes}
+            onChange={(e) => setAdditionalNotes(e.target.value)}
+            rows={3}
+            placeholder="수집과 관련하여 추가적으로 요청하실 사항이 있으시면 작성해주세요."
+            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e] resize-none"
+          />
+        </div>
+      </div>
+
+      {/* Submit */}
+      <div className="flex items-center justify-between">
+        <Link
+          href="/news-results"
+          className="text-sm text-gray-500 hover:text-gray-700 underline"
+        >
+          이전 의뢰 결과 확인
+        </Link>
+        <button
+          onClick={handleSubmit}
+          disabled={
+            submitting ||
+            !email.trim() ||
+            (searchType === "keyword" ? keywords.length === 0 : !query.trim())
+          }
+          className="px-8 py-3 bg-[#c49a2e] text-white rounded-lg text-sm font-semibold hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {submitting ? "제출 중..." : "수집 의뢰하기"}
+        </button>
       </div>
     </div>
   );
