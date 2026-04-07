@@ -472,3 +472,93 @@ export function addChatMessage(requestId: string, sender: 'user' | 'admin', mess
   writeJson(`research-messages-${requestId}`, messages);
   return msg;
 }
+
+// ---------------------------------------------------------------------------
+// Stats Design Request
+// ---------------------------------------------------------------------------
+
+export interface StatsDesignRequest {
+  id: string;
+  email: string;
+  researchType: string;
+  dataType: string;
+  sampleInfo: string;
+  variables: string;
+  analysisGoal: string;
+  currentMethods: string;
+  description: string;
+  status: 'pending' | 'in_progress' | 'completed';
+  createdAt: string;
+  adminResponse: string;
+  respondedAt: string;
+}
+
+export function getStatsDesignRequests(): StatsDesignRequest[] {
+  return readJson<StatsDesignRequest[]>('stats-design-requests', []);
+}
+
+export function getStatsDesignRequest(id: string): StatsDesignRequest | undefined {
+  return getStatsDesignRequests().find((r) => r.id === id);
+}
+
+export function createStatsDesignRequest(data: {
+  email: string;
+  researchType: string;
+  dataType: string;
+  sampleInfo: string;
+  variables: string;
+  analysisGoal: string;
+  currentMethods: string;
+  description: string;
+}): StatsDesignRequest {
+  const requests = getStatsDesignRequests();
+  const request: StatsDesignRequest = {
+    id: generateId(),
+    email: data.email,
+    researchType: data.researchType,
+    dataType: data.dataType,
+    sampleInfo: data.sampleInfo,
+    variables: data.variables,
+    analysisGoal: data.analysisGoal,
+    currentMethods: data.currentMethods,
+    description: data.description,
+    status: 'pending',
+    createdAt: new Date().toISOString(),
+    adminResponse: '',
+    respondedAt: '',
+  };
+  requests.push(request);
+  writeJson('stats-design-requests', requests);
+  return request;
+}
+
+export function updateStatsDesignRequest(id: string, patch: Partial<StatsDesignRequest>): StatsDesignRequest | undefined {
+  const requests = getStatsDesignRequests();
+  const idx = requests.findIndex((r) => r.id === id);
+  if (idx === -1) return undefined;
+  requests[idx] = { ...requests[idx], ...patch, id };
+  writeJson('stats-design-requests', requests);
+  return requests[idx];
+}
+
+// ---------------------------------------------------------------------------
+// Stats Design Chat Messages
+// ---------------------------------------------------------------------------
+
+export function getStatsDesignMessages(requestId: string): ChatMessage[] {
+  return readJson<ChatMessage[]>(`stats-messages-${requestId}`, []);
+}
+
+export function addStatsDesignMessage(requestId: string, sender: 'user' | 'admin', message: string): ChatMessage {
+  const messages = getStatsDesignMessages(requestId);
+  const msg: ChatMessage = {
+    id: generateId(),
+    requestId,
+    sender,
+    message,
+    createdAt: new Date().toISOString(),
+  };
+  messages.push(msg);
+  writeJson(`stats-messages-${requestId}`, messages);
+  return msg;
+}
