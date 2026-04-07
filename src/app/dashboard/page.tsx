@@ -116,42 +116,39 @@ export default function DashboardPage() {
     >
       <div className="absolute inset-0 bg-black/30 pointer-events-none" />
       <div className="p-3 sm:p-4 lg:p-6 max-w-full mx-2 sm:mx-4 lg:mx-6 relative z-10">
-        {/* Welcome Banner - 네이비 유지 */}
+        {/* Welcome Banner + Stats */}
         <div className="relative overflow-hidden rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#0f1a2e] to-[#1a2744] p-5 sm:p-8 lg:p-10 mb-6 sm:mb-8 shadow-lg">
-          <div className="relative z-10 flex items-center justify-between">
-            <div>
-              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white tracking-tight">
-                환영합니다
-              </h1>
-              <p className="text-[#d4a843] mt-1.5 sm:mt-2 text-xs sm:text-sm lg:text-base leading-relaxed">
-                ResearchOn에서 연구를 시작하세요
-              </p>
-              <button
-                onClick={() => setShowModal(true)}
-                className="mt-4 sm:mt-5 inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-[#c49a2e] text-white rounded-lg text-xs sm:text-sm font-semibold hover:bg-[#d4a843] transition-colors shadow-md"
-              >
-                <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                </svg>
-                새 프로젝트 만들기
-              </button>
+          <div className="relative z-10">
+            <div className="flex items-start justify-between mb-5 sm:mb-8">
+              <div>
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white tracking-tight">
+                  환영합니다
+                </h1>
+                <p className="text-[#d4a843] mt-1.5 sm:mt-2 text-xs sm:text-sm lg:text-base leading-relaxed">
+                  ResearchOn에서 연구를 시작하세요
+                </p>
+                <button
+                  onClick={() => setShowModal(true)}
+                  className="mt-4 sm:mt-5 inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-[#c49a2e] text-white rounded-lg text-xs sm:text-sm font-semibold hover:bg-[#d4a843] transition-colors shadow-md"
+                >
+                  <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
+                  새 프로젝트 만들기
+                </button>
+              </div>
             </div>
-            <div className="hidden lg:flex items-center justify-center w-32 h-32 rounded-full bg-white/10">
-              <svg className="w-16 h-16 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
+
+            {/* Stats inside banner */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+              <StatCard label="총 프로젝트" value={totalProjects} icon="folder" color="blue" />
+              <StatCard label="총 사건 수" value={totalCases} icon="document" color="amber" />
+              <StatCard label="코딩 완료" value={totalCoded} icon="check" color="green" />
+              <StatCard label="완료율" value={`${completionRate}%`} icon="chart" color="purple" />
             </div>
           </div>
           <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/5" />
           <div className="absolute -bottom-16 -left-8 w-48 h-48 rounded-full bg-[#c49a2e]/10" />
-        </div>
-
-        {/* Stats Row */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 mb-6 sm:mb-8">
-          <StatCard label="총 프로젝트" value={totalProjects} icon="folder" color="blue" />
-          <StatCard label="총 사건 수" value={totalCases} icon="document" color="amber" />
-          <StatCard label="코딩 완료" value={totalCoded} icon="check" color="green" />
-          <StatCard label="완료율" value={`${completionRate}%`} icon="chart" color="purple" />
         </div>
 
         {/* Service Cards */}
@@ -354,10 +351,10 @@ function StatCard({
   color: string;
 }) {
   const colorMap: Record<string, { text: string; iconBg: string }> = {
-    blue: { text: "text-[#5ba0e8]", iconBg: "bg-[#5ba0e8]/10" },
-    amber: { text: "text-[#c49a2e]", iconBg: "bg-[#c49a2e]/10" },
-    green: { text: "text-emerald-500", iconBg: "bg-emerald-500/10" },
-    purple: { text: "text-purple-500", iconBg: "bg-purple-500/10" },
+    blue: { text: "text-blue-300", iconBg: "bg-blue-400/20" },
+    amber: { text: "text-[#d4a843]", iconBg: "bg-[#c49a2e]/20" },
+    green: { text: "text-emerald-400", iconBg: "bg-emerald-400/20" },
+    purple: { text: "text-purple-400", iconBg: "bg-purple-400/20" },
   };
 
   const c = colorMap[color] || colorMap.blue;
@@ -386,14 +383,14 @@ function StatCard({
   };
 
   return (
-    <div className="bg-white rounded-lg sm:rounded-xl border border-gray-200 shadow-sm p-3 sm:p-5 hover:shadow-md transition-all">
+    <div className="bg-white/10 backdrop-blur-sm rounded-lg sm:rounded-xl border border-white/10 p-3 sm:p-5 hover:bg-white/15 transition-all">
       <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
         <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl ${c.iconBg} ${c.text} flex items-center justify-center [&_svg]:w-4 [&_svg]:h-4 sm:[&_svg]:w-5 sm:[&_svg]:h-5`}>
           {icons[icon]}
         </div>
       </div>
-      <div className="text-xl sm:text-3xl font-bold text-gray-900 tracking-tight">{value}</div>
-      <span className="text-[10px] sm:text-xs text-gray-400 font-medium mt-0.5 sm:mt-1 block">{label}</span>
+      <div className="text-xl sm:text-3xl font-bold text-white tracking-tight">{value}</div>
+      <span className="text-[10px] sm:text-xs text-white/60 font-medium mt-0.5 sm:mt-1 block">{label}</span>
     </div>
   );
 }
