@@ -562,3 +562,94 @@ export function addStatsDesignMessage(requestId: string, sender: 'user' | 'admin
   writeJson(`stats-messages-${requestId}`, messages);
   return msg;
 }
+
+// ---------------------------------------------------------------------------
+// Survey Request
+// ---------------------------------------------------------------------------
+
+export interface SurveyRequest {
+  id: string;
+  email: string;
+  title: string;
+  purpose: string;
+  requesterName: string;
+  organization: string;
+  population: string;
+  sampleSize: string;
+  samplingMethod: string;
+  startDate: string;
+  endDate: string;
+  irbStatus: string;
+  additionalRequests: string;
+  surveyData: string;
+  status: 'pending' | 'in_progress' | 'completed';
+  createdAt: string;
+  adminResponse: string;
+  respondedAt: string;
+}
+
+export function getSurveyRequests(): SurveyRequest[] {
+  return readJson<SurveyRequest[]>('survey-requests', []);
+}
+
+export function getSurveyRequest(id: string): SurveyRequest | undefined {
+  return getSurveyRequests().find((r) => r.id === id);
+}
+
+export function createSurveyRequest(data: Omit<SurveyRequest, 'id' | 'status' | 'createdAt' | 'adminResponse' | 'respondedAt'>): SurveyRequest {
+  const requests = getSurveyRequests();
+  const request: SurveyRequest = {
+    id: generateId(),
+    email: data.email,
+    title: data.title,
+    purpose: data.purpose,
+    requesterName: data.requesterName,
+    organization: data.organization,
+    population: data.population,
+    sampleSize: data.sampleSize,
+    samplingMethod: data.samplingMethod,
+    startDate: data.startDate,
+    endDate: data.endDate,
+    irbStatus: data.irbStatus,
+    additionalRequests: data.additionalRequests,
+    surveyData: data.surveyData,
+    status: 'pending',
+    createdAt: new Date().toISOString(),
+    adminResponse: '',
+    respondedAt: '',
+  };
+  requests.push(request);
+  writeJson('survey-requests', requests);
+  return request;
+}
+
+export function updateSurveyRequest(id: string, patch: Partial<SurveyRequest>): SurveyRequest | undefined {
+  const requests = getSurveyRequests();
+  const idx = requests.findIndex((r) => r.id === id);
+  if (idx === -1) return undefined;
+  requests[idx] = { ...requests[idx], ...patch, id };
+  writeJson('survey-requests', requests);
+  return requests[idx];
+}
+
+// ---------------------------------------------------------------------------
+// Survey Chat Messages
+// ---------------------------------------------------------------------------
+
+export function getSurveyMessages(requestId: string): ChatMessage[] {
+  return readJson<ChatMessage[]>(`survey-messages-${requestId}`, []);
+}
+
+export function addSurveyMessage(requestId: string, sender: 'user' | 'admin', message: string): ChatMessage {
+  const messages = getSurveyMessages(requestId);
+  const msg: ChatMessage = {
+    id: generateId(),
+    requestId,
+    sender,
+    message,
+    createdAt: new Date().toISOString(),
+  };
+  messages.push(msg);
+  writeJson(`survey-messages-${requestId}`, messages);
+  return msg;
+}

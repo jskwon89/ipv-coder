@@ -40,6 +40,7 @@ function generatePrePostTemplate(): SurveyQuestion[] {
 export default function SurveyRequestPage() {
   const [activeTab, setActiveTab] = useState<"request" | "builder">("request");
   const [formData, setFormData] = useState({
+    email: "",
     title: "",
     purpose: "",
     requesterName: "",
@@ -61,7 +62,8 @@ export default function SurveyRequestPage() {
     additionalRequests: "",
   });
   const [file, setFile] = useState<File | null>(null);
-  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [successBanner, setSuccessBanner] = useState(false);
   const [exportCopied, setExportCopied] = useState(false);
   const [importJson, setImportJson] = useState("");
   const [showImportDialog, setShowImportDialog] = useState(false);
@@ -86,11 +88,80 @@ export default function SurveyRequestPage() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const resetForm = () => {
+    setFormData({
+      email: "",
+      title: "",
+      purpose: "",
+      requesterName: "",
+      contact: "",
+      organization: "",
+      population: "",
+      sampleSize: "",
+      samplingMethod: "할당표집",
+      selectionCriteria: "",
+      questionCount: "",
+      estimatedTime: "5~10분",
+      questionText: "",
+      scales: "",
+      surveyMethods: [],
+      startDate: "",
+      endDate: "",
+      irbStatus: "미신청",
+      irbNumber: "",
+      additionalRequests: "",
+    });
+    setFile(null);
+    setSurveyTitle("");
+    setQuestions([]);
+  };
+
+  const submitToApi = async () => {
+    setSubmitting(true);
+    try {
+      const surveyData = questions.length > 0
+        ? JSON.stringify({ title: surveyTitle, questions })
+        : "";
+
+      const res = await fetch("/api/survey", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: formData.email,
+          title: formData.title,
+          purpose: formData.purpose,
+          requesterName: formData.requesterName,
+          organization: formData.organization,
+          population: formData.population,
+          sampleSize: formData.sampleSize,
+          samplingMethod: formData.samplingMethod,
+          startDate: formData.startDate,
+          endDate: formData.endDate,
+          irbStatus: formData.irbStatus,
+          additionalRequests: formData.additionalRequests,
+          surveyData,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        alert(data.error || "제출에 실패했습니다.");
+        return;
+      }
+
+      resetForm();
+      setSuccessBanner(true);
+      setTimeout(() => setSuccessBanner(false), 5000);
+    } catch {
+      alert("네트워크 오류가 발생했습니다.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Survey request submitted:", formData);
-    if (file) console.log("Attached file:", file.name);
-    setSubmitted(true);
+    await submitToApi();
   };
 
   const handleSaveSurvey = () => {
@@ -98,10 +169,12 @@ export default function SurveyRequestPage() {
     alert("설문지가 저장되었습니다.");
   };
 
-  const handleSubmitAll = () => {
-    console.log("Full submission:", { formData, survey: { title: surveyTitle, questions } });
-    if (file) console.log("Attached file:", file.name);
-    setSubmitted(true);
+  const handleSubmitAll = async () => {
+    if (!formData.title.trim() || !formData.email.trim()) {
+      alert("의뢰 정보 탭에서 설문 제목과 이메일을 먼저 입력해주세요.");
+      return;
+    }
+    await submitToApi();
   };
 
   const handleExportSurvey = () => {
@@ -152,54 +225,6 @@ export default function SurveyRequestPage() {
     }
   };
 
-  if (submitted) {
-    return (
-      <div className="p-8 max-w-3xl mx-auto">
-        <div className="bg-card rounded-xl border border-border p-12 text-center">
-          <div className="w-16 h-16 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-4">
-            <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
-          </div>
-          <h2 className="text-xl font-bold mb-2">의뢰가 접수되었습니다</h2>
-          <p className="text-muted-foreground text-sm">검토 후 연락드리겠습니다.</p>
-          <button
-            onClick={() => {
-              setSubmitted(false);
-              setFormData({
-                title: "",
-                purpose: "",
-                requesterName: "",
-                contact: "",
-                organization: "",
-                population: "",
-                sampleSize: "",
-                samplingMethod: "할당표집",
-                selectionCriteria: "",
-                questionCount: "",
-                estimatedTime: "5~10분",
-                questionText: "",
-                scales: "",
-                surveyMethods: [],
-                startDate: "",
-                endDate: "",
-                irbStatus: "미신청",
-                irbNumber: "",
-                additionalRequests: "",
-              });
-              setFile(null);
-              setSurveyTitle("");
-              setQuestions([]);
-            }}
-            className="mt-6 px-6 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
-          >
-            새 의뢰 작성
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="p-8 max-w-7xl mx-auto">
       <Link href="/dashboard" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 mb-4">
@@ -221,6 +246,26 @@ export default function SurveyRequestPage() {
           </svg>
         }
       />
+
+      {/* Success Banner */}
+      {successBanner && (
+        <div className="mb-6 bg-green-50 border border-green-200 rounded-xl p-4 flex items-center gap-3">
+          <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center shrink-0">
+            <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-medium text-green-800">의뢰가 성공적으로 접수되었습니다!</p>
+            <p className="text-xs text-green-600 mt-0.5">검토 후 연락드리겠습니다. <Link href="/survey-results" className="underline font-medium">결과 확인 페이지</Link>에서 진행 상황을 확인하실 수 있습니다.</p>
+          </div>
+          <button onClick={() => setSuccessBanner(false)} className="p-1 hover:bg-green-100 rounded transition-colors shrink-0">
+            <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      )}
 
       {/* Tabs */}
       <div className="flex gap-1 mb-6 bg-gray-200 p-1 rounded-lg w-fit">
@@ -251,6 +296,31 @@ export default function SurveyRequestPage() {
       {/* Tab 1: Request form */}
       {activeTab === "request" && (
         <form onSubmit={handleSubmit} className="space-y-6 max-w-4xl">
+          {/* Section 0: Email */}
+          <section className="bg-card rounded-xl border border-purple-200 overflow-hidden">
+            <div className="px-6 py-4 border-b border-border bg-purple-50 flex items-center gap-3">
+              <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              <h2 className="font-semibold">이메일</h2>
+            </div>
+            <div className="p-6">
+              <div>
+                <label className="block text-sm font-medium mb-1.5">이메일 주소 <span className="text-red-500">*</span></label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  placeholder="결과 알림을 받을 이메일 주소"
+                  className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                />
+                <p className="text-xs text-muted-foreground mt-1">진행 상황 및 결과 알림을 받을 이메일을 입력해주세요.</p>
+              </div>
+            </div>
+          </section>
+
           {/* Section 1 */}
           <section className="bg-card rounded-xl border border-purple-200 overflow-hidden">
             <div className="px-6 py-4 border-b border-border bg-purple-50 flex items-center gap-3">
@@ -563,9 +633,10 @@ export default function SurveyRequestPage() {
           <div className="flex justify-end">
             <button
               type="submit"
-              className="px-8 py-3 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors"
+              disabled={submitting}
+              className="px-8 py-3 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              의뢰 접수
+              {submitting ? "제출 중..." : "의뢰 접수"}
             </button>
           </div>
         </form>
@@ -693,9 +764,10 @@ export default function SurveyRequestPage() {
             <button
               type="button"
               onClick={handleSubmitAll}
-              className="px-6 py-3 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors"
+              disabled={submitting}
+              className="px-6 py-3 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              의뢰 정보와 함께 제출
+              {submitting ? "제출 중..." : "의뢰 정보와 함께 제출"}
             </button>
           </div>
         </div>
