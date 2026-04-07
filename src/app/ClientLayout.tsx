@@ -54,9 +54,10 @@ function SubCategory({ label, children, pathname, prefixes }: { label: string; c
 }
 
 /* ── Top-level section (▼ 연구 자료 생성 등) ── */
-function SectionGroup({ color, label, children, pathname, prefixes, defaultOpen }: { color: string; label: string; children: React.ReactNode; pathname: string; prefixes: string[]; defaultOpen?: boolean }) {
+function SectionGroup({ color, label, tooltip, children, pathname, prefixes, defaultOpen }: { color: string; label: string; tooltip?: string; children: React.ReactNode; pathname: string; prefixes: string[]; defaultOpen?: boolean }) {
   const hasActive = prefixes.some(p => pathname === p || pathname.startsWith(p + "/"));
   const [open, setOpen] = useState(defaultOpen ?? hasActive);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   useEffect(() => {
     if (hasActive) setOpen(true);
@@ -64,18 +65,42 @@ function SectionGroup({ color, label, children, pathname, prefixes, defaultOpen 
 
   return (
     <div className="pt-4 first:pt-2">
-      <button
-        onClick={() => setOpen(!open)}
-        className="flex items-center justify-between w-full px-3 py-1.5 group"
-      >
-        <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between w-full px-3 py-1.5 group">
+        <button
+          onClick={() => setOpen(!open)}
+          className="flex items-center gap-2 flex-1 min-w-0"
+        >
           <div className={`w-1.5 h-5 rounded-full ${color}`} />
           <span className="text-sm font-bold tracking-wide text-white">{label}</span>
+        </button>
+        <div className="flex items-center gap-1.5">
+          {tooltip && (
+            <div className="relative">
+              <button
+                onMouseEnter={() => setShowTooltip(true)}
+                onMouseLeave={() => setShowTooltip(false)}
+                onClick={(e) => { e.stopPropagation(); setShowTooltip(!showTooltip); }}
+                className="w-5 h-5 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+              >
+                <svg className="w-3 h-3 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </button>
+              {showTooltip && (
+                <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-56 bg-gray-900 text-white text-xs rounded-lg p-3 shadow-xl z-[60] leading-relaxed whitespace-pre-line">
+                  {tooltip}
+                  <div className="absolute left-1/2 -translate-x-1/2 top-full w-2 h-2 bg-gray-900 rotate-45 -mt-1" />
+                </div>
+              )}
+            </div>
+          )}
+          <button onClick={() => setOpen(!open)}>
+            <svg className={`w-3.5 h-3.5 text-white/40 transition-transform duration-200 ${open ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
         </div>
-        <svg className={`w-3.5 h-3.5 text-white/40 transition-transform duration-200 ${open ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
+      </div>
       <div className="border-b border-white/8 mt-1 mx-3" />
       {open && <div className="space-y-0.5 mt-1.5">{children}</div>}
     </div>
@@ -112,6 +137,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     { label: "뉴스/언론 보도 수집 의뢰", href: "/news-search" },
     { label: "뉴스/언론 보도 결과 확인", href: "/news-results" },
     { label: "데이터 변환", href: "/data-transform" },
+    { label: "데이터 전처리 결과 확인", href: "/data-transform-results" },
     { label: "기초통계", href: "/stats-analysis" },
     { label: "계량분석 의뢰", href: "/quant-analysis" },
     { label: "계량분석 결과 확인", href: "/quant-results" },
@@ -187,13 +213,13 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </Link>
 
             {/* 연구 설계 지원 */}
-            <SectionGroup color="bg-emerald-400/70" label="연구 설계 지원" pathname={pathname} prefixes={["/data-generation", "/stats-design"]} defaultOpen>
+            <SectionGroup color="bg-emerald-400/70" label="연구 설계 지원" tooltip={"연구 주제 및 방향 설계: AI 기반 연구 주제 탐색, 선행연구 분석, 연구 질문 구체화\n통계분석 설계: 연구 질문에 적합한 분석 방법 선정, 변수 설정, 표본 크기 산출"} pathname={pathname} prefixes={["/data-generation", "/stats-design"]} defaultOpen>
               <NavLink href="/data-generation" label="연구 주제 및 방향 설계" pathname={pathname} onClick={closeSidebar} />
               <NavLink href="/stats-design" label="통계분석 설계" pathname={pathname} onClick={closeSidebar} />
             </SectionGroup>
 
             {/* 연구 자료 생성 */}
-            <SectionGroup color="bg-blue-400/70" label="연구 자료 생성" pathname={pathname} prefixes={["/survey-request", "/survey-results", "/judgment", "/judgment-collection", "/judgment-results", "/news-search", "/news-results"]} defaultOpen>
+            <SectionGroup color="bg-blue-400/70" label="연구 자료 생성" tooltip={"설문조사: 설문 설계, 배포, 응답 수집\n판결문: AI 기반 판결문 코딩, 대량 수집 의뢰\n뉴스/언론 보도: 키워드 기반 뉴스 기사 수집"} pathname={pathname} prefixes={["/survey-request", "/survey-results", "/judgment", "/judgment-collection", "/judgment-results", "/news-search", "/news-results"]} defaultOpen>
               <SubCategory label="설문조사" pathname={pathname} prefixes={["/survey-request", "/survey-results"]}>
                 <NavLink href="/survey-request" label="설문조사 의뢰" pathname={pathname} onClick={closeSidebar} />
                 <NavLink href="/survey-results" label="결과 확인" pathname={pathname} onClick={closeSidebar} />
@@ -210,9 +236,10 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </SectionGroup>
 
             {/* 데이터 분석 */}
-            <SectionGroup color="bg-rose-400/70" label="데이터 분석" pathname={pathname} prefixes={["/data-transform", "/stats-analysis", "/quant-analysis", "/quant-results", "/text-analysis", "/text-results", "/qual-analysis", "/qual-results"]} defaultOpen>
-              <SubCategory label="데이터 전처리" pathname={pathname} prefixes={["/data-transform", "/stats-analysis"]}>
+            <SectionGroup color="bg-rose-400/70" label="데이터 분석" tooltip={"데이터 전처리: 변수 리코딩, 병합, 결측치/이상치 처리\n계량분석: 회귀분석, 패널분석, 인과추론 등\n텍스트 분석: 토픽모델링, 감성분석, 워드클라우드\n질적분석: 인터뷰 분석, 주제분석, 근거이론 등"} pathname={pathname} prefixes={["/data-transform", "/data-transform-results", "/stats-analysis", "/quant-analysis", "/quant-results", "/text-analysis", "/text-results", "/qual-analysis", "/qual-results"]} defaultOpen>
+              <SubCategory label="데이터 전처리" pathname={pathname} prefixes={["/data-transform", "/data-transform-results", "/stats-analysis"]}>
                 <NavLink href="/data-transform" label="데이터 변환" pathname={pathname} onClick={closeSidebar} />
+                <NavLink href="/data-transform-results" label="결과 확인" pathname={pathname} onClick={closeSidebar} />
                 <NavLink href="/stats-analysis" label="기초통계" pathname={pathname} onClick={closeSidebar} />
               </SubCategory>
               <SubCategory label="계량분석" pathname={pathname} prefixes={["/quant-analysis", "/quant-results"]}>
@@ -230,7 +257,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </SectionGroup>
 
             {/* 고객센터 */}
-            <SectionGroup color="bg-amber-400/70" label="고객센터" pathname={pathname} prefixes={["/faq", "/contact", "/credits"]}>
+            <SectionGroup color="bg-amber-400/70" label="고객센터" tooltip={"자주 묻는 질문: 서비스 이용 관련 FAQ\n문의사항: 1:1 문의 접수 및 답변 확인\n크레딧 관리: 잔액 확인 및 사용 내역"} pathname={pathname} prefixes={["/faq", "/contact", "/credits"]}>
               <NavLink href="/faq" label="자주 묻는 질문" pathname={pathname} onClick={closeSidebar} />
               <NavLink href="/contact" label="문의사항" pathname={pathname} onClick={closeSidebar} />
               <NavLink href="/credits" label="크레딧 관리" pathname={pathname} onClick={closeSidebar} />

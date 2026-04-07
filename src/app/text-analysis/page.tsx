@@ -102,6 +102,12 @@ export default function TextAnalysisPage() {
   /* credit confirm dialog */
   const [showCreditDialog, setShowCreditDialog] = useState(false);
 
+  /* DB submission */
+  const [email, setEmail] = useState("");
+  const [additionalNotes, setAdditionalNotes] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
   /* helpers */
   const toggle = (id: string) =>
     setSelected((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
@@ -326,6 +332,36 @@ export default function TextAnalysisPage() {
     setActiveResultTab(selected[0] ?? null);
   };
 
+  const handleSubmitRequest = async () => {
+    if (!email.trim() || selected.length === 0 || submitting) return;
+    setSubmitting(true);
+    try {
+      const analysisOptions = JSON.stringify({
+        topicCount, maxWords, removeStopwords, sentimentUnit,
+        topN, ngram, minCooccurrence, summaryLength,
+      });
+      const res = await fetch("/api/text-analysis-request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email.trim(),
+          analysisTypes: JSON.stringify(selected),
+          dataInputMethod: activeDataTab,
+          textContent: textInput.trim(),
+          analysisOptions,
+          additionalNotes: additionalNotes.trim(),
+        }),
+      });
+      if (res.ok) {
+        setSubmitted(true);
+      }
+    } catch {
+      console.error("의뢰 실패");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   /* ───── placeholder results ───── */
 
   const placeholderResults: Record<string, React.ReactNode> = {
@@ -440,6 +476,32 @@ export default function TextAnalysisPage() {
         }
       />
 
+      {/* Success banner */}
+      {submitted && (
+        <div className="bg-green-50 border border-green-200 rounded-xl p-6 mb-6">
+          <div className="flex items-start gap-3">
+            <svg className="w-6 h-6 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div>
+              <h3 className="font-semibold text-green-800">텍스트 분석 의뢰가 접수되었습니다</h3>
+              <p className="text-sm text-green-700 mt-1">
+                담당자 검토 후 결과를 제공해 드리겠습니다. 진행 상황은 결과 확인 페이지에서 확인하실 수 있습니다.
+              </p>
+              <Link
+                href="/text-results"
+                className="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-[#c49a2e] text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors"
+              >
+                결과 확인 페이지로 이동
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ── Data Input ── */}
       <div className="bg-white rounded-xl border border-rose-200 shadow-md mb-6">
         <div className="px-6 py-4 border-b border-gray-200 bg-rose-50">
@@ -552,19 +614,66 @@ export default function TextAnalysisPage() {
         </div>
       </div>
 
-      {/* ── Bottom: Run button ── */}
+      {/* ── 의뢰 정보 ── */}
+      <div className="bg-white rounded-xl border border-rose-200 shadow-md mb-6">
+        <div className="px-6 py-4 border-b border-gray-200 bg-rose-50">
+          <h2 className="font-semibold text-gray-900">의뢰 정보</h2>
+        </div>
+        <div className="px-6 py-4 space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                이메일 <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="결과를 받을 이메일 주소"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500"
+              />
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">추가 요청사항</label>
+            <textarea
+              value={additionalNotes}
+              onChange={(e) => setAdditionalNotes(e.target.value)}
+              rows={3}
+              placeholder="추가적으로 요청하실 사항이 있으시면 작성해주세요."
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 resize-none"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* ── Bottom: Run + Submit buttons ── */}
       <div className="bg-white rounded-xl border border-rose-200 shadow-md mb-6">
         <div className="px-6 py-4 flex items-center justify-between">
-          <div className="text-sm text-gray-600">
-            <span className="font-medium text-gray-900">{selected.length}개</span> 분석 선택됨
+          <div className="flex items-center gap-4">
+            <div className="text-sm text-gray-600">
+              <span className="font-medium text-gray-900">{selected.length}개</span> 분석 선택됨
+            </div>
+            <Link href="/text-results" className="text-sm text-gray-500 hover:text-gray-700 underline">
+              이전 의뢰 결과 확인
+            </Link>
           </div>
-          <button
-            onClick={handleRun}
-            disabled={selected.length === 0}
-            className="px-6 py-2.5 bg-rose-600 text-white rounded-lg text-sm font-medium hover:bg-rose-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            분석 실행
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleRun}
+              disabled={selected.length === 0}
+              className="px-5 py-2.5 border border-rose-300 text-rose-600 rounded-lg text-sm font-medium hover:bg-rose-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              미리보기
+            </button>
+            <button
+              onClick={handleSubmitRequest}
+              disabled={submitting || selected.length === 0 || !email.trim()}
+              className="px-6 py-2.5 bg-[#c49a2e] text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {submitting ? "제출 중..." : "분석 의뢰하기"}
+            </button>
+          </div>
         </div>
       </div>
 

@@ -1154,3 +1154,58 @@ export function addQualAnalysisMessage(requestId: string, sender: 'user' | 'admi
   writeJson(`qual-analysis-messages-${requestId}`, messages);
   return msg;
 }
+
+// ---------------------------------------------------------------------------
+// Contact Inquiries (문의사항)
+// ---------------------------------------------------------------------------
+
+export interface ContactInquiry {
+  id: string;
+  email: string;
+  name: string;
+  category: string;
+  subject: string;
+  message: string;
+  status: 'pending' | 'replied';
+  createdAt: string;
+  adminReply: string;
+  repliedAt: string;
+}
+
+export function getContactInquiries(): ContactInquiry[] {
+  return readJson<ContactInquiry[]>('contact-inquiries', []);
+}
+
+export function getContactInquiry(id: string): ContactInquiry | undefined {
+  return getContactInquiries().find((r) => r.id === id);
+}
+
+export function createContactInquiry(
+  data: Omit<ContactInquiry, 'id' | 'status' | 'createdAt' | 'adminReply' | 'repliedAt'>,
+): ContactInquiry {
+  const inquiries = getContactInquiries();
+  const inquiry: ContactInquiry = {
+    id: generateId(),
+    email: data.email,
+    name: data.name,
+    category: data.category,
+    subject: data.subject,
+    message: data.message,
+    status: 'pending',
+    createdAt: new Date().toISOString(),
+    adminReply: '',
+    repliedAt: '',
+  };
+  inquiries.push(inquiry);
+  writeJson('contact-inquiries', inquiries);
+  return inquiry;
+}
+
+export function updateContactInquiry(id: string, patch: Partial<ContactInquiry>): ContactInquiry | undefined {
+  const inquiries = getContactInquiries();
+  const idx = inquiries.findIndex((r) => r.id === id);
+  if (idx === -1) return undefined;
+  inquiries[idx] = { ...inquiries[idx], ...patch, id };
+  writeJson('contact-inquiries', inquiries);
+  return inquiries[idx];
+}

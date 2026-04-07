@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 interface CreditData {
   balance: number;
@@ -17,6 +17,47 @@ interface Project {
   codedCount: number;
 }
 
+interface GenericRequest {
+  id: string;
+  email: string;
+  status: "pending" | "in_progress" | "completed";
+  createdAt: string;
+  adminResponse: string;
+  respondedAt: string;
+  [key: string]: unknown;
+}
+
+interface ContactInquiry {
+  id: string;
+  email: string;
+  name: string;
+  category: string;
+  subject: string;
+  message: string;
+  status: "pending" | "replied";
+  createdAt: string;
+  adminReply: string;
+  repliedAt: string;
+}
+
+const serviceTypes = [
+  { key: "research-design", label: "연구 설계", api: "/api/research-design", titleField: "researchTopic" },
+  { key: "stats-design", label: "통계분석 설계", api: "/api/stats-design", titleField: "researchQuestion" },
+  { key: "survey", label: "설문조사", api: "/api/survey", titleField: "surveyTopic" },
+  { key: "judgment-collection", label: "판결문 수집", api: "/api/judgment-collection", titleField: "courtType" },
+  { key: "news-collection", label: "뉴스 수집", api: "/api/news-collection", titleField: "keywords" },
+  { key: "data-transform", label: "데이터 전처리", api: "/api/data-transform", titleField: "dataDescription" },
+  { key: "quant-analysis", label: "계량분석", api: "/api/quant-analysis", titleField: "analysisType" },
+  { key: "text-analysis", label: "텍스트 분석", api: "/api/text-analysis-request", titleField: "analysisTypes" },
+  { key: "qual-analysis", label: "질적분석", api: "/api/qual-analysis", titleField: "analysisType" },
+];
+
+const statusConfig = {
+  pending: { label: "대기중", bg: "bg-gray-100", text: "text-gray-600" },
+  in_progress: { label: "진행중", bg: "bg-blue-50", text: "text-blue-600" },
+  completed: { label: "완료", bg: "bg-green-50", text: "text-green-600" },
+};
+
 export default function AdminPage() {
   const { isAdmin } = useAuth();
   const router = useRouter();
@@ -24,7 +65,27 @@ export default function AdminPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [chargeAmount, setChargeAmount] = useState("");
   const [charging, setCharging] = useState(false);
-  const [activeTab, setActiveTab] = useState<"overview" | "credits" | "projects">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "requests" | "inquiries" | "credits" | "projects">("overview");
+
+  // Requests management
+  const [allRequests, setAllRequests] = useState<{ type: string; label: string; api: string; titleField: string; requests: GenericRequest[] }[]>([]);
+  const [filterStatus, setFilterStatus] = useState<"all" | "pending" | "in_progress" | "completed">("all");
+  const [filterType, setFilterType] = useState<string>("all");
+  const [selectedReq, setSelectedReq] = useState<{ type: string; api: string; req: GenericRequest } | null>(null);
+  const [adminResponse, setAdminResponse] = useState("");
+  const [newStatus, setNewStatus] = useState<string>("");
+  const [updating, setUpdating] = useState(false);
+
+  // Contact inquiries
+  const [inquiries, setInquiries] = useState<ContactInquiry[]>([]);
+  const [selectedInquiry, setSelectedInquiry] = useState<ContactInquiry | null>(null);
+  const [adminReply, setAdminReply] = useState("");
+  const [replyUpdating, setReplyUpdating] = useState(false);
+
+  // Chat messages for selected request
+  const [chatMessages, setChatMessages] = useState<{ id: string; sender: string; message: string; createdAt: string }[]>([]);
+  const [adminChatInput, setAdminChatInput] = useState("");
+  const [sendingChat, setSendingChat] = useState(false);
 
   useEffect(() => {
     if (!isAdmin) {
@@ -32,6 +93,8 @@ export default function AdminPage() {
       return;
     }
     fetchData();
+    fetchRequests();
+    fetchInquiries();
   }, [isAdmin, router]);
 
   const fetchData = async () => {
@@ -43,6 +106,41 @@ export default function AdminPage() {
     const projData = await projRes.json();
     setCredits(credData);
     setProjects(projData.projects || []);
+  };
+
+  const fetchRequests = useCallback(async () => {
+    try {
+      const results = await Promise.all(
+        serviceTypes.map(async (svc) => {
+          const res = await fetch(svc.api);
+          const data = await res.json();
+          return {
+            type: svc.key,
+            label: svc.label,
+            api: svc.api,
+            titleField: svc.titleField,
+            requests: (data.requests ?? []) as GenericRequest[],
+          };
+        })
+      );
+      setAllRequests(results);
+    } catch { /* ignore */ }
+  }, []);
+
+  const fetchInquiries = useCallback(async () => {
+    try {
+      const res = await fetch("/api/contact");
+      const data = await res.json();
+      setInquiries(data.inquiries ?? []);
+    } catch { /* ignore */ }
+  }, []);
+
+  const fetchChatMessages = async (api: string, reqId: string) => {
+    try {
+      const res = await fetch(`${api}/${reqId}/messages`);
+      const data = await res.json();
+      setChatMessages(data.messages ?? []);
+    } catch { /* ignore */ }
   };
 
   const handleCharge = async () => {
@@ -68,13 +166,84 @@ export default function AdminPage() {
     await fetchData();
   };
 
+  const handleUpdateRequest = async () => {
+    if (!selectedReq) return;
+    setUpdating(true);
+    try {
+      await fetch(`${selectedReq.api}/${selectedReq.req.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...(newStatus ? { status: newStatus } : {}),
+          ...(adminResponse.trim() ? { adminResponse: adminResponse.trim(), respondedAt: new Date().toISOString() } : {}),
+        }),
+      });
+      setSelectedReq(null);
+      setAdminResponse("");
+      setNewStatus("");
+      await fetchRequests();
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  const handleSendAdminChat = async () => {
+    if (!selectedReq || !adminChatInput.trim() || sendingChat) return;
+    setSendingChat(true);
+    try {
+      await fetch(`${selectedReq.api}/${selectedReq.req.id}/messages`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sender: "admin", message: adminChatInput.trim() }),
+      });
+      setAdminChatInput("");
+      await fetchChatMessages(selectedReq.api, selectedReq.req.id);
+    } catch { /* ignore */ }
+    finally { setSendingChat(false); }
+  };
+
+  const handleReplyInquiry = async () => {
+    if (!selectedInquiry || !adminReply.trim()) return;
+    setReplyUpdating(true);
+    try {
+      await fetch("/api/contact", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: selectedInquiry.id,
+          adminReply: adminReply.trim(),
+          status: "replied",
+          repliedAt: new Date().toISOString(),
+        }),
+      });
+      setSelectedInquiry(null);
+      setAdminReply("");
+      await fetchInquiries();
+    } finally {
+      setReplyUpdating(false);
+    }
+  };
+
   if (!isAdmin) return null;
 
   const totalCases = projects.reduce((s, p) => s + p.caseCount, 0);
   const totalCoded = projects.reduce((s, p) => s + p.codedCount, 0);
 
+  // Flatten all requests for unified view
+  const flatRequests = allRequests.flatMap((svc) =>
+    svc.requests.map((req) => ({ ...req, _type: svc.type, _label: svc.label, _api: svc.api, _titleField: svc.titleField }))
+  );
+  const filteredRequests = flatRequests
+    .filter((r) => filterStatus === "all" || r.status === filterStatus)
+    .filter((r) => filterType === "all" || r._type === filterType)
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+  const pendingCount = flatRequests.filter((r) => r.status === "pending").length;
+  const inProgressCount = flatRequests.filter((r) => r.status === "in_progress").length;
+  const pendingInquiryCount = inquiries.filter((i) => i.status === "pending").length;
+
   return (
-    <div className="p-6 max-w-6xl mx-auto">
+    <div className="p-6 max-w-7xl mx-auto">
       {/* Header */}
       <div className="flex items-center gap-3 mb-8">
         <div className="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center">
@@ -90,18 +259,24 @@ export default function AdminPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 mb-6 bg-gray-100 rounded-xl p-1 w-fit">
-        {(["overview", "credits", "projects"] as const).map((tab) => (
+      <div className="flex gap-1 mb-6 bg-gray-100 rounded-xl p-1 w-fit flex-wrap">
+        {([
+          { key: "overview", label: "전체 현황" },
+          { key: "requests", label: `의뢰 관리${pendingCount ? ` (${pendingCount})` : ""}` },
+          { key: "inquiries", label: `문의 관리${pendingInquiryCount ? ` (${pendingInquiryCount})` : ""}` },
+          { key: "credits", label: "크레딧 관리" },
+          { key: "projects", label: "프로젝트 관리" },
+        ] as const).map((tab) => (
           <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
+            key={tab.key}
+            onClick={() => setActiveTab(tab.key)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-              activeTab === tab
+              activeTab === tab.key
                 ? "bg-white text-gray-900 shadow-sm"
                 : "text-gray-500 hover:text-gray-700"
             }`}
           >
-            {tab === "overview" ? "전체 현황" : tab === "credits" ? "크레딧 관리" : "프로젝트 관리"}
+            {tab.label}
           </button>
         ))}
       </div>
@@ -109,11 +284,42 @@ export default function AdminPage() {
       {/* Overview */}
       {activeTab === "overview" && (
         <div className="space-y-6">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
             <OverviewCard label="크레딧 잔액" value={credits?.balance?.toLocaleString() ?? "..."} color="amber" />
-            <OverviewCard label="총 프로젝트" value={projects.length} color="blue" />
-            <OverviewCard label="총 사건 수" value={totalCases} color="green" />
-            <OverviewCard label="코딩 완료" value={totalCoded} color="purple" />
+            <OverviewCard label="총 의뢰" value={flatRequests.length} color="blue" />
+            <OverviewCard label="대기중" value={pendingCount} color="red" />
+            <OverviewCard label="진행중" value={inProgressCount} color="green" />
+            <OverviewCard label="문의 대기" value={pendingInquiryCount} color="purple" />
+          </div>
+
+          {/* Recent pending requests */}
+          <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <h3 className="font-bold text-gray-900 mb-4">최근 대기중 의뢰</h3>
+            {flatRequests.filter((r) => r.status === "pending").length > 0 ? (
+              <div className="space-y-2">
+                {flatRequests
+                  .filter((r) => r.status === "pending")
+                  .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                  .slice(0, 10)
+                  .map((req) => (
+                    <div key={req.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
+                      <div>
+                        <span className="text-xs font-medium text-[#c49a2e] mr-2">[{req._label}]</span>
+                        <span className="text-sm text-gray-700">{String((req as Record<string, unknown>)[req._titleField] || "").slice(0, 40) || req.email}</span>
+                        <span className="text-xs text-gray-400 ml-2">{new Date(req.createdAt).toLocaleDateString("ko-KR")}</span>
+                      </div>
+                      <button
+                        onClick={() => { setActiveTab("requests"); setSelectedReq({ type: req._type, api: req._api, req }); setNewStatus(req.status); setAdminResponse(req.adminResponse || ""); fetchChatMessages(req._api, req.id); }}
+                        className="px-3 py-1 text-xs text-[#c49a2e] border border-[#c49a2e]/30 rounded-lg hover:bg-[#c49a2e]/5"
+                      >
+                        처리
+                      </button>
+                    </div>
+                  ))}
+              </div>
+            ) : (
+              <p className="text-sm text-gray-400">대기중인 의뢰가 없습니다</p>
+            )}
           </div>
 
           <div className="bg-white rounded-xl border border-gray-200 p-6">
@@ -136,6 +342,312 @@ export default function AdminPage() {
               <p className="text-sm text-gray-400">내역이 없습니다</p>
             )}
           </div>
+        </div>
+      )}
+
+      {/* Requests Management */}
+      {activeTab === "requests" && (
+        <div className="space-y-4">
+          {/* Filters */}
+          <div className="flex flex-wrap gap-3 items-center">
+            <select
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+              className="px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/30"
+            >
+              <option value="all">전체 서비스</option>
+              {serviceTypes.map((s) => (
+                <option key={s.key} value={s.key}>{s.label}</option>
+              ))}
+            </select>
+            <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
+              {([
+                { key: "all", label: "전체" },
+                { key: "pending", label: "대기중" },
+                { key: "in_progress", label: "진행중" },
+                { key: "completed", label: "완료" },
+              ] as const).map((s) => (
+                <button
+                  key={s.key}
+                  onClick={() => setFilterStatus(s.key)}
+                  className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                    filterStatus === s.key ? "bg-white text-gray-900 shadow-sm" : "text-gray-500"
+                  }`}
+                >
+                  {s.label}
+                </button>
+              ))}
+            </div>
+            <span className="text-sm text-gray-400">{filteredRequests.length}건</span>
+          </div>
+
+          {/* Request list */}
+          <div className="bg-white rounded-xl border border-gray-200">
+            {filteredRequests.length === 0 ? (
+              <div className="px-6 py-12 text-center text-sm text-gray-400">해당 조건의 의뢰가 없습니다</div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="text-left text-gray-400 border-b border-gray-100">
+                      <th className="px-4 py-3 font-medium">서비스</th>
+                      <th className="px-4 py-3 font-medium">이메일</th>
+                      <th className="px-4 py-3 font-medium">내용</th>
+                      <th className="px-4 py-3 font-medium text-center">상태</th>
+                      <th className="px-4 py-3 font-medium">접수일</th>
+                      <th className="px-4 py-3 font-medium text-right">관리</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredRequests.map((req) => {
+                      const sc = statusConfig[req.status];
+                      return (
+                        <tr key={`${req._type}-${req.id}`} className="border-b border-gray-50 hover:bg-gray-50">
+                          <td className="px-4 py-3">
+                            <span className="inline-flex px-2 py-0.5 rounded text-xs font-medium bg-[#c49a2e]/10 text-[#c49a2e]">
+                              {req._label}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 text-gray-700">{req.email}</td>
+                          <td className="px-4 py-3 text-gray-600 max-w-[200px] truncate">
+                            {String((req as Record<string, unknown>)[req._titleField] || "").slice(0, 50)}
+                          </td>
+                          <td className="px-4 py-3 text-center">
+                            <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${sc.bg} ${sc.text}`}>
+                              {sc.label}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 text-gray-500">{new Date(req.createdAt).toLocaleDateString("ko-KR")}</td>
+                          <td className="px-4 py-3 text-right">
+                            <button
+                              onClick={() => { setSelectedReq({ type: req._type, api: req._api, req }); setNewStatus(req.status); setAdminResponse(req.adminResponse || ""); fetchChatMessages(req._api, req.id); }}
+                              className="px-3 py-1.5 text-xs text-[#c49a2e] border border-[#c49a2e]/30 rounded-lg hover:bg-[#c49a2e]/5 transition-colors"
+                            >
+                              상세/처리
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+
+          {/* Request detail modal */}
+          {selectedReq && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+              <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto border border-gray-200">
+                <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                  <h3 className="font-bold text-gray-900">의뢰 상세</h3>
+                  <button onClick={() => { setSelectedReq(null); setChatMessages([]); }} className="p-2 hover:bg-gray-100 rounded-lg">
+                    <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                <div className="px-6 py-4 space-y-4">
+                  {/* Request info */}
+                  <div className="grid grid-cols-2 gap-3 text-sm">
+                    <div><span className="text-gray-400">이메일:</span> <span className="text-gray-700">{selectedReq.req.email}</span></div>
+                    <div><span className="text-gray-400">접수일:</span> <span className="text-gray-700">{new Date(selectedReq.req.createdAt).toLocaleDateString("ko-KR")}</span></div>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-4 text-sm">
+                    {Object.entries(selectedReq.req)
+                      .filter(([k]) => !["id", "status", "createdAt", "adminResponse", "respondedAt", "email", "_type", "_label", "_api", "_titleField"].includes(k))
+                      .map(([k, v]) => (
+                        <div key={k} className="mb-2">
+                          <span className="text-gray-400 text-xs">{k}:</span>
+                          <p className="text-gray-700 whitespace-pre-wrap">{String(v).slice(0, 500)}</p>
+                        </div>
+                      ))}
+                  </div>
+
+                  {/* Status update */}
+                  <div className="space-y-3">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">상태 변경</label>
+                      <select
+                        value={newStatus}
+                        onChange={(e) => setNewStatus(e.target.value)}
+                        className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/30"
+                      >
+                        <option value="pending">대기중</option>
+                        <option value="in_progress">진행중</option>
+                        <option value="completed">완료</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">관리자 응답</label>
+                      <textarea
+                        value={adminResponse}
+                        onChange={(e) => setAdminResponse(e.target.value)}
+                        rows={3}
+                        placeholder="완료 시 결과 안내 메시지를 작성하세요"
+                        className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/30 resize-none"
+                      />
+                    </div>
+                    <button
+                      onClick={handleUpdateRequest}
+                      disabled={updating}
+                      className="px-6 py-2.5 bg-[#c49a2e] text-white rounded-lg text-sm font-semibold hover:bg-[#b08a28] disabled:opacity-50 transition-colors"
+                    >
+                      {updating ? "처리 중..." : "저장"}
+                    </button>
+                  </div>
+
+                  {/* Chat section */}
+                  <div className="border-t border-gray-100 pt-4">
+                    <p className="text-sm font-medium text-gray-700 mb-3">채팅 내역</p>
+                    <div className="max-h-48 overflow-y-auto space-y-2 mb-3">
+                      {chatMessages.length === 0 ? (
+                        <p className="text-sm text-gray-400 text-center py-4">메시지 없음</p>
+                      ) : (
+                        chatMessages.map((msg) => (
+                          <div key={msg.id} className={`flex ${msg.sender === "admin" ? "justify-end" : "justify-start"}`}>
+                            <div className={`max-w-[80%] rounded-lg px-3 py-2 text-sm ${msg.sender === "admin" ? "bg-[#c49a2e]/10 text-gray-900" : "bg-gray-100 text-gray-900"}`}>
+                              <p className="whitespace-pre-wrap">{msg.message}</p>
+                              <p className="text-[10px] text-gray-400 mt-1">
+                                {msg.sender === "admin" ? "관리자" : "사용자"} &middot; {new Date(msg.createdAt).toLocaleString("ko-KR", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
+                              </p>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={adminChatInput}
+                        onChange={(e) => setAdminChatInput(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === "Enter") handleSendAdminChat(); }}
+                        placeholder="관리자 메시지 입력..."
+                        className="flex-1 px-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/30"
+                      />
+                      <button
+                        onClick={handleSendAdminChat}
+                        disabled={sendingChat || !adminChatInput.trim()}
+                        className="px-4 py-2 bg-[#c49a2e] text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] disabled:opacity-50"
+                      >
+                        전송
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Inquiries Management */}
+      {activeTab === "inquiries" && (
+        <div className="space-y-4">
+          <div className="bg-white rounded-xl border border-gray-200">
+            <div className="px-6 py-4 border-b border-gray-100">
+              <h3 className="font-bold text-gray-900">문의사항 관리 ({inquiries.length}건)</h3>
+            </div>
+            {inquiries.length === 0 ? (
+              <div className="px-6 py-12 text-center text-sm text-gray-400">문의가 없습니다</div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="text-left text-gray-400 border-b border-gray-100">
+                      <th className="px-4 py-3 font-medium">유형</th>
+                      <th className="px-4 py-3 font-medium">제목</th>
+                      <th className="px-4 py-3 font-medium">이메일</th>
+                      <th className="px-4 py-3 font-medium text-center">상태</th>
+                      <th className="px-4 py-3 font-medium">접수일</th>
+                      <th className="px-4 py-3 font-medium text-right">관리</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[...inquiries].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).map((inq) => (
+                      <tr key={inq.id} className="border-b border-gray-50 hover:bg-gray-50">
+                        <td className="px-4 py-3 text-gray-600">{inq.category}</td>
+                        <td className="px-4 py-3 font-medium text-gray-900">{inq.subject}</td>
+                        <td className="px-4 py-3 text-gray-700">{inq.email}</td>
+                        <td className="px-4 py-3 text-center">
+                          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+                            inq.status === "replied" ? "bg-green-50 text-green-600" : "bg-gray-100 text-gray-600"
+                          }`}>
+                            {inq.status === "replied" ? "답변 완료" : "대기중"}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-gray-500">{new Date(inq.createdAt).toLocaleDateString("ko-KR")}</td>
+                        <td className="px-4 py-3 text-right">
+                          <button
+                            onClick={() => { setSelectedInquiry(inq); setAdminReply(inq.adminReply || ""); }}
+                            className="px-3 py-1.5 text-xs text-[#c49a2e] border border-[#c49a2e]/30 rounded-lg hover:bg-[#c49a2e]/5 transition-colors"
+                          >
+                            {inq.status === "replied" ? "보기" : "답변"}
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+
+          {/* Inquiry detail modal */}
+          {selectedInquiry && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+              <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 border border-gray-200">
+                <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                  <h3 className="font-bold text-gray-900">문의 상세</h3>
+                  <button onClick={() => setSelectedInquiry(null)} className="p-2 hover:bg-gray-100 rounded-lg">
+                    <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                <div className="px-6 py-4 space-y-4">
+                  <div className="text-sm">
+                    <p className="text-gray-400 text-xs mb-1">제목</p>
+                    <p className="font-medium text-gray-900">{selectedInquiry.subject}</p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3 text-sm">
+                    <div><span className="text-gray-400 text-xs">이메일:</span><br />{selectedInquiry.email}</div>
+                    <div><span className="text-gray-400 text-xs">이름:</span><br />{selectedInquiry.name || "-"}</div>
+                    <div><span className="text-gray-400 text-xs">유형:</span><br />{selectedInquiry.category}</div>
+                    <div><span className="text-gray-400 text-xs">접수일:</span><br />{new Date(selectedInquiry.createdAt).toLocaleDateString("ko-KR")}</div>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <p className="text-sm text-gray-700 whitespace-pre-wrap">{selectedInquiry.message}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">관리자 답변</label>
+                    <textarea
+                      value={adminReply}
+                      onChange={(e) => setAdminReply(e.target.value)}
+                      rows={4}
+                      placeholder="답변을 작성해주세요"
+                      className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/30 resize-none"
+                    />
+                  </div>
+                  <div className="flex justify-end gap-3">
+                    <button
+                      onClick={() => setSelectedInquiry(null)}
+                      className="px-5 py-2.5 border border-gray-200 text-gray-500 rounded-xl text-sm font-medium hover:bg-gray-50"
+                    >
+                      닫기
+                    </button>
+                    <button
+                      onClick={handleReplyInquiry}
+                      disabled={replyUpdating || !adminReply.trim()}
+                      className="px-6 py-2.5 bg-[#c49a2e] text-white rounded-xl text-sm font-semibold hover:bg-[#b08a28] disabled:opacity-50 transition-colors"
+                    >
+                      {replyUpdating ? "처리 중..." : "답변 저장"}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -277,6 +789,7 @@ function OverviewCard({ label, value, color }: { label: string; value: string | 
     blue: "bg-blue-50 text-blue-600",
     green: "bg-green-50 text-green-600",
     purple: "bg-purple-50 text-purple-600",
+    red: "bg-red-50 text-red-600",
   };
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-5">

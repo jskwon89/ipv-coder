@@ -105,31 +105,37 @@ export default function LandingPage() {
               image="/images/landing-연구설계.png"
               title="연구 설계 지원"
               description="연구 주제 설계부터 통계분석 설계까지"
+              href="/data-generation"
             />
             <ServiceCard
               image="/images/landing-설문조사.png"
               title="설문조사"
               description="설문 설계부터 데이터 수집까지 원스톱 서비스"
+              href="/survey-request"
             />
             <ServiceCard
               image="/images/landing-판결문.png"
               title="판결문 분석"
               description="AI 기반 판결문 코딩 및 수집으로 연구 시간 절약"
+              href="/judgment"
             />
             <ServiceCard
               image="/images/landing-기사검색.png"
               title="뉴스/언론 보도"
               description="키워드 기반 뉴스 수집 및 분석"
+              href="/news-search"
             />
             <ServiceCard
               image="/images/landing-계량통계.png"
               title="계량분석"
               description="기초통계부터 고급 계량분석까지, 전문가가 직접 분석"
+              href="/quant-analysis"
             />
             <ServiceCard
               image="/images/landing-텍스트분석.png"
               title="텍스트 분석"
               description="토픽모델링, 감성분석, 워드클라우드 등 텍스트 분석"
+              href="/text-analysis"
             />
           </div>
         </div>
@@ -232,13 +238,15 @@ function ServiceCard({
   image,
   title,
   description,
+  href,
 }: {
   image: string;
   title: string;
   description: string;
+  href: string;
 }) {
   return (
-    <div className="group bg-white rounded-lg sm:rounded-xl border border-gray-200 shadow-sm hover:shadow-xl transition-shadow overflow-hidden">
+    <Link href={href} className="group bg-white rounded-lg sm:rounded-xl border border-gray-200 shadow-sm hover:shadow-xl transition-shadow overflow-hidden block">
       <div className="relative h-32 sm:h-48 overflow-hidden">
         <Image
           src={image}
@@ -256,7 +264,7 @@ function ServiceCard({
           자세히 보기 &rarr;
         </span>
       </div>
-    </div>
+    </Link>
   );
 }
 

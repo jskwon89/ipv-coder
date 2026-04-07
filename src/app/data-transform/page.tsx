@@ -94,8 +94,17 @@ export default function DataTransformPage() {
             <div>
               <h3 className="font-semibold text-green-800">전처리 의뢰가 접수되었습니다</h3>
               <p className="text-sm text-green-700 mt-1">
-                담당자 검토 후 결과를 제공해 드리겠습니다.
+                담당자 검토 후 결과를 제공해 드리겠습니다. 진행 상황은 결과 확인 페이지에서 확인하실 수 있습니다.
               </p>
+              <Link
+                href="/data-transform-results"
+                className="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-[#c49a2e] text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors"
+              >
+                결과 확인 페이지로 이동
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
             </div>
           </div>
         </div>
@@ -214,7 +223,13 @@ export default function DataTransformPage() {
       </div>
 
       {/* Submit */}
-      <div className="flex items-center justify-end">
+      <div className="flex items-center justify-between">
+        <Link
+          href="/data-transform-results"
+          className="text-sm text-gray-500 hover:text-gray-700 underline"
+        >
+          이전 의뢰 결과 확인
+        </Link>
         <button
           onClick={handleSubmit}
           disabled={submitting || !email.trim() || !dataDescription.trim()}
