@@ -69,18 +69,22 @@ export default function DashboardPage() {
 
   const fetchData = useCallback(async () => {
     try {
-      const [projRes, researchRes] = await Promise.all([
+      const [projRes, researchRes, statsDesignRes, surveyRes] = await Promise.all([
         fetch("/api/projects"),
         fetch("/api/research-design"),
+        fetch("/api/stats-design"),
+        fetch("/api/survey"),
       ]);
       const projData = await projRes.json();
       const researchData = await researchRes.json();
+      const statsDesignData = await statsDesignRes.json();
+      const surveyData = await surveyRes.json();
       const prjs = projData.projects || [];
       setProjects(prjs);
       setStats({
-        researchDesign: researchData.requests?.length || 0,
+        researchDesign: (researchData.requests?.length || 0) + (statsDesignData.requests?.length || 0),
         judgment: prjs.length,
-        survey: 0,  // TODO: connect when survey system is built
+        survey: surveyData.requests?.length || 0,
         dataAnalysis: 0,  // TODO: connect when analysis system is built
       });
     } catch {
