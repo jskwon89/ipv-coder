@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface Project {
   id: string;
@@ -11,136 +12,43 @@ interface Project {
   codedCount: number;
 }
 
-/* ---------- Service SVG Icons ---------- */
-
-function IconJudgment() {
-  return (
-    <svg viewBox="0 0 80 80" fill="none" className="w-20 h-20">
-      <rect x="18" y="30" width="44" height="36" rx="3" fill="#0f1a2e" stroke="#c49a2e" strokeWidth="2"/>
-      <line x1="26" y1="42" x2="54" y2="42" stroke="#5ba0e8" strokeWidth="2" strokeLinecap="round"/>
-      <line x1="26" y1="50" x2="48" y2="50" stroke="#5ba0e8" strokeWidth="2" strokeLinecap="round"/>
-      <line x1="26" y1="58" x2="42" y2="58" stroke="#5ba0e8" strokeWidth="2" strokeLinecap="round"/>
-      <circle cx="52" cy="22" r="12" fill="#c49a2e"/>
-      <path d="M48 22h8M52 18v8" stroke="#0f1a2e" strokeWidth="2.5" strokeLinecap="round"/>
-      <rect x="46" y="14" width="12" height="4" rx="1" fill="#d4a843"/>
-    </svg>
-  );
-}
-
-function IconStats() {
-  return (
-    <svg viewBox="0 0 80 80" fill="none" className="w-20 h-20">
-      <rect x="14" y="50" width="12" height="20" rx="2" fill="#5ba0e8"/>
-      <rect x="34" y="35" width="12" height="35" rx="2" fill="#c49a2e"/>
-      <rect x="54" y="20" width="12" height="50" rx="2" fill="#d4a843"/>
-      <path d="M18 48L40 30L60 18" stroke="#0f1a2e" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="4 3"/>
-      <circle cx="60" cy="18" r="4" fill="#0f1a2e" stroke="#c49a2e" strokeWidth="2"/>
-      <line x1="10" y1="72" x2="70" y2="72" stroke="#0f1a2e" strokeWidth="1.5" opacity="0.2"/>
-    </svg>
-  );
-}
-
-function IconTextAnalysis() {
-  return (
-    <svg viewBox="0 0 80 80" fill="none" className="w-20 h-20">
-      <rect x="12" y="16" width="40" height="50" rx="4" fill="#0f1a2e" stroke="#5ba0e8" strokeWidth="1.5"/>
-      <line x1="20" y1="28" x2="44" y2="28" stroke="#5ba0e8" strokeWidth="2" strokeLinecap="round"/>
-      <line x1="20" y1="36" x2="40" y2="36" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.4"/>
-      <line x1="20" y1="44" x2="36" y2="44" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.4"/>
-      <line x1="20" y1="52" x2="38" y2="52" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.4"/>
-      <circle cx="56" cy="50" r="14" stroke="#c49a2e" strokeWidth="2.5" fill="none"/>
-      <line x1="66" y1="60" x2="72" y2="66" stroke="#c49a2e" strokeWidth="3" strokeLinecap="round"/>
-      <circle cx="56" cy="50" r="6" fill="#c49a2e" opacity="0.2"/>
-    </svg>
-  );
-}
-
-function IconSurvey() {
-  return (
-    <svg viewBox="0 0 80 80" fill="none" className="w-20 h-20">
-      <rect x="16" y="10" width="48" height="60" rx="4" fill="#0f1a2e" stroke="#c49a2e" strokeWidth="1.5"/>
-      <rect x="14" y="6" width="24" height="10" rx="3" fill="#c49a2e"/>
-      <rect x="26" y="26" width="12" height="12" rx="2" stroke="#5ba0e8" strokeWidth="2" fill="none"/>
-      <path d="M29 32l3 3 5-5" stroke="#5ba0e8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <line x1="44" y1="32" x2="56" y2="32" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.5"/>
-      <rect x="26" y="46" width="12" height="12" rx="2" stroke="#d4a843" strokeWidth="2" fill="none"/>
-      <path d="M29 52l3 3 5-5" stroke="#d4a843" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <line x1="44" y1="52" x2="56" y2="52" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.5"/>
-    </svg>
-  );
-}
-
-function IconNewsSearch() {
-  return (
-    <svg viewBox="0 0 80 80" fill="none" className="w-20 h-20">
-      <rect x="10" y="14" width="48" height="52" rx="4" fill="#0f1a2e" stroke="#5ba0e8" strokeWidth="1.5"/>
-      <rect x="18" y="22" width="20" height="14" rx="2" fill="#5ba0e8" opacity="0.3"/>
-      <line x1="18" y1="42" x2="50" y2="42" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.4"/>
-      <line x1="18" y1="48" x2="44" y2="48" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.3"/>
-      <line x1="18" y1="54" x2="40" y2="54" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.3"/>
-      <line x1="42" y1="22" x2="50" y2="22" stroke="#c49a2e" strokeWidth="2" strokeLinecap="round"/>
-      <line x1="42" y1="28" x2="50" y2="28" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.3"/>
-      <circle cx="58" cy="52" r="12" stroke="#c49a2e" strokeWidth="2.5" fill="none"/>
-      <line x1="67" y1="61" x2="72" y2="66" stroke="#c49a2e" strokeWidth="3" strokeLinecap="round"/>
-    </svg>
-  );
-}
-
-function IconResearchDesign() {
-  return (
-    <svg viewBox="0 0 80 80" fill="none" className="w-20 h-20">
-      <path d="M40 10C32 10 28 16 28 22c0 6 4 10 8 12v4h8v-4c4-2 8-6 8-12 0-6-4-12-12-12z" fill="#c49a2e"/>
-      <rect x="34" y="38" width="12" height="4" rx="1" fill="#d4a843"/>
-      <rect x="36" y="42" width="8" height="3" rx="1" fill="#d4a843"/>
-      <circle cx="24" cy="58" r="8" fill="#0f1a2e" stroke="#5ba0e8" strokeWidth="2"/>
-      <circle cx="56" cy="58" r="8" fill="#0f1a2e" stroke="#5ba0e8" strokeWidth="2"/>
-      <circle cx="40" cy="68" r="6" fill="#0f1a2e" stroke="#c49a2e" strokeWidth="2"/>
-      <line x1="32" y1="54" x2="36" y2="64" stroke="#5ba0e8" strokeWidth="1.5" strokeLinecap="round"/>
-      <line x1="48" y1="54" x2="44" y2="64" stroke="#5ba0e8" strokeWidth="1.5" strokeLinecap="round"/>
-      <line x1="40" y1="45" x2="40" y2="50" stroke="#d4a843" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="2 2"/>
-      <line x1="40" y1="50" x2="24" y2="50" stroke="#5ba0e8" strokeWidth="1.5" strokeLinecap="round"/>
-      <line x1="40" y1="50" x2="56" y2="50" stroke="#5ba0e8" strokeWidth="1.5" strokeLinecap="round"/>
-    </svg>
-  );
-}
-
 const serviceCards = [
   {
     title: "판결문 코딩",
     desc: "AI 기반 판결문 자동 코딩",
     href: "/judgment",
-    icon: <IconJudgment />,
+    image: "/images/서비스_판결문 코딩.png",
   },
   {
     title: "계량통계분석",
     desc: "기초통계부터 고급분석까지",
     href: "/stats-analysis",
-    icon: <IconStats />,
+    image: "/images/서비스_계량통계분석.png",
     badge: "준비 중",
   },
   {
     title: "텍스트 분석",
     desc: "토픽모델링, 감성분석, 워드클라우드",
     href: "/text-analysis",
-    icon: <IconTextAnalysis />,
+    image: "/images/서비스_텍스트분석.png",
   },
   {
     title: "설문조사",
     desc: "설문 설계부터 데이터 수집까지",
     href: "/survey-request",
-    icon: <IconSurvey />,
+    image: "/images/서비스_설문조사.png",
   },
   {
     title: "기사 검색",
     desc: "키워드 기반 뉴스 검색 및 요약",
     href: "/news-search",
-    icon: <IconNewsSearch />,
+    image: "/images/서비스_기사분석.png",
   },
   {
     title: "연구 설계 지원",
     desc: "검정력 분석, 시뮬레이션",
     href: "/data-generation",
-    icon: <IconResearchDesign />,
+    image: "/images/서비스_연구설계지원.png",
     badge: "준비 중",
   },
 ];
@@ -249,14 +157,19 @@ export default function DashboardPage() {
         {/* Service Cards */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-5">
-            <h2 className="text-lg font-bold text-gray-900">서비스</h2>
+            <h2 className="text-lg font-bold text-white drop-shadow-sm">서비스</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {serviceCards.map((card) => (
               <Link key={card.title} href={card.href} className="group block">
                 <div className="rounded-2xl border border-gray-200 bg-white overflow-hidden hover:border-[#c49a2e]/40 hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02]">
-                  <div className="flex items-center justify-center py-8 bg-gray-50 relative">
-                    {card.icon}
+                  <div className="relative bg-gray-50 h-40">
+                    <Image
+                      src={card.image}
+                      alt={card.title}
+                      fill
+                      className="object-contain p-3"
+                    />
                     {card.badge && (
                       <span className="absolute top-3 right-3 z-10 text-[10px] font-semibold bg-[#c49a2e] text-white px-2.5 py-1 rounded-full">
                         {card.badge}

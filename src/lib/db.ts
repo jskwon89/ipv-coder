@@ -262,6 +262,20 @@ export function createProject(name: string): Project {
   return project;
 }
 
+export function deleteProject(id: string): boolean {
+  const projects = getProjects();
+  const idx = projects.findIndex((p) => p.id === id);
+  if (idx === -1) return false;
+  projects.splice(idx, 1);
+  writeJson('projects', projects);
+  // Clean up related files
+  const casesPath = filePath(casesFile(id));
+  const dyadsPath = filePath(dyadsFile(id));
+  if (fs.existsSync(casesPath)) fs.unlinkSync(casesPath);
+  if (fs.existsSync(dyadsPath)) fs.unlinkSync(dyadsPath);
+  return true;
+}
+
 export function updateProject(id: string, patch: Partial<Project>): Project | undefined {
   const projects = getProjects();
   const idx = projects.findIndex((p) => p.id === id);

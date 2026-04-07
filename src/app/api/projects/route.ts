@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { getProjects, createProject } from '@/lib/db';
+import { getProjects, createProject, deleteProject } from '@/lib/db';
 
 export async function GET() {
   try {
@@ -30,5 +30,22 @@ export async function POST(request: NextRequest) {
       { error: '프로젝트 생성에 실패했습니다.' },
       { status: 500 },
     );
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    if (!id) {
+      return Response.json({ error: '프로젝트 ID가 필요합니다.' }, { status: 400 });
+    }
+    const deleted = deleteProject(id);
+    if (!deleted) {
+      return Response.json({ error: '프로젝트를 찾을 수 없습니다.' }, { status: 404 });
+    }
+    return Response.json({ success: true });
+  } catch {
+    return Response.json({ error: '프로젝트 삭제에 실패했습니다.' }, { status: 500 });
   }
 }
