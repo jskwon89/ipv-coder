@@ -1,372 +1,269 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 
-const presetScales = [
-  { label: "PHQ-9 (우울)", items: 9, range: "0-3", ref: "Kroenke et al., 2001" },
-  { label: "GAD-7 (불안)", items: 7, range: "0-3", ref: "Spitzer et al., 2006" },
-  { label: "PCL-5 (PTSD)", items: 20, range: "0-4", ref: "Weathers et al., 2013" },
-  { label: "AUDIT (음주)", items: 10, range: "0-4", ref: "Saunders et al., 1993" },
-  { label: "사회적 지지 척도", items: 12, range: "1-5", ref: "Zimet et al., 1988" },
-  { label: "자아존중감 척도", items: 10, range: "1-4", ref: "Rosenberg, 1965" },
-  { label: "삶의 만족도", items: 5, range: "1-7", ref: "Diener et al., 1985" },
-];
-
-const outputTabs = ["데이터 미리보기", "기술통계", "상관행렬", "참고문헌"] as const;
-
-interface CustomVariable {
-  name: string;
-  type: "연속" | "범주" | "리커트";
-  desc: string;
+interface ResearchRequest {
+  id: string;
+  keywords: string;
+  description: string;
+  field: string;
+  status: "pending" | "in_progress" | "completed";
+  createdAt: string;
+  aiDraft: string;
+  adminResponse: string;
+  respondedAt: string;
 }
 
-export default function DataGenerationPage() {
-  const [topic, setTopic] = useState("");
-  const [sampleSize, setSampleSize] = useState(300);
-  const [selectedScales, setSelectedScales] = useState<string[]>([]);
-  const [paramMode, setParamMode] = useState<"literature" | "custom">("literature");
-  const [activeOutputTab, setActiveOutputTab] = useState<(typeof outputTabs)[number]>("데이터 미리보기");
-  const [customVars, setCustomVars] = useState<CustomVariable[]>([]);
-  const [newVar, setNewVar] = useState<CustomVariable>({ name: "", type: "연속", desc: "" });
+const fieldOptions = [
+  "법학",
+  "사회복지학",
+  "심리학",
+  "범죄학",
+  "사회학",
+  "교육학",
+  "기타",
+];
 
-  const toggleScale = (label: string) => {
-    setSelectedScales((prev) =>
-      prev.includes(label) ? prev.filter((s) => s !== label) : [...prev, label]
-    );
+const statusConfig = {
+  pending: { label: "대기중", bg: "bg-gray-100", text: "text-gray-600" },
+  in_progress: { label: "분석중", bg: "bg-blue-50", text: "text-blue-600" },
+  completed: { label: "완료", bg: "bg-green-50", text: "text-green-600" },
+};
+
+export default function ResearchDesignPage() {
+  const [keywords, setKeywords] = useState("");
+  const [field, setField] = useState("");
+  const [description, setDescription] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [requests, setRequests] = useState<ResearchRequest[]>([]);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  const fetchRequests = useCallback(async () => {
+    try {
+      const res = await fetch("/api/research-design");
+      const data = await res.json();
+      setRequests(data.requests ?? []);
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchRequests();
+  }, [fetchRequests]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!keywords.trim() || !field) return;
+    setSubmitting(true);
+    try {
+      await fetch("/api/research-design", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ keywords: keywords.trim(), description: description.trim(), field }),
+      });
+      setKeywords("");
+      setField("");
+      setDescription("");
+      await fetchRequests();
+    } catch {
+      // ignore
+    } finally {
+      setSubmitting(false);
+    }
   };
 
-  const addCustomVar = () => {
-    if (!newVar.name.trim()) return;
-    setCustomVars((prev) => [...prev, { ...newVar }]);
-    setNewVar({ name: "", type: "연속", desc: "" });
-  };
-
-  const removeCustomVar = (index: number) => {
-    setCustomVars((prev) => prev.filter((_, i) => i !== index));
-  };
+  const sorted = [...requests].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  );
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
-      <Link href="/dashboard" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 mb-4">
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+    <div className="p-8 max-w-4xl mx-auto">
+      <Link
+        href="/dashboard"
+        className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 mb-4"
+      >
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
         대시보드로 돌아가기
       </Link>
+
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold">연구 설계 지원</h1>
-            <span className="text-[10px] font-medium bg-teal-50 text-teal-600 px-2 py-0.5 rounded-full">
-              준비 중
-            </span>
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold">연구 주제 및 방향 설계</h1>
+        <p className="text-gray-600 text-sm mt-2 leading-relaxed">
+          연구 키워드를 입력하시면, 전문가가 선행연구 동향, 연구 방향, 변수 구성, 통계분석 방법 등을
+          종합적으로 분석하여 제공합니다.
+        </p>
+      </div>
+
+      {/* Request Form */}
+      <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-gray-200 shadow-sm mb-8">
+        <div className="px-6 py-4 border-b border-gray-200">
+          <h2 className="font-semibold">새 의뢰</h2>
+        </div>
+        <div className="px-6 py-5 space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">연구 키워드</label>
+            <input
+              type="text"
+              value={keywords}
+              onChange={(e) => setKeywords(e.target.value)}
+              placeholder="예: 가정폭력, 보호명령, 재범"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
+              required
+            />
           </div>
-          <p className="text-gray-600 text-sm mt-1">검정력 분석, 시뮬레이션 데이터 생성, 설문/척도 설계 지원</p>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">연구 분야</label>
+            <select
+              value={field}
+              onChange={(e) => setField(e.target.value)}
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
+              required
+            >
+              <option value="">선택해주세요</option>
+              {fieldOptions.map((f) => (
+                <option key={f} value={f}>
+                  {f}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">상세 설명</label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="연구하고자 하는 주제, 관심 변수, 특별히 궁금한 사항 등을 자유롭게 작성해주세요"
+              rows={4}
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e] resize-none"
+            />
+          </div>
+          <div className="pt-1">
+            <button
+              type="submit"
+              disabled={submitting || !keywords.trim() || !field}
+              className="px-6 py-2.5 bg-[#c49a2e] text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {submitting ? "제출 중..." : "의뢰하기"}
+            </button>
+          </div>
         </div>
-      </div>
+      </form>
 
-      {/* Info boxes */}
-      <div className="space-y-3 mb-6">
-        <div className="bg-teal-50 border border-teal-200 rounded-lg px-4 py-3 flex items-start gap-3">
-          <svg className="w-5 h-5 text-teal-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <p className="text-sm text-teal-800">
-            문헌 기반 시뮬레이션 데이터를 생성합니다. 검정력 분석, 분석 파이프라인 테스트, 연구 설계 사전 검토 등에 활용할 수 있습니다
-          </p>
+      {/* Request List */}
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
+        <div className="px-6 py-4 border-b border-gray-200">
+          <h2 className="font-semibold">의뢰 내역</h2>
         </div>
-        <div className="bg-teal-50 border border-teal-200 rounded-lg px-4 py-3 flex items-start gap-3">
-          <svg className="w-5 h-5 text-teal-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <p className="text-sm text-teal-800">문헌 조사 + 자료 생성: ~200 크레딧</p>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left column */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Research Topic */}
-          <div className="bg-card rounded-xl border border-teal-200">
-            <div className="px-6 py-4 border-b border-border bg-teal-50">
-              <h2 className="font-semibold">연구 주제</h2>
-            </div>
-            <div className="px-6 py-4">
-              <input
-                type="text"
-                value={topic}
-                onChange={(e) => setTopic(e.target.value)}
-                placeholder="IPV 피해자의 정신건강과 사회적 지지의 관계"
-                className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+        {sorted.length === 0 ? (
+          <div className="px-6 py-12 text-center">
+            <svg
+              className="w-12 h-12 text-gray-200 mx-auto mb-3"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
               />
-              <p className="text-xs text-muted-foreground mt-2">연구 주제를 입력하면 AI가 관련 문헌을 기반으로 현실적인 자료를 생성합니다</p>
-            </div>
+            </svg>
+            <p className="text-sm text-gray-400">아직 의뢰 내역이 없습니다</p>
           </div>
-
-          {/* Scale / Variable Selection */}
-          <div className="bg-card rounded-xl border border-teal-200">
-            <div className="px-6 py-4 border-b border-border bg-teal-50">
-              <h2 className="font-semibold">척도/변수 설정</h2>
-            </div>
-            <div className="px-6 py-4 space-y-4">
-              {/* Preset scales */}
-              <div>
-                <label className="block text-sm font-medium mb-2">표준 척도 선택</label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                  {presetScales.map((scale) => (
-                    <button
-                      key={scale.label}
-                      onClick={() => toggleScale(scale.label)}
-                      className={`text-left px-3 py-2.5 rounded-lg border transition-colors ${
-                        selectedScales.includes(scale.label)
-                          ? "border-teal-400 bg-teal-50"
-                          : "border-border hover:bg-gray-50"
-                      }`}
-                    >
-                      <div className="text-sm font-medium">{scale.label}</div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Selected scale details */}
-              {selectedScales.length > 0 && (
-                <div className="border border-border rounded-lg divide-y divide-border">
-                  {selectedScales.map((label) => {
-                    const scale = presetScales.find((s) => s.label === label);
-                    if (!scale) return null;
-                    return (
-                      <div key={label} className="px-4 py-3 flex items-center justify-between">
-                        <div>
-                          <div className="text-sm font-medium">{scale.label}</div>
-                          <div className="text-xs text-muted-foreground mt-0.5">
-                            문항수: {scale.items} | 응답범위: {scale.range} | {scale.ref}
-                          </div>
-                        </div>
-                        <button
-                          onClick={() => toggleScale(label)}
-                          className="text-muted-foreground hover:text-foreground p-1"
+        ) : (
+          <div className="divide-y divide-gray-100">
+            {sorted.map((req) => {
+              const sc = statusConfig[req.status];
+              const isExpanded = expandedId === req.id && req.status === "completed";
+              return (
+                <div key={req.id}>
+                  <div
+                    className={`px-6 py-4 flex items-center justify-between ${
+                      req.status === "completed" ? "cursor-pointer hover:bg-gray-50" : ""
+                    }`}
+                    onClick={() => {
+                      if (req.status === "completed") {
+                        setExpandedId(expandedId === req.id ? null : req.id);
+                      }
+                    }}
+                  >
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-3">
+                        <span className="text-sm font-medium text-gray-900 truncate">
+                          {req.keywords}
+                        </span>
+                        <span
+                          className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${sc.bg} ${sc.text}`}
                         >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                          </svg>
-                        </button>
+                          {sc.label}
+                        </span>
                       </div>
-                    );
-                  })}
-                </div>
-              )}
-
-              {/* Custom variable add */}
-              <div>
-                <label className="block text-sm font-medium mb-2">사용자 정의 변수 추가</label>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={newVar.name}
-                    onChange={(e) => setNewVar({ ...newVar, name: e.target.value })}
-                    placeholder="변수명"
-                    className="flex-1 px-3 py-2 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                  />
-                  <select
-                    value={newVar.type}
-                    onChange={(e) => setNewVar({ ...newVar, type: e.target.value as CustomVariable["type"] })}
-                    className="px-3 py-2 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                  >
-                    <option value="연속">연속</option>
-                    <option value="범주">범주</option>
-                    <option value="리커트">리커트</option>
-                  </select>
-                  <input
-                    type="text"
-                    value={newVar.desc}
-                    onChange={(e) => setNewVar({ ...newVar, desc: e.target.value })}
-                    placeholder="설명"
-                    className="flex-1 px-3 py-2 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                  />
-                  <button
-                    onClick={addCustomVar}
-                    className="px-3 py-2 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors"
-                  >
-                    추가
-                  </button>
-                </div>
-              </div>
-
-              {/* Custom variables list */}
-              {customVars.length > 0 && (
-                <div className="border border-border rounded-lg divide-y divide-border">
-                  {customVars.map((v, i) => (
-                    <div key={i} className="px-4 py-3 flex items-center justify-between">
-                      <div>
-                        <div className="text-sm font-medium">{v.name}</div>
-                        <div className="text-xs text-muted-foreground mt-0.5">
-                          유형: {v.type} {v.desc && `| ${v.desc}`}
+                      <div className="flex items-center gap-3 mt-1">
+                        <span className="text-xs text-gray-500">{req.field}</span>
+                        <span className="text-xs text-gray-400">
+                          {new Date(req.createdAt).toLocaleDateString("ko-KR")}
+                        </span>
+                      </div>
+                    </div>
+                    {req.status === "completed" && (
+                      <svg
+                        className={`w-5 h-5 text-gray-400 shrink-0 transition-transform ${
+                          isExpanded ? "rotate-180" : ""
+                        }`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    )}
+                  </div>
+                  {isExpanded && req.adminResponse && (
+                    <div className="px-6 pb-5">
+                      <div className="bg-gray-50 rounded-lg border border-gray-200 p-5">
+                        <div className="flex items-center gap-2 mb-3">
+                          <svg
+                            className="w-4 h-4 text-green-600"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                          </svg>
+                          <span className="text-sm font-medium text-green-700">분석 결과</span>
+                          {req.respondedAt && (
+                            <span className="text-xs text-gray-400 ml-auto">
+                              {new Date(req.respondedAt).toLocaleDateString("ko-KR")}
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
+                          {req.adminResponse}
                         </div>
                       </div>
-                      <button
-                        onClick={() => removeCustomVar(i)}
-                        className="text-muted-foreground hover:text-foreground p-1"
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </button>
                     </div>
-                  ))}
+                  )}
                 </div>
-              )}
-            </div>
+              );
+            })}
           </div>
-        </div>
-
-        {/* Right column: Data Specification + Generation Options */}
-        <div className="space-y-6">
-          {/* Sample size */}
-          <div className="bg-card rounded-xl border border-teal-200">
-            <div className="px-6 py-4 border-b border-border bg-teal-50">
-              <h2 className="font-semibold">표본 크기</h2>
-            </div>
-            <div className="px-6 py-4">
-              <input
-                type="number"
-                value={sampleSize}
-                onChange={(e) => setSampleSize(Number(e.target.value))}
-                min={10}
-                max={10000}
-                className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              <p className="text-xs text-muted-foreground mt-2">생성할 응답자 수 (10~10,000)</p>
-            </div>
-          </div>
-
-          {/* Generation Options */}
-          <div className="bg-card rounded-xl border border-teal-200">
-            <div className="px-6 py-4 border-b border-border bg-teal-50">
-              <h2 className="font-semibold">생성 옵션</h2>
-            </div>
-            <div className="px-6 py-4 space-y-4">
-              <label className="flex items-start gap-3 cursor-pointer">
-                <input
-                  type="radio"
-                  name="paramMode"
-                  checked={paramMode === "literature"}
-                  onChange={() => setParamMode("literature")}
-                  className="mt-1"
-                />
-                <div>
-                  <div className="text-sm font-medium">문헌 기반 (국내외 연구 참조)</div>
-                  <div className="text-xs text-muted-foreground mt-0.5">
-                    AI가 관련 문헌을 검색하여 현실적인 파라미터를 설정합니다
-                  </div>
-                </div>
-              </label>
-              <label className="flex items-start gap-3 cursor-pointer">
-                <input
-                  type="radio"
-                  name="paramMode"
-                  checked={paramMode === "custom"}
-                  onChange={() => setParamMode("custom")}
-                  className="mt-1"
-                />
-                <div>
-                  <div className="text-sm font-medium">사용자 지정 파라미터</div>
-                  <div className="text-xs text-muted-foreground mt-0.5">
-                    평균, 표준편차, 상관행렬을 직접 입력합니다
-                  </div>
-                </div>
-              </label>
-
-              {paramMode === "custom" && (
-                <div className="border border-border rounded-lg p-4 space-y-3">
-                  <p className="text-xs text-muted-foreground">
-                    척도/변수를 선택한 후 각 변수의 파라미터를 설정할 수 있습니다
-                  </p>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div>
-                      <label className="block text-xs font-medium mb-1">평균 (Mean)</label>
-                      <input
-                        type="number"
-                        placeholder="0.0"
-                        className="w-full px-3 py-2 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium mb-1">표준편차 (SD)</label>
-                      <input
-                        type="number"
-                        placeholder="1.0"
-                        className="w-full px-3 py-2 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium mb-1">상관행렬 (Correlation Matrix)</label>
-                    <textarea
-                      rows={3}
-                      placeholder="1.0, 0.5, 0.3&#10;0.5, 1.0, 0.4&#10;0.3, 0.4, 1.0"
-                      className="w-full px-3 py-2 border border-border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary font-mono resize-none"
-                    />
-                  </div>
-                </div>
-              )}
-
-              <button
-                disabled
-                className="w-full px-4 py-2.5 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                자료 생성
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Output Preview */}
-      <div className="bg-card rounded-xl border border-teal-200 mt-6">
-        <div className="px-6 py-4 border-b border-border flex items-center justify-between">
-          <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1 w-fit">
-            {outputTabs.map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveOutputTab(tab)}
-                className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${
-                  activeOutputTab === tab
-                    ? "bg-card text-foreground shadow-md"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {tab}
-              </button>
-            ))}
-          </div>
-          <div className="flex gap-2">
-            <button
-              disabled
-              className="px-3 py-1.5 border border-border rounded-lg text-xs font-medium hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Excel
-            </button>
-            <button
-              disabled
-              className="px-3 py-1.5 border border-border rounded-lg text-xs font-medium hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              CSV
-            </button>
-            <button
-              disabled
-              className="px-3 py-1.5 border border-border rounded-lg text-xs font-medium hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              SPSS (.sav)
-            </button>
-          </div>
-        </div>
-        <div className="px-6 py-12 text-center">
-          <svg className="w-12 h-12 text-muted-foreground/30 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
-          </svg>
-          <p className="text-sm text-muted-foreground">생성된 자료가 여기에 표시됩니다</p>
-        </div>
+        )}
       </div>
     </div>
   );

@@ -388,3 +388,54 @@ export function updateDyad(projectId: string, dyadId: string, patch: Partial<Dya
   writeJson(dyadsFile(projectId), dyads);
   return dyads[idx];
 }
+
+// ---------------------------------------------------------------------------
+// Research Design Request
+// ---------------------------------------------------------------------------
+
+export interface ResearchRequest {
+  id: string;
+  keywords: string;
+  description: string;
+  field: string;
+  status: 'pending' | 'in_progress' | 'completed';
+  createdAt: string;
+  aiDraft: string;
+  adminResponse: string;
+  respondedAt: string;
+}
+
+export function getResearchRequests(): ResearchRequest[] {
+  return readJson<ResearchRequest[]>('research-requests', []);
+}
+
+export function getResearchRequest(id: string): ResearchRequest | undefined {
+  return getResearchRequests().find((r) => r.id === id);
+}
+
+export function createResearchRequest(data: { keywords: string; description: string; field: string }): ResearchRequest {
+  const requests = getResearchRequests();
+  const request: ResearchRequest = {
+    id: generateId(),
+    keywords: data.keywords,
+    description: data.description,
+    field: data.field,
+    status: 'pending',
+    createdAt: new Date().toISOString(),
+    aiDraft: '',
+    adminResponse: '',
+    respondedAt: '',
+  };
+  requests.push(request);
+  writeJson('research-requests', requests);
+  return request;
+}
+
+export function updateResearchRequest(id: string, patch: Partial<ResearchRequest>): ResearchRequest | undefined {
+  const requests = getResearchRequests();
+  const idx = requests.findIndex((r) => r.id === id);
+  if (idx === -1) return undefined;
+  requests[idx] = { ...requests[idx], ...patch, id };
+  writeJson('research-requests', requests);
+  return requests[idx];
+}
