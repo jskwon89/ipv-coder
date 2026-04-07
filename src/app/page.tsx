@@ -244,12 +244,14 @@ function ServiceCard({
           src={image}
           alt={title}
           fill
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
+          quality={90}
           className="object-cover group-hover:scale-105 transition-transform duration-500"
         />
       </div>
       <div className="p-3 sm:p-6">
         <h3 className="text-sm sm:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">{title}</h3>
-        <p className="text-xs sm:text-sm text-gray-500 leading-relaxed mb-2 sm:mb-4 line-clamp-2">{description}</p>
+        <p className="text-[11px] sm:text-sm text-gray-500 leading-relaxed mb-2 sm:mb-4 line-clamp-2">{description}</p>
         <span className="hidden sm:inline text-sm font-medium text-[#c49a2e] group-hover:underline">
           자세히 보기 &rarr;
         </span>

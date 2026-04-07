@@ -154,17 +154,19 @@ export default function DashboardPage() {
         {/* Service Cards */}
         <div className="mb-6 sm:mb-8">
           <div className="flex items-center justify-between mb-4 sm:mb-5">
-            <h2 className="text-base sm:text-lg font-bold text-white drop-shadow-sm">서비스</h2>
+            <h2 className="text-lg sm:text-xl font-bold text-white drop-shadow-sm">서비스</h2>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-5">
             {serviceCards.map((card) => (
               <Link key={card.title} href={card.href} className="group block">
                 <div className="rounded-xl sm:rounded-2xl border border-gray-200 bg-white overflow-hidden hover:border-[#c49a2e]/40 hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02]">
-                  <div className="relative bg-gray-50 h-24 sm:h-40">
+                  <div className="relative bg-gray-50 h-28 sm:h-44">
                     <Image
                       src={card.image}
                       alt={card.title}
                       fill
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
+                      quality={90}
                       className="object-cover"
                     />
                     {card.badge && (
@@ -173,9 +175,9 @@ export default function DashboardPage() {
                       </span>
                     )}
                   </div>
-                  <div className="p-2.5 sm:p-4 border-t border-gray-100">
-                    <h3 className="text-xs sm:text-base font-bold text-gray-900">{card.title}</h3>
-                    <p className="text-[10px] sm:text-sm text-gray-500 mt-0.5 sm:mt-1 line-clamp-2">{card.desc}</p>
+                  <div className="p-3 sm:p-5 border-t border-gray-100">
+                    <h3 className="text-sm sm:text-lg font-bold text-gray-900">{card.title}</h3>
+                    <p className="text-[11px] sm:text-sm text-gray-500 mt-0.5 sm:mt-1.5 line-clamp-2">{card.desc}</p>
                     <span className="hidden sm:inline-block text-sm text-[#c49a2e] font-medium group-hover:underline underline-offset-4 mt-2">시작하기 &rarr;</span>
                   </div>
                 </div>
