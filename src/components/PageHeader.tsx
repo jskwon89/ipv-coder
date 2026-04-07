@@ -75,9 +75,9 @@ export default function PageHeader({ title, subtitle, detailTooltip, breadcrumbs
                       </svg>
                     </button>
                     {showTooltip && (
-                      <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-72 bg-gray-900 text-white text-xs rounded-xl p-4 shadow-2xl z-50 leading-relaxed whitespace-pre-line">
+                      <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-72 bg-gray-900 text-white text-xs rounded-xl p-4 shadow-2xl z-50 leading-relaxed whitespace-pre-line">
                         {detailTooltip}
-                        <div className="absolute left-1/2 -translate-x-1/2 top-full w-2.5 h-2.5 bg-gray-900 rotate-45 -mt-1.5" />
+                        <div className="absolute left-1/2 -translate-x-1/2 bottom-full w-2.5 h-2.5 bg-gray-900 rotate-45 -mb-1.5" />
                       </div>
                     )}
                   </div>
