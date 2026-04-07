@@ -170,7 +170,7 @@ export default function StatsDesignPage() {
     <div className="p-8 max-w-4xl mx-auto">
       <Link
         href="/dashboard"
-        className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 mb-4"
+        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 hover:border-gray-300 transition-all mb-4"
       >
         <svg
           className="w-4 h-4"
