@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { getResearchRequests, createResearchRequest } from '@/lib/db';
+import { notifyRequestReceived } from '@/lib/email';
 
 export async function GET() {
   try {
@@ -16,7 +17,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { keywords, description, field } = body;
+    const { keywords, description, field, email } = body;
     if (!keywords || typeof keywords !== 'string' || keywords.trim() === '') {
       return Response.json(
         { error: '연구 키워드를 입력해주세요.' },
@@ -33,7 +34,11 @@ export async function POST(request: NextRequest) {
       keywords: keywords.trim(),
       description: (description || '').trim(),
       field: field.trim(),
+      email: (email || '').trim(),
     });
+    if (created.email) {
+      await notifyRequestReceived(created.email, created.keywords);
+    }
     return Response.json({ request: created }, { status: 201 });
   } catch (error) {
     return Response.json(

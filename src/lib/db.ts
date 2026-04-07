@@ -398,6 +398,7 @@ export interface ResearchRequest {
   keywords: string;
   description: string;
   field: string;
+  email: string;
   status: 'pending' | 'in_progress' | 'completed';
   createdAt: string;
   aiDraft: string;
@@ -413,13 +414,14 @@ export function getResearchRequest(id: string): ResearchRequest | undefined {
   return getResearchRequests().find((r) => r.id === id);
 }
 
-export function createResearchRequest(data: { keywords: string; description: string; field: string }): ResearchRequest {
+export function createResearchRequest(data: { keywords: string; description: string; field: string; email: string }): ResearchRequest {
   const requests = getResearchRequests();
   const request: ResearchRequest = {
     id: generateId(),
     keywords: data.keywords,
     description: data.description,
     field: data.field,
+    email: data.email,
     status: 'pending',
     createdAt: new Date().toISOString(),
     aiDraft: '',
@@ -438,4 +440,35 @@ export function updateResearchRequest(id: string, patch: Partial<ResearchRequest
   requests[idx] = { ...requests[idx], ...patch, id };
   writeJson('research-requests', requests);
   return requests[idx];
+}
+
+// ---------------------------------------------------------------------------
+// Chat Messages (per research request)
+// ---------------------------------------------------------------------------
+
+export interface ChatMessage {
+  id: string;
+  requestId: string;
+  sender: 'user' | 'admin';
+  message: string;
+  createdAt: string;
+}
+
+// Store messages per request: research-messages-{requestId}.json
+export function getChatMessages(requestId: string): ChatMessage[] {
+  return readJson<ChatMessage[]>(`research-messages-${requestId}`, []);
+}
+
+export function addChatMessage(requestId: string, sender: 'user' | 'admin', message: string): ChatMessage {
+  const messages = getChatMessages(requestId);
+  const msg: ChatMessage = {
+    id: generateId(),
+    requestId,
+    sender,
+    message,
+    createdAt: new Date().toISOString(),
+  };
+  messages.push(msg);
+  writeJson(`research-messages-${requestId}`, messages);
+  return msg;
 }
