@@ -653,3 +653,111 @@ export function addSurveyMessage(requestId: string, sender: 'user' | 'admin', me
   writeJson(`survey-messages-${requestId}`, messages);
   return msg;
 }
+
+// ---------------------------------------------------------------------------
+// Judgment Collection Request
+// ---------------------------------------------------------------------------
+
+export interface JudgmentCollectionRequest {
+  id: string;
+  email: string;
+  name: string;
+  organization: string;
+  purpose: string;
+  searchType: 'caseNumber' | 'keyword';
+  // case number search
+  caseNumbers: string;
+  scopeFirst: boolean;
+  scopeSecond: boolean;
+  scopeThird: boolean;
+  outputFormat: string;
+  // keyword search
+  keywords: string;         // JSON array string
+  keywordLogic: string;
+  courts: string;           // JSON array string
+  startYear: number;
+  endYear: number;
+  caseTypes: string;        // JSON array string
+  lawKeyword: string;
+  maxCount: number;
+  // common
+  additionalNotes: string;
+  status: 'pending' | 'in_progress' | 'completed';
+  createdAt: string;
+  adminResponse: string;
+  respondedAt: string;
+}
+
+export function getJudgmentCollectionRequests(): JudgmentCollectionRequest[] {
+  return readJson<JudgmentCollectionRequest[]>('judgment-collection-requests', []);
+}
+
+export function getJudgmentCollectionRequest(id: string): JudgmentCollectionRequest | undefined {
+  return getJudgmentCollectionRequests().find((r) => r.id === id);
+}
+
+export function createJudgmentCollectionRequest(
+  data: Omit<JudgmentCollectionRequest, 'id' | 'status' | 'createdAt' | 'adminResponse' | 'respondedAt'>,
+): JudgmentCollectionRequest {
+  const requests = getJudgmentCollectionRequests();
+  const request: JudgmentCollectionRequest = {
+    id: generateId(),
+    email: data.email,
+    name: data.name,
+    organization: data.organization,
+    purpose: data.purpose,
+    searchType: data.searchType,
+    caseNumbers: data.caseNumbers,
+    scopeFirst: data.scopeFirst,
+    scopeSecond: data.scopeSecond,
+    scopeThird: data.scopeThird,
+    outputFormat: data.outputFormat,
+    keywords: data.keywords,
+    keywordLogic: data.keywordLogic,
+    courts: data.courts,
+    startYear: data.startYear,
+    endYear: data.endYear,
+    caseTypes: data.caseTypes,
+    lawKeyword: data.lawKeyword,
+    maxCount: data.maxCount,
+    additionalNotes: data.additionalNotes,
+    status: 'pending',
+    createdAt: new Date().toISOString(),
+    adminResponse: '',
+    respondedAt: '',
+  };
+  requests.push(request);
+  writeJson('judgment-collection-requests', requests);
+  return request;
+}
+
+export function updateJudgmentCollectionRequest(id: string, patch: Partial<JudgmentCollectionRequest>): JudgmentCollectionRequest | undefined {
+  const requests = getJudgmentCollectionRequests();
+  const idx = requests.findIndex((r) => r.id === id);
+  if (idx === -1) return undefined;
+  requests[idx] = { ...requests[idx], ...patch, id };
+  writeJson('judgment-collection-requests', requests);
+  return requests[idx];
+}
+
+// ---------------------------------------------------------------------------
+// Judgment Collection Chat Messages
+// ---------------------------------------------------------------------------
+
+export function getJudgmentCollectionMessages(requestId: string): ChatMessage[] {
+  return readJson<ChatMessage[]>(`judgment-collection-messages-${requestId}`, []);
+}
+
+export function addJudgmentCollectionMessage(requestId: string, sender: 'user' | 'admin', message: string): ChatMessage {
+  const messages = getJudgmentCollectionMessages(requestId);
+  const msg: ChatMessage = {
+    id: generateId(),
+    requestId,
+    sender,
+    message,
+    createdAt: new Date().toISOString(),
+  };
+  messages.push(msg);
+  writeJson(`judgment-collection-messages-${requestId}`, messages);
+  return msg;
+}

@@ -52,6 +52,8 @@ export default function JudgmentCollectionPage() {
   const [org, setOrg] = useState("");
   const [purpose, setPurpose] = useState<Purpose>("학술연구");
   const [additionalNotes, setAdditionalNotes] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const addKeyword = () => {
     const trimmed = keywordInput.trim();
@@ -100,38 +102,87 @@ export default function JudgmentCollectionPage() {
     setUploadedFile(f);
   };
 
-  const handleSubmit = () => {
-    setSubmitted(true);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  const handleSubmit = async () => {
+    if (!name.trim() || !email.trim()) {
+      setSubmitError("이름과 이메일은 필수 입력입니다.");
+      return;
+    }
+    setSubmitting(true);
+    setSubmitError("");
+    try {
+      const payload = {
+        email: email.trim(),
+        name: name.trim(),
+        organization: org.trim(),
+        purpose,
+        searchType: activeTab,
+        caseNumbers: caseNumbers.trim(),
+        scopeFirst,
+        scopeSecond,
+        scopeThird,
+        outputFormat,
+        keywords: JSON.stringify(keywords),
+        keywordLogic,
+        courts: JSON.stringify(selectedCourts),
+        startYear,
+        endYear,
+        caseTypes: JSON.stringify(selectedCaseTypes),
+        lawKeyword: lawKeyword.trim(),
+        maxCount,
+        additionalNotes: additionalNotes.trim(),
+      };
+      const res = await fetch("/api/judgment-collection", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "의뢰 생성에 실패했습니다.");
+      }
+      setSubmitted(true);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (err: unknown) {
+      setSubmitError(err instanceof Error ? err.message : "오류가 발생했습니다.");
+    } finally {
+      setSubmitting(false);
+    }
   };
-
-  if (submitted) {
-    return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
-        <div className="bg-white rounded-2xl shadow-lg p-10 max-w-lg w-full text-center">
-          <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-5">
-            <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
-          </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-3">의뢰가 접수되었습니다</h2>
-          <p className="text-gray-600 mb-6">
-            검토 후 견적과 예상 소요기간을 안내해드립니다.
-          </p>
-          <button
-            onClick={() => setSubmitted(false)}
-            className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
-          >
-            새 의뢰 작성
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        {/* Success banner */}
+        {submitted && (
+          <div className="mb-6 bg-green-50 border border-green-200 rounded-xl p-5">
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center shrink-0 mt-0.5">
+                <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-sm font-semibold text-green-800">의뢰가 접수되었습니다</h3>
+                <p className="text-sm text-green-700 mt-1">검토 후 견적과 예상 소요기간을 안내해드립니다.</p>
+                <div className="flex items-center gap-3 mt-3">
+                  <Link
+                    href="/judgment-results"
+                    className="inline-flex items-center gap-1 px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors"
+                  >
+                    결과 확인
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                  </Link>
+                  <button
+                    onClick={() => setSubmitted(false)}
+                    className="px-4 py-2 text-sm text-green-700 hover:text-green-900 font-medium"
+                  >
+                    새 의뢰 작성
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         <Link href="/dashboard" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 mb-4">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
           대시보드로 돌아가기
@@ -489,12 +540,18 @@ export default function JudgmentCollectionPage() {
         </div>
 
         {/* Submit */}
+        {submitError && (
+          <div className="mb-4 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
+            <p className="text-sm text-red-700">{submitError}</p>
+          </div>
+        )}
         <div className="flex justify-end">
           <button
             onClick={handleSubmit}
-            className="px-8 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-semibold text-sm shadow-md"
+            disabled={submitting}
+            className="px-8 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-semibold text-sm shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            수집 의뢰 접수
+            {submitting ? "접수 중..." : "수집 의뢰 접수"}
           </button>
         </div>
       </div>
