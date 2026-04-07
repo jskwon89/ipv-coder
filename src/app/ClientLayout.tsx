@@ -16,11 +16,11 @@ function NavLink({ href, icon, label, pathname, onClick }: { href: string; icon:
       onClick={onClick}
       className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 ${
         isActive
-          ? "bg-[#c49a2e]/20 text-white font-semibold border-l-[3px] border-[#c49a2e] pl-[9px]"
-          : "text-white/90 hover:bg-white/10 hover:text-white hover:translate-x-0.5 border-l-[3px] border-transparent pl-[9px]"
+          ? "bg-[#c49a2e]/25 text-white font-semibold border-l-[3px] border-[#c49a2e] pl-[9px]"
+          : "text-[#e0e7ef] hover:bg-white/12 hover:text-white hover:translate-x-0.5 border-l-[3px] border-transparent pl-[9px]"
       }`}
     >
-      <span className={isActive ? "opacity-100" : "opacity-70 group-hover:opacity-100"}>{icon}</span>
+      <span className={isActive ? "opacity-100" : "opacity-80"}>{icon}</span>
       {label}
     </Link>
   );
@@ -31,7 +31,7 @@ function SectionDivider({ color, label }: { color: string; label: string }) {
     <div className="pt-6 pb-2 px-3">
       <div className="flex items-center gap-2 mb-1">
         <div className={`w-1.5 h-5 rounded-full ${color}`} />
-        <span className="text-sm font-bold tracking-wide text-white/90">{label}</span>
+        <span className="text-sm font-bold tracking-wide text-white">{label}</span>
       </div>
       <div className="border-b border-white/8 mt-1" />
     </div>
@@ -135,7 +135,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         ) : (
           <button
             onClick={() => setShowLogin(true)}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-white/50 hover:text-white/80 hover:bg-white/10 transition-all w-full"
+            className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-white/70 hover:text-white hover:bg-white/10 transition-all w-full"
           >
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
             관리자
@@ -152,7 +152,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   // All other pages: sidebar + main
   return (
-    <div className="flex min-h-screen bg-white overflow-x-hidden">
+    <div className="min-h-screen bg-gray-100 overflow-x-hidden">
       {/* Mobile top bar */}
       <div className="fixed top-0 left-0 right-0 z-40 bg-[#0f1a2e] flex items-center justify-between px-4 py-3 md:hidden">
         <Link href="/" className="flex items-center gap-2">
@@ -176,21 +176,18 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         <div className="fixed inset-0 z-40 bg-black/50 md:hidden" onClick={closeSidebar} />
       )}
 
-      {/* Sidebar - desktop: always visible, mobile: slide-in */}
+      {/* Sidebar - fixed on all screen sizes */}
       <aside className={`
-        fixed md:sticky top-0 bottom-0 left-0 z-50 md:z-auto
-        w-[260px] md:w-60 bg-[#0f1a2e] text-[#c8d6e5] flex flex-col shrink-0
-        md:h-screen md:top-0 md:bottom-auto
+        fixed top-0 bottom-0 left-0 z-50
+        w-[260px] md:w-60 bg-[#0f1a2e] text-[#c8d6e5] flex flex-col
         transition-transform duration-300 ease-in-out
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0
-      `}
-        style={{ height: '100dvh' }}
-      >
+      `}>
         {sidebarContent}
       </aside>
 
-      {/* Main content */}
-      <main className="flex-1 min-w-0 min-h-screen overflow-x-hidden bg-gray-100 pt-14 md:pt-0">
+      {/* Main content - offset by sidebar width on desktop */}
+      <main className="min-h-screen overflow-x-hidden bg-gray-100 pt-14 md:pt-0 md:ml-60">
         {children}
       </main>
 
