@@ -442,26 +442,28 @@ function StatCard({
 
   return (
     <div className="bg-white/10 backdrop-blur-sm rounded-lg sm:rounded-xl border border-white/10 p-3 sm:p-5 hover:bg-white/15 transition-all">
-      <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-        <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl ${c.iconBg} ${c.text} flex items-center justify-center [&_svg]:w-4 [&_svg]:h-4 sm:[&_svg]:w-5 sm:[&_svg]:h-5`}>
-          {icons[icon]}
+      <div className="flex items-start justify-between">
+        <div>
+          <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl ${c.iconBg} ${c.text} flex items-center justify-center [&_svg]:w-4 [&_svg]:h-4 sm:[&_svg]:w-5 sm:[&_svg]:h-5 mb-2 sm:mb-3`}>
+            {icons[icon]}
+          </div>
+          <div className="text-xl sm:text-3xl font-bold text-white tracking-tight">{breakdown.total}</div>
+          <span className="text-[10px] sm:text-xs text-white/60 font-medium mt-0.5 sm:mt-1 block">{label}</span>
         </div>
-      </div>
-      <div className="text-xl sm:text-3xl font-bold text-white tracking-tight">{breakdown.total}</div>
-      <span className="text-[10px] sm:text-xs text-white/60 font-medium mt-0.5 sm:mt-1 block">{label}</span>
-      <div className="flex items-center gap-1.5 sm:gap-2 mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-white/10">
-          <span className="text-[9px] sm:text-[10px] text-gray-400">
-            <span className="inline-block w-1.5 h-1.5 rounded-full bg-gray-400 mr-0.5 align-middle" />
-            접수 {breakdown.pending}
+        <div className="flex flex-col gap-1 sm:gap-1.5 text-right">
+          <span className="text-[9px] sm:text-[10px] text-gray-400 flex items-center justify-end gap-1">
+            접수 <span className="font-semibold text-white/80 min-w-[12px]">{breakdown.pending}</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-gray-400 shrink-0" />
           </span>
-          <span className="text-[9px] sm:text-[10px] text-blue-400">
-            <span className="inline-block w-1.5 h-1.5 rounded-full bg-blue-400 mr-0.5 align-middle" />
-            진행 {breakdown.in_progress}
+          <span className="text-[9px] sm:text-[10px] text-blue-400 flex items-center justify-end gap-1">
+            진행 <span className="font-semibold text-white/80 min-w-[12px]">{breakdown.in_progress}</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0" />
           </span>
-          <span className="text-[9px] sm:text-[10px] text-green-400">
-            <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-400 mr-0.5 align-middle" />
-            완료 {breakdown.completed}
+          <span className="text-[9px] sm:text-[10px] text-green-400 flex items-center justify-end gap-1">
+            완료 <span className="font-semibold text-white/80 min-w-[12px]">{breakdown.completed}</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-green-400 shrink-0" />
           </span>
+        </div>
       </div>
     </div>
   );
