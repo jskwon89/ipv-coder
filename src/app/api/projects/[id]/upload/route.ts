@@ -8,7 +8,7 @@ export async function POST(
 ) {
   try {
     const { id } = await params;
-    const project = getProject(id);
+    const project = await getProject(id);
     if (!project) {
       return Response.json({ error: '프로젝트를 찾을 수 없습니다.' }, { status: 404 });
     }
@@ -41,7 +41,7 @@ export async function POST(
         judgment_date: c.judgment_date,
         status: 'pending' as const,
       }));
-      const created = createCases(id, caseData);
+      const created = await createCases(id, caseData);
       return Response.json({
         result,
         saved: true,

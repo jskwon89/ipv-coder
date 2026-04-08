@@ -17,14 +17,14 @@ export async function POST(request: NextRequest) {
     const result = await fetchJudgment(court, caseNo);
 
     if (result.available && caseId && projectId) {
-      updateCase(projectId, caseId, {
+      await updateCase(projectId, caseId, {
         status: 'fetched',
         sourceText: result.text || '',
         casenoteUrl: result.source === 'casenote' ? (result.url || '') : '',
         lboxUrl: result.source === 'lbox' ? (result.url || '') : '',
       });
     } else if (!result.available && caseId && projectId) {
-      updateCase(projectId, caseId, {
+      await updateCase(projectId, caseId, {
         status: 'unavailable',
       });
     }

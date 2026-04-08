@@ -3,7 +3,7 @@ import { getSurveyRequests, createSurveyRequest } from '@/lib/db';
 
 export async function GET() {
   try {
-    const requests = getSurveyRequests();
+    const requests = await getSurveyRequests();
     return Response.json({ requests });
   } catch (error) {
     return Response.json(
@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const created = createSurveyRequest({
+    const created = await createSurveyRequest({
       email: (email || '').trim(),
       title: (title || '').trim(),
       purpose: (purpose || '').trim(),

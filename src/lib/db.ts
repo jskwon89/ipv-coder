@@ -1,5 +1,4 @@
-import fs from 'fs';
-import path from 'path';
+import { supabase } from './supabase';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -134,41 +133,192 @@ export interface Dyad {
 }
 
 // ---------------------------------------------------------------------------
-// Helpers
+// Service Request Interfaces
 // ---------------------------------------------------------------------------
 
-const DATA_DIR = path.resolve(process.cwd(), 'data');
-
-function ensureDataDir(): void {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
-  }
+export interface ResearchRequest {
+  id: string;
+  keywords: string;
+  description: string;
+  field: string;
+  email: string;
+  status: 'pending' | 'in_progress' | 'completed';
+  createdAt: string;
+  aiDraft: string;
+  adminResponse: string;
+  respondedAt: string;
 }
 
-function filePath(name: string): string {
-  return path.join(DATA_DIR, `${name}.json`);
+export interface ChatMessage {
+  id: string;
+  requestId: string;
+  sender: 'user' | 'admin';
+  message: string;
+  createdAt: string;
 }
 
-function readJson<T>(name: string, fallback: T): T {
-  ensureDataDir();
-  const fp = filePath(name);
-  if (!fs.existsSync(fp)) return fallback;
-  const raw = fs.readFileSync(fp, 'utf-8');
-  return JSON.parse(raw) as T;
+export interface StatsDesignRequest {
+  id: string;
+  email: string;
+  researchType: string;
+  dataType: string;
+  sampleInfo: string;
+  variables: string;
+  analysisGoal: string;
+  currentMethods: string;
+  description: string;
+  status: 'pending' | 'in_progress' | 'completed';
+  createdAt: string;
+  adminResponse: string;
+  respondedAt: string;
 }
 
-function writeJson<T>(name: string, data: T): void {
-  ensureDataDir();
-  fs.writeFileSync(filePath(name), JSON.stringify(data, null, 2), 'utf-8');
+export interface SurveyRequest {
+  id: string;
+  email: string;
+  title: string;
+  purpose: string;
+  requesterName: string;
+  organization: string;
+  population: string;
+  sampleSize: string;
+  samplingMethod: string;
+  startDate: string;
+  endDate: string;
+  irbStatus: string;
+  additionalRequests: string;
+  surveyData: string;
+  status: 'pending' | 'in_progress' | 'completed';
+  createdAt: string;
+  adminResponse: string;
+  respondedAt: string;
 }
+
+export interface JudgmentCollectionRequest {
+  id: string;
+  email: string;
+  name: string;
+  organization: string;
+  purpose: string;
+  searchType: 'caseNumber' | 'keyword';
+  // case number search
+  caseNumbers: string;
+  scopeFirst: boolean;
+  scopeSecond: boolean;
+  scopeThird: boolean;
+  outputFormat: string;
+  // keyword search
+  keywords: string;         // JSON array string
+  keywordLogic: string;
+  courts: string;           // JSON array string
+  startYear: number;
+  endYear: number;
+  caseTypes: string;        // JSON array string
+  lawKeyword: string;
+  maxCount: number;
+  // common
+  additionalNotes: string;
+  status: 'pending' | 'in_progress' | 'completed';
+  createdAt: string;
+  adminResponse: string;
+  respondedAt: string;
+}
+
+export interface NewsCollectionRequest {
+  id: string;
+  email: string;
+  searchType: 'keyword' | 'sentence';
+  keywords: string;        // JSON array for keyword type, or sentence string
+  keywordLogic: string;    // AND/OR
+  dateFrom: string;
+  dateTo: string;
+  maxCount: number;
+  purpose: string;
+  additionalNotes: string;
+  status: 'pending' | 'in_progress' | 'completed';
+  createdAt: string;
+  adminResponse: string;
+  respondedAt: string;
+}
+
+export interface DataTransformRequest {
+  id: string;
+  email: string;
+  dataDescription: string;
+  dataFormat: string;
+  currentState: string;
+  transformationTypes: string; // JSON array
+  transformationDetail: string;
+  additionalNotes: string;
+  status: 'pending' | 'in_progress' | 'completed';
+  createdAt: string;
+  adminResponse: string;
+  respondedAt: string;
+}
+
+export interface QuantAnalysisRequest {
+  id: string;
+  email: string;
+  analysisType: string;
+  dataDescription: string;
+  variables: string;
+  hypothesis: string;
+  dataFormat: string;
+  additionalNotes: string;
+  status: 'pending' | 'in_progress' | 'completed';
+  createdAt: string;
+  adminResponse: string;
+  respondedAt: string;
+}
+
+export interface TextAnalysisRequest {
+  id: string;
+  email: string;
+  analysisTypes: string; // JSON array of selected analysis types
+  dataInputMethod: string;
+  textContent: string;
+  analysisOptions: string; // JSON object of per-analysis options
+  additionalNotes: string;
+  status: 'pending' | 'in_progress' | 'completed';
+  createdAt: string;
+  adminResponse: string;
+  respondedAt: string;
+}
+
+export interface QualAnalysisRequest {
+  id: string;
+  email: string;
+  analysisType: string;
+  dataDescription: string;
+  dataFormat: string;
+  analysisGoal: string;
+  additionalNotes: string;
+  status: 'pending' | 'in_progress' | 'completed';
+  createdAt: string;
+  adminResponse: string;
+  respondedAt: string;
+}
+
+export interface ContactInquiry {
+  id: string;
+  email: string;
+  name: string;
+  category: string;
+  subject: string;
+  message: string;
+  status: 'pending' | 'replied';
+  createdAt: string;
+  adminReply: string;
+  repliedAt: string;
+}
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
 
 function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 }
-
-// ---------------------------------------------------------------------------
-// Default builders
-// ---------------------------------------------------------------------------
 
 function defaultCase(partial: Partial<Case> & { id: string; projectId: string }): Case {
   return {
@@ -237,248 +387,504 @@ function defaultCase(partial: Partial<Case> & { id: string; projectId: string })
 }
 
 // ---------------------------------------------------------------------------
+// Generic Service Request helpers
+// ---------------------------------------------------------------------------
+
+// Common columns stored directly in the service_requests table
+const SERVICE_COMMON_KEYS = ['id', 'email', 'status', 'adminResponse', 'respondedAt', 'createdAt'] as const;
+
+/**
+ * Convert a DB row from service_requests into a typed service request object.
+ * Common fields come from dedicated columns; everything else from the `data` JSONB.
+ */
+function rowToServiceRequest<T>(row: Record<string, unknown>): T {
+  const obj: Record<string, unknown> = {
+    id: row.id,
+    email: row.email ?? '',
+    status: row.status ?? 'pending',
+    adminResponse: row.admin_response ?? '',
+    respondedAt: row.responded_at ?? '',
+    createdAt: row.created_at ?? '',
+    ...(row.data as Record<string, unknown> ?? {}),
+  };
+  return obj as T;
+}
+
+/**
+ * Convert a typed service request into DB columns + data JSONB for upsert.
+ */
+function serviceRequestToRow(serviceType: string, obj: Record<string, unknown>): Record<string, unknown> {
+  const row: Record<string, unknown> = {
+    id: obj.id,
+    service_type: serviceType,
+    email: obj.email ?? '',
+    status: obj.status ?? 'pending',
+    admin_response: obj.adminResponse ?? '',
+    responded_at: obj.respondedAt || null,
+    created_at: obj.createdAt ?? new Date().toISOString(),
+  };
+  // Everything else goes into data JSONB
+  const data: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(obj)) {
+    if (!SERVICE_COMMON_KEYS.includes(k as typeof SERVICE_COMMON_KEYS[number])) {
+      data[k] = v;
+    }
+  }
+  row.data = data;
+  return row;
+}
+
+async function _getServiceRequests<T>(serviceType: string): Promise<T[]> {
+  const { data, error } = await supabase
+    .from('service_requests')
+    .select('*')
+    .eq('service_type', serviceType)
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return (data ?? []).map((row: Record<string, unknown>) => rowToServiceRequest<T>(row));
+}
+
+async function _getServiceRequest<T>(serviceType: string, id: string): Promise<T | undefined> {
+  const { data, error } = await supabase
+    .from('service_requests')
+    .select('*')
+    .eq('service_type', serviceType)
+    .eq('id', id)
+    .single();
+  if (error) {
+    if (error.code === 'PGRST116') return undefined; // not found
+    throw error;
+  }
+  return data ? rowToServiceRequest<T>(data as Record<string, unknown>) : undefined;
+}
+
+async function _createServiceRequest<T>(serviceType: string, obj: Record<string, unknown>): Promise<T> {
+  const id = generateId();
+  const full: Record<string, unknown> = {
+    ...obj,
+    id,
+    status: 'pending',
+    createdAt: new Date().toISOString(),
+    adminResponse: '',
+    respondedAt: '',
+  };
+  const row = serviceRequestToRow(serviceType, full);
+  const { data, error } = await supabase
+    .from('service_requests')
+    .insert(row)
+    .select()
+    .single();
+  if (error) throw error;
+  return rowToServiceRequest<T>(data as Record<string, unknown>);
+}
+
+async function _updateServiceRequest<T>(serviceType: string, id: string, patch: Record<string, unknown>): Promise<T | undefined> {
+  // Fetch current row first
+  const current = await _getServiceRequest<Record<string, unknown>>(serviceType, id);
+  if (!current) return undefined;
+
+  const merged: Record<string, unknown> = { ...current, ...patch, id };
+  const row = serviceRequestToRow(serviceType, merged);
+  // Remove service_type from update payload (it's a filter, not updatable)
+  delete row.service_type;
+
+  const { data, error } = await supabase
+    .from('service_requests')
+    .update(row)
+    .eq('id', id)
+    .eq('service_type', serviceType)
+    .select()
+    .single();
+  if (error) throw error;
+  return data ? rowToServiceRequest<T>(data as Record<string, unknown>) : undefined;
+}
+
+// ---------------------------------------------------------------------------
+// Generic Chat Message helpers
+// ---------------------------------------------------------------------------
+
+async function _getMessages(serviceType: string, requestId: string): Promise<ChatMessage[]> {
+  const { data, error } = await supabase
+    .from('chat_messages')
+    .select('*')
+    .eq('service_type', serviceType)
+    .eq('request_id', requestId)
+    .order('created_at', { ascending: true });
+  if (error) throw error;
+  return (data ?? []).map((row: Record<string, unknown>) => ({
+    id: row.id as string,
+    requestId: row.request_id as string,
+    sender: row.sender as 'user' | 'admin',
+    message: row.message as string,
+    createdAt: row.created_at as string,
+  }));
+}
+
+async function _addMessage(serviceType: string, requestId: string, sender: 'user' | 'admin', message: string): Promise<ChatMessage> {
+  const id = generateId();
+  const { data, error } = await supabase
+    .from('chat_messages')
+    .insert({
+      id,
+      service_type: serviceType,
+      request_id: requestId,
+      sender,
+      message,
+      created_at: new Date().toISOString(),
+    })
+    .select()
+    .single();
+  if (error) throw error;
+  return {
+    id: data.id,
+    requestId: data.request_id,
+    sender: data.sender as 'user' | 'admin',
+    message: data.message,
+    createdAt: data.created_at,
+  };
+}
+
+// ---------------------------------------------------------------------------
 // Project CRUD
 // ---------------------------------------------------------------------------
 
-export function getProjects(): Project[] {
-  return readJson<Project[]>('projects', []);
+export async function getProjects(): Promise<Project[]> {
+  const { data, error } = await supabase
+    .from('projects')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return (data ?? []).map((row: Record<string, unknown>) => ({
+    id: row.id as string,
+    name: row.name as string,
+    createdAt: row.created_at as string,
+    caseCount: (row.case_count as number) ?? 0,
+    codedCount: (row.coded_count as number) ?? 0,
+  }));
 }
 
-export function getProject(id: string): Project | undefined {
-  return getProjects().find((p) => p.id === id);
-}
-
-export function createProject(name: string): Project {
-  const projects = getProjects();
-  const project: Project = {
-    id: generateId(),
-    name,
-    createdAt: new Date().toISOString(),
-    caseCount: 0,
-    codedCount: 0,
+export async function getProject(id: string): Promise<Project | undefined> {
+  const { data, error } = await supabase
+    .from('projects')
+    .select('*')
+    .eq('id', id)
+    .single();
+  if (error) {
+    if (error.code === 'PGRST116') return undefined;
+    throw error;
+  }
+  if (!data) return undefined;
+  return {
+    id: data.id,
+    name: data.name,
+    createdAt: data.created_at,
+    caseCount: data.case_count ?? 0,
+    codedCount: data.coded_count ?? 0,
   };
-  projects.push(project);
-  writeJson('projects', projects);
-  return project;
 }
 
-export function deleteProject(id: string): boolean {
-  const projects = getProjects();
-  const idx = projects.findIndex((p) => p.id === id);
-  if (idx === -1) return false;
-  projects.splice(idx, 1);
-  writeJson('projects', projects);
-  // Clean up related files
-  const casesPath = filePath(casesFile(id));
-  const dyadsPath = filePath(dyadsFile(id));
-  if (fs.existsSync(casesPath)) fs.unlinkSync(casesPath);
-  if (fs.existsSync(dyadsPath)) fs.unlinkSync(dyadsPath);
+export async function createProject(name: string): Promise<Project> {
+  const id = generateId();
+  const now = new Date().toISOString();
+  const { data, error } = await supabase
+    .from('projects')
+    .insert({ id, name, created_at: now, case_count: 0, coded_count: 0 })
+    .select()
+    .single();
+  if (error) throw error;
+  return {
+    id: data.id,
+    name: data.name,
+    createdAt: data.created_at,
+    caseCount: data.case_count ?? 0,
+    codedCount: data.coded_count ?? 0,
+  };
+}
+
+export async function deleteProject(id: string): Promise<boolean> {
+  // Delete related cases and dyads first
+  await supabase.from('dyads').delete().eq('project_id', id);
+  await supabase.from('cases').delete().eq('project_id', id);
+
+  const { error, count } = await supabase
+    .from('projects')
+    .delete()
+    .eq('id', id);
+  if (error) throw error;
+  // count may be null depending on settings; if no error, consider success
   return true;
 }
 
-export function updateProject(id: string, patch: Partial<Project>): Project | undefined {
-  const projects = getProjects();
-  const idx = projects.findIndex((p) => p.id === id);
-  if (idx === -1) return undefined;
-  projects[idx] = { ...projects[idx], ...patch, id };
-  writeJson('projects', projects);
-  return projects[idx];
+export async function updateProject(id: string, patch: Partial<Project>): Promise<Project | undefined> {
+  const row: Record<string, unknown> = {};
+  if (patch.name !== undefined) row.name = patch.name;
+  if (patch.caseCount !== undefined) row.case_count = patch.caseCount;
+  if (patch.codedCount !== undefined) row.coded_count = patch.codedCount;
+  if (patch.createdAt !== undefined) row.created_at = patch.createdAt;
+
+  const { data, error } = await supabase
+    .from('projects')
+    .update(row)
+    .eq('id', id)
+    .select()
+    .single();
+  if (error) {
+    if (error.code === 'PGRST116') return undefined;
+    throw error;
+  }
+  if (!data) return undefined;
+  return {
+    id: data.id,
+    name: data.name,
+    createdAt: data.created_at,
+    caseCount: data.case_count ?? 0,
+    codedCount: data.coded_count ?? 0,
+  };
 }
 
 // ---------------------------------------------------------------------------
 // Case CRUD
 // ---------------------------------------------------------------------------
 
-function casesFile(projectId: string): string {
-  return `cases_${projectId}`;
+function caseFromRow(row: Record<string, unknown>): Case {
+  const data = (row.data as Record<string, unknown>) ?? {};
+  return defaultCase({
+    id: row.id as string,
+    projectId: row.project_id as string,
+    ...data,
+  } as Partial<Case> & { id: string; projectId: string });
 }
 
-export function getCases(projectId: string): Case[] {
-  return readJson<Case[]>(casesFile(projectId), []);
+function caseToRow(c: Case): Record<string, unknown> {
+  const { id, projectId, ...rest } = c;
+  return {
+    id,
+    project_id: projectId,
+    data: rest,
+  };
 }
 
-export function getCase(projectId: string, caseId: string): Case | undefined {
-  return getCases(projectId).find((c) => c.id === caseId);
+export async function getCases(projectId: string): Promise<Case[]> {
+  const { data, error } = await supabase
+    .from('cases')
+    .select('*')
+    .eq('project_id', projectId);
+  if (error) throw error;
+  return (data ?? []).map((row: Record<string, unknown>) => caseFromRow(row));
 }
 
-export function createCase(projectId: string, data: Partial<Case>): Case {
-  const cases = getCases(projectId);
-  const c = defaultCase({ ...data, id: generateId(), projectId });
-  cases.push(c);
-  writeJson(casesFile(projectId), cases);
-
-  // update project counts
-  const project = getProject(projectId);
-  if (project) {
-    updateProject(projectId, { caseCount: cases.length });
+export async function getCase(projectId: string, caseId: string): Promise<Case | undefined> {
+  const { data, error } = await supabase
+    .from('cases')
+    .select('*')
+    .eq('project_id', projectId)
+    .eq('id', caseId)
+    .single();
+  if (error) {
+    if (error.code === 'PGRST116') return undefined;
+    throw error;
   }
+  return data ? caseFromRow(data as Record<string, unknown>) : undefined;
+}
+
+export async function createCase(projectId: string, data: Partial<Case>): Promise<Case> {
+  const c = defaultCase({ ...data, id: generateId(), projectId });
+  const row = caseToRow(c);
+  const { error } = await supabase.from('cases').insert(row);
+  if (error) throw error;
+
+  // Update project case count
+  const { count } = await supabase
+    .from('cases')
+    .select('*', { count: 'exact', head: true })
+    .eq('project_id', projectId);
+  await updateProject(projectId, { caseCount: count ?? 0 });
+
   return c;
 }
 
-export function createCases(projectId: string, dataList: Partial<Case>[]): Case[] {
-  const cases = getCases(projectId);
+export async function createCases(projectId: string, dataList: Partial<Case>[]): Promise<Case[]> {
   const created: Case[] = [];
-  for (const data of dataList) {
-    const c = defaultCase({ ...data, id: generateId(), projectId });
-    cases.push(c);
+  const rows: Record<string, unknown>[] = [];
+  for (const d of dataList) {
+    const c = defaultCase({ ...d, id: generateId(), projectId });
     created.push(c);
+    rows.push(caseToRow(c));
   }
-  writeJson(casesFile(projectId), cases);
-  const project = getProject(projectId);
-  if (project) {
-    updateProject(projectId, { caseCount: cases.length });
+  if (rows.length > 0) {
+    const { error } = await supabase.from('cases').insert(rows);
+    if (error) throw error;
   }
+
+  // Update project case count
+  const { count } = await supabase
+    .from('cases')
+    .select('*', { count: 'exact', head: true })
+    .eq('project_id', projectId);
+  await updateProject(projectId, { caseCount: count ?? 0 });
+
   return created;
 }
 
-export function updateCase(projectId: string, caseId: string, patch: Partial<Case>): Case | undefined {
-  const cases = getCases(projectId);
-  const idx = cases.findIndex((c) => c.id === caseId);
-  if (idx === -1) return undefined;
-  cases[idx] = { ...cases[idx], ...patch, id: caseId, projectId };
-  writeJson(casesFile(projectId), cases);
+export async function updateCase(projectId: string, caseId: string, patch: Partial<Case>): Promise<Case | undefined> {
+  const existing = await getCase(projectId, caseId);
+  if (!existing) return undefined;
 
-  // update coded count
-  const codedCount = cases.filter((c) => c.status === 'coded' || c.status === 'reviewed').length;
-  updateProject(projectId, { codedCount });
+  const merged = { ...existing, ...patch, id: caseId, projectId };
+  const row = caseToRow(merged);
+  delete row.id; // don't update PK
+  delete row.project_id;
 
-  return cases[idx];
+  const { error } = await supabase
+    .from('cases')
+    .update(row)
+    .eq('id', caseId)
+    .eq('project_id', projectId);
+  if (error) throw error;
+
+  // Update coded count
+  const { count } = await supabase
+    .from('cases')
+    .select('*', { count: 'exact', head: true })
+    .eq('project_id', projectId)
+    .in('data->>status', ['coded', 'reviewed']);
+  await updateProject(projectId, { codedCount: count ?? 0 });
+
+  return merged;
 }
 
 // ---------------------------------------------------------------------------
 // Dyad CRUD
 // ---------------------------------------------------------------------------
 
-function dyadsFile(projectId: string): string {
-  return `dyads_${projectId}`;
+function dyadFromRow(row: Record<string, unknown>): Dyad {
+  return {
+    id: row.id as string,
+    caseId: row.case_id as string,
+    projectId: row.project_id as string,
+    incidents: (row.incidents as Incident[]) ?? [],
+    event_duration: (row.event_duration as (number | null)[]) ?? [],
+    gap: (row.gap as (number | null)[]) ?? [],
+  };
 }
 
-export function getDyads(projectId: string): Dyad[] {
-  return readJson<Dyad[]>(dyadsFile(projectId), []);
+export async function getDyads(projectId: string): Promise<Dyad[]> {
+  const { data, error } = await supabase
+    .from('dyads')
+    .select('*')
+    .eq('project_id', projectId);
+  if (error) throw error;
+  return (data ?? []).map((row: Record<string, unknown>) => dyadFromRow(row));
 }
 
-export function getDyad(projectId: string, dyadId: string): Dyad | undefined {
-  return getDyads(projectId).find((d) => d.id === dyadId);
+export async function getDyad(projectId: string, dyadId: string): Promise<Dyad | undefined> {
+  const { data, error } = await supabase
+    .from('dyads')
+    .select('*')
+    .eq('project_id', projectId)
+    .eq('id', dyadId)
+    .single();
+  if (error) {
+    if (error.code === 'PGRST116') return undefined;
+    throw error;
+  }
+  return data ? dyadFromRow(data as Record<string, unknown>) : undefined;
 }
 
-export function getDyadByCase(projectId: string, caseId: string): Dyad | undefined {
-  return getDyads(projectId).find((d) => d.caseId === caseId);
+export async function getDyadByCase(projectId: string, caseId: string): Promise<Dyad | undefined> {
+  const { data, error } = await supabase
+    .from('dyads')
+    .select('*')
+    .eq('project_id', projectId)
+    .eq('case_id', caseId)
+    .single();
+  if (error) {
+    if (error.code === 'PGRST116') return undefined;
+    throw error;
+  }
+  return data ? dyadFromRow(data as Record<string, unknown>) : undefined;
 }
 
-export function createDyad(projectId: string, caseId: string, incidents: Incident[] = []): Dyad {
-  const dyads = getDyads(projectId);
-  const dyad: Dyad = {
-    id: generateId(),
-    caseId,
-    projectId,
+export async function createDyad(projectId: string, caseId: string, incidents: Incident[] = []): Promise<Dyad> {
+  const id = generateId();
+  const dyad: Dyad = { id, caseId, projectId, incidents, event_duration: [], gap: [] };
+  const { error } = await supabase.from('dyads').insert({
+    id,
+    case_id: caseId,
+    project_id: projectId,
     incidents,
     event_duration: [],
     gap: [],
-  };
-  dyads.push(dyad);
-  writeJson(dyadsFile(projectId), dyads);
+  });
+  if (error) throw error;
   return dyad;
 }
 
-export function updateDyad(projectId: string, dyadId: string, patch: Partial<Dyad>): Dyad | undefined {
-  const dyads = getDyads(projectId);
-  const idx = dyads.findIndex((d) => d.id === dyadId);
-  if (idx === -1) return undefined;
-  dyads[idx] = { ...dyads[idx], ...patch, id: dyadId, projectId };
-  writeJson(dyadsFile(projectId), dyads);
-  return dyads[idx];
+export async function updateDyad(projectId: string, dyadId: string, patch: Partial<Dyad>): Promise<Dyad | undefined> {
+  const existing = await getDyad(projectId, dyadId);
+  if (!existing) return undefined;
+
+  const merged = { ...existing, ...patch, id: dyadId, projectId };
+  const row: Record<string, unknown> = {};
+  if (patch.caseId !== undefined) row.case_id = patch.caseId;
+  if (patch.incidents !== undefined) row.incidents = patch.incidents;
+  if (patch.event_duration !== undefined) row.event_duration = patch.event_duration;
+  if (patch.gap !== undefined) row.gap = patch.gap;
+
+  if (Object.keys(row).length > 0) {
+    const { error } = await supabase
+      .from('dyads')
+      .update(row)
+      .eq('id', dyadId)
+      .eq('project_id', projectId);
+    if (error) throw error;
+  }
+
+  return merged;
 }
 
 // ---------------------------------------------------------------------------
 // Research Design Request
 // ---------------------------------------------------------------------------
 
-export interface ResearchRequest {
-  id: string;
-  keywords: string;
-  description: string;
-  field: string;
-  email: string;
-  status: 'pending' | 'in_progress' | 'completed';
-  createdAt: string;
-  aiDraft: string;
-  adminResponse: string;
-  respondedAt: string;
+export async function getResearchRequests(): Promise<ResearchRequest[]> {
+  return _getServiceRequests<ResearchRequest>('research-design');
 }
 
-export function getResearchRequests(): ResearchRequest[] {
-  return readJson<ResearchRequest[]>('research-requests', []);
+export async function getResearchRequest(id: string): Promise<ResearchRequest | undefined> {
+  return _getServiceRequest<ResearchRequest>('research-design', id);
 }
 
-export function getResearchRequest(id: string): ResearchRequest | undefined {
-  return getResearchRequests().find((r) => r.id === id);
+export async function createResearchRequest(data: { keywords: string; description: string; field: string; email: string }): Promise<ResearchRequest> {
+  return _createServiceRequest<ResearchRequest>('research-design', { ...data, aiDraft: '' });
 }
 
-export function createResearchRequest(data: { keywords: string; description: string; field: string; email: string }): ResearchRequest {
-  const requests = getResearchRequests();
-  const request: ResearchRequest = {
-    id: generateId(),
-    keywords: data.keywords,
-    description: data.description,
-    field: data.field,
-    email: data.email,
-    status: 'pending',
-    createdAt: new Date().toISOString(),
-    aiDraft: '',
-    adminResponse: '',
-    respondedAt: '',
-  };
-  requests.push(request);
-  writeJson('research-requests', requests);
-  return request;
+export async function updateResearchRequest(id: string, patch: Partial<ResearchRequest>): Promise<ResearchRequest | undefined> {
+  return _updateServiceRequest<ResearchRequest>('research-design', id, patch as Record<string, unknown>);
 }
 
-export function updateResearchRequest(id: string, patch: Partial<ResearchRequest>): ResearchRequest | undefined {
-  const requests = getResearchRequests();
-  const idx = requests.findIndex((r) => r.id === id);
-  if (idx === -1) return undefined;
-  requests[idx] = { ...requests[idx], ...patch, id };
-  writeJson('research-requests', requests);
-  return requests[idx];
+// Research Chat Messages
+export async function getChatMessages(requestId: string): Promise<ChatMessage[]> {
+  return _getMessages('research-design', requestId);
 }
 
-// ---------------------------------------------------------------------------
-// Chat Messages (per research request)
-// ---------------------------------------------------------------------------
-
-export interface ChatMessage {
-  id: string;
-  requestId: string;
-  sender: 'user' | 'admin';
-  message: string;
-  createdAt: string;
-}
-
-// Store messages per request: research-messages-{requestId}.json
-export function getChatMessages(requestId: string): ChatMessage[] {
-  return readJson<ChatMessage[]>(`research-messages-${requestId}`, []);
-}
-
-export function addChatMessage(requestId: string, sender: 'user' | 'admin', message: string): ChatMessage {
-  const messages = getChatMessages(requestId);
-  const msg: ChatMessage = {
-    id: generateId(),
-    requestId,
-    sender,
-    message,
-    createdAt: new Date().toISOString(),
-  };
-  messages.push(msg);
-  writeJson(`research-messages-${requestId}`, messages);
-  return msg;
+export async function addChatMessage(requestId: string, sender: 'user' | 'admin', message: string): Promise<ChatMessage> {
+  return _addMessage('research-design', requestId, sender, message);
 }
 
 // ---------------------------------------------------------------------------
 // Stats Design Request
 // ---------------------------------------------------------------------------
 
-export interface StatsDesignRequest {
-  id: string;
+export async function getStatsDesignRequests(): Promise<StatsDesignRequest[]> {
+  return _getServiceRequests<StatsDesignRequest>('stats-design');
+}
+
+export async function getStatsDesignRequest(id: string): Promise<StatsDesignRequest | undefined> {
+  return _getServiceRequest<StatsDesignRequest>('stats-design', id);
+}
+
+export async function createStatsDesignRequest(data: {
   email: string;
   researchType: string;
   dataType: string;
@@ -487,725 +893,355 @@ export interface StatsDesignRequest {
   analysisGoal: string;
   currentMethods: string;
   description: string;
-  status: 'pending' | 'in_progress' | 'completed';
-  createdAt: string;
-  adminResponse: string;
-  respondedAt: string;
+}): Promise<StatsDesignRequest> {
+  return _createServiceRequest<StatsDesignRequest>('stats-design', data);
 }
 
-export function getStatsDesignRequests(): StatsDesignRequest[] {
-  return readJson<StatsDesignRequest[]>('stats-design-requests', []);
+export async function updateStatsDesignRequest(id: string, patch: Partial<StatsDesignRequest>): Promise<StatsDesignRequest | undefined> {
+  return _updateServiceRequest<StatsDesignRequest>('stats-design', id, patch as Record<string, unknown>);
 }
 
-export function getStatsDesignRequest(id: string): StatsDesignRequest | undefined {
-  return getStatsDesignRequests().find((r) => r.id === id);
-}
-
-export function createStatsDesignRequest(data: {
-  email: string;
-  researchType: string;
-  dataType: string;
-  sampleInfo: string;
-  variables: string;
-  analysisGoal: string;
-  currentMethods: string;
-  description: string;
-}): StatsDesignRequest {
-  const requests = getStatsDesignRequests();
-  const request: StatsDesignRequest = {
-    id: generateId(),
-    email: data.email,
-    researchType: data.researchType,
-    dataType: data.dataType,
-    sampleInfo: data.sampleInfo,
-    variables: data.variables,
-    analysisGoal: data.analysisGoal,
-    currentMethods: data.currentMethods,
-    description: data.description,
-    status: 'pending',
-    createdAt: new Date().toISOString(),
-    adminResponse: '',
-    respondedAt: '',
-  };
-  requests.push(request);
-  writeJson('stats-design-requests', requests);
-  return request;
-}
-
-export function updateStatsDesignRequest(id: string, patch: Partial<StatsDesignRequest>): StatsDesignRequest | undefined {
-  const requests = getStatsDesignRequests();
-  const idx = requests.findIndex((r) => r.id === id);
-  if (idx === -1) return undefined;
-  requests[idx] = { ...requests[idx], ...patch, id };
-  writeJson('stats-design-requests', requests);
-  return requests[idx];
-}
-
-// ---------------------------------------------------------------------------
 // Stats Design Chat Messages
-// ---------------------------------------------------------------------------
-
-export function getStatsDesignMessages(requestId: string): ChatMessage[] {
-  return readJson<ChatMessage[]>(`stats-messages-${requestId}`, []);
+export async function getStatsDesignMessages(requestId: string): Promise<ChatMessage[]> {
+  return _getMessages('stats-design', requestId);
 }
 
-export function addStatsDesignMessage(requestId: string, sender: 'user' | 'admin', message: string): ChatMessage {
-  const messages = getStatsDesignMessages(requestId);
-  const msg: ChatMessage = {
-    id: generateId(),
-    requestId,
-    sender,
-    message,
-    createdAt: new Date().toISOString(),
-  };
-  messages.push(msg);
-  writeJson(`stats-messages-${requestId}`, messages);
-  return msg;
+export async function addStatsDesignMessage(requestId: string, sender: 'user' | 'admin', message: string): Promise<ChatMessage> {
+  return _addMessage('stats-design', requestId, sender, message);
 }
 
 // ---------------------------------------------------------------------------
 // Survey Request
 // ---------------------------------------------------------------------------
 
-export interface SurveyRequest {
-  id: string;
-  email: string;
-  title: string;
-  purpose: string;
-  requesterName: string;
-  organization: string;
-  population: string;
-  sampleSize: string;
-  samplingMethod: string;
-  startDate: string;
-  endDate: string;
-  irbStatus: string;
-  additionalRequests: string;
-  surveyData: string;
-  status: 'pending' | 'in_progress' | 'completed';
-  createdAt: string;
-  adminResponse: string;
-  respondedAt: string;
+export async function getSurveyRequests(): Promise<SurveyRequest[]> {
+  return _getServiceRequests<SurveyRequest>('survey');
 }
 
-export function getSurveyRequests(): SurveyRequest[] {
-  return readJson<SurveyRequest[]>('survey-requests', []);
+export async function getSurveyRequest(id: string): Promise<SurveyRequest | undefined> {
+  return _getServiceRequest<SurveyRequest>('survey', id);
 }
 
-export function getSurveyRequest(id: string): SurveyRequest | undefined {
-  return getSurveyRequests().find((r) => r.id === id);
+export async function createSurveyRequest(data: Omit<SurveyRequest, 'id' | 'status' | 'createdAt' | 'adminResponse' | 'respondedAt'>): Promise<SurveyRequest> {
+  return _createServiceRequest<SurveyRequest>('survey', data as Record<string, unknown>);
 }
 
-export function createSurveyRequest(data: Omit<SurveyRequest, 'id' | 'status' | 'createdAt' | 'adminResponse' | 'respondedAt'>): SurveyRequest {
-  const requests = getSurveyRequests();
-  const request: SurveyRequest = {
-    id: generateId(),
-    email: data.email,
-    title: data.title,
-    purpose: data.purpose,
-    requesterName: data.requesterName,
-    organization: data.organization,
-    population: data.population,
-    sampleSize: data.sampleSize,
-    samplingMethod: data.samplingMethod,
-    startDate: data.startDate,
-    endDate: data.endDate,
-    irbStatus: data.irbStatus,
-    additionalRequests: data.additionalRequests,
-    surveyData: data.surveyData,
-    status: 'pending',
-    createdAt: new Date().toISOString(),
-    adminResponse: '',
-    respondedAt: '',
-  };
-  requests.push(request);
-  writeJson('survey-requests', requests);
-  return request;
+export async function updateSurveyRequest(id: string, patch: Partial<SurveyRequest>): Promise<SurveyRequest | undefined> {
+  return _updateServiceRequest<SurveyRequest>('survey', id, patch as Record<string, unknown>);
 }
 
-export function updateSurveyRequest(id: string, patch: Partial<SurveyRequest>): SurveyRequest | undefined {
-  const requests = getSurveyRequests();
-  const idx = requests.findIndex((r) => r.id === id);
-  if (idx === -1) return undefined;
-  requests[idx] = { ...requests[idx], ...patch, id };
-  writeJson('survey-requests', requests);
-  return requests[idx];
-}
-
-// ---------------------------------------------------------------------------
 // Survey Chat Messages
-// ---------------------------------------------------------------------------
-
-export function getSurveyMessages(requestId: string): ChatMessage[] {
-  return readJson<ChatMessage[]>(`survey-messages-${requestId}`, []);
+export async function getSurveyMessages(requestId: string): Promise<ChatMessage[]> {
+  return _getMessages('survey', requestId);
 }
 
-export function addSurveyMessage(requestId: string, sender: 'user' | 'admin', message: string): ChatMessage {
-  const messages = getSurveyMessages(requestId);
-  const msg: ChatMessage = {
-    id: generateId(),
-    requestId,
-    sender,
-    message,
-    createdAt: new Date().toISOString(),
-  };
-  messages.push(msg);
-  writeJson(`survey-messages-${requestId}`, messages);
-  return msg;
+export async function addSurveyMessage(requestId: string, sender: 'user' | 'admin', message: string): Promise<ChatMessage> {
+  return _addMessage('survey', requestId, sender, message);
 }
 
 // ---------------------------------------------------------------------------
 // Judgment Collection Request
 // ---------------------------------------------------------------------------
 
-export interface JudgmentCollectionRequest {
-  id: string;
-  email: string;
-  name: string;
-  organization: string;
-  purpose: string;
-  searchType: 'caseNumber' | 'keyword';
-  // case number search
-  caseNumbers: string;
-  scopeFirst: boolean;
-  scopeSecond: boolean;
-  scopeThird: boolean;
-  outputFormat: string;
-  // keyword search
-  keywords: string;         // JSON array string
-  keywordLogic: string;
-  courts: string;           // JSON array string
-  startYear: number;
-  endYear: number;
-  caseTypes: string;        // JSON array string
-  lawKeyword: string;
-  maxCount: number;
-  // common
-  additionalNotes: string;
-  status: 'pending' | 'in_progress' | 'completed';
-  createdAt: string;
-  adminResponse: string;
-  respondedAt: string;
+export async function getJudgmentCollectionRequests(): Promise<JudgmentCollectionRequest[]> {
+  return _getServiceRequests<JudgmentCollectionRequest>('judgment-collection');
 }
 
-export function getJudgmentCollectionRequests(): JudgmentCollectionRequest[] {
-  return readJson<JudgmentCollectionRequest[]>('judgment-collection-requests', []);
+export async function getJudgmentCollectionRequest(id: string): Promise<JudgmentCollectionRequest | undefined> {
+  return _getServiceRequest<JudgmentCollectionRequest>('judgment-collection', id);
 }
 
-export function getJudgmentCollectionRequest(id: string): JudgmentCollectionRequest | undefined {
-  return getJudgmentCollectionRequests().find((r) => r.id === id);
-}
-
-export function createJudgmentCollectionRequest(
+export async function createJudgmentCollectionRequest(
   data: Omit<JudgmentCollectionRequest, 'id' | 'status' | 'createdAt' | 'adminResponse' | 'respondedAt'>,
-): JudgmentCollectionRequest {
-  const requests = getJudgmentCollectionRequests();
-  const request: JudgmentCollectionRequest = {
-    id: generateId(),
-    email: data.email,
-    name: data.name,
-    organization: data.organization,
-    purpose: data.purpose,
-    searchType: data.searchType,
-    caseNumbers: data.caseNumbers,
-    scopeFirst: data.scopeFirst,
-    scopeSecond: data.scopeSecond,
-    scopeThird: data.scopeThird,
-    outputFormat: data.outputFormat,
-    keywords: data.keywords,
-    keywordLogic: data.keywordLogic,
-    courts: data.courts,
-    startYear: data.startYear,
-    endYear: data.endYear,
-    caseTypes: data.caseTypes,
-    lawKeyword: data.lawKeyword,
-    maxCount: data.maxCount,
-    additionalNotes: data.additionalNotes,
-    status: 'pending',
-    createdAt: new Date().toISOString(),
-    adminResponse: '',
-    respondedAt: '',
-  };
-  requests.push(request);
-  writeJson('judgment-collection-requests', requests);
-  return request;
+): Promise<JudgmentCollectionRequest> {
+  return _createServiceRequest<JudgmentCollectionRequest>('judgment-collection', data as Record<string, unknown>);
 }
 
-export function updateJudgmentCollectionRequest(id: string, patch: Partial<JudgmentCollectionRequest>): JudgmentCollectionRequest | undefined {
-  const requests = getJudgmentCollectionRequests();
-  const idx = requests.findIndex((r) => r.id === id);
-  if (idx === -1) return undefined;
-  requests[idx] = { ...requests[idx], ...patch, id };
-  writeJson('judgment-collection-requests', requests);
-  return requests[idx];
+export async function updateJudgmentCollectionRequest(id: string, patch: Partial<JudgmentCollectionRequest>): Promise<JudgmentCollectionRequest | undefined> {
+  return _updateServiceRequest<JudgmentCollectionRequest>('judgment-collection', id, patch as Record<string, unknown>);
 }
 
-// ---------------------------------------------------------------------------
 // Judgment Collection Chat Messages
-// ---------------------------------------------------------------------------
-
-export function getJudgmentCollectionMessages(requestId: string): ChatMessage[] {
-  return readJson<ChatMessage[]>(`judgment-collection-messages-${requestId}`, []);
+export async function getJudgmentCollectionMessages(requestId: string): Promise<ChatMessage[]> {
+  return _getMessages('judgment-collection', requestId);
 }
 
-export function addJudgmentCollectionMessage(requestId: string, sender: 'user' | 'admin', message: string): ChatMessage {
-  const messages = getJudgmentCollectionMessages(requestId);
-  const msg: ChatMessage = {
-    id: generateId(),
-    requestId,
-    sender,
-    message,
-    createdAt: new Date().toISOString(),
-  };
-  messages.push(msg);
-  writeJson(`judgment-collection-messages-${requestId}`, messages);
-  return msg;
+export async function addJudgmentCollectionMessage(requestId: string, sender: 'user' | 'admin', message: string): Promise<ChatMessage> {
+  return _addMessage('judgment-collection', requestId, sender, message);
 }
 
 // ---------------------------------------------------------------------------
 // News Collection Request
 // ---------------------------------------------------------------------------
 
-export interface NewsCollectionRequest {
-  id: string;
-  email: string;
-  searchType: 'keyword' | 'sentence';
-  keywords: string;        // JSON array for keyword type, or sentence string
-  keywordLogic: string;    // AND/OR
-  dateFrom: string;
-  dateTo: string;
-  maxCount: number;
-  purpose: string;
-  additionalNotes: string;
-  status: 'pending' | 'in_progress' | 'completed';
-  createdAt: string;
-  adminResponse: string;
-  respondedAt: string;
+export async function getNewsCollectionRequests(): Promise<NewsCollectionRequest[]> {
+  return _getServiceRequests<NewsCollectionRequest>('news-collection');
 }
 
-export function getNewsCollectionRequests(): NewsCollectionRequest[] {
-  return readJson<NewsCollectionRequest[]>('news-collection-requests', []);
+export async function getNewsCollectionRequest(id: string): Promise<NewsCollectionRequest | undefined> {
+  return _getServiceRequest<NewsCollectionRequest>('news-collection', id);
 }
 
-export function getNewsCollectionRequest(id: string): NewsCollectionRequest | undefined {
-  return getNewsCollectionRequests().find((r) => r.id === id);
-}
-
-export function createNewsCollectionRequest(
+export async function createNewsCollectionRequest(
   data: Omit<NewsCollectionRequest, 'id' | 'status' | 'createdAt' | 'adminResponse' | 'respondedAt'>,
-): NewsCollectionRequest {
-  const requests = getNewsCollectionRequests();
-  const request: NewsCollectionRequest = {
-    id: generateId(),
-    email: data.email,
-    searchType: data.searchType,
-    keywords: data.keywords,
-    keywordLogic: data.keywordLogic,
-    dateFrom: data.dateFrom,
-    dateTo: data.dateTo,
-    maxCount: data.maxCount,
-    purpose: data.purpose,
-    additionalNotes: data.additionalNotes,
-    status: 'pending',
-    createdAt: new Date().toISOString(),
-    adminResponse: '',
-    respondedAt: '',
-  };
-  requests.push(request);
-  writeJson('news-collection-requests', requests);
-  return request;
+): Promise<NewsCollectionRequest> {
+  return _createServiceRequest<NewsCollectionRequest>('news-collection', data as Record<string, unknown>);
 }
 
-export function updateNewsCollectionRequest(id: string, patch: Partial<NewsCollectionRequest>): NewsCollectionRequest | undefined {
-  const requests = getNewsCollectionRequests();
-  const idx = requests.findIndex((r) => r.id === id);
-  if (idx === -1) return undefined;
-  requests[idx] = { ...requests[idx], ...patch, id };
-  writeJson('news-collection-requests', requests);
-  return requests[idx];
+export async function updateNewsCollectionRequest(id: string, patch: Partial<NewsCollectionRequest>): Promise<NewsCollectionRequest | undefined> {
+  return _updateServiceRequest<NewsCollectionRequest>('news-collection', id, patch as Record<string, unknown>);
 }
 
-// ---------------------------------------------------------------------------
 // News Collection Chat Messages
-// ---------------------------------------------------------------------------
-
-export function getNewsCollectionMessages(requestId: string): ChatMessage[] {
-  return readJson<ChatMessage[]>(`news-collection-messages-${requestId}`, []);
+export async function getNewsCollectionMessages(requestId: string): Promise<ChatMessage[]> {
+  return _getMessages('news-collection', requestId);
 }
 
-export function addNewsCollectionMessage(requestId: string, sender: 'user' | 'admin', message: string): ChatMessage {
-  const messages = getNewsCollectionMessages(requestId);
-  const msg: ChatMessage = {
-    id: generateId(),
-    requestId,
-    sender,
-    message,
-    createdAt: new Date().toISOString(),
-  };
-  messages.push(msg);
-  writeJson(`news-collection-messages-${requestId}`, messages);
-  return msg;
+export async function addNewsCollectionMessage(requestId: string, sender: 'user' | 'admin', message: string): Promise<ChatMessage> {
+  return _addMessage('news-collection', requestId, sender, message);
 }
 
 // ---------------------------------------------------------------------------
-// Data Transform Request (데이터 전처리)
+// Data Transform Request
 // ---------------------------------------------------------------------------
 
-export interface DataTransformRequest {
-  id: string;
-  email: string;
-  dataDescription: string;
-  dataFormat: string;
-  currentState: string;
-  transformationTypes: string; // JSON array
-  transformationDetail: string;
-  additionalNotes: string;
-  status: 'pending' | 'in_progress' | 'completed';
-  createdAt: string;
-  adminResponse: string;
-  respondedAt: string;
+export async function getDataTransformRequests(): Promise<DataTransformRequest[]> {
+  return _getServiceRequests<DataTransformRequest>('data-transform');
 }
 
-export function getDataTransformRequests(): DataTransformRequest[] {
-  return readJson<DataTransformRequest[]>('data-transform-requests', []);
+export async function getDataTransformRequest(id: string): Promise<DataTransformRequest | undefined> {
+  return _getServiceRequest<DataTransformRequest>('data-transform', id);
 }
 
-export function getDataTransformRequest(id: string): DataTransformRequest | undefined {
-  return getDataTransformRequests().find((r) => r.id === id);
-}
-
-export function createDataTransformRequest(
+export async function createDataTransformRequest(
   data: Omit<DataTransformRequest, 'id' | 'status' | 'createdAt' | 'adminResponse' | 'respondedAt'>,
-): DataTransformRequest {
-  const requests = getDataTransformRequests();
-  const request: DataTransformRequest = {
-    id: generateId(),
-    email: data.email,
-    dataDescription: data.dataDescription,
-    dataFormat: data.dataFormat,
-    currentState: data.currentState,
-    transformationTypes: data.transformationTypes,
-    transformationDetail: data.transformationDetail,
-    additionalNotes: data.additionalNotes,
-    status: 'pending',
-    createdAt: new Date().toISOString(),
-    adminResponse: '',
-    respondedAt: '',
-  };
-  requests.push(request);
-  writeJson('data-transform-requests', requests);
-  return request;
+): Promise<DataTransformRequest> {
+  return _createServiceRequest<DataTransformRequest>('data-transform', data as Record<string, unknown>);
 }
 
-export function updateDataTransformRequest(id: string, patch: Partial<DataTransformRequest>): DataTransformRequest | undefined {
-  const requests = getDataTransformRequests();
-  const idx = requests.findIndex((r) => r.id === id);
-  if (idx === -1) return undefined;
-  requests[idx] = { ...requests[idx], ...patch, id };
-  writeJson('data-transform-requests', requests);
-  return requests[idx];
+export async function updateDataTransformRequest(id: string, patch: Partial<DataTransformRequest>): Promise<DataTransformRequest | undefined> {
+  return _updateServiceRequest<DataTransformRequest>('data-transform', id, patch as Record<string, unknown>);
 }
 
 // Data Transform Chat Messages
-export function getDataTransformMessages(requestId: string): ChatMessage[] {
-  return readJson<ChatMessage[]>(`data-transform-messages-${requestId}`, []);
+export async function getDataTransformMessages(requestId: string): Promise<ChatMessage[]> {
+  return _getMessages('data-transform', requestId);
 }
 
-export function addDataTransformMessage(requestId: string, sender: 'user' | 'admin', message: string): ChatMessage {
-  const messages = getDataTransformMessages(requestId);
-  const msg: ChatMessage = {
-    id: generateId(),
-    requestId,
-    sender,
-    message,
-    createdAt: new Date().toISOString(),
-  };
-  messages.push(msg);
-  writeJson(`data-transform-messages-${requestId}`, messages);
-  return msg;
+export async function addDataTransformMessage(requestId: string, sender: 'user' | 'admin', message: string): Promise<ChatMessage> {
+  return _addMessage('data-transform', requestId, sender, message);
 }
 
 // ---------------------------------------------------------------------------
-// Quant Analysis Request (계량분석)
+// Quant Analysis Request
 // ---------------------------------------------------------------------------
 
-export interface QuantAnalysisRequest {
-  id: string;
-  email: string;
-  analysisType: string;
-  dataDescription: string;
-  variables: string;
-  hypothesis: string;
-  dataFormat: string;
-  additionalNotes: string;
-  status: 'pending' | 'in_progress' | 'completed';
-  createdAt: string;
-  adminResponse: string;
-  respondedAt: string;
+export async function getQuantAnalysisRequests(): Promise<QuantAnalysisRequest[]> {
+  return _getServiceRequests<QuantAnalysisRequest>('quant-analysis');
 }
 
-export function getQuantAnalysisRequests(): QuantAnalysisRequest[] {
-  return readJson<QuantAnalysisRequest[]>('quant-analysis-requests', []);
+export async function getQuantAnalysisRequest(id: string): Promise<QuantAnalysisRequest | undefined> {
+  return _getServiceRequest<QuantAnalysisRequest>('quant-analysis', id);
 }
 
-export function getQuantAnalysisRequest(id: string): QuantAnalysisRequest | undefined {
-  return getQuantAnalysisRequests().find((r) => r.id === id);
-}
-
-export function createQuantAnalysisRequest(
+export async function createQuantAnalysisRequest(
   data: Omit<QuantAnalysisRequest, 'id' | 'status' | 'createdAt' | 'adminResponse' | 'respondedAt'>,
-): QuantAnalysisRequest {
-  const requests = getQuantAnalysisRequests();
-  const request: QuantAnalysisRequest = {
-    id: generateId(),
-    email: data.email,
-    analysisType: data.analysisType,
-    dataDescription: data.dataDescription,
-    variables: data.variables,
-    hypothesis: data.hypothesis,
-    dataFormat: data.dataFormat,
-    additionalNotes: data.additionalNotes,
-    status: 'pending',
-    createdAt: new Date().toISOString(),
-    adminResponse: '',
-    respondedAt: '',
-  };
-  requests.push(request);
-  writeJson('quant-analysis-requests', requests);
-  return request;
+): Promise<QuantAnalysisRequest> {
+  return _createServiceRequest<QuantAnalysisRequest>('quant-analysis', data as Record<string, unknown>);
 }
 
-export function updateQuantAnalysisRequest(id: string, patch: Partial<QuantAnalysisRequest>): QuantAnalysisRequest | undefined {
-  const requests = getQuantAnalysisRequests();
-  const idx = requests.findIndex((r) => r.id === id);
-  if (idx === -1) return undefined;
-  requests[idx] = { ...requests[idx], ...patch, id };
-  writeJson('quant-analysis-requests', requests);
-  return requests[idx];
+export async function updateQuantAnalysisRequest(id: string, patch: Partial<QuantAnalysisRequest>): Promise<QuantAnalysisRequest | undefined> {
+  return _updateServiceRequest<QuantAnalysisRequest>('quant-analysis', id, patch as Record<string, unknown>);
 }
 
 // Quant Analysis Chat Messages
-export function getQuantAnalysisMessages(requestId: string): ChatMessage[] {
-  return readJson<ChatMessage[]>(`quant-analysis-messages-${requestId}`, []);
+export async function getQuantAnalysisMessages(requestId: string): Promise<ChatMessage[]> {
+  return _getMessages('quant-analysis', requestId);
 }
 
-export function addQuantAnalysisMessage(requestId: string, sender: 'user' | 'admin', message: string): ChatMessage {
-  const messages = getQuantAnalysisMessages(requestId);
-  const msg: ChatMessage = {
-    id: generateId(),
-    requestId,
-    sender,
-    message,
-    createdAt: new Date().toISOString(),
-  };
-  messages.push(msg);
-  writeJson(`quant-analysis-messages-${requestId}`, messages);
-  return msg;
+export async function addQuantAnalysisMessage(requestId: string, sender: 'user' | 'admin', message: string): Promise<ChatMessage> {
+  return _addMessage('quant-analysis', requestId, sender, message);
 }
 
 // ---------------------------------------------------------------------------
-// Text Analysis Request (텍스트 분석 의뢰)
+// Text Analysis Request
 // ---------------------------------------------------------------------------
 
-export interface TextAnalysisRequest {
-  id: string;
-  email: string;
-  analysisTypes: string; // JSON array of selected analysis types
-  dataInputMethod: string;
-  textContent: string;
-  analysisOptions: string; // JSON object of per-analysis options
-  additionalNotes: string;
-  status: 'pending' | 'in_progress' | 'completed';
-  createdAt: string;
-  adminResponse: string;
-  respondedAt: string;
+export async function getTextAnalysisRequests(): Promise<TextAnalysisRequest[]> {
+  return _getServiceRequests<TextAnalysisRequest>('text-analysis-request');
 }
 
-export function getTextAnalysisRequests(): TextAnalysisRequest[] {
-  return readJson<TextAnalysisRequest[]>('text-analysis-requests', []);
+export async function getTextAnalysisRequest(id: string): Promise<TextAnalysisRequest | undefined> {
+  return _getServiceRequest<TextAnalysisRequest>('text-analysis-request', id);
 }
 
-export function getTextAnalysisRequest(id: string): TextAnalysisRequest | undefined {
-  return getTextAnalysisRequests().find((r) => r.id === id);
-}
-
-export function createTextAnalysisRequest(
+export async function createTextAnalysisRequest(
   data: Omit<TextAnalysisRequest, 'id' | 'status' | 'createdAt' | 'adminResponse' | 'respondedAt'>,
-): TextAnalysisRequest {
-  const requests = getTextAnalysisRequests();
-  const request: TextAnalysisRequest = {
-    id: generateId(),
-    email: data.email,
-    analysisTypes: data.analysisTypes,
-    dataInputMethod: data.dataInputMethod,
-    textContent: data.textContent,
-    analysisOptions: data.analysisOptions,
-    additionalNotes: data.additionalNotes,
-    status: 'pending',
-    createdAt: new Date().toISOString(),
-    adminResponse: '',
-    respondedAt: '',
-  };
-  requests.push(request);
-  writeJson('text-analysis-requests', requests);
-  return request;
+): Promise<TextAnalysisRequest> {
+  return _createServiceRequest<TextAnalysisRequest>('text-analysis-request', data as Record<string, unknown>);
 }
 
-export function updateTextAnalysisRequest(id: string, patch: Partial<TextAnalysisRequest>): TextAnalysisRequest | undefined {
-  const requests = getTextAnalysisRequests();
-  const idx = requests.findIndex((r) => r.id === id);
-  if (idx === -1) return undefined;
-  requests[idx] = { ...requests[idx], ...patch, id };
-  writeJson('text-analysis-requests', requests);
-  return requests[idx];
+export async function updateTextAnalysisRequest(id: string, patch: Partial<TextAnalysisRequest>): Promise<TextAnalysisRequest | undefined> {
+  return _updateServiceRequest<TextAnalysisRequest>('text-analysis-request', id, patch as Record<string, unknown>);
 }
 
 // Text Analysis Chat Messages
-export function getTextAnalysisMessages(requestId: string): ChatMessage[] {
-  return readJson<ChatMessage[]>(`text-analysis-messages-${requestId}`, []);
+export async function getTextAnalysisMessages(requestId: string): Promise<ChatMessage[]> {
+  return _getMessages('text-analysis-request', requestId);
 }
 
-export function addTextAnalysisMessage(requestId: string, sender: 'user' | 'admin', message: string): ChatMessage {
-  const messages = getTextAnalysisMessages(requestId);
-  const msg: ChatMessage = {
-    id: generateId(),
-    requestId,
-    sender,
-    message,
-    createdAt: new Date().toISOString(),
-  };
-  messages.push(msg);
-  writeJson(`text-analysis-messages-${requestId}`, messages);
-  return msg;
+export async function addTextAnalysisMessage(requestId: string, sender: 'user' | 'admin', message: string): Promise<ChatMessage> {
+  return _addMessage('text-analysis-request', requestId, sender, message);
 }
 
 // ---------------------------------------------------------------------------
-// Qual Analysis Request (질적분석)
+// Qual Analysis Request
 // ---------------------------------------------------------------------------
 
-export interface QualAnalysisRequest {
-  id: string;
-  email: string;
-  analysisType: string;
-  dataDescription: string;
-  dataFormat: string;
-  analysisGoal: string;
-  additionalNotes: string;
-  status: 'pending' | 'in_progress' | 'completed';
-  createdAt: string;
-  adminResponse: string;
-  respondedAt: string;
+export async function getQualAnalysisRequests(): Promise<QualAnalysisRequest[]> {
+  return _getServiceRequests<QualAnalysisRequest>('qual-analysis');
 }
 
-export function getQualAnalysisRequests(): QualAnalysisRequest[] {
-  return readJson<QualAnalysisRequest[]>('qual-analysis-requests', []);
+export async function getQualAnalysisRequest(id: string): Promise<QualAnalysisRequest | undefined> {
+  return _getServiceRequest<QualAnalysisRequest>('qual-analysis', id);
 }
 
-export function getQualAnalysisRequest(id: string): QualAnalysisRequest | undefined {
-  return getQualAnalysisRequests().find((r) => r.id === id);
-}
-
-export function createQualAnalysisRequest(
+export async function createQualAnalysisRequest(
   data: Omit<QualAnalysisRequest, 'id' | 'status' | 'createdAt' | 'adminResponse' | 'respondedAt'>,
-): QualAnalysisRequest {
-  const requests = getQualAnalysisRequests();
-  const request: QualAnalysisRequest = {
-    id: generateId(),
-    email: data.email,
-    analysisType: data.analysisType,
-    dataDescription: data.dataDescription,
-    dataFormat: data.dataFormat,
-    analysisGoal: data.analysisGoal,
-    additionalNotes: data.additionalNotes,
-    status: 'pending',
-    createdAt: new Date().toISOString(),
-    adminResponse: '',
-    respondedAt: '',
-  };
-  requests.push(request);
-  writeJson('qual-analysis-requests', requests);
-  return request;
+): Promise<QualAnalysisRequest> {
+  return _createServiceRequest<QualAnalysisRequest>('qual-analysis', data as Record<string, unknown>);
 }
 
-export function updateQualAnalysisRequest(id: string, patch: Partial<QualAnalysisRequest>): QualAnalysisRequest | undefined {
-  const requests = getQualAnalysisRequests();
-  const idx = requests.findIndex((r) => r.id === id);
-  if (idx === -1) return undefined;
-  requests[idx] = { ...requests[idx], ...patch, id };
-  writeJson('qual-analysis-requests', requests);
-  return requests[idx];
+export async function updateQualAnalysisRequest(id: string, patch: Partial<QualAnalysisRequest>): Promise<QualAnalysisRequest | undefined> {
+  return _updateServiceRequest<QualAnalysisRequest>('qual-analysis', id, patch as Record<string, unknown>);
 }
 
 // Qual Analysis Chat Messages
-export function getQualAnalysisMessages(requestId: string): ChatMessage[] {
-  return readJson<ChatMessage[]>(`qual-analysis-messages-${requestId}`, []);
+export async function getQualAnalysisMessages(requestId: string): Promise<ChatMessage[]> {
+  return _getMessages('qual-analysis', requestId);
 }
 
-export function addQualAnalysisMessage(requestId: string, sender: 'user' | 'admin', message: string): ChatMessage {
-  const messages = getQualAnalysisMessages(requestId);
-  const msg: ChatMessage = {
-    id: generateId(),
-    requestId,
-    sender,
-    message,
-    createdAt: new Date().toISOString(),
+export async function addQualAnalysisMessage(requestId: string, sender: 'user' | 'admin', message: string): Promise<ChatMessage> {
+  return _addMessage('qual-analysis', requestId, sender, message);
+}
+
+// ---------------------------------------------------------------------------
+// Contact Inquiries
+// ---------------------------------------------------------------------------
+
+export async function getContactInquiries(): Promise<ContactInquiry[]> {
+  const { data, error } = await supabase
+    .from('contact_inquiries')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return (data ?? []).map((row: Record<string, unknown>) => ({
+    id: row.id as string,
+    email: (row.email as string) ?? '',
+    name: (row.name as string) ?? '',
+    category: (row.category as string) ?? '',
+    subject: (row.subject as string) ?? '',
+    message: (row.message as string) ?? '',
+    status: (row.status as 'pending' | 'replied') ?? 'pending',
+    createdAt: (row.created_at as string) ?? '',
+    adminReply: (row.admin_reply as string) ?? '',
+    repliedAt: (row.replied_at as string) ?? '',
+  }));
+}
+
+export async function getContactInquiry(id: string): Promise<ContactInquiry | undefined> {
+  const { data, error } = await supabase
+    .from('contact_inquiries')
+    .select('*')
+    .eq('id', id)
+    .single();
+  if (error) {
+    if (error.code === 'PGRST116') return undefined;
+    throw error;
+  }
+  if (!data) return undefined;
+  return {
+    id: data.id,
+    email: data.email ?? '',
+    name: data.name ?? '',
+    category: data.category ?? '',
+    subject: data.subject ?? '',
+    message: data.message ?? '',
+    status: data.status ?? 'pending',
+    createdAt: data.created_at ?? '',
+    adminReply: data.admin_reply ?? '',
+    repliedAt: data.replied_at ?? '',
   };
-  messages.push(msg);
-  writeJson(`qual-analysis-messages-${requestId}`, messages);
-  return msg;
 }
 
-// ---------------------------------------------------------------------------
-// Contact Inquiries (문의사항)
-// ---------------------------------------------------------------------------
-
-export interface ContactInquiry {
-  id: string;
-  email: string;
-  name: string;
-  category: string;
-  subject: string;
-  message: string;
-  status: 'pending' | 'replied';
-  createdAt: string;
-  adminReply: string;
-  repliedAt: string;
-}
-
-export function getContactInquiries(): ContactInquiry[] {
-  return readJson<ContactInquiry[]>('contact-inquiries', []);
-}
-
-export function getContactInquiry(id: string): ContactInquiry | undefined {
-  return getContactInquiries().find((r) => r.id === id);
-}
-
-export function createContactInquiry(
+export async function createContactInquiry(
   data: Omit<ContactInquiry, 'id' | 'status' | 'createdAt' | 'adminReply' | 'repliedAt'>,
-): ContactInquiry {
-  const inquiries = getContactInquiries();
-  const inquiry: ContactInquiry = {
-    id: generateId(),
-    email: data.email,
-    name: data.name,
-    category: data.category,
-    subject: data.subject,
-    message: data.message,
-    status: 'pending',
-    createdAt: new Date().toISOString(),
-    adminReply: '',
-    repliedAt: '',
+): Promise<ContactInquiry> {
+  const id = generateId();
+  const now = new Date().toISOString();
+  const { data: row, error } = await supabase
+    .from('contact_inquiries')
+    .insert({
+      id,
+      email: data.email,
+      name: data.name,
+      category: data.category,
+      subject: data.subject,
+      message: data.message,
+      status: 'pending',
+      created_at: now,
+      admin_reply: '',
+      replied_at: null,
+    })
+    .select()
+    .single();
+  if (error) throw error;
+  return {
+    id: row.id,
+    email: row.email ?? '',
+    name: row.name ?? '',
+    category: row.category ?? '',
+    subject: row.subject ?? '',
+    message: row.message ?? '',
+    status: row.status ?? 'pending',
+    createdAt: row.created_at ?? '',
+    adminReply: row.admin_reply ?? '',
+    repliedAt: row.replied_at ?? '',
   };
-  inquiries.push(inquiry);
-  writeJson('contact-inquiries', inquiries);
-  return inquiry;
 }
 
-export function updateContactInquiry(id: string, patch: Partial<ContactInquiry>): ContactInquiry | undefined {
-  const inquiries = getContactInquiries();
-  const idx = inquiries.findIndex((r) => r.id === id);
-  if (idx === -1) return undefined;
-  inquiries[idx] = { ...inquiries[idx], ...patch, id };
-  writeJson('contact-inquiries', inquiries);
-  return inquiries[idx];
+export async function updateContactInquiry(id: string, patch: Partial<ContactInquiry>): Promise<ContactInquiry | undefined> {
+  const row: Record<string, unknown> = {};
+  if (patch.email !== undefined) row.email = patch.email;
+  if (patch.name !== undefined) row.name = patch.name;
+  if (patch.category !== undefined) row.category = patch.category;
+  if (patch.subject !== undefined) row.subject = patch.subject;
+  if (patch.message !== undefined) row.message = patch.message;
+  if (patch.status !== undefined) row.status = patch.status;
+  if (patch.adminReply !== undefined) row.admin_reply = patch.adminReply;
+  if (patch.repliedAt !== undefined) row.replied_at = patch.repliedAt;
+
+  const { data, error } = await supabase
+    .from('contact_inquiries')
+    .update(row)
+    .eq('id', id)
+    .select()
+    .single();
+  if (error) {
+    if (error.code === 'PGRST116') return undefined;
+    throw error;
+  }
+  if (!data) return undefined;
+  return {
+    id: data.id,
+    email: data.email ?? '',
+    name: data.name ?? '',
+    category: data.category ?? '',
+    subject: data.subject ?? '',
+    message: data.message ?? '',
+    status: data.status ?? 'pending',
+    createdAt: data.created_at ?? '',
+    adminReply: data.admin_reply ?? '',
+    repliedAt: data.replied_at ?? '',
+  };
 }

@@ -7,7 +7,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const messages = getStatsDesignMessages(id);
+    const messages = await getStatsDesignMessages(id);
     messages.sort(
       (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
     );
@@ -42,7 +42,7 @@ export async function POST(
       );
     }
 
-    const msg = addStatsDesignMessage(id, sender, message.trim());
+    const msg = await addStatsDesignMessage(id, sender, message.trim());
     return Response.json({ message: msg }, { status: 201 });
   } catch {
     return Response.json(

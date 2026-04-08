@@ -3,7 +3,7 @@ import { getDataTransformRequests, createDataTransformRequest } from '@/lib/db';
 
 export async function GET() {
   try {
-    const requests = getDataTransformRequests();
+    const requests = await getDataTransformRequests();
     return Response.json({ requests });
   } catch (error) {
     return Response.json(
@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const created = createDataTransformRequest({
+    const created = await createDataTransformRequest({
       email: (email || '').trim(),
       dataDescription: (body.dataDescription || '').trim(),
       dataFormat: (body.dataFormat || '').trim(),

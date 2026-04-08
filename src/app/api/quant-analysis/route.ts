@@ -3,7 +3,7 @@ import { getQuantAnalysisRequests, createQuantAnalysisRequest } from '@/lib/db';
 
 export async function GET() {
   try {
-    const requests = getQuantAnalysisRequests();
+    const requests = await getQuantAnalysisRequests();
     return Response.json({ requests });
   } catch (error) {
     return Response.json(
@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const created = createQuantAnalysisRequest({
+    const created = await createQuantAnalysisRequest({
       email: (email || '').trim(),
       analysisType: (body.analysisType || '').trim(),
       dataDescription: (body.dataDescription || '').trim(),

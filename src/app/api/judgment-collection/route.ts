@@ -3,7 +3,7 @@ import { getJudgmentCollectionRequests, createJudgmentCollectionRequest } from '
 
 export async function GET() {
   try {
-    const requests = getJudgmentCollectionRequests();
+    const requests = await getJudgmentCollectionRequests();
     return Response.json({ requests });
   } catch (error) {
     return Response.json(
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const created = createJudgmentCollectionRequest({
+    const created = await createJudgmentCollectionRequest({
       email: (email || '').trim(),
       name: (name || '').trim(),
       organization: (body.organization || '').trim(),

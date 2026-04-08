@@ -3,7 +3,7 @@ import { getContactInquiries, createContactInquiry, updateContactInquiry } from 
 
 export async function GET() {
   try {
-    const inquiries = getContactInquiries();
+    const inquiries = await getContactInquiries();
     return Response.json({ inquiries });
   } catch {
     return Response.json(
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const created = createContactInquiry({
+    const created = await createContactInquiry({
       email: (email || '').trim(),
       name: (name || '').trim(),
       category: (category || '일반 문의').trim(),
@@ -58,7 +58,7 @@ export async function PATCH(request: NextRequest) {
       return Response.json({ error: 'ID가 필요합니다.' }, { status: 400 });
     }
 
-    const updated = updateContactInquiry(id, patch);
+    const updated = await updateContactInquiry(id, patch);
     if (!updated) {
       return Response.json({ error: '문의를 찾을 수 없습니다.' }, { status: 404 });
     }

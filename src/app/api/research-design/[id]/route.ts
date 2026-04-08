@@ -7,7 +7,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const req = getResearchRequest(id);
+    const req = await getResearchRequest(id);
     if (!req) {
       return Response.json({ error: '의뢰를 찾을 수 없습니다.' }, { status: 404 });
     }
@@ -24,7 +24,7 @@ export async function PATCH(
   try {
     const { id } = await params;
     const body = await request.json();
-    const updated = updateResearchRequest(id, body);
+    const updated = await updateResearchRequest(id, body);
     if (!updated) {
       return Response.json({ error: '의뢰를 찾을 수 없습니다.' }, { status: 404 });
     }

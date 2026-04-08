@@ -7,13 +7,13 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const project = getProject(id);
+    const project = await getProject(id);
     if (!project) {
       return Response.json({ error: '프로젝트를 찾을 수 없습니다.' }, { status: 404 });
     }
 
-    const cases = getCases(id);
-    const dyads = getDyads(id);
+    const cases = await getCases(id);
+    const dyads = await getDyads(id);
     const buf = generateExcel(cases, dyads);
 
     const filename = encodeURIComponent(`${project.name}.xlsx`);

@@ -4,7 +4,7 @@ import { notifyRequestReceived } from '@/lib/email';
 
 export async function GET() {
   try {
-    const requests = getStatsDesignRequests();
+    const requests = await getStatsDesignRequests();
     return Response.json({ requests });
   } catch (error) {
     return Response.json(
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const created = createStatsDesignRequest({
+    const created = await createStatsDesignRequest({
       email: (email || '').trim(),
       researchType: researchType.trim(),
       dataType: dataType.trim(),

@@ -3,7 +3,7 @@ import { getNewsCollectionRequests, createNewsCollectionRequest } from '@/lib/db
 
 export async function GET() {
   try {
-    const requests = getNewsCollectionRequests();
+    const requests = await getNewsCollectionRequests();
     return Response.json({ requests });
   } catch (error) {
     return Response.json(
@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const created = createNewsCollectionRequest({
+    const created = await createNewsCollectionRequest({
       email: (email || '').trim(),
       searchType,
       keywords: (body.keywords || '').trim(),

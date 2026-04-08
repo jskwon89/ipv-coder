@@ -6,11 +6,11 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const project = getProject(id);
+    const project = await getProject(id);
     if (!project) {
       return Response.json({ error: '프로젝트를 찾을 수 없습니다.' }, { status: 404 });
     }
-    const cases = getCases(id);
+    const cases = await getCases(id);
     return Response.json({ cases, total: cases.length });
   } catch (error) {
     return Response.json(

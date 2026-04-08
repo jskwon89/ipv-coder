@@ -3,7 +3,7 @@ import { getTextAnalysisRequests, createTextAnalysisRequest } from '@/lib/db';
 
 export async function GET() {
   try {
-    const requests = getTextAnalysisRequests();
+    const requests = await getTextAnalysisRequests();
     return Response.json({ requests });
   } catch (error) {
     return Response.json(
@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const created = createTextAnalysisRequest({
+    const created = await createTextAnalysisRequest({
       email: (email || '').trim(),
       analysisTypes: body.analysisTypes || '[]',
       dataInputMethod: (body.dataInputMethod || '').trim(),

@@ -7,7 +7,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const messages = getJudgmentCollectionMessages(id);
+    const messages = await getJudgmentCollectionMessages(id);
     messages.sort(
       (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
     );
@@ -42,7 +42,7 @@ export async function POST(
       );
     }
 
-    const msg = addJudgmentCollectionMessage(id, sender, message.trim());
+    const msg = await addJudgmentCollectionMessage(id, sender, message.trim());
     return Response.json({ message: msg }, { status: 201 });
   } catch {
     return Response.json(

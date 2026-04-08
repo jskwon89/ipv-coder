@@ -3,7 +3,7 @@ import { getProjects, createProject, deleteProject } from '@/lib/db';
 
 export async function GET() {
   try {
-    const projects = getProjects();
+    const projects = await getProjects();
     return Response.json({ projects });
   } catch (error) {
     return Response.json(
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
         { status: 400 },
       );
     }
-    const project = createProject(name.trim());
+    const project = await createProject(name.trim());
     return Response.json({ project }, { status: 201 });
   } catch (error) {
     return Response.json(
@@ -40,7 +40,7 @@ export async function DELETE(request: NextRequest) {
     if (!id) {
       return Response.json({ error: '프로젝트 ID가 필요합니다.' }, { status: 400 });
     }
-    const deleted = deleteProject(id);
+    const deleted = await deleteProject(id);
     if (!deleted) {
       return Response.json({ error: '프로젝트를 찾을 수 없습니다.' }, { status: 404 });
     }
