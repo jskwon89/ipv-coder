@@ -226,10 +226,10 @@ export default function DashboardPage() {
             {/* Stats inside banner */}
             <div className="grid grid-cols-2 lg:grid-cols-5 gap-2.5 sm:gap-3">
               <StatCard label="전체 의뢰" breakdown={totalStats} icon="folder" color="blue" />
-              <StatCard label="연구설계" breakdown={stats.researchDesign} icon="lightbulb" color="green" />
-              <StatCard label="판결문 분석" breakdown={stats.judgment} icon="document" color="amber" />
-              <StatCard label="설문조사" breakdown={stats.survey} icon="clipboard" color="purple" />
-              <StatCard label="데이터 분석" breakdown={stats.dataAnalysis} icon="chart" color="rose" />
+              <StatCard label="연구설계" breakdown={stats.researchDesign} icon="lightbulb" color="green" href="/data-generation" />
+              <StatCard label="판결문 분석" breakdown={stats.judgment} icon="document" color="amber" href="/judgment" />
+              <StatCard label="설문조사" breakdown={stats.survey} icon="clipboard" color="purple" href="/survey-request" />
+              <StatCard label="데이터 분석" breakdown={stats.dataAnalysis} icon="chart" color="rose" href="/stats-analysis" />
             </div>
           </div>
           <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/5" />
@@ -426,11 +426,13 @@ function StatCard({
   breakdown,
   icon,
   color,
+  href,
 }: {
   label: string;
   breakdown: StatusBreakdown;
   icon: string;
   color: string;
+  href?: string;
 }) {
   const colorMap: Record<string, { text: string; iconBg: string }> = {
     blue: { text: "text-blue-300", iconBg: "bg-blue-400/20" },
@@ -470,8 +472,8 @@ function StatCard({
     ),
   };
 
-  return (
-    <div className="bg-white/10 backdrop-blur-sm rounded-lg sm:rounded-xl border border-white/10 p-3 sm:p-5 hover:bg-white/15 transition-all">
+  const content = (
+    <div className={`bg-white/10 backdrop-blur-sm rounded-lg sm:rounded-xl border border-white/10 p-3 sm:p-5 hover:bg-white/15 transition-all ${href ? "cursor-pointer" : ""}`}>
       <div className="flex items-start justify-between">
         <div>
           <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl ${c.iconBg} ${c.text} flex items-center justify-center [&_svg]:w-4 [&_svg]:h-4 sm:[&_svg]:w-5 sm:[&_svg]:h-5 mb-2 sm:mb-3`}>
@@ -497,4 +499,9 @@ function StatCard({
       </div>
     </div>
   );
+
+  if (href) {
+    return <Link href={href}>{content}</Link>;
+  }
+  return content;
 }
