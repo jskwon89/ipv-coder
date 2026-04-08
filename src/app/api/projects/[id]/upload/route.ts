@@ -52,10 +52,19 @@ export async function POST(
       return Response.json({ error: `업로드 실패: ${error.message}` }, { status: 500 });
     }
 
+    // 원래 파일명을 DB에 기록
+    await supabaseAdmin.from('file_uploads').insert({
+      project_id: id,
+      original_name: fileName || `upload${ext}`,
+      storage_path: storagePath,
+      size: buffer.length,
+      content_type: type === 'xlsx' ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' : 'text/plain',
+    });
+
     return Response.json({
       success: true,
       saved: true,
-      fileName: safeName + ext,
+      fileName: fileName || safeName,
       storagePath,
     });
   } catch (error) {

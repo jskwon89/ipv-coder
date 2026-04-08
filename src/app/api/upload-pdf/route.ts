@@ -38,6 +38,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: `업로드 실패: ${error.message}` }, { status: 500 });
     }
 
+    // 원래 파일명을 DB에 기록
+    await supabaseAdmin.from("file_uploads").insert({
+      project_id: projectId || "general",
+      original_name: file.name,
+      storage_path: storagePath,
+      size: buffer.length,
+      content_type: file.type || "application/octet-stream",
+    });
+
     return NextResponse.json({
       success: true,
       fileName: file.name,
