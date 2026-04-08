@@ -212,12 +212,12 @@ export default function DashboardPage() {
                 ) : (
                   <Link
                     href="/login"
-                    className="flex items-center gap-2 bg-[#c49a2e]/20 hover:bg-[#c49a2e]/30 rounded-lg px-3 py-2 transition-colors"
+                    className="flex items-center gap-2 bg-[#c49a2e] hover:bg-[#d4a843] rounded-lg px-4 py-2 transition-colors shadow-md"
                   >
-                    <svg className="w-4 h-4 text-[#c49a2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
                     </svg>
-                    <span className="text-xs text-[#c49a2e] font-medium">로그인</span>
+                    <span className="text-sm text-white font-semibold">로그인</span>
                   </Link>
                 )}
               </div>
