@@ -124,67 +124,21 @@ export default function ProjectDetailPage() {
   };
 
   const handleDropFile = async (file: File) => {
-    const ext = file.name.split(".").pop()?.toLowerCase();
-    const isPdf = ext === "pdf";
-    const isHwp = ext === "hwp";
-    const isExcel = ext === "xlsx" || ext === "xls";
-    const isTxt = ext === "txt";
-
-    if (!isPdf && !isHwp && !isExcel && !isTxt) {
-      setDropStatus("지원하지 않는 파일 형식입니다. (PDF, TXT, Excel 지원)");
-      setTimeout(() => setDropStatus(""), 3000);
-      return;
-    }
-
     setDropUploading(true);
-
+    setDropStatus(`업로드 중... (${file.name})`);
     try {
-      if (isPdf || isHwp) {
-        // PDF/HWP → 파일 저장만 (파싱 없음)
-        setDropStatus("파일 저장 중...");
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("projectId", projectId);
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("projectId", projectId);
 
-        const res = await fetch("/api/upload-pdf", { method: "POST", body: formData });
-        const data = await res.json();
-        if (!res.ok) {
-          setDropStatus(`오류: ${data.error || "업로드 실패"}`);
-        } else {
-          setDropStatus(`파일 저장 완료! (${file.name})`);
-          await fetchData();
-          setTimeout(() => setDropStatus(""), 4000);
-        }
+      const res = await fetch("/api/upload-pdf", { method: "POST", body: formData });
+      const data = await res.json();
+      if (!res.ok) {
+        setDropStatus(`오류: ${data.error || "업로드 실패"}`);
       } else {
-        // TXT/Excel → 파일 저장
-        setDropStatus("파일 저장 중...");
-        let content: string;
-        let type: "txt" | "xlsx";
-
-        if (isExcel) {
-          type = "xlsx";
-          const arrayBuffer = await file.arrayBuffer();
-          content = btoa(
-            new Uint8Array(arrayBuffer).reduce((data, byte) => data + String.fromCharCode(byte), "")
-          );
-        } else {
-          type = "txt";
-          content = await file.text();
-        }
-
-        const res = await fetch(`/api/projects/${projectId}/upload`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ content, type, fileName: file.name }),
-        });
-        const data = await res.json();
-        if (!res.ok) {
-          setDropStatus(`오류: ${data.error || "업로드 실패"}`);
-        } else {
-          setDropStatus(`파일 저장 완료! (${file.name})`);
-          await fetchData();
-          setTimeout(() => setDropStatus(""), 3000);
-        }
+        setDropStatus(`업로드 완료! (${file.name})`);
+        await fetchData();
+        setTimeout(() => setDropStatus(""), 3000);
       }
     } catch {
       setDropStatus("업로드 중 오류가 발생했습니다.");
