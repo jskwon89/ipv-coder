@@ -42,19 +42,26 @@ export default function ProjectDetailPage() {
   const [dragging, setDragging] = useState(false);
   const [dropUploading, setDropUploading] = useState(false);
   const [dropStatus, setDropStatus] = useState<string>("");
+  const [uploadedFiles, setUploadedFiles] = useState<{ name: string; originalName: string; size: number; createdAt: string; storagePath: string }[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const fetchData = useCallback(async () => {
     try {
-      const res = await fetch(`/api/projects/${projectId}/cases`);
-      const data = await res.json();
-      setCases(data.cases || []);
+      const [casesRes, projRes, filesRes] = await Promise.all([
+        fetch(`/api/projects/${projectId}/cases`),
+        fetch(`/api/projects/${projectId}`),
+        fetch(`/api/projects/${projectId}/files`),
+      ]);
+      const casesData = await casesRes.json();
+      setCases(casesData.cases || []);
 
-      const projRes = await fetch(`/api/projects/${projectId}`);
       const projData = await projRes.json();
       if (projData.project) {
         setProject(projData.project);
       }
+
+      const filesData = await filesRes.json();
+      setUploadedFiles(filesData.files || []);
     } catch {
       console.error("데이터 로드 실패");
     } finally {
@@ -145,6 +152,7 @@ export default function ProjectDetailPage() {
           setDropStatus(`오류: ${data.error || "업로드 실패"}`);
         } else {
           setDropStatus(`파일 저장 완료! (${file.name})`);
+          await fetchData();
           setTimeout(() => setDropStatus(""), 4000);
         }
       } else {
@@ -174,6 +182,7 @@ export default function ProjectDetailPage() {
           setDropStatus(`오류: ${data.error || "업로드 실패"}`);
         } else {
           setDropStatus(`파일 저장 완료! (${file.name})`);
+          await fetchData();
           setTimeout(() => setDropStatus(""), 3000);
         }
       }
@@ -393,6 +402,33 @@ export default function ProjectDetailPage() {
           </table>
         </div>
       </div>
+
+      {/* Uploaded files */}
+      {uploadedFiles.length > 0 && (
+        <div className="bg-card rounded-xl border border-amber-200 overflow-hidden mt-6">
+          <div className="px-4 py-3 border-b border-border bg-amber-50 flex items-center justify-between">
+            <h3 className="text-sm font-semibold">업로드된 파일 ({uploadedFiles.length}개)</h3>
+          </div>
+          <div className="divide-y divide-border">
+            {uploadedFiles.map((f) => (
+              <div key={f.storagePath} className="px-4 py-3 flex items-center justify-between hover:bg-gray-50">
+                <div className="flex items-center gap-3 min-w-0">
+                  <svg className="w-5 h-5 text-amber-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-gray-900 truncate">{f.originalName}</p>
+                    <p className="text-xs text-gray-400">
+                      {f.size ? `${(f.size / 1024).toFixed(0)}KB` : ""}
+                      {f.createdAt ? ` · ${new Date(f.createdAt).toLocaleDateString("ko-KR")}` : ""}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
