@@ -117,36 +117,67 @@ export default function ProjectDetailPage() {
   };
 
   const handleDropFile = async (file: File) => {
+    const ext = file.name.split(".").pop()?.toLowerCase();
+    const isPdf = ext === "pdf";
+    const isHwp = ext === "hwp";
+    const isExcel = ext === "xlsx" || ext === "xls";
+    const isTxt = ext === "txt";
+
+    if (!isPdf && !isHwp && !isExcel && !isTxt) {
+      setDropStatus("지원하지 않는 파일 형식입니다. (PDF, TXT, Excel 지원)");
+      setTimeout(() => setDropStatus(""), 3000);
+      return;
+    }
+
     setDropUploading(true);
-    setDropStatus("파일 분석 중...");
+
     try {
-      const ext = file.name.split(".").pop()?.toLowerCase();
-      let content: string;
-      let type: "txt" | "xlsx";
+      if (isPdf || isHwp) {
+        // PDF/HWP → 판결문 직접 업로드
+        setDropStatus("판결문 텍스트 추출 중...");
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("projectId", projectId);
 
-      if (ext === "xlsx" || ext === "xls") {
-        type = "xlsx";
-        const arrayBuffer = await file.arrayBuffer();
-        content = btoa(
-          new Uint8Array(arrayBuffer).reduce((data, byte) => data + String.fromCharCode(byte), "")
-        );
+        const res = await fetch("/api/upload-pdf", { method: "POST", body: formData });
+        const data = await res.json();
+        if (!res.ok) {
+          setDropStatus(`오류: ${data.error || "업로드 실패"}`);
+        } else {
+          setDropStatus(`업로드 완료! (${data.pages}페이지, ${data.chars?.toLocaleString()}자 추출)`);
+          await fetchData();
+          setTimeout(() => setDropStatus(""), 4000);
+        }
       } else {
-        type = "txt";
-        content = await file.text();
-      }
+        // TXT/Excel → 사건 목록 업로드
+        setDropStatus("사건 목록 분석 중...");
+        let content: string;
+        let type: "txt" | "xlsx";
 
-      const res = await fetch(`/api/projects/${projectId}/upload`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content, type, save: true }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setDropStatus(`오류: ${data.error || "업로드 실패"}`);
-      } else {
-        setDropStatus("업로드 완료!");
-        await fetchData();
-        setTimeout(() => setDropStatus(""), 3000);
+        if (isExcel) {
+          type = "xlsx";
+          const arrayBuffer = await file.arrayBuffer();
+          content = btoa(
+            new Uint8Array(arrayBuffer).reduce((data, byte) => data + String.fromCharCode(byte), "")
+          );
+        } else {
+          type = "txt";
+          content = await file.text();
+        }
+
+        const res = await fetch(`/api/projects/${projectId}/upload`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ content, type, save: true }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          setDropStatus(`오류: ${data.error || "업로드 실패"}`);
+        } else {
+          setDropStatus("사건 목록 업로드 완료!");
+          await fetchData();
+          setTimeout(() => setDropStatus(""), 3000);
+        }
       }
     } catch {
       setDropStatus("업로드 중 오류가 발생했습니다.");
@@ -306,7 +337,7 @@ export default function ProjectDetailPage() {
                         <input
                           ref={fileInputRef}
                           type="file"
-                          accept=".txt,.xlsx,.xls"
+                          accept=".txt,.xlsx,.xls,.pdf,.hwp"
                           className="hidden"
                           onChange={(e) => {
                             const file = e.target.files?.[0];
@@ -323,8 +354,8 @@ export default function ProjectDetailPage() {
                             <svg className="w-10 h-10 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                             </svg>
-                            <p className="text-sm text-gray-500 font-medium">사건 목록 파일을 여기에 드래그하거나 클릭하여 업로드</p>
-                            <p className="text-xs text-gray-400 mt-1">.txt, .xlsx 파일 지원</p>
+                            <p className="text-sm text-gray-500 font-medium">파일을 여기에 드래그하거나 클릭하여 업로드</p>
+                            <p className="text-xs text-gray-400 mt-1">사건 목록(.txt, .xlsx) 또는 판결문(.pdf, .hwp) 지원</p>
                           </>
                         )}
                       </div>
