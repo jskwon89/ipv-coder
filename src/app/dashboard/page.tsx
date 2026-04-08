@@ -449,8 +449,7 @@ function StatCard({
       </div>
       <div className="text-xl sm:text-3xl font-bold text-white tracking-tight">{breakdown.total}</div>
       <span className="text-[10px] sm:text-xs text-white/60 font-medium mt-0.5 sm:mt-1 block">{label}</span>
-      {breakdown.total > 0 && (
-        <div className="flex items-center gap-1.5 sm:gap-2 mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-white/10">
+      <div className="flex items-center gap-1.5 sm:gap-2 mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-white/10">
           <span className="text-[9px] sm:text-[10px] text-gray-400">
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-gray-400 mr-0.5 align-middle" />
             접수 {breakdown.pending}
@@ -463,8 +462,7 @@ function StatCard({
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-400 mr-0.5 align-middle" />
             완료 {breakdown.completed}
           </span>
-        </div>
-      )}
+      </div>
     </div>
   );
 }
