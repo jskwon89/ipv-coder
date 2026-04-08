@@ -8,7 +8,14 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useUser } from "@/contexts/UserAuthContext";
 import { AdminLoginModal } from "@/components/AdminLoginModal";
 
-const PUBLIC_PATHS = ["/", "/login", "/signup", "/faq"];
+const NO_SIDEBAR_PATHS = ["/", "/login", "/signup"];
+const AUTH_REQUIRED_PATHS = [
+  "/data-generation", "/stats-design", "/survey-request",
+  "/judgment-collection", "/news-search",
+  "/data-transform", "/stats-analysis",
+  "/quant-analysis", "/text-analysis", "/qual-analysis",
+  "/contact",
+];
 
 /* ── Leaf nav link ── */
 function NavLink({ href, label, pathname, onClick }: { href: string; label: string; pathname: string; onClick?: () => void }) {
@@ -93,39 +100,40 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [search, setSearch] = useState("");
 
-  const isPublicPath = PUBLIC_PATHS.includes(pathname);
+  const isNoSidebar = NO_SIDEBAR_PATHS.includes(pathname);
+  const needsAuth = AUTH_REQUIRED_PATHS.some(p => pathname === p || pathname.startsWith(p + "/"));
 
   useEffect(() => {
     setSidebarOpen(false);
   }, [pathname]);
 
-  // Redirect unauthenticated users to login
+  // Redirect unauthenticated users to login only for auth-required pages
   useEffect(() => {
-    if (!userLoading && !user && !isPublicPath) {
+    if (!userLoading && !user && needsAuth) {
       router.replace(`/login?redirect=${encodeURIComponent(pathname)}`);
     }
-  }, [userLoading, user, isPublicPath, pathname, router]);
+  }, [userLoading, user, needsAuth, pathname, router]);
 
-  // Public pages without sidebar
-  if (isPublicPath) {
+  // Pages without sidebar (landing, login, signup)
+  if (isNoSidebar) {
     return <>{children}</>;
   }
 
-  // Show loading while checking auth
-  if (userLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-3 border-[#c49a2e] border-t-transparent rounded-full animate-spin" />
-          <p className="text-sm text-gray-500">로딩 중...</p>
+  // Auth-required pages: show loading or redirect
+  if (needsAuth) {
+    if (userLoading) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-8 h-8 border-3 border-[#c49a2e] border-t-transparent rounded-full animate-spin" />
+            <p className="text-sm text-gray-500">로딩 중...</p>
+          </div>
         </div>
-      </div>
-    );
-  }
-
-  // Not logged in and not public - will redirect via useEffect above
-  if (!user) {
-    return null;
+      );
+    }
+    if (!user) {
+      return null;
+    }
   }
 
   const closeSidebar = () => setSidebarOpen(false);

@@ -34,9 +34,9 @@ export default function LandingPage() {
             <a href="#contact" className="hover:opacity-70 transition-opacity">문의</a>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
-            <button className={`hidden sm:block text-sm font-medium px-4 py-2 rounded-lg transition-colors ${scrolled ? "text-gray-600 hover:bg-gray-100" : "text-white hover:bg-white/10"}`}>
+            <Link href="/login" className={`hidden sm:block text-sm font-medium px-4 py-2 rounded-lg transition-colors ${scrolled ? "text-gray-600 hover:bg-gray-100" : "text-white hover:bg-white/10"}`}>
               로그인
-            </button>
+            </Link>
             <Link
               href="/dashboard"
               className="text-xs sm:text-sm font-medium px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-colors bg-[#c49a2e] text-white hover:bg-[#d4a843]"
