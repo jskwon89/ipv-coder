@@ -42,6 +42,9 @@ export default function ProjectDetailPage() {
   const [dragging, setDragging] = useState(false);
   const [dropUploading, setDropUploading] = useState(false);
   const [dropStatus, setDropStatus] = useState<string>("");
+  const [requestNote, setRequestNote] = useState("");
+  const [requesting, setRequesting] = useState(false);
+  const [requested, setRequested] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<{ name: string; originalName: string; size: number; createdAt: string; storagePath: string }[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -251,6 +254,42 @@ export default function ProjectDetailPage() {
           </div>
         )}
       </div>
+
+      {/* Request section */}
+      {uploadedFiles.length > 0 && (
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+          <h3 className="font-semibold text-gray-900 mb-3">분석 의뢰</h3>
+          <textarea
+            value={requestNote}
+            onChange={(e) => setRequestNote(e.target.value)}
+            rows={3}
+            placeholder="요청사항을 입력하세요 (예: 업로드한 판결문에서 피고인 정보, 양형 사항을 코딩해주세요)"
+            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e] resize-none mb-4"
+          />
+          {requested ? (
+            <div className="px-4 py-3 bg-green-50 text-green-700 rounded-lg text-sm font-medium text-center border border-green-200">
+              의뢰가 접수되었습니다. 담당자 검토 후 결과를 안내드리겠습니다.
+            </div>
+          ) : (
+            <button
+              onClick={async () => {
+                setRequesting(true);
+                try {
+                  // TODO: 실제 의뢰 API 연동
+                  await new Promise((r) => setTimeout(r, 500));
+                  setRequested(true);
+                } finally {
+                  setRequesting(false);
+                }
+              }}
+              disabled={requesting}
+              className="w-full px-6 py-3 bg-[#c49a2e] text-white rounded-lg text-sm font-semibold hover:bg-[#b08a28] transition-colors disabled:opacity-50"
+            >
+              {requesting ? "접수 중..." : `의뢰하기 (${uploadedFiles.length}개 파일)`}
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }
