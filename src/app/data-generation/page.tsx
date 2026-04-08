@@ -37,6 +37,15 @@ const fieldOptions = [
   "기타",
 ];
 
+const researchTypeOptions = [
+  { value: "domestic_journal", label: "학술논문 (국내)" },
+  { value: "international_journal", label: "학술논문 (국외)" },
+  { value: "masters_thesis", label: "학위논문 (석사)" },
+  { value: "doctoral_thesis", label: "학위논문 (박사)" },
+  { value: "report", label: "연구보고서" },
+  { value: "other", label: "기타" },
+];
+
 const statusConfig = {
   pending: { label: "대기중", bg: "bg-gray-100", text: "text-gray-600" },
   in_progress: { label: "분석중", bg: "bg-blue-50", text: "text-blue-600" },
@@ -49,6 +58,7 @@ export default function ResearchDesignPage() {
   const pathname = usePathname();
   const [keywords, setKeywords] = useState("");
   const [field, setField] = useState("");
+  const [researchTypes, setResearchTypes] = useState<string[]>([]);
   const [description, setDescription] = useState("");
   const [email, setEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -124,11 +134,13 @@ export default function ResearchDesignPage() {
           keywords: keywords.trim(),
           description: description.trim(),
           field,
+          researchTypes,
           email: email.trim(),
         }),
       });
       setKeywords("");
       setField("");
+      setResearchTypes([]);
       setDescription("");
       setEmail("");
       await fetchRequests();
@@ -261,6 +273,37 @@ export default function ResearchDesignPage() {
                 </option>
               ))}
             </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              연구 유형 <span className="text-gray-400 font-normal">(복수 선택 가능)</span>
+            </label>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {researchTypeOptions.map((opt) => (
+                <label
+                  key={opt.value}
+                  className={`flex items-center gap-2 px-3 py-2.5 rounded-lg border cursor-pointer transition-all text-sm ${
+                    researchTypes.includes(opt.value)
+                      ? "border-[#c49a2e] bg-[#c49a2e]/5 text-gray-900"
+                      : "border-gray-200 hover:border-gray-300 text-gray-600"
+                  }`}
+                >
+                  <input
+                    type="checkbox"
+                    checked={researchTypes.includes(opt.value)}
+                    onChange={() => {
+                      setResearchTypes((prev) =>
+                        prev.includes(opt.value)
+                          ? prev.filter((v) => v !== opt.value)
+                          : [...prev, opt.value]
+                      );
+                    }}
+                    className="accent-[#c49a2e] w-4 h-4"
+                  />
+                  {opt.label}
+                </label>
+              ))}
+            </div>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
