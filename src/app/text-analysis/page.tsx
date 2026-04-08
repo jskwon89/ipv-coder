@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import CreditConfirmDialog from "@/components/CreditConfirmDialog";
 import PageHeader from "@/components/PageHeader";
@@ -70,6 +71,8 @@ const dataTabs = ["텍스트 직접 입력", "파일 업로드", "프로젝트 �
 
 export default function TextAnalysisPage() {
   const { user } = useUser();
+  const router = useRouter();
+  const pathname = usePathname();
   /* data input */
   const [activeDataTab, setActiveDataTab] = useState<(typeof dataTabs)[number]>("텍스트 직접 입력");
   const [textInput, setTextInput] = useState("");
@@ -339,6 +342,10 @@ export default function TextAnalysisPage() {
   };
 
   const handleSubmitRequest = async () => {
+    if (!user) {
+      router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
+      return;
+    }
     if (!email.trim() || selected.length === 0 || submitting) return;
     setSubmitting(true);
     try {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import QuestionEditor, { type SurveyQuestion } from "@/components/QuestionEditor";
 import SurveyPreview from "@/components/SurveyPreview";
@@ -40,6 +41,8 @@ function generatePrePostTemplate(): SurveyQuestion[] {
 
 export default function SurveyRequestPage() {
   const { user } = useUser();
+  const router = useRouter();
+  const pathname = usePathname();
   const [activeTab, setActiveTab] = useState<"request" | "builder">("request");
   const [formData, setFormData] = useState({
     email: "",
@@ -173,6 +176,10 @@ export default function SurveyRequestPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) {
+      router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
+      return;
+    }
     await submitToApi();
   };
 
@@ -182,6 +189,10 @@ export default function SurveyRequestPage() {
   };
 
   const handleSubmitAll = async () => {
+    if (!user) {
+      router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
+      return;
+    }
     if (!formData.title.trim() || !formData.email.trim()) {
       alert("의뢰 정보 탭에서 설문 제목과 이메일을 먼저 입력해주세요.");
       return;

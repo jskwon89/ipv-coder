@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import InfoTooltip from "@/components/InfoTooltip";
 import { useUser } from "@/contexts/UserAuthContext";
@@ -49,6 +50,8 @@ const statusConfig = {
 
 export default function StatsDesignPage() {
   const { user } = useUser();
+  const router = useRouter();
+  const pathname = usePathname();
   const [email, setEmail] = useState("");
   const [researchType, setResearchType] = useState("");
   const [dataType, setDataType] = useState("");
@@ -116,6 +119,10 @@ export default function StatsDesignPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) {
+      router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
+      return;
+    }
     if (!researchType || !dataType || !analysisGoal.trim()) return;
     setSubmitting(true);
     try {

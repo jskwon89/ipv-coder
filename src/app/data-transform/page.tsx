@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
 import { useUser } from "@/contexts/UserAuthContext";
@@ -21,6 +22,8 @@ const transformationOptions = [
 
 export default function DataTransformPage() {
   const { user } = useUser();
+  const router = useRouter();
+  const pathname = usePathname();
   const [email, setEmail] = useState("");
   const [dataDescription, setDataDescription] = useState("");
   const [dataFormat, setDataFormat] = useState("");
@@ -42,6 +45,10 @@ export default function DataTransformPage() {
   };
 
   const handleSubmit = async () => {
+    if (!user) {
+      router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
+      return;
+    }
     if (!email.trim() || !dataDescription.trim()) return;
     setSubmitting(true);
     try {

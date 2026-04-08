@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { useUser } from "@/contexts/UserAuthContext";
 
@@ -28,6 +29,8 @@ const categories = [
 
 export default function ContactPage() {
   const { user } = useUser();
+  const router = useRouter();
+  const pathname = usePathname();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [category, setCategory] = useState("일반 문의");
@@ -54,6 +57,10 @@ export default function ContactPage() {
   useEffect(() => { fetchInquiries(); }, [fetchInquiries]);
 
   const handleSubmit = async () => {
+    if (!user) {
+      router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
+      return;
+    }
     if (!email.trim() || !subject.trim() || submitting) return;
     setSubmitting(true);
     try {

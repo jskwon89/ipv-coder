@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { useUser } from "@/contexts/UserAuthContext";
 
@@ -25,6 +26,8 @@ const YEARS = Array.from({ length: 30 }, (_, i) => currentYear - i);
 
 export default function JudgmentCollectionPage() {
   const { user } = useUser();
+  const router = useRouter();
+  const pathname = usePathname();
   const [activeTab, setActiveTab] = useState<Tab>("caseNumber");
   const [submitted, setSubmitted] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -109,6 +112,10 @@ export default function JudgmentCollectionPage() {
   };
 
   const handleSubmit = async () => {
+    if (!user) {
+      router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
+      return;
+    }
     if (!name.trim() || !email.trim()) {
       setSubmitError("이름과 이메일은 필수 입력입니다.");
       return;

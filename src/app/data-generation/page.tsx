@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import InfoTooltip from "@/components/InfoTooltip";
 import { useUser } from "@/contexts/UserAuthContext";
@@ -44,6 +45,8 @@ const statusConfig = {
 
 export default function ResearchDesignPage() {
   const { user } = useUser();
+  const router = useRouter();
+  const pathname = usePathname();
   const [keywords, setKeywords] = useState("");
   const [field, setField] = useState("");
   const [description, setDescription] = useState("");
@@ -107,6 +110,10 @@ export default function ResearchDesignPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) {
+      router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
+      return;
+    }
     if (!keywords.trim() || !field) return;
     setSubmitting(true);
     try {

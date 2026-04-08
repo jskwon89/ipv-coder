@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
 import { useUser } from "@/contexts/UserAuthContext";
@@ -16,6 +17,8 @@ const purposeOptions = [
 
 export default function NewsSearchPage() {
   const { user } = useUser();
+  const router = useRouter();
+  const pathname = usePathname();
   const [searchType, setSearchType] = useState<SearchType>("keyword");
   const [query, setQuery] = useState("");
   const [keywords, setKeywords] = useState<string[]>([]);
@@ -50,6 +53,10 @@ export default function NewsSearchPage() {
   };
 
   const handleSubmit = async () => {
+    if (!user) {
+      router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
+      return;
+    }
     if (!email.trim()) return;
     if (searchType === "keyword" && keywords.length === 0) return;
     if (searchType === "sentence" && !query.trim()) return;

@@ -9,13 +9,6 @@ import { useUser } from "@/contexts/UserAuthContext";
 import { AdminLoginModal } from "@/components/AdminLoginModal";
 
 const NO_SIDEBAR_PATHS = ["/", "/login", "/signup"];
-const AUTH_REQUIRED_PATHS = [
-  "/data-generation", "/stats-design", "/survey-request",
-  "/judgment-collection", "/news-search",
-  "/data-transform", "/stats-analysis",
-  "/quant-analysis", "/text-analysis", "/qual-analysis",
-  "/contact",
-];
 
 /* ── Leaf nav link ── */
 function NavLink({ href, label, pathname, onClick }: { href: string; label: string; pathname: string; onClick?: () => void }) {
@@ -101,39 +94,14 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const [search, setSearch] = useState("");
 
   const isNoSidebar = NO_SIDEBAR_PATHS.includes(pathname);
-  const needsAuth = AUTH_REQUIRED_PATHS.some(p => pathname === p || pathname.startsWith(p + "/"));
 
   useEffect(() => {
     setSidebarOpen(false);
   }, [pathname]);
 
-  // Redirect unauthenticated users to login only for auth-required pages
-  useEffect(() => {
-    if (!userLoading && !user && needsAuth) {
-      router.replace(`/login?redirect=${encodeURIComponent(pathname)}`);
-    }
-  }, [userLoading, user, needsAuth, pathname, router]);
-
   // Pages without sidebar (landing, login, signup)
   if (isNoSidebar) {
     return <>{children}</>;
-  }
-
-  // Auth-required pages: show loading or redirect
-  if (needsAuth) {
-    if (userLoading) {
-      return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
-          <div className="flex flex-col items-center gap-3">
-            <div className="w-8 h-8 border-3 border-[#c49a2e] border-t-transparent rounded-full animate-spin" />
-            <p className="text-sm text-gray-500">로딩 중...</p>
-          </div>
-        </div>
-      );
-    }
-    if (!user) {
-      return null;
-    }
   }
 
   const closeSidebar = () => setSidebarOpen(false);

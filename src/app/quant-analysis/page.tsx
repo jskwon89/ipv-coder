@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
 import { useUser } from "@/contexts/UserAuthContext";
@@ -22,6 +23,8 @@ const dataFormats = ["SPSS", "Stata", "R", "Excel", "CSV"];
 
 export default function QuantAnalysisPage() {
   const { user } = useUser();
+  const router = useRouter();
+  const pathname = usePathname();
   const [email, setEmail] = useState("");
   const [analysisType, setAnalysisType] = useState("");
   const [dataDescription, setDataDescription] = useState("");
@@ -37,6 +40,10 @@ export default function QuantAnalysisPage() {
   }, [user]);
 
   const handleSubmit = async () => {
+    if (!user) {
+      router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
+      return;
+    }
     if (!email.trim() || !analysisType) return;
     setSubmitting(true);
     try {
