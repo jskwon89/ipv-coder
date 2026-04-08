@@ -28,6 +28,7 @@ export default function LandingPage() {
             </span>
           </Link>
           <div className={`hidden md:flex items-center gap-8 text-sm font-medium ${scrolled ? "text-gray-600" : "text-white/90"}`}>
+            <Link href="/dashboard" className="hover:opacity-70 transition-opacity">시작하기</Link>
             <a href="#services" className="hover:opacity-70 transition-opacity">서비스</a>
             <a href="#how-it-works" className="hover:opacity-70 transition-opacity">이용절차</a>
             <a href="#contact" className="hover:opacity-70 transition-opacity">문의</a>
