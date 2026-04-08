@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
+import { supabaseAdmin } from "@/lib/supabase-admin";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
+const BUCKET = "uploads";
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,23 +18,35 @@ export async function POST(request: NextRequest) {
 
     const buffer = Buffer.from(await file.arrayBuffer());
 
-    // 프로젝트별 폴더에 파일 저장
-    const uploadsDir = path.join(process.cwd(), "uploads", projectId || "general");
-    fs.mkdirSync(uploadsDir, { recursive: true });
+    // bucket 없으면 생성
+    const { data: buckets } = await supabaseAdmin.storage.listBuckets();
+    if (!buckets?.find((b) => b.name === BUCKET)) {
+      await supabaseAdmin.storage.createBucket(BUCKET, { public: false });
+    }
 
     const safeFileName = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9가-힣._-]/g, "_")}`;
-    const filePath = path.join(uploadsDir, safeFileName);
-    fs.writeFileSync(filePath, buffer);
+    const storagePath = `${projectId || "general"}/${safeFileName}`;
+
+    const { error } = await supabaseAdmin.storage
+      .from(BUCKET)
+      .upload(storagePath, buffer, {
+        contentType: file.type || "application/octet-stream",
+      });
+
+    if (error) {
+      return NextResponse.json({ error: `업로드 실패: ${error.message}` }, { status: 500 });
+    }
 
     return NextResponse.json({
       success: true,
       fileName: file.name,
       savedAs: safeFileName,
+      storagePath,
       size: buffer.length,
     });
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
-    console.error("파일 저장 오류:", msg, error);
+    console.error("파일 저장 오류:", msg);
     return NextResponse.json({ error: `파일 저장에 실패했습니다: ${msg}` }, { status: 500 });
   }
 }

@@ -1,10 +1,11 @@
 import { NextRequest } from 'next/server';
 import { getProject } from '@/lib/db';
-import fs from 'fs';
-import path from 'path';
+import { supabaseAdmin } from '@/lib/supabase-admin';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
+
+const BUCKET = 'uploads';
 
 export async function POST(
   request: NextRequest,
@@ -22,32 +23,45 @@ export async function POST(
       content: string;
       type: 'txt' | 'xlsx';
       fileName?: string;
-      save?: boolean;
     };
 
-    // 파일을 uploads 폴더에 저장
-    const uploadsDir = path.join(process.cwd(), 'uploads', id);
-    fs.mkdirSync(uploadsDir, { recursive: true });
+    // bucket 없으면 생성
+    const { data: buckets } = await supabaseAdmin.storage.listBuckets();
+    if (!buckets?.find((b) => b.name === BUCKET)) {
+      await supabaseAdmin.storage.createBucket(BUCKET, { public: false });
+    }
 
     const ext = type === 'xlsx' ? '.xlsx' : '.txt';
     const safeName = `${Date.now()}_${(fileName || 'upload').replace(/[^a-zA-Z0-9가-힣._-]/g, '_')}`;
-    const filePath = path.join(uploadsDir, safeName + ext);
+    const storagePath = `${id}/${safeName}${ext}`;
 
+    let buffer: Buffer;
     if (type === 'xlsx') {
-      const buffer = Buffer.from(content, 'base64');
-      fs.writeFileSync(filePath, buffer);
+      buffer = Buffer.from(content, 'base64');
     } else {
-      fs.writeFileSync(filePath, content, 'utf-8');
+      buffer = Buffer.from(content, 'utf-8');
+    }
+
+    const { error } = await supabaseAdmin.storage
+      .from(BUCKET)
+      .upload(storagePath, buffer, {
+        contentType: type === 'xlsx' ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' : 'text/plain',
+      });
+
+    if (error) {
+      return Response.json({ error: `업로드 실패: ${error.message}` }, { status: 500 });
     }
 
     return Response.json({
       success: true,
       saved: true,
       fileName: safeName + ext,
+      storagePath,
     });
   } catch (error) {
+    const msg = error instanceof Error ? error.message : String(error);
     return Response.json(
-      { error: '파일 저장에 실패했습니다.' },
+      { error: `파일 저장에 실패했습니다: ${msg}` },
       { status: 500 },
     );
   }
