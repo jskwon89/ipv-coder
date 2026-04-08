@@ -240,7 +240,7 @@ export default function QuestionEditor({ questions, onChange }: Props) {
         </div>
       )}
 
-      {questions.map((q, idx) => {
+      {questions.length > 0 && questions.map((q, idx) => {
         const isCollapsed = collapsedIds.has(q.id);
         const typeMeta = QUESTION_TYPES.find((t) => t.value === q.type);
 
@@ -527,6 +527,22 @@ export default function QuestionEditor({ questions, onChange }: Props) {
           </div>
         );
       })}
+
+      {/* 하단 문항 추가 버튼 */}
+      {questions.length > 0 && (
+        <div className="flex justify-end">
+          <button
+            type="button"
+            onClick={addQuestion}
+            className="px-4 py-2 bg-indigo-500 text-white rounded-lg text-sm font-medium hover:bg-indigo-600 transition-colors flex items-center gap-1.5"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+            문항 추가
+          </button>
+        </div>
+      )}
     </div>
   );
 }

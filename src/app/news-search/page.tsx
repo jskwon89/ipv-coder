@@ -87,7 +87,7 @@ export default function NewsSearchPage() {
       <PageHeader
         title="뉴스/언론 보도 수집 의뢰"
         subtitle="키워드 또는 문장으로 뉴스 기사 수집을 의뢰합니다"
-        detailTooltip={"키워드 조합(AND/OR) 또는 문장 검색으로 수집합니다.\n기간, 최대 수집 건수 등 조건을 지정할 수 있으며,\n수집된 기사의 제목, 본문, 매체, 날짜 등 메타데이터를\n함께 제공합니다."}
+        detailTooltip={"📋 요청 순서:\n① 검색 키워드 입력 (AND/OR 조합 가능)\n② 수집 기간·최대 건수 설정\n③ 이메일 입력 → 의뢰 접수\n④ 결과 확인에서 수집 현황·채팅\n\n수집 결과:\n• 기사 제목, 본문, 매체명, 날짜\n• 메타데이터 포함 엑셀 제공"}
         breadcrumbs={[
           { label: "문서 코딩" },
           { label: "뉴스 수집 의뢰" },

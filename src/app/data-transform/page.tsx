@@ -71,7 +71,7 @@ export default function DataTransformPage() {
       <PageHeader
         title="데이터 전처리 의뢰"
         subtitle="데이터 변환, 리코딩, 병합 등 전처리 작업을 의뢰합니다"
-        detailTooltip={"변수 리코딩: 범주 재분류, 연속→범주 변환\n데이터 병합: 다수 파일 결합 (merge, append)\n결측치/이상치 처리: 대체, 제거, 보간법\n더미변수 생성 / 역코딩 / 척도 합산\n데이터 재구조화: wide↔long 변환"}
+        detailTooltip={"📋 요청 순서:\n① 전처리 유형 선택 (리코딩/병합/결측치 등)\n② 데이터 형식·현재 상태 설명\n③ 변환 요청사항 상세 작성\n④ 이메일 입력 → 의뢰 접수\n⑤ 결과 확인에서 진행 상황·채팅\n\n지원 작업:\n• 변수 리코딩 (범주 재분류, 연속→범주)\n• 데이터 병합 (merge, append)\n• 결측치/이상치 처리\n• 더미변수·역코딩·척도 합산\n• wide↔long 변환"}
         breadcrumbs={[
           { label: "데이터 분석" },
           { label: "데이터 전처리" },

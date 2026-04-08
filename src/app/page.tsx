@@ -23,7 +23,6 @@ export default function LandingPage() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14 sm:h-16">
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/images/main.png" alt="ResearchOn" width={28} height={28} className="rounded-lg sm:w-8 sm:h-8" />
             <span className={`text-lg sm:text-xl font-bold tracking-tight ${scrolled ? "text-gray-900" : "text-white"}`}>
               ResearchOn
             </span>
@@ -66,9 +65,9 @@ export default function LandingPage() {
             올인원 플랫폼
           </h1>
           <p className="text-sm sm:text-lg md:text-xl text-white/80 mb-6 sm:mb-10 leading-relaxed">
-            판결문 코딩, 통계분석, 설문조사, 텍스트 분석까지
+            연구설계부터 자료생성, 문서의 완성까지
             <br />
-            하나의 플랫폼에서 해결하세요
+            하나의 플랫폼에서 시작하세요
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
             <Link

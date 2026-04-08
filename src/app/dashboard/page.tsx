@@ -69,23 +69,31 @@ export default function DashboardPage() {
 
   const fetchData = useCallback(async () => {
     try {
-      const [projRes, researchRes, statsDesignRes, surveyRes] = await Promise.all([
+      const [projRes, researchRes, statsDesignRes, surveyRes, dtRes, quantRes, textRes, qualRes] = await Promise.all([
         fetch("/api/projects"),
         fetch("/api/research-design"),
         fetch("/api/stats-design"),
         fetch("/api/survey"),
+        fetch("/api/data-transform"),
+        fetch("/api/quant-analysis"),
+        fetch("/api/text-analysis-request"),
+        fetch("/api/qual-analysis"),
       ]);
       const projData = await projRes.json();
       const researchData = await researchRes.json();
       const statsDesignData = await statsDesignRes.json();
       const surveyData = await surveyRes.json();
+      const dtData = await dtRes.json();
+      const quantData = await quantRes.json();
+      const textData = await textRes.json();
+      const qualData = await qualRes.json();
       const prjs = projData.projects || [];
       setProjects(prjs);
       setStats({
         researchDesign: (researchData.requests?.length || 0) + (statsDesignData.requests?.length || 0),
         judgment: prjs.length,
         survey: surveyData.requests?.length || 0,
-        dataAnalysis: 0,  // TODO: connect when analysis system is built
+        dataAnalysis: (dtData.requests?.length || 0) + (quantData.requests?.length || 0) + (textData.requests?.length || 0) + (qualData.requests?.length || 0),
       });
     } catch {
       console.error("데이터 로드 실패");

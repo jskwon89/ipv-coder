@@ -66,7 +66,7 @@ export default function QuantAnalysisPage() {
       <PageHeader
         title="계량분석 의뢰"
         subtitle="통계분석을 의뢰하고 전문적인 분석 결과를 받아보세요"
-        detailTooltip={"지원 분석 방법:\n• 기초통계: 기술통계, 빈도분석, 교차분석\n• 회귀분석: OLS, 로지스틱, 다항 로지스틱\n• 패널분석: 고정효과, 랜덤효과, GMM\n• 인과추론: DID, RDD, IV, PSM\n• 구조방정식 (SEM), 시계열, 생존분석 등"}
+        detailTooltip={"📋 요청 순서:\n① 분석 유형 선택 (회귀/패널/인과추론 등)\n② 데이터 설명·분석 목표 작성\n③ 데이터 파일 형식 선택\n④ 이메일 입력 → 의뢰 접수\n⑤ 결과 확인에서 진행 상황·채팅\n\n지원 분석:\n• 회귀분석 (OLS, 로지스틱, 다항)\n• 패널분석 (고정효과, 랜덤효과, GMM)\n• 인과추론 (DID, RDD, IV, PSM)\n• SEM, 시계열, 생존분석 등"}
         breadcrumbs={[
           { label: "데이터 분석" },
           { label: "계량분석" },
