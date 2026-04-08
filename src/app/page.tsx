@@ -141,6 +141,75 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Value Proposition */}
+      <section className="py-12 sm:py-24 px-4 sm:px-6 bg-[#0f1a2e] text-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-8 sm:mb-16">
+            <h2 className="text-2xl sm:text-4xl font-bold mb-3 sm:mb-4">왜 ResearchOn인가요?</h2>
+            <p className="text-sm sm:text-lg text-white/60 max-w-2xl mx-auto leading-relaxed">
+              합리적인 가격, 최상의 품질, 끝까지 책임지는 서비스
+            </p>
+            <div className="w-12 sm:w-16 h-1 bg-[#c49a2e] mx-auto rounded-full mt-4" />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
+            <ValueCard
+              icon={
+                <svg className="w-7 h-7 text-[#c49a2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              }
+              title="합리적인 가격"
+              description="불필요한 중간 과정 없이, 연구에 꼭 필요한 서비스를 합리적인 비용으로 제공합니다. 사전 견적 안내로 예산 걱정 없이 진행하세요."
+            />
+            <ValueCard
+              icon={
+                <svg className="w-7 h-7 text-[#c49a2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                </svg>
+              }
+              title="검증된 품질"
+              description="각 분야 전문가가 직접 분석하며, 모든 결과물에 대해 구체적인 해석과 설명을 함께 제공합니다. 숫자만 던지지 않습니다."
+            />
+            <ValueCard
+              icon={
+                <svg className="w-7 h-7 text-[#c49a2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+              }
+              title="수정/보완 보장"
+              description="결과물 납품 후에도 요청에 따라 수정과 보완을 진행합니다. 만족하실 때까지 끝까지 책임지겠습니다."
+            />
+            <ValueCard
+              icon={
+                <svg className="w-7 h-7 text-[#c49a2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+              }
+              title="실시간 소통"
+              description="의뢰 접수부터 완료까지 담당자와 실시간 채팅으로 소통할 수 있습니다. 궁금한 점은 언제든 물어보세요."
+            />
+            <ValueCard
+              icon={
+                <svg className="w-7 h-7 text-[#c49a2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              }
+              title="데이터 보안"
+              description="업로드하신 모든 자료는 암호화 저장되며, 작업 완료 후 요청 시 즉시 삭제합니다. 연구 윤리를 최우선으로 합니다."
+            />
+            <ValueCard
+              icon={
+                <svg className="w-7 h-7 text-[#c49a2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              }
+              title="빠른 처리"
+              description="체계적인 프로세스로 신속하게 결과를 제공합니다. 급한 일정도 상담을 통해 최대한 맞춰드립니다."
+            />
+          </div>
+        </div>
+      </section>
+
       {/* How it Works */}
       <section id="how-it-works" className="py-12 sm:py-24 px-4 sm:px-6 bg-gray-50">
         <div className="max-w-7xl mx-auto">
@@ -265,6 +334,26 @@ function ServiceCard({
         </span>
       </div>
     </Link>
+  );
+}
+
+function ValueCard({
+  icon,
+  title,
+  description,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="bg-white/5 border border-white/10 rounded-xl p-5 sm:p-6 hover:bg-white/10 transition-colors">
+      <div className="w-12 h-12 rounded-lg bg-[#c49a2e]/15 flex items-center justify-center mb-4">
+        {icon}
+      </div>
+      <h3 className="text-base sm:text-lg font-semibold text-white mb-2">{title}</h3>
+      <p className="text-xs sm:text-sm text-white/60 leading-relaxed">{description}</p>
+    </div>
   );
 }
 
