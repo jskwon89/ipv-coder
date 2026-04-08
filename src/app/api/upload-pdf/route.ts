@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
@@ -29,7 +32,8 @@ export async function POST(request: NextRequest) {
       size: buffer.length,
     });
   } catch (error) {
-    console.error("파일 저장 오류:", error);
-    return NextResponse.json({ error: "파일 저장에 실패했습니다" }, { status: 500 });
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error("파일 저장 오류:", msg, error);
+    return NextResponse.json({ error: `파일 저장에 실패했습니다: ${msg}` }, { status: 500 });
   }
 }
