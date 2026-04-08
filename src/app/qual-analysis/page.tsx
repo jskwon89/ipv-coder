@@ -68,7 +68,7 @@ export default function QualAnalysisPage() {
       <PageHeader
         title="질적분석 의뢰"
         subtitle="인터뷰, 관찰, 문서 등 질적 데이터 분석을 의뢰합니다"
-        detailTooltip={"📋 요청 순서:\n① 분석 유형 선택 (주제분석/근거이론 등)\n② 데이터 설명·분석 목표 작성\n③ 데이터 형식 선택\n④ 이메일 입력 → 의뢰 접수\n⑤ 결과 확인에서 진행 상황·채팅\n\n지원 유형:\n• 주제분석 (Thematic Analysis)\n• 근거이론 (Grounded Theory)\n• 내러티브·담론·내용분석\n• 인터뷰·관찰 데이터 분석"}
+        detailTooltip={"📋 요청 순서:\n① 분석 유형·데이터 형식 선택\n② 데이터 설명·분석 목표 작성\n③ 이메일·추가 요청사항 입력 → 의뢰 접수\n④ 결과 확인에서 진행 상황·채팅\n\n지원 유형:\n• 주제분석 (Thematic Analysis)\n• 근거이론 (Grounded Theory)\n• 내러티브·담론·내용분석\n• 인터뷰·관찰 데이터 분석"}
         breadcrumbs={[
           { label: "데이터 분석" },
           { label: "질적분석" },
