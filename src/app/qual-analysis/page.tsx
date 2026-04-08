@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
@@ -35,6 +35,9 @@ export default function QualAnalysisPage() {
   const [dataFormat, setDataFormat] = useState("");
   const [analysisGoal, setAnalysisGoal] = useState("");
   const [additionalNotes, setAdditionalNotes] = useState("");
+  const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
+  const [dragging, setDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -174,6 +177,50 @@ export default function QualAnalysisPage() {
             />
           </div>
         </div>
+      </div>
+
+      {/* File attachment */}
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 mb-6">
+        <h2 className="font-semibold text-gray-900 mb-4">자료 파일 첨부</h2>
+        <div
+          onDrop={(e) => { e.preventDefault(); setDragging(false); const files = Array.from(e.dataTransfer.files); setAttachedFiles((prev) => [...prev, ...files]); }}
+          onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
+          onDragLeave={() => setDragging(false)}
+          onClick={() => fileInputRef.current?.click()}
+          className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${
+            dragging ? "border-[#c49a2e] bg-amber-50" : "border-gray-300 hover:border-[#c49a2e]/50 hover:bg-amber-50/30"
+          }`}
+        >
+          <input
+            ref={fileInputRef}
+            type="file"
+            multiple
+            accept=".txt,.pdf,.docx,.doc,.hwp,.xlsx,.xls,.csv,.zip"
+            className="hidden"
+            onChange={(e) => { const files = Array.from(e.target.files || []); setAttachedFiles((prev) => [...prev, ...files]); e.target.value = ""; }}
+          />
+          <svg className="w-10 h-10 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+          </svg>
+          <p className="text-sm text-gray-500 font-medium">파일을 드래그하거나 클릭하여 업로드</p>
+          <p className="text-xs text-gray-400 mt-1">녹취록, 문서, 텍스트 파일 등 지원</p>
+        </div>
+        {attachedFiles.length > 0 && (
+          <div className="mt-3 space-y-2">
+            {attachedFiles.map((f, i) => (
+              <div key={i} className="flex items-center justify-between px-3 py-2 bg-gray-50 rounded-lg">
+                <div className="flex items-center gap-2 min-w-0">
+                  <svg className="w-4 h-4 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                  <span className="text-sm text-gray-700 truncate">{f.name}</span>
+                  <span className="text-xs text-gray-400 shrink-0">({(f.size / 1024).toFixed(0)}KB)</span>
+                </div>
+                <button onClick={(e) => { e.stopPropagation(); setAttachedFiles((prev) => prev.filter((_, idx) => idx !== i)); }} className="text-gray-400 hover:text-red-500 transition-colors shrink-0 ml-2">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Contact info */}
