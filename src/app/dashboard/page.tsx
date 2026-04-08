@@ -226,10 +226,18 @@ export default function DashboardPage() {
             {/* Stats inside banner */}
             <div className="grid grid-cols-2 lg:grid-cols-5 gap-2.5 sm:gap-3">
               <StatCard label="전체 의뢰" breakdown={totalStats} icon="folder" color="blue" />
-              <StatCard label="연구설계" breakdown={stats.researchDesign} icon="lightbulb" color="green" href="/data-generation" />
-              <StatCard label="판결문 분석" breakdown={stats.judgment} icon="document" color="amber" href="/judgment" />
-              <StatCard label="설문조사" breakdown={stats.survey} icon="clipboard" color="purple" href="/survey-request" />
-              <StatCard label="데이터 분석" breakdown={stats.dataAnalysis} icon="chart" color="rose" href="/stats-analysis" />
+              <StatCard label="연구설계" breakdown={stats.researchDesign} icon="lightbulb" color="green" href="/data-generation"
+                subLinks={[{ label: "의뢰", href: "/data-generation" }, { label: "결과", href: "/data-generation" }]}
+              />
+              <StatCard label="판결문 분석" breakdown={stats.judgment} icon="document" color="amber" href="/judgment"
+                subLinks={[{ label: "코딩", href: "/judgment" }, { label: "수집의뢰", href: "/judgment-collection" }, { label: "결과", href: "/judgment-results" }]}
+              />
+              <StatCard label="설문조사" breakdown={stats.survey} icon="clipboard" color="purple" href="/survey-request"
+                subLinks={[{ label: "의뢰", href: "/survey-request" }, { label: "결과", href: "/survey-results" }]}
+              />
+              <StatCard label="데이터 분석" breakdown={stats.dataAnalysis} icon="chart" color="rose" href="/stats-analysis"
+                subLinks={[{ label: "기초통계", href: "/stats-analysis" }, { label: "계량분석", href: "/quant-analysis" }, { label: "텍스트", href: "/text-analysis" }]}
+              />
             </div>
           </div>
           <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/5" />
@@ -427,12 +435,14 @@ function StatCard({
   icon,
   color,
   href,
+  subLinks,
 }: {
   label: string;
   breakdown: StatusBreakdown;
   icon: string;
   color: string;
   href?: string;
+  subLinks?: { label: string; href: string }[];
 }) {
   const colorMap: Record<string, { text: string; iconBg: string }> = {
     blue: { text: "text-blue-300", iconBg: "bg-blue-400/20" },
@@ -472,8 +482,8 @@ function StatCard({
     ),
   };
 
-  const content = (
-    <div className={`bg-white/10 backdrop-blur-sm rounded-lg sm:rounded-xl border border-white/10 p-3 sm:p-5 hover:bg-white/15 transition-all ${href ? "cursor-pointer" : ""}`}>
+  return (
+    <div className="bg-white/10 backdrop-blur-sm rounded-lg sm:rounded-xl border border-white/10 p-3 sm:p-5 hover:bg-white/15 transition-all">
       <div className="flex items-start justify-between">
         <div>
           <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl ${c.iconBg} ${c.text} flex items-center justify-center [&_svg]:w-4 [&_svg]:h-4 sm:[&_svg]:w-5 sm:[&_svg]:h-5 mb-2 sm:mb-3`}>
@@ -497,11 +507,19 @@ function StatCard({
           </span>
         </div>
       </div>
+      {subLinks && subLinks.length > 0 && (
+        <div className="flex gap-1.5 mt-2.5 sm:mt-3 pt-2.5 sm:pt-3 border-t border-white/10">
+          {subLinks.map((link) => (
+            <Link
+              key={link.href + link.label}
+              href={link.href}
+              className="flex-1 text-center text-[9px] sm:text-[11px] text-white/50 hover:text-white hover:bg-white/10 rounded-md py-1 sm:py-1.5 transition-colors"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   );
-
-  if (href) {
-    return <Link href={href}>{content}</Link>;
-  }
-  return content;
 }

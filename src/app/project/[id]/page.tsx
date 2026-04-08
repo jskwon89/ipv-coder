@@ -133,8 +133,8 @@ export default function ProjectDetailPage() {
 
     try {
       if (isPdf || isHwp) {
-        // PDF/HWP → 판결문 직접 업로드
-        setDropStatus("판결문 텍스트 추출 중...");
+        // PDF/HWP → 파일 저장만 (파싱 없음)
+        setDropStatus("파일 저장 중...");
         const formData = new FormData();
         formData.append("file", file);
         formData.append("projectId", projectId);
@@ -144,8 +144,7 @@ export default function ProjectDetailPage() {
         if (!res.ok) {
           setDropStatus(`오류: ${data.error || "업로드 실패"}`);
         } else {
-          setDropStatus(`업로드 완료! (${data.pages}페이지, ${data.chars?.toLocaleString()}자 추출)`);
-          await fetchData();
+          setDropStatus(`파일 저장 완료! (${file.name})`);
           setTimeout(() => setDropStatus(""), 4000);
         }
       } else {
