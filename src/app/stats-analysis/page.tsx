@@ -19,7 +19,7 @@ const requestAnalyses = [
   { label: "생존분석", desc: "Cox 비례위험, Kaplan-Meier" },
   { label: "회귀분석", desc: "로지스틱, 다중회귀, 다수준" },
   { label: "구조방정식", desc: "SEM, 경로분석, 매개효과" },
-  { label: "AI 분석 추천", desc: "데이터에 적합한 분석 자동 추천" },
+  { label: "맞춤 분석 추천", desc: "데이터에 적합한 분석 방법 추천" },
 ];
 
 const resultTabs = ["분석결과", "시각화", "해석"] as const;

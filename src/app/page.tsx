@@ -116,7 +116,7 @@ export default function LandingPage() {
             <ServiceCard
               image="/images/landing-판결문.png"
               title="판결문 분석"
-              description="AI 기반 판결문 코딩 및 수집으로 연구 시간 절약"
+              description="판결문 수집부터 변수 코딩까지 원스톱 서비스"
               href="/judgment"
             />
             <ServiceCard

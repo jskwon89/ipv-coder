@@ -392,7 +392,7 @@ export default function CaseDetailPage() {
         isOpen={showPricingConfirm}
         onClose={() => setShowPricingConfirm(false)}
         onConfirm={confirmAiCoding}
-        serviceName="판결문 AI 코딩"
+        serviceName="판결문 코딩"
         creditCost={Math.ceil(pricingInfo.totalKRW / 10)}
         currentBalance={1000}
         details={[

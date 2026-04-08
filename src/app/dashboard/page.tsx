@@ -28,7 +28,7 @@ const serviceCards = [
   },
   {
     title: "판결문 분석",
-    desc: "AI 기반 판결문 코딩 및 수집",
+    desc: "판결문 수집부터 변수 코딩까지",
     href: "/judgment",
     image: "/images/서비스_판결문 코딩.png",
   },
