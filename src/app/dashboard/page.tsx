@@ -51,16 +51,24 @@ const serviceCards = [
   },
 ];
 
+interface StatusBreakdown {
+  total: number;
+  pending: number;
+  in_progress: number;
+  completed: number;
+}
+
 interface ServiceStats {
-  researchDesign: number;
-  judgment: number;
-  survey: number;
-  dataAnalysis: number;
+  researchDesign: StatusBreakdown;
+  judgment: StatusBreakdown;
+  survey: StatusBreakdown;
+  dataAnalysis: StatusBreakdown;
 }
 
 export default function DashboardPage() {
   const [projects, setProjects] = useState<Project[]>([]);
-  const [stats, setStats] = useState<ServiceStats>({ researchDesign: 0, judgment: 0, survey: 0, dataAnalysis: 0 });
+  const emptyBreakdown: StatusBreakdown = { total: 0, pending: 0, in_progress: 0, completed: 0 };
+  const [stats, setStats] = useState<ServiceStats>({ researchDesign: { ...emptyBreakdown }, judgment: { ...emptyBreakdown }, survey: { ...emptyBreakdown }, dataAnalysis: { ...emptyBreakdown } });
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [newName, setNewName] = useState("");
@@ -89,11 +97,26 @@ export default function DashboardPage() {
       const qualData = await qualRes.json();
       const prjs = projData.projects || [];
       setProjects(prjs);
+
+      const countByStatus = (...lists: { status?: string }[][]) => {
+        const all = lists.flat();
+        return {
+          total: all.length,
+          pending: all.filter(r => r.status === "pending").length,
+          in_progress: all.filter(r => r.status === "in_progress").length,
+          completed: all.filter(r => r.status === "completed").length,
+        };
+      };
+
+      const rdReqs = [...(researchData.requests || []), ...(statsDesignData.requests || [])];
+      const surveyReqs = surveyData.requests || [];
+      const daReqs = [...(dtData.requests || []), ...(quantData.requests || []), ...(textData.requests || []), ...(qualData.requests || [])];
+
       setStats({
-        researchDesign: (researchData.requests?.length || 0) + (statsDesignData.requests?.length || 0),
-        judgment: prjs.length,
-        survey: surveyData.requests?.length || 0,
-        dataAnalysis: (dtData.requests?.length || 0) + (quantData.requests?.length || 0) + (textData.requests?.length || 0) + (qualData.requests?.length || 0),
+        researchDesign: countByStatus(rdReqs),
+        judgment: { total: prjs.length, pending: 0, in_progress: prjs.filter((p: Project) => p.codedCount < p.caseCount).length, completed: prjs.filter((p: Project) => p.caseCount > 0 && p.codedCount >= p.caseCount).length },
+        survey: countByStatus(surveyReqs),
+        dataAnalysis: countByStatus(daReqs),
       });
     } catch {
       console.error("데이터 로드 실패");
@@ -128,7 +151,12 @@ export default function DashboardPage() {
     }
   };
 
-  const totalRequests = stats.researchDesign + stats.judgment + stats.survey + stats.dataAnalysis;
+  const totalStats: StatusBreakdown = {
+    total: stats.researchDesign.total + stats.judgment.total + stats.survey.total + stats.dataAnalysis.total,
+    pending: stats.researchDesign.pending + stats.judgment.pending + stats.survey.pending + stats.dataAnalysis.pending,
+    in_progress: stats.researchDesign.in_progress + stats.judgment.in_progress + stats.survey.in_progress + stats.dataAnalysis.in_progress,
+    completed: stats.researchDesign.completed + stats.judgment.completed + stats.survey.completed + stats.dataAnalysis.completed,
+  };
 
   return (
     <div
@@ -167,11 +195,11 @@ export default function DashboardPage() {
 
             {/* Stats inside banner */}
             <div className="grid grid-cols-2 lg:grid-cols-5 gap-2.5 sm:gap-3">
-              <StatCard label="전체 의뢰" value={totalRequests} icon="folder" color="blue" />
-              <StatCard label="연구설계" value={stats.researchDesign} icon="lightbulb" color="green" />
-              <StatCard label="판결문 분석" value={stats.judgment} icon="document" color="amber" />
-              <StatCard label="설문조사" value={stats.survey} icon="clipboard" color="purple" />
-              <StatCard label="데이터 분석" value={stats.dataAnalysis} icon="chart" color="rose" />
+              <StatCard label="전체 의뢰" breakdown={totalStats} icon="folder" color="blue" />
+              <StatCard label="연구설계" breakdown={stats.researchDesign} icon="lightbulb" color="green" />
+              <StatCard label="판결문 분석" breakdown={stats.judgment} icon="document" color="amber" />
+              <StatCard label="설문조사" breakdown={stats.survey} icon="clipboard" color="purple" />
+              <StatCard label="데이터 분석" breakdown={stats.dataAnalysis} icon="chart" color="rose" />
             </div>
           </div>
           <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/5" />
@@ -365,12 +393,12 @@ export default function DashboardPage() {
 
 function StatCard({
   label,
-  value,
+  breakdown,
   icon,
   color,
 }: {
   label: string;
-  value: string | number;
+  breakdown: StatusBreakdown;
   icon: string;
   color: string;
 }) {
@@ -419,8 +447,24 @@ function StatCard({
           {icons[icon]}
         </div>
       </div>
-      <div className="text-xl sm:text-3xl font-bold text-white tracking-tight">{value}</div>
+      <div className="text-xl sm:text-3xl font-bold text-white tracking-tight">{breakdown.total}</div>
       <span className="text-[10px] sm:text-xs text-white/60 font-medium mt-0.5 sm:mt-1 block">{label}</span>
+      {breakdown.total > 0 && (
+        <div className="flex items-center gap-1.5 sm:gap-2 mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-white/10">
+          <span className="text-[9px] sm:text-[10px] text-gray-400">
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-gray-400 mr-0.5 align-middle" />
+            접수 {breakdown.pending}
+          </span>
+          <span className="text-[9px] sm:text-[10px] text-blue-400">
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-blue-400 mr-0.5 align-middle" />
+            진행 {breakdown.in_progress}
+          </span>
+          <span className="text-[9px] sm:text-[10px] text-green-400">
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-400 mr-0.5 align-middle" />
+            완료 {breakdown.completed}
+          </span>
+        </div>
+      )}
     </div>
   );
 }
