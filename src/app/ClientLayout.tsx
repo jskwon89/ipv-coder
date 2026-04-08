@@ -364,37 +364,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       </aside>
 
       <main className="min-h-screen overflow-x-hidden bg-gray-100 pt-14 md:pt-0 md:ml-60">
-        {/* Desktop top header with user info */}
-        <div className="hidden md:flex items-center justify-end gap-3 px-6 py-3 bg-white border-b border-gray-200">
-          {user ? (
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-full bg-[#c49a2e]/20 flex items-center justify-center">
-                  <svg className="w-4 h-4 text-[#c49a2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </div>
-                <span className="text-sm text-gray-700">{user.email}</span>
-              </div>
-              <button
-                onClick={() => userSignOut()}
-                className="text-xs text-gray-400 hover:text-gray-600 transition-colors px-2 py-1 rounded hover:bg-gray-100"
-              >
-                로그아웃
-              </button>
-            </div>
-          ) : (
-            <Link
-              href="/login"
-              className="flex items-center gap-2 text-sm text-[#c49a2e] hover:text-[#b08a24] font-medium transition-colors"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-              </svg>
-              로그인
-            </Link>
-          )}
-        </div>
         {children}
       </main>
 

@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useUser } from "@/contexts/UserAuthContext";
 
 interface Project {
   id: string;
@@ -66,6 +67,7 @@ interface ServiceStats {
 }
 
 export default function DashboardPage() {
+  const { user, signOut: userSignOut } = useUser();
   const [projects, setProjects] = useState<Project[]>([]);
   const emptyBreakdown: StatusBreakdown = { total: 0, pending: 0, in_progress: 0, completed: 0 };
   const [stats, setStats] = useState<ServiceStats>({ researchDesign: { ...emptyBreakdown }, judgment: { ...emptyBreakdown }, survey: { ...emptyBreakdown }, dataAnalysis: { ...emptyBreakdown } });
@@ -190,6 +192,34 @@ export default function DashboardPage() {
                   </svg>
                   새 프로젝트 만들기
                 </button>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                {user ? (
+                  <div className="flex items-center gap-2 bg-white/10 rounded-lg px-3 py-2">
+                    <div className="w-6 h-6 rounded-full bg-[#c49a2e]/30 flex items-center justify-center">
+                      <svg className="w-3.5 h-3.5 text-[#c49a2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                    </div>
+                    <span className="text-xs text-white/70 hidden sm:inline">{user.email}</span>
+                    <button
+                      onClick={() => userSignOut()}
+                      className="text-[10px] text-white/40 hover:text-white/70 transition-colors ml-1"
+                    >
+                      로그아웃
+                    </button>
+                  </div>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="flex items-center gap-2 bg-[#c49a2e]/20 hover:bg-[#c49a2e]/30 rounded-lg px-3 py-2 transition-colors"
+                  >
+                    <svg className="w-4 h-4 text-[#c49a2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                    </svg>
+                    <span className="text-xs text-[#c49a2e] font-medium">로그인</span>
+                  </Link>
+                )}
               </div>
             </div>
 
