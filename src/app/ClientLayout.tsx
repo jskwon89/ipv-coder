@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { CreditBalance } from "./credits/CreditBalance";
 import { useAuth } from "@/contexts/AuthContext";
 import { AdminLoginModal } from "@/components/AdminLoginModal";
@@ -134,7 +133,9 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       {/* Logo */}
       <div className="px-5 py-5 border-b border-white/8">
         <Link href="/" className="flex items-center gap-3 group" onClick={closeSidebar}>
-          <Image src="/images/main.png" alt="ResearchOn" width={32} height={32} className="rounded-lg" />
+          <div className="w-8 h-8 rounded-lg bg-[#c49a2e] flex items-center justify-center shrink-0">
+            <span className="text-white font-bold text-sm">R</span>
+          </div>
           <div>
             <h1 className="text-base font-bold tracking-tight text-white group-hover:text-[#d4a843] transition-colors">
               ResearchOn
@@ -288,7 +289,9 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       {/* Mobile top bar */}
       <div className="fixed top-0 left-0 right-0 z-40 bg-[#0f1a2e] flex items-center justify-between px-4 py-3 md:hidden">
         <Link href="/" className="flex items-center gap-2">
-          <Image src="/images/main.png" alt="ResearchOn" width={28} height={28} className="rounded-lg" />
+          <div className="w-7 h-7 rounded-lg bg-[#c49a2e] flex items-center justify-center shrink-0">
+            <span className="text-white font-bold text-xs">R</span>
+          </div>
           <span className="text-sm font-bold text-white">ResearchOn</span>
         </Link>
         <button
