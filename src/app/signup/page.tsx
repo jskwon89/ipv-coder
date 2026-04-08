@@ -7,7 +7,7 @@ import { useUser } from "@/contexts/UserAuthContext";
 
 export default function SignupPage() {
   const router = useRouter();
-  const { signUp } = useUser();
+  const { signIn } = useUser();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,13 +33,25 @@ export default function SignupPage() {
     setError("");
     setLoading(true);
 
-    const { error: err } = await signUp(email.trim(), password);
-    if (err) {
-      setError(err);
+    // 서버 API로 자동 확인된 유저 생성
+    const res = await fetch("/api/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: email.trim(), password }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      setError(data.error || "회원가입에 실패했습니다.");
+      setLoading(false);
+      return;
+    }
+    // 가입 성공 → 바로 로그인
+    const { error: signInErr } = await signIn(email.trim(), password);
+    if (signInErr) {
+      setError(signInErr);
       setLoading(false);
     } else {
-      setSuccess(true);
-      setLoading(false);
+      router.push("/dashboard");
     }
   };
 
@@ -83,9 +95,7 @@ export default function SignupPage() {
               회원가입 완료
             </h2>
             <p className="text-sm text-white/50 mb-6">
-              이메일 인증 메일이 발송되었습니다.
-              <br />
-              이메일을 확인하고 인증을 완료해주세요.
+              가입이 완료되었습니다. 로그인해주세요.
             </p>
             <Link
               href="/login"
