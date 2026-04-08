@@ -1,57 +1,90 @@
-# ResearchOn 프로젝트 진행상황 (2026-04-08)
+# ResearchOn 프로젝트 진행상황
 
-## 오늘 완료한 작업
+## 2026-04-09 작업 내용
 
-### 1. UI/UX 개선
-- (i) 툴팁: 설명만 → 단계별 요청순서 + 지원내용 (10개 서비스 페이지)
-- 툴팁 설명을 실제 UI 필드명·순서와 일치하도록 재수정
-- 대시보드 통계 카드: 접수/진행/완료 상태별 세분화 (우측 세로 배치)
-- 대시보드 데이터 분석 통계 실제 연동 (전처리/계량/텍스트/질적)
-- 설문 빌더 하단에 "문항 추가" 버튼 추가
-- 랜딩 페이지: 네비 로고 제거(깨짐), 문구 변경, "시작하기"+"로그인" 링크 추가
-- 사이드바/모바일 상단바 로고: 깨지는 이미지 → "R" 텍스트 아이콘으로 교체
+### 완료된 작업
 
-### 2. Supabase DB 연동 (핵심)
-- 파일기반 JSON → Supabase PostgreSQL로 전환
-- db.ts 전면 재작성 (모든 CRUD를 Supabase 쿼리로)
-- 모든 API 라우트에 await 추가 (34개 파일)
-- 통합 테이블: service_requests (9개 서비스), chat_messages, projects, cases, dyads
-- **데이터 영구 저장** — 배포해도 유지됨
+**로그인/UI 개선**
+- 로그아웃 시 로그인 버튼 사라지는 버그 수정
+- 로그인/사용자 정보를 대시보드 "환영합니다" 우측으로 이동
+- 로그인 버튼 가시성 개선 (골드 배경 + 흰색 텍스트)
 
-### 3. 로그인/회원가입 시스템 (Supabase Auth)
-- 로그인/회원가입 페이지 생성 (이메일+비밀번호)
-- 페이지 접근은 자유, **의뢰 접수 버튼 클릭 시에만** 로그인 체크
-- 비로그인 → /login → 로그인 후 원래 페이지로 복귀
-- 사이드바에 사용자 이메일 표시 + 로그아웃 버튼
-- 의뢰 폼에 로그인 이메일 자동 입력
-- service_role 키로 회원가입 시 이메일 인증 자동 확인 (인증 메일 불필요)
+**AI 용어 전면 제거**
+- "AI 기반", "AI 코딩", "AI 분석" → "전문가 기반" 서비스로 문구 통일
+- 랜딩, 대시보드, 판결문, FAQ, 크레딧, 기초통계 등 8개 파일 수정
+
+**랜딩페이지 강점 섹션 추가**
+- "왜 ResearchOn인가요?" 섹션 (서비스/이용절차 사이)
+- 합리적인 가격 / 검증된 품질 / 수정보완 보장 / 1:1 맞춤 소통 / 데이터 보안 / 빠른 처리
+
+**연구 설계 폼 개선**
+- 연구 유형 체크박스 추가 (학술논문 국내/국외, 학위논문 석사/박사, 연구보고서, 기타)
+
+**파일 업로드 시스템 전면 개편**
+- 모든 파싱/분류 로직 제거 (IPV 분류, PDF 텍스트 추출 등)
+- Supabase Storage로 파일 저장 (Vercel 서버리스 호환)
+- 원래 파일명은 file_uploads 테이블에 기록
+- 모든 파일 형식 업로드 가능 (PDF, HWP, Excel, ZIP 등 제한 없음)
+
+**프로젝트 페이지 전면 간소화**
+- 사건 테이블 (번호/법원/사건번호/상태/전문확인) 제거
+- 불필요한 버튼 제거 (전문 일괄확인, AI 코딩, 통계, Excel 내보내기)
+- 드래그앤드롭 업로드 + 파일 목록 + 의뢰하기를 하나의 화면으로 통합
+
+**드래그앤드롭 파일 첨부 추가 (3개 페이지)**
+- 데이터 전처리 의뢰 (Excel, CSV, SPSS, Stata, R 파일)
+- 질적분석 의뢰 (녹취록, 문서, 텍스트 파일)
+- 계량분석 의뢰 (Excel, CSV, SPSS, Stata, R 파일)
+
+**대시보드 통계 카드 개선**
+- 접수/진행/완료 숫자 클릭 시 해당 상태의 결과 페이지로 바로 이동
+
+**Supabase 테이블 추가**
+- file_uploads 테이블 생성 (project_id, original_name, storage_path, size, content_type)
+- Supabase Storage: uploads 버킷 사용
+
+**SSH 원격 접속 환경 구성**
+- Windows OpenSSH Server 설치, sshuser 계정 생성
+- Termius 모바일 앱으로 PC 접속 성공
+- claude.ai/code 웹앱으로 모바일 작업 가능 확인
 
 ---
 
-## 현재 상태 / 남은 작업
+## 내일 할 일 (2026-04-10)
 
-### Vercel 환경변수 (필수 — 이미 추가됨)
-- `NEXT_PUBLIC_SUPABASE_URL` = https://ozpqlxpiblptcyqaipvd.supabase.co
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY` = (설정 완료)
-- `SUPABASE_SERVICE_ROLE_KEY` = (설정 완료 — Redeploy 필요할 수 있음)
+### 1. 관리자 알림 시스템 (우선)
+- 의뢰 접수 → Supabase DB에 저장 (프로젝트 의뢰 API 실제 연동)
+- /admin 페이지에서 새 의뢰 목록 확인 가능하게
+- Discord 웹훅으로 의뢰 접수 시 모바일 알림
 
-### 확인 필요
-1. **Vercel Redeploy** 후 회원가입 테스트 (이메일 인증 없이 즉시 로그인되는지)
-2. 기존 유저(jskwon@kicj.re.kr)는 Supabase Auth → Users에서 삭제 후 재가입
-3. 의뢰 접수 테스트 → Supabase Table Editor에서 service_requests 테이블에 데이터 저장 확인
-4. 관리자 패널(/admin)에서 의뢰 관리 확인
+### 2. 의뢰 흐름 완성
+- 프로젝트 "의뢰하기" 버튼 → DB 저장 + Discord 알림
+- 관리자가 의뢰 확인 → 상태 변경 (접수→진행→완료)
+- 각 의뢰 페이지 파일 첨부 → Supabase Storage 실제 연동 (현재 UI만 있음)
 
-### 사이트 URL
-- 기존: ipv-coder.vercel.app
-- 변경됨: **researchon.vercel.app** (Vercel 도메인 변경 완료)
+### 3. 기타 검토
+- 기초통계 페이지 크레딧 결제 흐름 (나중에)
+- 커스텀 도메인 설정
 
-### 아직 미구현
-- 판결문 AI 자동 코딩 (TODO 상태)
-- 기초통계/시각화 실제 계산 엔진
-- 학술논문/정책문서 템플릿 ("준비 중")
-- 커스텀 도메인 (researchon.site $1.99/년 구매 가능)
+---
+
+## 2026-04-08 작업 내용
+
+### 완료된 작업
+- 툴팁 개선 (10개 서비스 페이지)
+- Supabase DB 연동 (파일기반 JSON → PostgreSQL 전환)
+- 로그인/회원가입 시스템 구현 (Supabase Auth)
+- 대시보드 통계 카드 세분화 (접수/진행/완료)
+- 랜딩 페이지 문구/로고 수정
 
 ### Supabase 설정
 - 프로젝트: researchon (ozpqlxpiblptcyqaipvd)
-- DB 테이블 8개 생성 완료 (projects, cases, dyads, service_requests, chat_messages, credits, credit_transactions, contact_inquiries)
+- DB 테이블 9개 (projects, cases, dyads, service_requests, chat_messages, credits, credit_transactions, contact_inquiries, file_uploads)
+- Storage: uploads 버킷
 - RLS 정책: Allow all (서버사이드 API 전용)
+
+### 사이트 URL
+- researchon.vercel.app
+
+### Vercel 환경변수
+- NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY (설정 완료)
