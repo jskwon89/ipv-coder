@@ -185,8 +185,8 @@ export default function LandingPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
               }
-              title="실시간 소통"
-              description="의뢰 접수부터 완료까지 담당자와 실시간 채팅으로 소통할 수 있습니다. 궁금한 점은 언제든 물어보세요."
+              title="1:1 맞춤 소통"
+              description="의뢰 접수부터 완료까지 담당자와 메시지로 직접 소통할 수 있습니다. 궁금한 점은 언제든 물어보세요."
             />
             <ValueCard
               icon={
