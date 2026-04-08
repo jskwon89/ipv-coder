@@ -88,3 +88,26 @@
 
 ### Vercel 환경변수
 - NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY (설정 완료)
+
+---
+
+## 새 PC에서 시작하기
+
+```bash
+git clone https://github.com/jskwon89/ipv-coder.git
+cd ipv-coder
+npm install
+```
+
+`.env.local` 파일 생성 필요:
+```
+NEXT_PUBLIC_SUPABASE_URL=https://ozpqlxpiblptcyqaipvd.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=(Supabase 대시보드 > Settings > API > anon key)
+SUPABASE_SERVICE_ROLE_KEY=(Supabase 대시보드 > Settings > API > service_role key)
+```
+
+키 확인: https://supabase.com/dashboard/project/ozpqlxpiblptcyqaipvd/settings/api
+
+```bash
+npm run dev
+```
