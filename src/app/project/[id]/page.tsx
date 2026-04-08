@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import StatusBadge, { type CaseStatus } from "@/components/StatusBadge";
 
 interface CaseItem {
@@ -29,6 +29,7 @@ const allStatuses: CaseStatus[] = [
 
 export default function ProjectDetailPage() {
   const params = useParams();
+  const router = useRouter();
   const projectId = params.id as string;
 
   const [project, setProject] = useState<ProjectInfo | null>(null);
@@ -38,6 +39,10 @@ export default function ProjectDetailPage() {
   const [checking, setChecking] = useState(false);
   const [checkProgress, setCheckProgress] = useState<string>("");
   const [exporting, setExporting] = useState(false);
+  const [dragging, setDragging] = useState(false);
+  const [dropUploading, setDropUploading] = useState(false);
+  const [dropStatus, setDropStatus] = useState<string>("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const fetchData = useCallback(async () => {
     try {
@@ -110,6 +115,59 @@ export default function ProjectDetailPage() {
       setExporting(false);
     }
   };
+
+  const handleDropFile = async (file: File) => {
+    setDropUploading(true);
+    setDropStatus("파일 분석 중...");
+    try {
+      const ext = file.name.split(".").pop()?.toLowerCase();
+      let content: string;
+      let type: "txt" | "xlsx";
+
+      if (ext === "xlsx" || ext === "xls") {
+        type = "xlsx";
+        const arrayBuffer = await file.arrayBuffer();
+        content = btoa(
+          new Uint8Array(arrayBuffer).reduce((data, byte) => data + String.fromCharCode(byte), "")
+        );
+      } else {
+        type = "txt";
+        content = await file.text();
+      }
+
+      const res = await fetch(`/api/projects/${projectId}/upload`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content, type, save: true }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setDropStatus(`오류: ${data.error || "업로드 실패"}`);
+      } else {
+        setDropStatus("업로드 완료!");
+        await fetchData();
+        setTimeout(() => setDropStatus(""), 3000);
+      }
+    } catch {
+      setDropStatus("업로드 중 오류가 발생했습니다.");
+    } finally {
+      setDropUploading(false);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragging(false);
+    const file = e.dataTransfer.files[0];
+    if (file) handleDropFile(file);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragging(true);
+  };
+
+  const handleDragLeave = () => setDragging(false);
 
   if (loading) {
     return (
@@ -232,8 +290,47 @@ export default function ProjectDetailPage() {
             <tbody className="divide-y divide-border">
               {filteredCases.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-12 text-center text-muted-foreground">
-                    {cases.length === 0 ? "사건이 없습니다. 목록을 업로드해주세요." : "해당 상태의 사건이 없습니다."}
+                  <td colSpan={6} className="px-4 py-0">
+                    {cases.length === 0 ? (
+                      <div
+                        onDrop={handleDrop}
+                        onDragOver={handleDragOver}
+                        onDragLeave={handleDragLeave}
+                        onClick={() => fileInputRef.current?.click()}
+                        className={`border-2 border-dashed rounded-xl py-12 my-4 text-center cursor-pointer transition-all ${
+                          dragging
+                            ? "border-amber-500 bg-amber-50"
+                            : "border-gray-300 hover:border-amber-400 hover:bg-amber-50/50"
+                        }`}
+                      >
+                        <input
+                          ref={fileInputRef}
+                          type="file"
+                          accept=".txt,.xlsx,.xls"
+                          className="hidden"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) handleDropFile(file);
+                            e.target.value = "";
+                          }}
+                        />
+                        {dropUploading ? (
+                          <p className="text-sm text-amber-600 font-medium">{dropStatus}</p>
+                        ) : dropStatus ? (
+                          <p className="text-sm text-green-600 font-medium">{dropStatus}</p>
+                        ) : (
+                          <>
+                            <svg className="w-10 h-10 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            </svg>
+                            <p className="text-sm text-gray-500 font-medium">사건 목록 파일을 여기에 드래그하거나 클릭하여 업로드</p>
+                            <p className="text-xs text-gray-400 mt-1">.txt, .xlsx 파일 지원</p>
+                          </>
+                        )}
+                      </div>
+                    ) : (
+                      <p className="py-12 text-center text-muted-foreground">해당 상태의 사건이 없습니다.</p>
+                    )}
                   </td>
                 </tr>
               ) : (
