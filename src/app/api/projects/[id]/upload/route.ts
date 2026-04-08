@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
-import { createCases, getProject } from '@/lib/db';
-import { classifyTxt, classifyXlsx, type ClassificationResult } from '@/lib/classify';
+import { getProject } from '@/lib/db';
+import fs from 'fs';
+import path from 'path';
 
 export async function POST(
   request: NextRequest,
@@ -14,45 +15,36 @@ export async function POST(
     }
 
     const body = await request.json();
-    const { content, type, save } = body as {
+    const { content, type, fileName } = body as {
       content: string;
       type: 'txt' | 'xlsx';
+      fileName?: string;
       save?: boolean;
     };
 
-    let result: ClassificationResult;
+    // 파일을 uploads 폴더에 저장
+    const uploadsDir = path.join(process.cwd(), 'uploads', id);
+    fs.mkdirSync(uploadsDir, { recursive: true });
+
+    const ext = type === 'xlsx' ? '.xlsx' : '.txt';
+    const safeName = `${Date.now()}_${(fileName || 'upload').replace(/[^a-zA-Z0-9가-힣._-]/g, '_')}`;
+    const filePath = path.join(uploadsDir, safeName + ext);
 
     if (type === 'xlsx') {
-      // content is base64-encoded buffer
       const buffer = Buffer.from(content, 'base64');
-      result = classifyXlsx(buffer);
+      fs.writeFileSync(filePath, buffer);
     } else {
-      result = classifyTxt(content);
+      fs.writeFileSync(filePath, content, 'utf-8');
     }
 
-    // If save flag is true, persist IPV + ambiguous cases to DB
-    if (save) {
-      const casesToSave = [...result.ipv, ...result.ambiguous];
-      const caseData = casesToSave.map((c, idx) => ({
-        key: idx + 1,
-        case_id: `${c.court}_${c.case_no}`,
-        court: c.court,
-        case_no: c.case_no,
-        judgment_date: c.judgment_date,
-        status: 'pending' as const,
-      }));
-      const created = await createCases(id, caseData);
-      return Response.json({
-        result,
-        saved: true,
-        savedCount: created.length,
-      });
-    }
-
-    return Response.json({ result, saved: false });
+    return Response.json({
+      success: true,
+      saved: true,
+      fileName: safeName + ext,
+    });
   } catch (error) {
     return Response.json(
-      { error: '파일 분석에 실패했습니다.' },
+      { error: '파일 저장에 실패했습니다.' },
       { status: 500 },
     );
   }

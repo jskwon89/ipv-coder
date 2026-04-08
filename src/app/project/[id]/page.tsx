@@ -148,8 +148,8 @@ export default function ProjectDetailPage() {
           setTimeout(() => setDropStatus(""), 4000);
         }
       } else {
-        // TXT/Excel → 사건 목록 업로드
-        setDropStatus("사건 목록 분석 중...");
+        // TXT/Excel → 파일 저장
+        setDropStatus("파일 저장 중...");
         let content: string;
         let type: "txt" | "xlsx";
 
@@ -167,14 +167,13 @@ export default function ProjectDetailPage() {
         const res = await fetch(`/api/projects/${projectId}/upload`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ content, type, save: true }),
+          body: JSON.stringify({ content, type, fileName: file.name }),
         });
         const data = await res.json();
         if (!res.ok) {
           setDropStatus(`오류: ${data.error || "업로드 실패"}`);
         } else {
-          setDropStatus("사건 목록 업로드 완료!");
-          await fetchData();
+          setDropStatus(`파일 저장 완료! (${file.name})`);
           setTimeout(() => setDropStatus(""), 3000);
         }
       }
