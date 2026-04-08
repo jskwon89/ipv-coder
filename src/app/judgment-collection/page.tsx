@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import { useUser } from "@/contexts/UserAuthContext";
 
 type Tab = "caseNumber" | "keyword";
 type OutputFormat = "pdf" | "text" | "both";
@@ -23,6 +24,7 @@ const currentYear = new Date().getFullYear();
 const YEARS = Array.from({ length: 30 }, (_, i) => currentYear - i);
 
 export default function JudgmentCollectionPage() {
+  const { user } = useUser();
   const [activeTab, setActiveTab] = useState<Tab>("caseNumber");
   const [submitted, setSubmitted] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -54,6 +56,10 @@ export default function JudgmentCollectionPage() {
   const [additionalNotes, setAdditionalNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
+
+  useEffect(() => {
+    if (user?.email && !email) setEmail(user.email);
+  }, [user]);
 
   const addKeyword = () => {
     const trimmed = keywordInput.trim();

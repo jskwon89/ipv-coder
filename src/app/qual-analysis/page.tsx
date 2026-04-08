@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
+import { useUser } from "@/contexts/UserAuthContext";
 
 const analysisTypes = [
   "인터뷰 분석",
@@ -24,6 +25,7 @@ const dataFormatOptions = [
 ];
 
 export default function QualAnalysisPage() {
+  const { user } = useUser();
   const [email, setEmail] = useState("");
   const [analysisType, setAnalysisType] = useState("");
   const [dataDescription, setDataDescription] = useState("");
@@ -32,6 +34,10 @@ export default function QualAnalysisPage() {
   const [additionalNotes, setAdditionalNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (user?.email && !email) setEmail(user.email);
+  }, [user]);
 
   const handleSubmit = async () => {
     if (!email.trim() || !analysisType) return;

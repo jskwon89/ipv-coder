@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import QuestionEditor, { type SurveyQuestion } from "@/components/QuestionEditor";
 import SurveyPreview from "@/components/SurveyPreview";
 import PageHeader from "@/components/PageHeader";
+import { useUser } from "@/contexts/UserAuthContext";
 
 function generateSatisfactionTemplate(): SurveyQuestion[] {
   return [
@@ -38,6 +39,7 @@ function generatePrePostTemplate(): SurveyQuestion[] {
 }
 
 export default function SurveyRequestPage() {
+  const { user } = useUser();
   const [activeTab, setActiveTab] = useState<"request" | "builder">("request");
   const [formData, setFormData] = useState({
     email: "",
@@ -75,6 +77,12 @@ export default function SurveyRequestPage() {
   // File upload parsing
   const [parsing, setParsing] = useState(false);
   const [parseError, setParseError] = useState("");
+
+  useEffect(() => {
+    if (user?.email && !formData.email) {
+      setFormData((prev) => ({ ...prev, email: user.email! }));
+    }
+  }, [user]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>

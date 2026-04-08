@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import InfoTooltip from "@/components/InfoTooltip";
+import { useUser } from "@/contexts/UserAuthContext";
 
 interface StatsDesignRequest {
   id: string;
@@ -47,6 +48,7 @@ const statusConfig = {
 };
 
 export default function StatsDesignPage() {
+  const { user } = useUser();
   const [email, setEmail] = useState("");
   const [researchType, setResearchType] = useState("");
   const [dataType, setDataType] = useState("");
@@ -65,6 +67,10 @@ export default function StatsDesignPage() {
   const [sendingChat, setSendingChat] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (user?.email && !email) setEmail(user.email);
+  }, [user]);
 
   const fetchRequests = useCallback(async () => {
     try {

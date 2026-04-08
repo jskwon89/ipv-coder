@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import { useUser } from "@/contexts/UserAuthContext";
 
 interface ContactInquiry {
   id: string;
@@ -26,6 +27,7 @@ const categories = [
 ];
 
 export default function ContactPage() {
+  const { user } = useUser();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [category, setCategory] = useState("일반 문의");
@@ -36,6 +38,10 @@ export default function ContactPage() {
 
   const [inquiries, setInquiries] = useState<ContactInquiry[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (user?.email && !email) setEmail(user.email);
+  }, [user]);
 
   const fetchInquiries = useCallback(async () => {
     try {

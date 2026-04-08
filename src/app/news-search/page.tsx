@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
+import { useUser } from "@/contexts/UserAuthContext";
 
 type SearchType = "keyword" | "sentence";
 
@@ -14,6 +15,7 @@ const purposeOptions = [
 ];
 
 export default function NewsSearchPage() {
+  const { user } = useUser();
   const [searchType, setSearchType] = useState<SearchType>("keyword");
   const [query, setQuery] = useState("");
   const [keywords, setKeywords] = useState<string[]>([]);
@@ -29,6 +31,10 @@ export default function NewsSearchPage() {
   const [additionalNotes, setAdditionalNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (user?.email && !email) setEmail(user.email);
+  }, [user]);
 
   const addKeyword = () => {
     const parts = keywordInput.split(",").map((s) => s.trim()).filter(Boolean);

@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
+import { useUser } from "@/contexts/UserAuthContext";
 
 const dataFormats = ["SPSS", "SAS", "Stata", "R", "Excel", "CSV"];
 
@@ -19,6 +20,7 @@ const transformationOptions = [
 ];
 
 export default function DataTransformPage() {
+  const { user } = useUser();
   const [email, setEmail] = useState("");
   const [dataDescription, setDataDescription] = useState("");
   const [dataFormat, setDataFormat] = useState("");
@@ -28,6 +30,10 @@ export default function DataTransformPage() {
   const [additionalNotes, setAdditionalNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (user?.email && !email) setEmail(user.email);
+  }, [user]);
 
   const toggleType = (type: string) => {
     setSelectedTypes((prev) =>

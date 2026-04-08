@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import CreditConfirmDialog from "@/components/CreditConfirmDialog";
 import PageHeader from "@/components/PageHeader";
+import { useUser } from "@/contexts/UserAuthContext";
 
 /* ───── analysis type definitions ───── */
 
@@ -68,6 +69,7 @@ const dataTabs = ["텍스트 직접 입력", "파일 업로드", "프로젝트 �
 /* ───── component ───── */
 
 export default function TextAnalysisPage() {
+  const { user } = useUser();
   /* data input */
   const [activeDataTab, setActiveDataTab] = useState<(typeof dataTabs)[number]>("텍스트 직접 입력");
   const [textInput, setTextInput] = useState("");
@@ -107,6 +109,10 @@ export default function TextAnalysisPage() {
   const [additionalNotes, setAdditionalNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (user?.email && !email) setEmail(user.email);
+  }, [user]);
 
   /* helpers */
   const toggle = (id: string) =>

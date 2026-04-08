@@ -1,11 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { CreditBalance } from "./credits/CreditBalance";
 import { useAuth } from "@/contexts/AuthContext";
+import { useUser } from "@/contexts/UserAuthContext";
 import { AdminLoginModal } from "@/components/AdminLoginModal";
+
+const PUBLIC_PATHS = ["/", "/login", "/signup", "/faq"];
 
 /* ── Leaf nav link ── */
 function NavLink({ href, label, pathname, onClick }: { href: string; label: string; pathname: string; onClick?: () => void }) {
@@ -83,17 +86,46 @@ function SectionGroup({ color, label, children, pathname, prefixes, defaultOpen 
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
   const { isAdmin, logout } = useAuth();
+  const { user, loading: userLoading, signOut: userSignOut } = useUser();
   const [showLogin, setShowLogin] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [search, setSearch] = useState("");
+
+  const isPublicPath = PUBLIC_PATHS.includes(pathname);
 
   useEffect(() => {
     setSidebarOpen(false);
   }, [pathname]);
 
-  if (pathname === "/") {
+  // Redirect unauthenticated users to login
+  useEffect(() => {
+    if (!userLoading && !user && !isPublicPath) {
+      router.replace(`/login?redirect=${encodeURIComponent(pathname)}`);
+    }
+  }, [userLoading, user, isPublicPath, pathname, router]);
+
+  // Public pages without sidebar
+  if (isPublicPath) {
     return <>{children}</>;
+  }
+
+  // Show loading while checking auth
+  if (userLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-8 h-8 border-3 border-[#c49a2e] border-t-transparent rounded-full animate-spin" />
+          <p className="text-sm text-gray-500">로딩 중...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Not logged in and not public - will redirect via useEffect above
+  if (!user) {
+    return null;
   }
 
   const closeSidebar = () => setSidebarOpen(false);
@@ -244,6 +276,29 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
       {/* Footer */}
       <div className="px-3 py-4 border-t border-white/10 space-y-3 bg-[#0b1422] mt-auto">
+        {/* User info */}
+        {user && (
+          <div className="px-3 py-2 rounded-lg bg-white/[0.05] border border-white/8">
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 rounded-full bg-[#c49a2e]/30 flex items-center justify-center shrink-0">
+                <svg className="w-3.5 h-3.5 text-[#c49a2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
+              <span className="text-[11px] text-white/60 truncate flex-1">{user.email}</span>
+            </div>
+            <button
+              onClick={() => { userSignOut(); closeSidebar(); }}
+              className="flex items-center gap-2 mt-2 text-[11px] text-white/40 hover:text-white/70 transition-colors"
+            >
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              로그아웃
+            </button>
+          </div>
+        )}
+
         <CreditBalance />
 
         {isAdmin ? (
