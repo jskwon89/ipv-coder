@@ -32,8 +32,8 @@ export async function POST(
     }
 
     const ext = type === 'xlsx' ? '.xlsx' : '.txt';
-    const safeName = `${Date.now()}_${(fileName || 'upload').replace(/[^a-zA-Z0-9가-힣._-]/g, '_')}`;
-    const storagePath = `${id}/${safeName}${ext}`;
+    const safeName = `${Date.now()}${ext}`;
+    const storagePath = `${id}/${safeName}`;
 
     let buffer: Buffer;
     if (type === 'xlsx') {

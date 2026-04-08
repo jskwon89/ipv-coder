@@ -24,7 +24,8 @@ export async function POST(request: NextRequest) {
       await supabaseAdmin.storage.createBucket(BUCKET, { public: false });
     }
 
-    const safeFileName = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9가-힣._-]/g, "_")}`;
+    const ext = file.name.split(".").pop() || "pdf";
+    const safeFileName = `${Date.now()}.${ext}`;
     const storagePath = `${projectId || "general"}/${safeFileName}`;
 
     const { error } = await supabaseAdmin.storage
