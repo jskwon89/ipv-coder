@@ -226,18 +226,10 @@ export default function DashboardPage() {
             {/* Stats inside banner */}
             <div className="grid grid-cols-2 lg:grid-cols-5 gap-2.5 sm:gap-3">
               <StatCard label="전체 의뢰" breakdown={totalStats} icon="folder" color="blue" />
-              <StatCard label="연구설계" breakdown={stats.researchDesign} icon="lightbulb" color="green" href="/data-generation"
-                subLinks={[{ label: "의뢰", href: "/data-generation" }, { label: "결과", href: "/data-generation" }]}
-              />
-              <StatCard label="판결문 분석" breakdown={stats.judgment} icon="document" color="amber" href="/judgment"
-                subLinks={[{ label: "코딩", href: "/judgment" }, { label: "수집의뢰", href: "/judgment-collection" }, { label: "결과", href: "/judgment-results" }]}
-              />
-              <StatCard label="설문조사" breakdown={stats.survey} icon="clipboard" color="purple" href="/survey-request"
-                subLinks={[{ label: "의뢰", href: "/survey-request" }, { label: "결과", href: "/survey-results" }]}
-              />
-              <StatCard label="데이터 분석" breakdown={stats.dataAnalysis} icon="chart" color="rose" href="/stats-analysis"
-                subLinks={[{ label: "기초통계", href: "/stats-analysis" }, { label: "계량분석", href: "/quant-analysis" }, { label: "텍스트", href: "/text-analysis" }]}
-              />
+              <StatCard label="연구설계" breakdown={stats.researchDesign} icon="lightbulb" color="green" resultsHref="/data-generation" />
+              <StatCard label="판결문 분석" breakdown={stats.judgment} icon="document" color="amber" resultsHref="/judgment-results" />
+              <StatCard label="설문조사" breakdown={stats.survey} icon="clipboard" color="purple" resultsHref="/survey-results" />
+              <StatCard label="데이터 분석" breakdown={stats.dataAnalysis} icon="chart" color="rose" resultsHref="/quant-results" />
             </div>
           </div>
           <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/5" />
@@ -434,15 +426,13 @@ function StatCard({
   breakdown,
   icon,
   color,
-  href,
-  subLinks,
+  resultsHref,
 }: {
   label: string;
   breakdown: StatusBreakdown;
   icon: string;
   color: string;
-  href?: string;
-  subLinks?: { label: string; href: string }[];
+  resultsHref?: string;
 }) {
   const colorMap: Record<string, { text: string; iconBg: string }> = {
     blue: { text: "text-blue-300", iconBg: "bg-blue-400/20" },
@@ -493,33 +483,39 @@ function StatCard({
           <span className="text-[10px] sm:text-xs text-white/60 font-medium mt-0.5 sm:mt-1 block">{label}</span>
         </div>
         <div className="flex flex-col gap-1.5 sm:gap-2 text-right">
-          <span className="text-[10px] sm:text-xs text-gray-400 flex items-center justify-end gap-1.5">
-            접수 <span className="font-bold text-white/90 text-xs sm:text-sm min-w-[16px]">{breakdown.pending}</span>
-            <span className="w-2 h-2 rounded-full bg-gray-400 shrink-0" />
-          </span>
-          <span className="text-[10px] sm:text-xs text-blue-400 flex items-center justify-end gap-1.5">
-            진행 <span className="font-bold text-white/90 text-xs sm:text-sm min-w-[16px]">{breakdown.in_progress}</span>
-            <span className="w-2 h-2 rounded-full bg-blue-400 shrink-0" />
-          </span>
-          <span className="text-[10px] sm:text-xs text-green-400 flex items-center justify-end gap-1.5">
-            완료 <span className="font-bold text-white/90 text-xs sm:text-sm min-w-[16px]">{breakdown.completed}</span>
-            <span className="w-2 h-2 rounded-full bg-green-400 shrink-0" />
-          </span>
+          {resultsHref ? (
+            <>
+              <Link href={`${resultsHref}?status=pending`} className="text-[10px] sm:text-xs text-gray-400 flex items-center justify-end gap-1.5 hover:text-white transition-colors rounded px-1 -mx-1">
+                접수 <span className="font-bold text-white/90 text-xs sm:text-sm min-w-[16px]">{breakdown.pending}</span>
+                <span className="w-2 h-2 rounded-full bg-gray-400 shrink-0" />
+              </Link>
+              <Link href={`${resultsHref}?status=in_progress`} className="text-[10px] sm:text-xs text-blue-400 flex items-center justify-end gap-1.5 hover:text-white transition-colors rounded px-1 -mx-1">
+                진행 <span className="font-bold text-white/90 text-xs sm:text-sm min-w-[16px]">{breakdown.in_progress}</span>
+                <span className="w-2 h-2 rounded-full bg-blue-400 shrink-0" />
+              </Link>
+              <Link href={`${resultsHref}?status=completed`} className="text-[10px] sm:text-xs text-green-400 flex items-center justify-end gap-1.5 hover:text-white transition-colors rounded px-1 -mx-1">
+                완료 <span className="font-bold text-white/90 text-xs sm:text-sm min-w-[16px]">{breakdown.completed}</span>
+                <span className="w-2 h-2 rounded-full bg-green-400 shrink-0" />
+              </Link>
+            </>
+          ) : (
+            <>
+              <span className="text-[10px] sm:text-xs text-gray-400 flex items-center justify-end gap-1.5">
+                접수 <span className="font-bold text-white/90 text-xs sm:text-sm min-w-[16px]">{breakdown.pending}</span>
+                <span className="w-2 h-2 rounded-full bg-gray-400 shrink-0" />
+              </span>
+              <span className="text-[10px] sm:text-xs text-blue-400 flex items-center justify-end gap-1.5">
+                진행 <span className="font-bold text-white/90 text-xs sm:text-sm min-w-[16px]">{breakdown.in_progress}</span>
+                <span className="w-2 h-2 rounded-full bg-blue-400 shrink-0" />
+              </span>
+              <span className="text-[10px] sm:text-xs text-green-400 flex items-center justify-end gap-1.5">
+                완료 <span className="font-bold text-white/90 text-xs sm:text-sm min-w-[16px]">{breakdown.completed}</span>
+                <span className="w-2 h-2 rounded-full bg-green-400 shrink-0" />
+              </span>
+            </>
+          )}
         </div>
       </div>
-      {subLinks && subLinks.length > 0 && (
-        <div className="flex gap-1.5 mt-2.5 sm:mt-3 pt-2.5 sm:pt-3 border-t border-white/10">
-          {subLinks.map((link) => (
-            <Link
-              key={link.href + link.label}
-              href={link.href}
-              className="flex-1 text-center text-[9px] sm:text-[11px] text-white/50 hover:text-white hover:bg-white/10 rounded-md py-1 sm:py-1.5 transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </div>
-      )}
     </div>
   );
 }
