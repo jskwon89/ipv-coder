@@ -88,6 +88,9 @@ export default function AdminPage() {
   const [adminChatInput, setAdminChatInput] = useState("");
   const [sendingChat, setSendingChat] = useState(false);
 
+  // Files for judgment-coding request
+  const [reqFiles, setReqFiles] = useState<{ name: string; originalName: string; size: number; createdAt: string; storagePath: string }[]>([]);
+
   useEffect(() => {
     if (!isAdmin) {
       router.push("/dashboard");
@@ -135,6 +138,14 @@ export default function AdminPage() {
       setInquiries(data.inquiries ?? []);
     } catch { /* ignore */ }
   }, []);
+
+  const fetchReqFiles = async (projectId: string) => {
+    try {
+      const res = await fetch(`/api/projects/${projectId}/files`);
+      const data = await res.json();
+      setReqFiles(data.files ?? []);
+    } catch { setReqFiles([]); }
+  };
 
   const fetchChatMessages = async (api: string, reqId: string) => {
     try {
@@ -310,7 +321,7 @@ export default function AdminPage() {
                         <span className="text-xs text-gray-400 ml-2">{new Date(req.createdAt).toLocaleDateString("ko-KR")}</span>
                       </div>
                       <button
-                        onClick={() => { setActiveTab("requests"); setSelectedReq({ type: req._type, api: req._api, req }); setNewStatus(req.status); setAdminResponse(req.adminResponse || ""); fetchChatMessages(req._api, req.id); }}
+                        onClick={() => { setActiveTab("requests"); setSelectedReq({ type: req._type, api: req._api, req }); setNewStatus(req.status); setAdminResponse(req.adminResponse || ""); fetchChatMessages(req._api, req.id); if (req._type === "judgment-coding" && (req as Record<string, unknown>).projectId) fetchReqFiles(String((req as Record<string, unknown>).projectId)); else setReqFiles([]); }}
                         className="px-3 py-1 text-xs text-[#c49a2e] border border-[#c49a2e]/30 rounded-lg hover:bg-[#c49a2e]/5"
                       >
                         처리
@@ -421,7 +432,7 @@ export default function AdminPage() {
                           <td className="px-4 py-3 text-gray-500">{new Date(req.createdAt).toLocaleDateString("ko-KR")}</td>
                           <td className="px-4 py-3 text-right">
                             <button
-                              onClick={() => { setSelectedReq({ type: req._type, api: req._api, req }); setNewStatus(req.status); setAdminResponse(req.adminResponse || ""); fetchChatMessages(req._api, req.id); }}
+                              onClick={() => { setSelectedReq({ type: req._type, api: req._api, req }); setNewStatus(req.status); setAdminResponse(req.adminResponse || ""); fetchChatMessages(req._api, req.id); if (req._type === "judgment-coding" && (req as Record<string, unknown>).projectId) fetchReqFiles(String((req as Record<string, unknown>).projectId)); else setReqFiles([]); }}
                               className="px-3 py-1.5 text-xs text-[#c49a2e] border border-[#c49a2e]/30 rounded-lg hover:bg-[#c49a2e]/5 transition-colors"
                             >
                               상세/처리
@@ -442,7 +453,7 @@ export default function AdminPage() {
               <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto border border-gray-200">
                 <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
                   <h3 className="font-bold text-gray-900">의뢰 상세</h3>
-                  <button onClick={() => { setSelectedReq(null); setChatMessages([]); }} className="p-2 hover:bg-gray-100 rounded-lg">
+                  <button onClick={() => { setSelectedReq(null); setChatMessages([]); setReqFiles([]); }} className="p-2 hover:bg-gray-100 rounded-lg">
                     <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -465,19 +476,36 @@ export default function AdminPage() {
                       ))}
                   </div>
 
-                  {/* 판결문 코딩 의뢰 시 프로젝트 파일 바로가기 */}
-                  {selectedReq.type === "judgment-coding" && !!(selectedReq.req as Record<string, unknown>).projectId && (
-                    <a
-                      href={`/project/${String((selectedReq.req as Record<string, unknown>).projectId)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-50 text-blue-700 border border-blue-200 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                      </svg>
-                      프로젝트 페이지에서 파일 확인
-                    </a>
+                  {/* 판결문 코딩 의뢰 시 첨부 파일 목록 */}
+                  {selectedReq.type === "judgment-coding" && reqFiles.length > 0 && (
+                    <div className="border border-gray-200 rounded-lg overflow-hidden">
+                      <div className="px-4 py-2.5 bg-gray-50 border-b border-gray-200">
+                        <span className="text-xs font-semibold text-gray-500">첨부 파일 ({reqFiles.length}개)</span>
+                      </div>
+                      <div className="divide-y divide-gray-100">
+                        {reqFiles.map((f, idx) => (
+                          <div key={f.storagePath} className="px-4 py-2.5 flex items-center gap-3 hover:bg-gray-50">
+                            <span className="text-xs text-gray-400 w-5 text-right shrink-0">{idx + 1}</span>
+                            <svg className="w-4 h-4 text-amber-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <span className="text-sm text-gray-700 truncate flex-1">{f.originalName}</span>
+                            <span className="text-xs text-gray-400 shrink-0">{f.size ? `${(f.size / 1024).toFixed(0)}KB` : ""}</span>
+                            <button
+                              onClick={async () => {
+                                const projectId = String((selectedReq.req as Record<string, unknown>).projectId);
+                                const res = await fetch(`/api/projects/${projectId}/files/download?path=${encodeURIComponent(f.storagePath)}`);
+                                const data = await res.json();
+                                if (data.url) window.open(data.url, "_blank");
+                              }}
+                              className="text-xs text-[#c49a2e] hover:text-[#b08a28] font-medium shrink-0"
+                            >
+                              다운로드
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   )}
 
                   {/* Status update */}

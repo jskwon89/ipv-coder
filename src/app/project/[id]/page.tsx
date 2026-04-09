@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import StatusBadge, { type CaseStatus } from "@/components/StatusBadge";
+import { useUser } from "@/contexts/UserAuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface CaseItem {
   id: string;
@@ -31,6 +33,8 @@ export default function ProjectDetailPage() {
   const params = useParams();
   const router = useRouter();
   const projectId = params.id as string;
+  const { user, loading: userLoading } = useUser();
+  const { isAdmin } = useAuth();
 
   const [project, setProject] = useState<ProjectInfo | null>(null);
   const [cases, setCases] = useState<CaseItem[]>([]);
@@ -75,6 +79,20 @@ export default function ProjectDetailPage() {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  // 로그인 체크: 비로그인 시 로그인 페이지로 리다이렉트
+  useEffect(() => {
+    if (!userLoading && !user && !isAdmin) {
+      router.push("/login");
+    }
+  }, [userLoading, user, isAdmin, router]);
+
+  if (userLoading) {
+    return <div className="p-8 text-center text-gray-400">로딩 중...</div>;
+  }
+  if (!user && !isAdmin) {
+    return null;
+  }
 
   const filteredCases = filter === "all" ? cases : cases.filter((c) => c.status === filter);
 
