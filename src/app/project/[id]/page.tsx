@@ -244,6 +244,23 @@ export default function ProjectDetailPage() {
                   <span className="text-xs text-gray-400 shrink-0">
                     {f.createdAt ? new Date(f.createdAt).toLocaleDateString("ko-KR") : ""}
                   </span>
+                  <button
+                    onClick={async (e) => {
+                      e.stopPropagation();
+                      try {
+                        const res = await fetch(`/api/projects/${projectId}/files/download?path=${encodeURIComponent(f.storagePath)}`);
+                        const data = await res.json();
+                        if (data.url) {
+                          window.open(data.url, "_blank");
+                        }
+                      } catch {
+                        alert("파일 다운로드에 실패했습니다.");
+                      }
+                    }}
+                    className="text-xs text-[#c49a2e] hover:text-[#b08a28] font-medium shrink-0"
+                  >
+                    다운로드
+                  </button>
                 </div>
               ))}
             </div>
@@ -275,8 +292,18 @@ export default function ProjectDetailPage() {
               onClick={async () => {
                 setRequesting(true);
                 try {
-                  // TODO: 실제 의뢰 API 연동
-                  await new Promise((r) => setTimeout(r, 500));
+                  const res = await fetch("/api/judgment-coding", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      projectId,
+                      projectName: project?.name || "",
+                      email: "",
+                      note: requestNote,
+                      fileCount: uploadedFiles.length,
+                    }),
+                  });
+                  if (!res.ok) throw new Error("의뢰 실패");
                   setRequested(true);
                 } finally {
                   setRequesting(false);

@@ -1126,6 +1126,36 @@ export async function addQualAnalysisMessage(requestId: string, sender: 'user' |
 }
 
 // ---------------------------------------------------------------------------
+// Judgment Coding Request (프로젝트 기반 판결문 코딩 의뢰)
+// ---------------------------------------------------------------------------
+
+export async function getJudgmentCodingRequests() {
+  return _getServiceRequests<Record<string, unknown>>('judgment-coding');
+}
+
+export async function getJudgmentCodingRequest(id: string) {
+  return _getServiceRequest<Record<string, unknown>>('judgment-coding', id);
+}
+
+export async function createJudgmentCodingRequest(
+  data: Record<string, unknown>,
+) {
+  return _createServiceRequest<Record<string, unknown>>('judgment-coding', data);
+}
+
+export async function updateJudgmentCodingRequest(id: string, patch: Record<string, unknown>) {
+  return _updateServiceRequest<Record<string, unknown>>('judgment-coding', id, patch);
+}
+
+export async function getJudgmentCodingMessages(requestId: string): Promise<ChatMessage[]> {
+  return _getMessages('judgment-coding', requestId);
+}
+
+export async function addJudgmentCodingMessage(requestId: string, sender: 'user' | 'admin', message: string): Promise<ChatMessage> {
+  return _addMessage('judgment-coding', requestId, sender, message);
+}
+
+// ---------------------------------------------------------------------------
 // Contact Inquiries
 // ---------------------------------------------------------------------------
 

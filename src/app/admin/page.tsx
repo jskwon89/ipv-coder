@@ -45,6 +45,7 @@ const serviceTypes = [
   { key: "stats-design", label: "통계분석 설계", api: "/api/stats-design", titleField: "researchQuestion" },
   { key: "survey", label: "설문조사", api: "/api/survey", titleField: "surveyTopic" },
   { key: "judgment-collection", label: "판결문 수집", api: "/api/judgment-collection", titleField: "courtType" },
+  { key: "judgment-coding", label: "판결문 코딩", api: "/api/judgment-coding", titleField: "projectName" },
   { key: "news-collection", label: "뉴스 수집", api: "/api/news-collection", titleField: "keywords" },
   { key: "data-transform", label: "데이터 전처리", api: "/api/data-transform", titleField: "dataDescription" },
   { key: "quant-analysis", label: "계량분석", api: "/api/quant-analysis", titleField: "analysisType" },
@@ -463,6 +464,21 @@ export default function AdminPage() {
                         </div>
                       ))}
                   </div>
+
+                  {/* 판결문 코딩 의뢰 시 프로젝트 파일 바로가기 */}
+                  {selectedReq.type === "judgment-coding" && !!(selectedReq.req as Record<string, unknown>).projectId && (
+                    <a
+                      href={`/project/${String((selectedReq.req as Record<string, unknown>).projectId)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-50 text-blue-700 border border-blue-200 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                      프로젝트 페이지에서 파일 확인
+                    </a>
+                  )}
 
                   {/* Status update */}
                   <div className="space-y-3">
