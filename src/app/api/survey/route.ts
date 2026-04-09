@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { getSurveyRequests, createSurveyRequest } from '@/lib/db';
+import { notifyNewRequest } from '@/lib/discord';
 
 export async function GET(request: NextRequest) {
   try {
@@ -48,6 +49,7 @@ export async function POST(request: NextRequest) {
       surveyData: (surveyData || '').trim(),
     });
 
+    await notifyNewRequest('survey', created.email || '', created.title);
     return Response.json({ request: created }, { status: 201 });
   } catch (error) {
     return Response.json(

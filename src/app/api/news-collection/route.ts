@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { getNewsCollectionRequests, createNewsCollectionRequest } from '@/lib/db';
+import { notifyNewRequest } from '@/lib/discord';
 
 export async function GET(request: NextRequest) {
   try {
@@ -44,6 +45,7 @@ export async function POST(request: NextRequest) {
       additionalNotes: (body.additionalNotes || '').trim(),
     });
 
+    await notifyNewRequest('news-collection', created.email || '', created.keywords);
     return Response.json({ request: created }, { status: 201 });
   } catch (error) {
     return Response.json(

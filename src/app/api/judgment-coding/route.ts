@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { getJudgmentCodingRequests, createJudgmentCodingRequest } from '@/lib/db';
+import { notifyNewRequest } from '@/lib/discord';
 
 export async function GET(request: NextRequest) {
   try {
@@ -31,6 +32,7 @@ export async function POST(request: NextRequest) {
       fileCount: fileCount || 0,
     });
 
+    await notifyNewRequest('judgment-coding', String(created.email || ''), String(created.projectName || ''));
     return Response.json({ request: created }, { status: 201 });
   } catch (error) {
     return Response.json(

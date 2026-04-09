@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { getTextAnalysisRequests, createTextAnalysisRequest } from '@/lib/db';
+import { notifyNewRequest } from '@/lib/discord';
 
 export async function GET(request: NextRequest) {
   try {
@@ -35,6 +36,7 @@ export async function POST(request: NextRequest) {
       additionalNotes: (body.additionalNotes || '').trim(),
     });
 
+    await notifyNewRequest('text-analysis', created.email || '', created.analysisTypes);
     return Response.json({ request: created }, { status: 201 });
   } catch (error) {
     return Response.json(

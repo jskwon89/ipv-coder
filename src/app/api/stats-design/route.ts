@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import { getStatsDesignRequests, createStatsDesignRequest } from '@/lib/db';
 import { notifyRequestReceived } from '@/lib/email';
+import { notifyNewRequest } from '@/lib/discord';
 
 export async function GET(request: NextRequest) {
   try {
@@ -53,7 +54,7 @@ export async function POST(request: NextRequest) {
     if (created.email) {
       await notifyRequestReceived(created.email, `통계분석 설계: ${created.researchType}`);
     }
-
+    await notifyNewRequest('stats-design', created.email || '', created.analysisGoal);
     return Response.json({ request: created }, { status: 201 });
   } catch (error) {
     return Response.json(

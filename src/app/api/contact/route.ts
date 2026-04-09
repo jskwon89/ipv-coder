@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { getContactInquiries, createContactInquiry, updateContactInquiry } from '@/lib/db';
+import { notifyContactInquiry } from '@/lib/discord';
 
 export async function GET() {
   try {
@@ -40,6 +41,7 @@ export async function POST(request: NextRequest) {
       message: (message || '').trim(),
     });
 
+    await notifyContactInquiry(created.email || '', created.subject || '');
     return Response.json({ inquiry: created }, { status: 201 });
   } catch {
     return Response.json(

@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { getQuantAnalysisRequests, createQuantAnalysisRequest } from '@/lib/db';
+import { notifyNewRequest } from '@/lib/discord';
 
 export async function GET(request: NextRequest) {
   try {
@@ -36,6 +37,7 @@ export async function POST(request: NextRequest) {
       additionalNotes: (body.additionalNotes || '').trim(),
     });
 
+    await notifyNewRequest('quant-analysis', created.email || '', created.analysisType);
     return Response.json({ request: created }, { status: 201 });
   } catch (error) {
     return Response.json(

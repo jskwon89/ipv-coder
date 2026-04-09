@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import { getResearchRequests, createResearchRequest } from '@/lib/db';
 import { notifyRequestReceived } from '@/lib/email';
+import { notifyNewRequest } from '@/lib/discord';
 
 export async function GET(request: NextRequest) {
   try {
@@ -40,6 +41,7 @@ export async function POST(request: NextRequest) {
     if (created.email) {
       await notifyRequestReceived(created.email, created.keywords);
     }
+    await notifyNewRequest('research-design', created.email || '', created.keywords);
     return Response.json({ request: created }, { status: 201 });
   } catch (error) {
     return Response.json(

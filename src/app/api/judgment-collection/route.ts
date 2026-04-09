@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { getJudgmentCollectionRequests, createJudgmentCollectionRequest } from '@/lib/db';
+import { notifyNewRequest } from '@/lib/discord';
 
 export async function GET(request: NextRequest) {
   try {
@@ -60,6 +61,7 @@ export async function POST(request: NextRequest) {
       additionalNotes: (body.additionalNotes || '').trim(),
     });
 
+    await notifyNewRequest('judgment-collection', created.email || '', created.keywords || created.name);
     return Response.json({ request: created }, { status: 201 });
   } catch (error) {
     return Response.json(
