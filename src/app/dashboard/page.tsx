@@ -78,6 +78,11 @@ export default function DashboardPage() {
   const [selectedTemplate, setSelectedTemplate] = useState("judgment");
 
   const fetchData = useCallback(async () => {
+    // 로그인하지 않은 경우 의뢰 데이터를 가져오지 않음
+    if (!user) {
+      setLoading(false);
+      return;
+    }
     try {
       const [projRes, researchRes, statsDesignRes, surveyRes, dtRes, quantRes, textRes, qualRes] = await Promise.all([
         fetch("/api/projects"),
@@ -125,7 +130,7 @@ export default function DashboardPage() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     fetchData();
