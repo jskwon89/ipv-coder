@@ -3,7 +3,6 @@
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useUser } from "@/contexts/UserAuthContext";
 
 interface Project {
@@ -68,8 +67,7 @@ interface ServiceStats {
 }
 
 export default function DashboardPage() {
-  const router = useRouter();
-  const { user, loading: userLoading, signOut: userSignOut } = useUser();
+  const { user, signOut: userSignOut } = useUser();
   const [projects, setProjects] = useState<Project[]>([]);
   const emptyBreakdown: StatusBreakdown = { total: 0, pending: 0, in_progress: 0, completed: 0 };
   const [stats, setStats] = useState<ServiceStats>({ researchDesign: { ...emptyBreakdown }, judgment: { ...emptyBreakdown }, survey: { ...emptyBreakdown }, dataAnalysis: { ...emptyBreakdown } });
@@ -78,13 +76,6 @@ export default function DashboardPage() {
   const [newName, setNewName] = useState("");
   const [creating, setCreating] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState("judgment");
-
-  // 로그인 체크
-  useEffect(() => {
-    if (!userLoading && !user) {
-      router.push("/login");
-    }
-  }, [userLoading, user, router]);
 
   const fetchData = useCallback(async () => {
     try {
