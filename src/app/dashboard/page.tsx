@@ -84,15 +84,16 @@ export default function DashboardPage() {
       return;
     }
     try {
+      const emailParam = user.email ? `?email=${encodeURIComponent(user.email)}` : "";
       const [projRes, researchRes, statsDesignRes, surveyRes, dtRes, quantRes, textRes, qualRes] = await Promise.all([
         fetch("/api/projects"),
-        fetch("/api/research-design"),
-        fetch("/api/stats-design"),
-        fetch("/api/survey"),
-        fetch("/api/data-transform"),
-        fetch("/api/quant-analysis"),
-        fetch("/api/text-analysis-request"),
-        fetch("/api/qual-analysis"),
+        fetch(`/api/research-design${emailParam}`),
+        fetch(`/api/stats-design${emailParam}`),
+        fetch(`/api/survey${emailParam}`),
+        fetch(`/api/data-transform${emailParam}`),
+        fetch(`/api/quant-analysis${emailParam}`),
+        fetch(`/api/text-analysis-request${emailParam}`),
+        fetch(`/api/qual-analysis${emailParam}`),
       ]);
       const projData = await projRes.json();
       const researchData = await researchRes.json();

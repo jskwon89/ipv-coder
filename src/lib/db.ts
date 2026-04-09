@@ -142,7 +142,7 @@ export interface ResearchRequest {
   description: string;
   field: string;
   email: string;
-  status: 'pending' | 'in_progress' | 'completed';
+  status: 'pending' | 'received' | 'in_progress' | 'completed';
   createdAt: string;
   aiDraft: string;
   adminResponse: string;
@@ -167,7 +167,7 @@ export interface StatsDesignRequest {
   analysisGoal: string;
   currentMethods: string;
   description: string;
-  status: 'pending' | 'in_progress' | 'completed';
+  status: 'pending' | 'received' | 'in_progress' | 'completed';
   createdAt: string;
   adminResponse: string;
   respondedAt: string;
@@ -188,7 +188,7 @@ export interface SurveyRequest {
   irbStatus: string;
   additionalRequests: string;
   surveyData: string;
-  status: 'pending' | 'in_progress' | 'completed';
+  status: 'pending' | 'received' | 'in_progress' | 'completed';
   createdAt: string;
   adminResponse: string;
   respondedAt: string;
@@ -218,7 +218,7 @@ export interface JudgmentCollectionRequest {
   maxCount: number;
   // common
   additionalNotes: string;
-  status: 'pending' | 'in_progress' | 'completed';
+  status: 'pending' | 'received' | 'in_progress' | 'completed';
   createdAt: string;
   adminResponse: string;
   respondedAt: string;
@@ -235,7 +235,7 @@ export interface NewsCollectionRequest {
   maxCount: number;
   purpose: string;
   additionalNotes: string;
-  status: 'pending' | 'in_progress' | 'completed';
+  status: 'pending' | 'received' | 'in_progress' | 'completed';
   createdAt: string;
   adminResponse: string;
   respondedAt: string;
@@ -250,7 +250,7 @@ export interface DataTransformRequest {
   transformationTypes: string; // JSON array
   transformationDetail: string;
   additionalNotes: string;
-  status: 'pending' | 'in_progress' | 'completed';
+  status: 'pending' | 'received' | 'in_progress' | 'completed';
   createdAt: string;
   adminResponse: string;
   respondedAt: string;
@@ -265,7 +265,7 @@ export interface QuantAnalysisRequest {
   hypothesis: string;
   dataFormat: string;
   additionalNotes: string;
-  status: 'pending' | 'in_progress' | 'completed';
+  status: 'pending' | 'received' | 'in_progress' | 'completed';
   createdAt: string;
   adminResponse: string;
   respondedAt: string;
@@ -279,7 +279,7 @@ export interface TextAnalysisRequest {
   textContent: string;
   analysisOptions: string; // JSON object of per-analysis options
   additionalNotes: string;
-  status: 'pending' | 'in_progress' | 'completed';
+  status: 'pending' | 'received' | 'in_progress' | 'completed';
   createdAt: string;
   adminResponse: string;
   respondedAt: string;
@@ -293,7 +293,7 @@ export interface QualAnalysisRequest {
   dataFormat: string;
   analysisGoal: string;
   additionalNotes: string;
-  status: 'pending' | 'in_progress' | 'completed';
+  status: 'pending' | 'received' | 'in_progress' | 'completed';
   createdAt: string;
   adminResponse: string;
   respondedAt: string;
@@ -434,12 +434,15 @@ function serviceRequestToRow(serviceType: string, obj: Record<string, unknown>):
   return row;
 }
 
-async function _getServiceRequests<T>(serviceType: string): Promise<T[]> {
-  const { data, error } = await supabase
+async function _getServiceRequests<T>(serviceType: string, email?: string): Promise<T[]> {
+  let query = supabase
     .from('service_requests')
     .select('*')
-    .eq('service_type', serviceType)
-    .order('created_at', { ascending: false });
+    .eq('service_type', serviceType);
+  if (email) {
+    query = query.eq('email', email);
+  }
+  const { data, error } = await query.order('created_at', { ascending: false });
   if (error) throw error;
   return (data ?? []).map((row: Record<string, unknown>) => rowToServiceRequest<T>(row));
 }
@@ -847,8 +850,8 @@ export async function updateDyad(projectId: string, dyadId: string, patch: Parti
 // Research Design Request
 // ---------------------------------------------------------------------------
 
-export async function getResearchRequests(): Promise<ResearchRequest[]> {
-  return _getServiceRequests<ResearchRequest>('research-design');
+export async function getResearchRequests(email?: string): Promise<ResearchRequest[]> {
+  return _getServiceRequests<ResearchRequest>('research-design', email);
 }
 
 export async function getResearchRequest(id: string): Promise<ResearchRequest | undefined> {
@@ -876,8 +879,8 @@ export async function addChatMessage(requestId: string, sender: 'user' | 'admin'
 // Stats Design Request
 // ---------------------------------------------------------------------------
 
-export async function getStatsDesignRequests(): Promise<StatsDesignRequest[]> {
-  return _getServiceRequests<StatsDesignRequest>('stats-design');
+export async function getStatsDesignRequests(email?: string): Promise<StatsDesignRequest[]> {
+  return _getServiceRequests<StatsDesignRequest>('stats-design', email);
 }
 
 export async function getStatsDesignRequest(id: string): Promise<StatsDesignRequest | undefined> {
@@ -914,8 +917,8 @@ export async function addStatsDesignMessage(requestId: string, sender: 'user' | 
 // Survey Request
 // ---------------------------------------------------------------------------
 
-export async function getSurveyRequests(): Promise<SurveyRequest[]> {
-  return _getServiceRequests<SurveyRequest>('survey');
+export async function getSurveyRequests(email?: string): Promise<SurveyRequest[]> {
+  return _getServiceRequests<SurveyRequest>('survey', email);
 }
 
 export async function getSurveyRequest(id: string): Promise<SurveyRequest | undefined> {
@@ -943,8 +946,8 @@ export async function addSurveyMessage(requestId: string, sender: 'user' | 'admi
 // Judgment Collection Request
 // ---------------------------------------------------------------------------
 
-export async function getJudgmentCollectionRequests(): Promise<JudgmentCollectionRequest[]> {
-  return _getServiceRequests<JudgmentCollectionRequest>('judgment-collection');
+export async function getJudgmentCollectionRequests(email?: string): Promise<JudgmentCollectionRequest[]> {
+  return _getServiceRequests<JudgmentCollectionRequest>('judgment-collection', email);
 }
 
 export async function getJudgmentCollectionRequest(id: string): Promise<JudgmentCollectionRequest | undefined> {
@@ -974,8 +977,8 @@ export async function addJudgmentCollectionMessage(requestId: string, sender: 'u
 // News Collection Request
 // ---------------------------------------------------------------------------
 
-export async function getNewsCollectionRequests(): Promise<NewsCollectionRequest[]> {
-  return _getServiceRequests<NewsCollectionRequest>('news-collection');
+export async function getNewsCollectionRequests(email?: string): Promise<NewsCollectionRequest[]> {
+  return _getServiceRequests<NewsCollectionRequest>('news-collection', email);
 }
 
 export async function getNewsCollectionRequest(id: string): Promise<NewsCollectionRequest | undefined> {
@@ -1005,8 +1008,8 @@ export async function addNewsCollectionMessage(requestId: string, sender: 'user'
 // Data Transform Request
 // ---------------------------------------------------------------------------
 
-export async function getDataTransformRequests(): Promise<DataTransformRequest[]> {
-  return _getServiceRequests<DataTransformRequest>('data-transform');
+export async function getDataTransformRequests(email?: string): Promise<DataTransformRequest[]> {
+  return _getServiceRequests<DataTransformRequest>('data-transform', email);
 }
 
 export async function getDataTransformRequest(id: string): Promise<DataTransformRequest | undefined> {
@@ -1036,8 +1039,8 @@ export async function addDataTransformMessage(requestId: string, sender: 'user' 
 // Quant Analysis Request
 // ---------------------------------------------------------------------------
 
-export async function getQuantAnalysisRequests(): Promise<QuantAnalysisRequest[]> {
-  return _getServiceRequests<QuantAnalysisRequest>('quant-analysis');
+export async function getQuantAnalysisRequests(email?: string): Promise<QuantAnalysisRequest[]> {
+  return _getServiceRequests<QuantAnalysisRequest>('quant-analysis', email);
 }
 
 export async function getQuantAnalysisRequest(id: string): Promise<QuantAnalysisRequest | undefined> {
@@ -1067,8 +1070,8 @@ export async function addQuantAnalysisMessage(requestId: string, sender: 'user' 
 // Text Analysis Request
 // ---------------------------------------------------------------------------
 
-export async function getTextAnalysisRequests(): Promise<TextAnalysisRequest[]> {
-  return _getServiceRequests<TextAnalysisRequest>('text-analysis-request');
+export async function getTextAnalysisRequests(email?: string): Promise<TextAnalysisRequest[]> {
+  return _getServiceRequests<TextAnalysisRequest>('text-analysis-request', email);
 }
 
 export async function getTextAnalysisRequest(id: string): Promise<TextAnalysisRequest | undefined> {
@@ -1098,8 +1101,8 @@ export async function addTextAnalysisMessage(requestId: string, sender: 'user' |
 // Qual Analysis Request
 // ---------------------------------------------------------------------------
 
-export async function getQualAnalysisRequests(): Promise<QualAnalysisRequest[]> {
-  return _getServiceRequests<QualAnalysisRequest>('qual-analysis');
+export async function getQualAnalysisRequests(email?: string): Promise<QualAnalysisRequest[]> {
+  return _getServiceRequests<QualAnalysisRequest>('qual-analysis', email);
 }
 
 export async function getQualAnalysisRequest(id: string): Promise<QualAnalysisRequest | undefined> {
@@ -1129,8 +1132,8 @@ export async function addQualAnalysisMessage(requestId: string, sender: 'user' |
 // Judgment Coding Request (프로젝트 기반 판결문 코딩 의뢰)
 // ---------------------------------------------------------------------------
 
-export async function getJudgmentCodingRequests() {
-  return _getServiceRequests<Record<string, unknown>>('judgment-coding');
+export async function getJudgmentCodingRequests(email?: string) {
+  return _getServiceRequests<Record<string, unknown>>('judgment-coding', email);
 }
 
 export async function getJudgmentCodingRequest(id: string) {

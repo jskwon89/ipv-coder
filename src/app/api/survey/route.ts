@@ -1,9 +1,10 @@
 import { NextRequest } from 'next/server';
 import { getSurveyRequests, createSurveyRequest } from '@/lib/db';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const requests = await getSurveyRequests();
+    const email = request.nextUrl.searchParams.get('email') || undefined;
+    const requests = await getSurveyRequests(email);
     return Response.json({ requests });
   } catch (error) {
     return Response.json(

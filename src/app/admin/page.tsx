@@ -21,7 +21,7 @@ interface Project {
 interface GenericRequest {
   id: string;
   email: string;
-  status: "pending" | "in_progress" | "completed";
+  status: "pending" | "received" | "in_progress" | "completed";
   createdAt: string;
   adminResponse: string;
   respondedAt: string;
@@ -54,10 +54,11 @@ const serviceTypes = [
   { key: "qual-analysis", label: "질적분석", api: "/api/qual-analysis", titleField: "analysisType" },
 ];
 
-const statusConfig = {
-  pending: { label: "대기중", bg: "bg-gray-100", text: "text-gray-600" },
-  in_progress: { label: "진행중", bg: "bg-blue-50", text: "text-blue-600" },
-  completed: { label: "완료", bg: "bg-green-50", text: "text-green-600" },
+const statusConfig: Record<string, { label: string; bg: string; text: string }> = {
+  pending: { label: "접수 대기중", bg: "bg-gray-100", text: "text-gray-600" },
+  received: { label: "접수 완료", bg: "bg-yellow-50", text: "text-yellow-700" },
+  in_progress: { label: "작업 진행중", bg: "bg-blue-50", text: "text-blue-600" },
+  completed: { label: "작업 완료", bg: "bg-green-50", text: "text-green-600" },
 };
 
 export default function AdminPage() {
@@ -71,7 +72,7 @@ export default function AdminPage() {
 
   // Requests management
   const [allRequests, setAllRequests] = useState<{ type: string; label: string; api: string; titleField: string; requests: GenericRequest[] }[]>([]);
-  const [filterStatus, setFilterStatus] = useState<"all" | "pending" | "in_progress" | "completed">("all");
+  const [filterStatus, setFilterStatus] = useState<"all" | "pending" | "received" | "in_progress" | "completed">("all");
   const [filterType, setFilterType] = useState<string>("all");
   const [selectedReq, setSelectedReq] = useState<{ type: string; api: string; req: GenericRequest } | null>(null);
   const [adminResponse, setAdminResponse] = useState("");
@@ -232,7 +233,7 @@ export default function AdminPage() {
   };
 
   const statusLabels: Record<string, string> = {
-    pending: "대기중", in_progress: "진행중", completed: "완료",
+    pending: "접수 대기중", received: "접수 완료", in_progress: "작업 진행중", completed: "작업 완료",
   };
 
   // 전체 의뢰 목록 Excel 내보내기
@@ -449,9 +450,10 @@ export default function AdminPage() {
             <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
               {([
                 { key: "all", label: "전체" },
-                { key: "pending", label: "대기중" },
-                { key: "in_progress", label: "진행중" },
-                { key: "completed", label: "완료" },
+                { key: "pending", label: "접수 대기" },
+                { key: "received", label: "접수 완료" },
+                { key: "in_progress", label: "작업 진행" },
+                { key: "completed", label: "작업 완료" },
               ] as const).map((s) => (
                 <button
                   key={s.key}
@@ -625,9 +627,10 @@ export default function AdminPage() {
                         onChange={(e) => setNewStatus(e.target.value)}
                         className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/30"
                       >
-                        <option value="pending">대기중</option>
-                        <option value="in_progress">진행중</option>
-                        <option value="completed">완료</option>
+                        <option value="pending">접수 대기중</option>
+                        <option value="received">접수 완료</option>
+                        <option value="in_progress">작업 진행중</option>
+                        <option value="completed">작업 완료</option>
                       </select>
                     </div>
                     <div>

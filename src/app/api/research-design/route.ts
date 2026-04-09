@@ -2,9 +2,10 @@ import { NextRequest } from 'next/server';
 import { getResearchRequests, createResearchRequest } from '@/lib/db';
 import { notifyRequestReceived } from '@/lib/email';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const requests = await getResearchRequests();
+    const email = request.nextUrl.searchParams.get('email') || undefined;
+    const requests = await getResearchRequests(email);
     return Response.json({ requests });
   } catch (error) {
     return Response.json(

@@ -1,9 +1,10 @@
 import { NextRequest } from 'next/server';
 import { getJudgmentCodingRequests, createJudgmentCodingRequest } from '@/lib/db';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const requests = await getJudgmentCodingRequests();
+    const email = request.nextUrl.searchParams.get('email') || undefined;
+    const requests = await getJudgmentCodingRequests(email);
     return Response.json({ requests });
   } catch (error) {
     return Response.json(

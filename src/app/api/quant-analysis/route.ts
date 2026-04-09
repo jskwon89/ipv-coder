@@ -1,9 +1,10 @@
 import { NextRequest } from 'next/server';
 import { getQuantAnalysisRequests, createQuantAnalysisRequest } from '@/lib/db';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const requests = await getQuantAnalysisRequests();
+    const email = request.nextUrl.searchParams.get('email') || undefined;
+    const requests = await getQuantAnalysisRequests(email);
     return Response.json({ requests });
   } catch (error) {
     return Response.json(

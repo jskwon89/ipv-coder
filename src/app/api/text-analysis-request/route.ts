@@ -1,9 +1,10 @@
 import { NextRequest } from 'next/server';
 import { getTextAnalysisRequests, createTextAnalysisRequest } from '@/lib/db';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const requests = await getTextAnalysisRequests();
+    const email = request.nextUrl.searchParams.get('email') || undefined;
+    const requests = await getTextAnalysisRequests(email);
     return Response.json({ requests });
   } catch (error) {
     return Response.json(

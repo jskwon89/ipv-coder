@@ -14,7 +14,7 @@ interface NewsCollectionRequest {
   maxCount: number;
   purpose: string;
   additionalNotes: string;
-  status: "pending" | "in_progress" | "completed";
+  status: "pending" | "received" | "in_progress" | "completed";
   createdAt: string;
   adminResponse: string;
   respondedAt: string;
@@ -28,10 +28,11 @@ interface ChatMessage {
   createdAt: string;
 }
 
-const statusConfig = {
-  pending: { label: "대기중", bg: "bg-gray-100", text: "text-gray-600" },
-  in_progress: { label: "진행중", bg: "bg-blue-50", text: "text-blue-600" },
-  completed: { label: "완료", bg: "bg-green-50", text: "text-green-600" },
+const statusConfig: Record<string, { label: string; bg: string; text: string }> = {
+  pending: { label: "접수 대기중", bg: "bg-gray-100", text: "text-gray-600" },
+  received: { label: "접수 완료", bg: "bg-yellow-50", text: "text-yellow-700" },
+  in_progress: { label: "작업 진행중", bg: "bg-blue-50", text: "text-blue-600" },
+  completed: { label: "작업 완료", bg: "bg-green-50", text: "text-green-600" },
 };
 
 const purposeLabels: Record<string, string> = {
