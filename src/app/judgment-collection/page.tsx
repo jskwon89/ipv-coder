@@ -5,7 +5,6 @@ import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { useUser } from "@/contexts/UserAuthContext";
 
-type Tab = "caseNumber" | "keyword";
 type OutputFormat = "pdf" | "text" | "both";
 type Purpose = "학술연구" | "정책연구" | "실무참고" | "교육" | "기타";
 type LogicOp = "AND" | "OR";
@@ -28,19 +27,19 @@ export default function JudgmentCollectionPage() {
   const { user } = useUser();
   const router = useRouter();
   const pathname = usePathname();
-  const [activeTab, setActiveTab] = useState<Tab>("caseNumber");
   const [submitted, setSubmitted] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Tab 1: Case number
-  const [caseNumbers, setCaseNumbers] = useState("");
+  // 첨부 파일 (사건번호 목록 등)
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+
+  // 출력 형식 / 수집 범위
   const [scopeFirst, setScopeFirst] = useState(true);
   const [scopeSecond, setScopeSecond] = useState(true);
   const [scopeThird, setScopeThird] = useState(false);
   const [outputFormat, setOutputFormat] = useState<OutputFormat>("both");
 
-  // Tab 2: Keyword
+  // 키워드/조건
   const [keywords, setKeywords] = useState<string[]>([]);
   const [keywordInput, setKeywordInput] = useState("");
   const [keywordLogic, setKeywordLogic] = useState<LogicOp>("AND");
@@ -128,8 +127,8 @@ export default function JudgmentCollectionPage() {
         name: name.trim(),
         organization: org.trim(),
         purpose,
-        searchType: activeTab,
-        caseNumbers: caseNumbers.trim(),
+        searchType: "keyword" as const,
+        caseNumbers: "",
         scopeFirst,
         scopeSecond,
         scopeThird,
@@ -208,244 +207,214 @@ export default function JudgmentCollectionPage() {
           </p>
         </div>
 
-        {/* Section 1: Search Mode Tabs */}
+        {/* Section 1: 수집 조건 */}
         <div className="bg-white rounded-2xl shadow-md border border-blue-200 mb-6 overflow-hidden">
           <div className="flex items-center gap-3 px-6 pt-6 pb-4 bg-blue-50">
             <span className="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold shrink-0">1</span>
-            <h2 className="text-lg font-semibold text-gray-900">검색 방식 선택</h2>
+            <h2 className="text-lg font-semibold text-gray-900">수집 조건</h2>
           </div>
 
-          {/* Tabs */}
-          <div className="flex border-b border-gray-200 mx-6">
-            <button
-              onClick={() => setActiveTab("caseNumber")}
-              className={`px-5 py-3 text-sm font-medium border-b-2 transition-colors ${
-                activeTab === "caseNumber"
-                  ? "border-blue-600 text-blue-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              사건번호로 검색
-            </button>
-            <button
-              onClick={() => setActiveTab("keyword")}
-              className={`px-5 py-3 text-sm font-medium border-b-2 transition-colors ${
-                activeTab === "keyword"
-                  ? "border-blue-600 text-blue-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              키워드/조건으로 검색
-            </button>
-          </div>
-
-          <div className="p-6">
-            {activeTab === "caseNumber" ? (
-              <div className="space-y-5">
-                {/* Case number textarea */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">사건번호 입력</label>
-                  <textarea
-                    value={caseNumbers}
-                    onChange={(e) => setCaseNumbers(e.target.value)}
-                    rows={8}
-                    className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y placeholder:text-gray-400"
-                    placeholder={"사건번호를 한 줄에 하나씩 입력하세요\n\n예:\n2023고단1234\n2024고합567\n서울중앙지방법원 2023고단890"}
-                  />
-                </div>
-
-                {/* File upload */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">파일로 업로드</label>
-                  <div className="flex items-center gap-3">
-                    <button
-                      type="button"
-                      onClick={() => fileInputRef.current?.click()}
-                      className="px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-                    >
-                      파일 선택
-                    </button>
-                    <span className="text-sm text-gray-500">
-                      {uploadedFile ? uploadedFile.name : "txt, xlsx 파일 지원"}
-                    </span>
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept=".txt,.xlsx,.xls"
-                      onChange={handleFileChange}
-                      className="hidden"
-                    />
-                  </div>
-                </div>
-
-                {/* Scope checkboxes */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">수집 범위</label>
-                  <div className="flex flex-wrap gap-4">
-                    <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
-                      <input type="checkbox" checked={scopeFirst} onChange={(e) => setScopeFirst(e.target.checked)} className="rounded border-gray-200 text-blue-600 focus:ring-blue-500" />
-                      1심 판결문
-                    </label>
-                    <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
-                      <input type="checkbox" checked={scopeSecond} onChange={(e) => setScopeSecond(e.target.checked)} className="rounded border-gray-200 text-blue-600 focus:ring-blue-500" />
-                      2심/항소심
-                    </label>
-                    <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
-                      <input type="checkbox" checked={scopeThird} onChange={(e) => setScopeThird(e.target.checked)} className="rounded border-gray-200 text-blue-600 focus:ring-blue-500" />
-                      3심/대법원
-                    </label>
-                  </div>
-                </div>
-
-                {/* Output format */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">출력 형식</label>
-                  <div className="flex flex-wrap gap-4">
-                    {(["pdf", "text", "both"] as const).map((fmt) => (
-                      <label key={fmt} className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
-                        <input
-                          type="radio"
-                          name="outputFormat"
-                          checked={outputFormat === fmt}
-                          onChange={() => setOutputFormat(fmt)}
-                          className="border-gray-200 text-blue-600 focus:ring-blue-500"
-                        />
-                        {fmt === "pdf" ? "PDF" : fmt === "text" ? "텍스트" : "둘 다"}
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-5">
-                {/* Keywords */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">검색 키워드</label>
-                  <div className="border border-gray-200 rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500">
-                    <div className="flex flex-wrap gap-1.5 mb-1">
-                      {keywords.map((kw) => (
-                        <span key={kw} className="inline-flex items-center gap-1 bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full text-xs font-medium">
-                          {kw}
-                          <button onClick={() => removeKeyword(kw)} className="hover:text-blue-900">
-                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-                          </button>
-                        </span>
-                      ))}
-                    </div>
-                    <input
-                      type="text"
-                      value={keywordInput}
-                      onChange={(e) => setKeywordInput(e.target.value)}
-                      onKeyDown={handleKeywordKeyDown}
-                      placeholder="예: 가정폭력, 스토킹, 보호명령 (Enter로 추가)"
-                      className="w-full outline-none text-sm py-1 placeholder:text-gray-400"
-                    />
-                  </div>
-                  <div className="flex items-center gap-3 mt-2">
-                    <span className="text-xs text-gray-500">연산:</span>
-                    {(["AND", "OR"] as const).map((op) => (
-                      <label key={op} className="flex items-center gap-1.5 text-xs text-gray-600 cursor-pointer">
-                        <input
-                          type="radio"
-                          name="logic"
-                          checked={keywordLogic === op}
-                          onChange={() => setKeywordLogic(op)}
-                          className="border-gray-200 text-blue-600 focus:ring-blue-500"
-                        />
-                        {op}
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Court selection */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">법원 선택</label>
-                  <div className="flex flex-wrap gap-2">
-                    {COURTS.map((court) => (
-                      <button
-                        key={court}
-                        type="button"
-                        onClick={() => toggleCourt(court)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
-                          selectedCourts.includes(court)
-                            ? "bg-blue-600 text-white border-blue-600"
-                            : "bg-white text-gray-600 border-gray-200 hover:border-blue-300"
-                        }`}
-                      >
-                        {court}
+          <div className="p-6 space-y-5">
+            {/* Keywords */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">검색 키워드</label>
+              <div className="border border-gray-200 rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500">
+                <div className="flex flex-wrap gap-1.5 mb-1">
+                  {keywords.map((kw) => (
+                    <span key={kw} className="inline-flex items-center gap-1 bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full text-xs font-medium">
+                      {kw}
+                      <button onClick={() => removeKeyword(kw)} className="hover:text-blue-900">
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                       </button>
-                    ))}
-                  </div>
+                    </span>
+                  ))}
                 </div>
-
-                {/* Period */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">기간 범위</label>
-                  <div className="flex items-center gap-2">
-                    <select
-                      value={startYear}
-                      onChange={(e) => setStartYear(Number(e.target.value))}
-                      className="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    >
-                      {YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
-                    </select>
-                    <span className="text-gray-500">~</span>
-                    <select
-                      value={endYear}
-                      onChange={(e) => setEndYear(Number(e.target.value))}
-                      className="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    >
-                      {YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
-                    </select>
-                  </div>
-                </div>
-
-                {/* Case type */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">사건 유형</label>
-                  <div className="flex flex-wrap gap-4">
-                    {CASE_TYPES.map((ct) => (
-                      <label key={ct.value} className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={selectedCaseTypes.includes(ct.value)}
-                          onChange={() => toggleCaseType(ct.value)}
-                          className="rounded border-gray-200 text-blue-600 focus:ring-blue-500"
-                        />
-                        {ct.label}
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Law keyword */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                    죄명/법조문 키워드 <span className="text-gray-400 font-normal">(선택)</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={lawKeyword}
-                    onChange={(e) => setLawKeyword(e.target.value)}
-                    placeholder="예: 상해, 폭행, 협박, 스토킹처벌법"
-                    className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-gray-400"
-                  />
-                </div>
-
-                {/* Max count */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">최대 수집 건수</label>
-                  <input
-                    type="number"
-                    value={maxCount}
-                    onChange={(e) => setMaxCount(Number(e.target.value))}
-                    min={1}
-                    className="w-32 border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
+                <input
+                  type="text"
+                  value={keywordInput}
+                  onChange={(e) => setKeywordInput(e.target.value)}
+                  onKeyDown={handleKeywordKeyDown}
+                  placeholder="예: 가정폭력, 스토킹, 보호명령 (Enter로 추가)"
+                  className="w-full outline-none text-sm py-1 placeholder:text-gray-400"
+                />
               </div>
-            )}
+              <div className="flex items-center gap-3 mt-2">
+                <span className="text-xs text-gray-500">연산:</span>
+                {(["AND", "OR"] as const).map((op) => (
+                  <label key={op} className="flex items-center gap-1.5 text-xs text-gray-600 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="logic"
+                      checked={keywordLogic === op}
+                      onChange={() => setKeywordLogic(op)}
+                      className="border-gray-200 text-blue-600 focus:ring-blue-500"
+                    />
+                    {op}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Court selection */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">법원 선택</label>
+              <div className="flex flex-wrap gap-2">
+                {COURTS.map((court) => (
+                  <button
+                    key={court}
+                    type="button"
+                    onClick={() => toggleCourt(court)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+                      selectedCourts.includes(court)
+                        ? "bg-blue-600 text-white border-blue-600"
+                        : "bg-white text-gray-600 border-gray-200 hover:border-blue-300"
+                    }`}
+                  >
+                    {court}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Period */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">기간 범위</label>
+              <div className="flex items-center gap-2">
+                <select
+                  value={startYear}
+                  onChange={(e) => setStartYear(Number(e.target.value))}
+                  className="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  {YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
+                </select>
+                <span className="text-gray-500">~</span>
+                <select
+                  value={endYear}
+                  onChange={(e) => setEndYear(Number(e.target.value))}
+                  className="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  {YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
+                </select>
+              </div>
+            </div>
+
+            {/* Case type */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">사건 유형</label>
+              <div className="flex flex-wrap gap-4">
+                {CASE_TYPES.map((ct) => (
+                  <label key={ct.value} className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={selectedCaseTypes.includes(ct.value)}
+                      onChange={() => toggleCaseType(ct.value)}
+                      className="rounded border-gray-200 text-blue-600 focus:ring-blue-500"
+                    />
+                    {ct.label}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Law keyword */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                죄명/법조문 키워드 <span className="text-gray-400 font-normal">(선택)</span>
+              </label>
+              <input
+                type="text"
+                value={lawKeyword}
+                onChange={(e) => setLawKeyword(e.target.value)}
+                placeholder="예: 상해, 폭행, 협박, 스토킹처벌법"
+                className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-gray-400"
+              />
+            </div>
+
+            {/* Max count */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">최대 수집 건수</label>
+              <input
+                type="number"
+                value={maxCount}
+                onChange={(e) => setMaxCount(Number(e.target.value))}
+                min={1}
+                className="w-32 border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+
+            {/* Scope checkboxes */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">수집 범위</label>
+              <div className="flex flex-wrap gap-4">
+                <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                  <input type="checkbox" checked={scopeFirst} onChange={(e) => setScopeFirst(e.target.checked)} className="rounded border-gray-200 text-blue-600 focus:ring-blue-500" />
+                  1심 판결문
+                </label>
+                <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                  <input type="checkbox" checked={scopeSecond} onChange={(e) => setScopeSecond(e.target.checked)} className="rounded border-gray-200 text-blue-600 focus:ring-blue-500" />
+                  2심/항소심
+                </label>
+                <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                  <input type="checkbox" checked={scopeThird} onChange={(e) => setScopeThird(e.target.checked)} className="rounded border-gray-200 text-blue-600 focus:ring-blue-500" />
+                  3심/대법원
+                </label>
+              </div>
+            </div>
+
+            {/* Output format */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">출력 형식</label>
+              <div className="flex flex-wrap gap-4">
+                {(["pdf", "text", "both"] as const).map((fmt) => (
+                  <label key={fmt} className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="outputFormat"
+                      checked={outputFormat === fmt}
+                      onChange={() => setOutputFormat(fmt)}
+                      className="border-gray-200 text-blue-600 focus:ring-blue-500"
+                    />
+                    {fmt === "pdf" ? "PDF" : fmt === "text" ? "텍스트" : "둘 다"}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* File attachment */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                참고 파일 첨부 <span className="text-gray-400 font-normal">(선택 - 사건번호 목록 등)</span>
+              </label>
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  파일 선택
+                </button>
+                <span className="text-sm text-gray-500">
+                  {uploadedFile ? uploadedFile.name : "txt, xlsx, pdf 등"}
+                </span>
+                {uploadedFile && (
+                  <button
+                    type="button"
+                    onClick={() => setUploadedFile(null)}
+                    className="text-xs text-red-500 hover:text-red-700"
+                  >
+                    삭제
+                  </button>
+                )}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".txt,.xlsx,.xls,.pdf,.hwp,.csv"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+              </div>
+              <p className="text-xs text-gray-400 mt-1">사건번호 목록이나 참고 자료가 있으면 첨부해주세요</p>
+            </div>
           </div>
         </div>
 
