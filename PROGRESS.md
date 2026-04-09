@@ -1,6 +1,87 @@
 # ResearchOn 프로젝트 진행상황
 
-## 2026-04-09 작업 내용
+## 2026-04-09 작업 내용 (오후 세션 - Claude Code)
+
+### 대화 요약
+
+사용자(관리자)가 실제로 의뢰를 넣어보면서 발견한 문제점들을 하나씩 수정함.
+주로 "의뢰가 실제로 저장되는가", "관리자가 확인할 수 있는가", "파일에 접근 가능한가", "비로그인 보안"에 집중.
+
+### 완료된 작업
+
+**판결문 코딩 의뢰 실제 저장 구현**
+- 프로젝트 페이지 "의뢰하기" 버튼이 TODO stub이었음 → 실제 `/api/judgment-coding` API 연동
+- `judgment-coding` 서비스 타입 DB 함수 추가 (CRUD + 채팅)
+- API 라우트 생성: `/api/judgment-coding/`, `/api/judgment-coding/[id]/`, `/api/judgment-coding/[id]/messages/`
+- 관리자 페이지에 `judgment-coding` 서비스 타입 추가
+
+**파일 다운로드 기능**
+- `/api/projects/[id]/files/download` — Supabase signed URL로 개별 파일 다운로드
+- `/api/projects/[id]/files/download-all` — 전체 파일 ZIP 압축 다운로드 (`archiver` 라이브러리)
+- 프로젝트 페이지: 각 파일에 "다운로드" 버튼 + "전체 다운로드 (ZIP)" 버튼
+- 관리자 의뢰 상세 모달: 첨부 파일 목록 표시 + 개별/전체 다운로드
+
+**관리자 의뢰 Excel 내보내기**
+- 의뢰 관리 탭: 필터된 전체 목록 Excel 다운로드 (`xlsx` 라이브러리)
+- 의뢰 상세 모달: 개별 의뢰 정보 Excel 다운로드
+- 필드명 한국어 매핑 포함
+
+**보안: 로그인 체크 추가**
+- 프로젝트 상세 페이지(`/project/[id]`): 비로그인 시 `/login`으로 리다이렉트
+- 대시보드: 비로그인 시 의뢰 데이터 fetch 안 함 (통계 0 표시)
+
+**사용자별 의뢰 필터링**
+- 모든 의뢰 API에 `?email=` 쿼리 파라미터 지원 추가
+- 대시보드에서 로그인 사용자 email로 필터 → 본인 의뢰만 표시
+- 관리자(`/admin`)는 email 없이 전체 조회
+
+**상태 4단계 체계 도입**
+- 기존: pending → in_progress → completed (3단계)
+- 변경: pending(접수 대기중) → received(접수 완료) → in_progress(작업 진행중) → completed(작업 완료)
+- DB 타입, 관리자 페이지, 결과 페이지 7개 모두 반영
+
+**판결문 수집 의뢰 페이지 개편**
+- "사건번호로 검색" 탭 제거 (실사용 안 함)
+- 키워드/조건 검색을 기본 단일 화면으로 통합
+- 참고 파일 첨부 기능 추가 (사건번호 목록 파일 등)
+
+**설문조사 의뢰 정리**
+- "파일에서 설문 불러오기" 파싱 기능 제거 (에러 발생, 현재 접수만 하는 단계)
+
+**대문 카피 수정**
+- "연구의 시작부터 완성까지, 한 곳에서"
+- "연구설계, 자료 생성, 데이터 변환, 통계분석, 문서 작성까지 하나의 플랫폼에서 쉽고 정확하게 진행하세요"
+
+**CLAUDE.md 규칙 추가**
+- 코드 변경 후 반드시 git add → commit → push origin main 자동 수행
+
+### 주요 변경 파일
+
+| 파일 | 변경 내용 |
+|------|-----------|
+| `src/lib/db.ts` | judgment-coding CRUD, email 필터링, 상태 4단계 타입 |
+| `src/app/api/judgment-coding/` | 새 API 라우트 (의뢰/메시지) |
+| `src/app/api/projects/[id]/files/download/` | 개별 파일 다운로드 API |
+| `src/app/api/projects/[id]/files/download-all/` | ZIP 일괄 다운로드 API |
+| `src/app/api/*/route.ts` (10개) | email 쿼리 파라미터 지원 |
+| `src/app/admin/page.tsx` | 파일 목록/다운로드, Excel 내보내기, 상태 4단계 |
+| `src/app/project/[id]/page.tsx` | 실제 의뢰 API 연동, 파일 다운로드, 로그인 체크 |
+| `src/app/dashboard/page.tsx` | 비로그인 보호, email 필터링 |
+| `src/app/judgment-collection/page.tsx` | 사건번호 탭 제거, 파일 첨부 추가 |
+| `src/app/survey-request/page.tsx` | 파일 파싱 기능 제거 |
+| `src/app/page.tsx` | 대문 카피 수정 |
+| `src/app/*-results/page.tsx` (7개) | 상태 4단계 반영 |
+| `CLAUDE.md` | push 규칙 추가 |
+| `package.json` | archiver 라이브러리 추가 |
+
+### 다음 할 일
+- 결과 예시/샘플 페이지 (서비스별 결과물 미리보기)
+- Discord 웹훅 알림 (의뢰 접수 시 모바일 알림)
+- 커스텀 도메인 설정
+
+---
+
+## 2026-04-09 작업 내용 (오전 세션)
 
 ### 완료된 작업
 
