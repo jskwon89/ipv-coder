@@ -6,11 +6,24 @@ import { useEffect, useState } from "react";
 
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false);
+  const [sections, setSections] = useState<Record<string, boolean>>({
+    services: true,
+    value_proposition: true,
+    how_it_works: true,
+    contact: true,
+  });
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/site-settings")
+      .then((r) => r.json())
+      .then((d) => { if (d.settings) setSections(d.settings); })
+      .catch(() => {});
   }, []);
 
   return (
@@ -94,7 +107,7 @@ export default function LandingPage() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-12 sm:py-24 px-4 sm:px-6 bg-white">
+      {sections.services && <section id="services" className="py-12 sm:py-24 px-4 sm:px-6 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8 sm:mb-16">
             <h2 className="text-2xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">제공 서비스</h2>
@@ -139,10 +152,10 @@ export default function LandingPage() {
             />
           </div>
         </div>
-      </section>
+      </section>}
 
       {/* Value Proposition */}
-      <section className="py-12 sm:py-24 px-4 sm:px-6 bg-[#0f1a2e] text-white">
+      {sections.value_proposition && <section className="py-12 sm:py-24 px-4 sm:px-6 bg-[#0f1a2e] text-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8 sm:mb-16">
             <h2 className="text-2xl sm:text-4xl font-bold mb-3 sm:mb-4">왜 ResearchOn인가요?</h2>
@@ -208,10 +221,10 @@ export default function LandingPage() {
             />
           </div>
         </div>
-      </section>
+      </section>}
 
       {/* How it Works */}
-      <section id="how-it-works" className="py-12 sm:py-24 px-4 sm:px-6 bg-gray-50">
+      {sections.how_it_works && <section id="how-it-works" className="py-12 sm:py-24 px-4 sm:px-6 bg-gray-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8 sm:mb-16">
             <h2 className="text-2xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">이용 절차</h2>
@@ -234,10 +247,10 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section>}
 
       {/* Contact / CTA Section */}
-      <section id="contact" className="py-12 sm:py-24 px-4 sm:px-6 bg-[#0f1a2e] text-white">
+      {sections.contact && <section id="contact" className="py-12 sm:py-24 px-4 sm:px-6 bg-[#0f1a2e] text-white">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-2xl sm:text-4xl font-bold mb-3 sm:mb-4">연구의 새로운 시작</h2>
           <p className="text-sm sm:text-lg text-white/70 mb-6 sm:mb-10">
@@ -262,7 +275,7 @@ export default function LandingPage() {
             </Link>
           </div>
         </div>
-      </section>
+      </section>}
 
       {/* Footer */}
       <footer className="bg-[#111827] text-white/60 py-8 sm:py-12 px-4 sm:px-6">

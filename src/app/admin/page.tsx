@@ -68,7 +68,17 @@ export default function AdminPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [chargeAmount, setChargeAmount] = useState("");
   const [charging, setCharging] = useState(false);
-  const [activeTab, setActiveTab] = useState<"overview" | "requests" | "inquiries" | "credits" | "projects">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "requests" | "inquiries" | "credits" | "projects" | "site-settings">("overview");
+
+  // Site settings (landing page sections)
+  const [siteSettings, setSiteSettings] = useState<Record<string, boolean>>({
+    services: true,
+    value_proposition: true,
+    how_it_works: true,
+    contact: true,
+  });
+  const [savingSettings, setSavingSettings] = useState(false);
+  const [settingsSaved, setSettingsSaved] = useState(false);
 
   // Requests management
   const [allRequests, setAllRequests] = useState<{ type: string; label: string; api: string; titleField: string; requests: GenericRequest[] }[]>([]);
@@ -101,7 +111,31 @@ export default function AdminPage() {
     fetchData();
     fetchRequests();
     fetchInquiries();
+    fetchSiteSettings();
   }, [isAdmin, router]);
+
+  const fetchSiteSettings = async () => {
+    try {
+      const res = await fetch("/api/site-settings");
+      const data = await res.json();
+      if (data.settings) setSiteSettings(data.settings);
+    } catch { /* ignore */ }
+  };
+
+  const handleSaveSiteSettings = async () => {
+    setSavingSettings(true);
+    setSettingsSaved(false);
+    try {
+      await fetch("/api/site-settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ settings: siteSettings }),
+      });
+      setSettingsSaved(true);
+      setTimeout(() => setSettingsSaved(false), 2000);
+    } catch { /* ignore */ }
+    finally { setSavingSettings(false); }
+  };
 
   const fetchData = async () => {
     const [credRes, projRes] = await Promise.all([
@@ -353,6 +387,7 @@ export default function AdminPage() {
           { key: "inquiries", label: `문의 관리${pendingInquiryCount ? ` (${pendingInquiryCount})` : ""}` },
           { key: "credits", label: "크레딧 관리" },
           { key: "projects", label: "프로젝트 관리" },
+          { key: "site-settings", label: "사이트 설정" },
         ] as const).map((tab) => (
           <button
             key={tab.key}
@@ -932,6 +967,57 @@ export default function AdminPage() {
               </tbody>
             </table>
           )}
+        </div>
+      )}
+
+      {/* Site Settings */}
+      {activeTab === "site-settings" && (
+        <div className="space-y-6">
+          <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <h3 className="font-bold text-gray-900 mb-1">랜딩 페이지 섹션 관리</h3>
+            <p className="text-sm text-gray-400 mb-6">대문(메인) 페이지에 표시할 섹션을 선택하세요</p>
+
+            <div className="space-y-4">
+              {[
+                { key: "services", label: "제공 서비스", desc: "연구 설계, 설문조사, 판결문 분석 등 서비스 카드 목록" },
+                { key: "value_proposition", label: "왜 ResearchOn인가요?", desc: "합리적인 가격, 검증된 품질, 수정보완 보장 등 강점 소개" },
+                { key: "how_it_works", label: "이용 절차", desc: "회원가입 → 서비스 선택 → 자료 업로드 → 결과 확인 4단계" },
+                { key: "contact", label: "문의/CTA", desc: "이메일 문의 폼 + '무료로 시작하기' 버튼" },
+              ].map((section) => (
+                <div key={section.key} className="flex items-center justify-between p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                  <div>
+                    <p className="font-medium text-gray-900">{section.label}</p>
+                    <p className="text-xs text-gray-400 mt-0.5">{section.desc}</p>
+                  </div>
+                  <button
+                    onClick={() => setSiteSettings((prev) => ({ ...prev, [section.key]: !prev[section.key] }))}
+                    className={`relative w-12 h-6 rounded-full transition-colors ${
+                      siteSettings[section.key] ? "bg-[#c49a2e]" : "bg-gray-300"
+                    }`}
+                  >
+                    <span
+                      className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${
+                        siteSettings[section.key] ? "translate-x-6" : "translate-x-0"
+                      }`}
+                    />
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-3 mt-6">
+              <button
+                onClick={handleSaveSiteSettings}
+                disabled={savingSettings}
+                className="px-6 py-2.5 bg-[#c49a2e] text-white rounded-lg text-sm font-semibold hover:bg-[#b08a28] disabled:opacity-50 transition-colors"
+              >
+                {savingSettings ? "저장 중..." : "저장"}
+              </button>
+              {settingsSaved && (
+                <span className="text-sm text-green-600 font-medium">저장되었습니다</span>
+              )}
+            </div>
+          </div>
         </div>
       )}
     </div>
