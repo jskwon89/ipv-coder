@@ -243,8 +243,17 @@ export default function ProjectDetailPage() {
         {/* File list */}
         {uploadedFiles.length > 0 ? (
           <div className="border-t border-gray-200">
-            <div className="px-4 py-3 bg-gray-50 border-b border-gray-200">
+            <div className="px-4 py-3 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
               <span className="text-xs font-semibold text-gray-500">업로드된 파일 ({uploadedFiles.length})</span>
+              <button
+                onClick={() => window.open(`/api/projects/${projectId}/files/download-all`, "_blank")}
+                className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium text-white bg-[#c49a2e] rounded-md hover:bg-[#b08a28] transition-colors"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                전체 다운로드 (ZIP)
+              </button>
             </div>
             <div className="divide-y divide-gray-100">
               {uploadedFiles.map((f, idx) => (
