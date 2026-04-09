@@ -61,14 +61,14 @@ export default function LandingPage() {
         </div>
         <div className="relative z-10 text-center text-white px-5 sm:px-6 max-w-4xl mx-auto animate-fade-in">
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold leading-tight mb-4 sm:mb-6">
-            연구를 위한
+            연구의 시작부터
             <br />
-            올인원 플랫폼
+            완성까지, 한 곳에서
           </h1>
           <p className="text-sm sm:text-lg md:text-xl text-white/80 mb-6 sm:mb-10 leading-relaxed">
-            연구설계부터 자료생성, 문서의 완성까지
+            연구설계, 자료 생성, 데이터 변환, 통계분석, 문서 작성까지
             <br />
-            하나의 플랫폼에서 시작하세요
+            하나의 플랫폼에서 쉽고 정확하게 진행하세요
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
             <Link
