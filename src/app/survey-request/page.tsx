@@ -760,28 +760,7 @@ export default function SurveyRequestPage() {
               </button>
             </div>
 
-            {/* File upload for auto-parsing */}
-            <div className="mt-4 pt-4 border-t border-gray-200">
-              <div className="flex items-center gap-3">
-                <label className="flex items-center gap-2 px-4 py-2 rounded-lg border border-purple-200 text-sm font-medium text-purple-600 bg-purple-50 hover:bg-purple-100 transition-colors cursor-pointer">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                  </svg>
-                  {parsing ? "분석 중..." : "파일에서 설문 불러오기"}
-                  <input
-                    type="file"
-                    accept=".pdf,.txt,.hwp,.hwpx"
-                    onChange={handleFileUploadParse}
-                    disabled={parsing}
-                    className="hidden"
-                  />
-                </label>
-                <span className="text-xs text-gray-400">PDF, TXT, HWP 파일을 업로드하면 설문 문항을 자동 추출합니다</span>
-              </div>
-              {parseError && (
-                <p className="mt-2 text-sm text-red-500">{parseError}</p>
-              )}
-            </div>
+            {/* File upload for auto-parsing - 추후 구현 예정 */}
 
             {/* Import dialog */}
             {showImportDialog && (
