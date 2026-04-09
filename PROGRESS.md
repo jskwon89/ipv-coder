@@ -2,27 +2,66 @@
 
 ## 2026-04-09 작업 내용 (야간 세션 - Claude Code)
 
+### 대화 요약
+
+새 PC에서 git pull 후 PROGRESS.md의 "다음 할 일" 목록을 순서대로 진행.
+`.env.local` 없는 상태에서 시작 → 환경변수 세팅 → 대문 섹션 토글 → Discord 알림 → 결과물 샘플 페이지까지 완료.
+
 ### 완료된 작업
 
-**관리자 대문 섹션 on/off 토글**
+**1. 관리자 대문 섹션 on/off 토글**
 - Supabase `site_settings` 테이블 생성 (category + key 기반 key-value 저장)
 - `/api/site-settings` API (GET/PUT) 구현
 - 관리자 패널에 "사이트 설정" 탭 추가 — 4개 섹션 토글 (제공 서비스, 왜 ResearchOn, 이용 절차, 문의/CTA)
 - 랜딩 페이지에서 설정 fetch → 섹션 조건부 렌더링
 
-**Discord 웹훅 알림**
+**2. Discord 웹훅 알림**
 - `src/lib/discord.ts` — notifyNewRequest, notifyContactInquiry 함수
 - 10개 의뢰 API + contact API에 Discord 알림 연동
 - 의뢰 접수 시 서비스명, 이메일, 내용 요약을 embed 형태로 Discord 채널에 전송
 - Vercel 환경변수 `DISCORD_WEBHOOK_URL` 설정 완료
+- Discord 서버 생성, 웹훅 연동, 테스트 메시지 전송 확인
 
-**환경 세팅**
+**3. 결과물 샘플 페이지**
+- `/samples` 페이지 구조 생성 (서비스별 6개 탭)
+- 이미지 파일: 페이지 내 바로 표시 + 클릭 확대 (라이트박스)
+- PDF 파일: 다운로드 버튼
+- 랜딩 네비게이션에 "결과물 샘플" 링크 추가
+- 현재 "샘플 준비 중" 상태 — 파일을 `public/samples/`에 넣고 코드에 경로 추가하면 됨
+
+**4. 환경 세팅**
 - 새 PC `.env.local` 생성 (Supabase URL, anon key, service_role key, Discord webhook URL)
 - `archiver` 패키지 설치 (기존 누락)
 
+### 주요 생성/변경 파일
+
+| 파일 | 변경 내용 |
+|------|-----------|
+| `src/app/api/site-settings/route.ts` | **신규** — 랜딩 섹션 설정 GET/PUT API |
+| `src/lib/discord.ts` | **신규** — Discord 웹훅 알림 함수 |
+| `src/app/samples/page.tsx` | **신규** — 결과물 샘플 페이지 |
+| `public/samples/` | **신규** — 샘플 파일 폴더 (빈 상태) |
+| `src/app/admin/page.tsx` | "사이트 설정" 탭 추가 (섹션 on/off 토글) |
+| `src/app/page.tsx` | 섹션 조건부 렌더링 + "결과물 샘플" 네비 링크 |
+| `src/app/api/research-design/route.ts` | Discord 알림 추가 |
+| `src/app/api/stats-design/route.ts` | Discord 알림 추가 |
+| `src/app/api/survey/route.ts` | Discord 알림 추가 |
+| `src/app/api/judgment-collection/route.ts` | Discord 알림 추가 |
+| `src/app/api/judgment-coding/route.ts` | Discord 알림 추가 |
+| `src/app/api/news-collection/route.ts` | Discord 알림 추가 |
+| `src/app/api/data-transform/route.ts` | Discord 알림 추가 |
+| `src/app/api/quant-analysis/route.ts` | Discord 알림 추가 |
+| `src/app/api/text-analysis-request/route.ts` | Discord 알림 추가 |
+| `src/app/api/qual-analysis/route.ts` | Discord 알림 추가 |
+| `src/app/api/contact/route.ts` | Discord 알림 추가 |
+
+### Supabase 변경사항
+- `site_settings` 테이블 생성 (id, category, key, value, updated_at / UNIQUE: category+key)
+- 초기 데이터 4행 삽입 (landing_sections: services, value_proposition, how_it_works, contact)
+
 ### 다음 할 일
-- 결과 예시/샘플 페이지 (서비스별 결과물 미리보기)
-- 커스텀 도메인 설정
+- **결과물 샘플 파일 준비** — 서비스별 PDF/이미지 파일을 `public/samples/`에 추가 후 `samples/page.tsx`의 `serviceSamples` 배열에 등록
+- **커스텀 도메인 설정** — Vercel에서 도메인 연결
 
 ---
 
