@@ -1,5 +1,31 @@
 # ResearchOn 프로젝트 진행상황
 
+## 2026-04-09 작업 내용 (야간 세션 - Claude Code)
+
+### 완료된 작업
+
+**관리자 대문 섹션 on/off 토글**
+- Supabase `site_settings` 테이블 생성 (category + key 기반 key-value 저장)
+- `/api/site-settings` API (GET/PUT) 구현
+- 관리자 패널에 "사이트 설정" 탭 추가 — 4개 섹션 토글 (제공 서비스, 왜 ResearchOn, 이용 절차, 문의/CTA)
+- 랜딩 페이지에서 설정 fetch → 섹션 조건부 렌더링
+
+**Discord 웹훅 알림**
+- `src/lib/discord.ts` — notifyNewRequest, notifyContactInquiry 함수
+- 10개 의뢰 API + contact API에 Discord 알림 연동
+- 의뢰 접수 시 서비스명, 이메일, 내용 요약을 embed 형태로 Discord 채널에 전송
+- Vercel 환경변수 `DISCORD_WEBHOOK_URL` 설정 완료
+
+**환경 세팅**
+- 새 PC `.env.local` 생성 (Supabase URL, anon key, service_role key, Discord webhook URL)
+- `archiver` 패키지 설치 (기존 누락)
+
+### 다음 할 일
+- 결과 예시/샘플 페이지 (서비스별 결과물 미리보기)
+- 커스텀 도메인 설정
+
+---
+
 ## 2026-04-09 작업 내용 (오후 세션 - Claude Code)
 
 ### 대화 요약
