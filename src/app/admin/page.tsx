@@ -3,6 +3,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
+import * as XLSX from "xlsx";
 
 interface CreditData {
   balance: number;
@@ -214,6 +215,79 @@ export default function AdminPage() {
     finally { setSendingChat(false); }
   };
 
+  // 필드명 한국어 매핑
+  const fieldLabels: Record<string, string> = {
+    id: "ID", email: "이메일", status: "상태", createdAt: "접수일",
+    adminResponse: "관리자 응답", respondedAt: "응답일",
+    name: "이름", organization: "소속", purpose: "목적",
+    searchType: "검색유형", caseNumbers: "사건번호", scopeFirst: "1심",
+    scopeSecond: "2심", scopeThird: "3심", outputFormat: "출력형식",
+    keywords: "키워드", keywordLogic: "키워드 논리", courts: "법원",
+    startYear: "시작연도", endYear: "종료연도", caseTypes: "사건유형",
+    lawKeyword: "법조문", maxCount: "최대건수", additionalNotes: "추가요청사항",
+    projectId: "프로젝트ID", projectName: "프로젝트명", note: "요청사항",
+    fileCount: "파일수", researchTopic: "연구주제", researchQuestion: "연구문제",
+    surveyTopic: "설문주제", dataDescription: "데이터 설명",
+    analysisType: "분석유형", analysisTypes: "분석유형",
+  };
+
+  const statusLabels: Record<string, string> = {
+    pending: "대기중", in_progress: "진행중", completed: "완료",
+  };
+
+  // 전체 의뢰 목록 Excel 내보내기
+  const handleExportAll = () => {
+    if (filteredRequests.length === 0) return;
+
+    const rows = filteredRequests.map((req) => {
+      const row: Record<string, string> = {
+        "서비스": req._label,
+        "이메일": req.email,
+        "상태": statusLabels[req.status] || req.status,
+        "접수일": new Date(req.createdAt).toLocaleDateString("ko-KR"),
+        "관리자 응답": req.adminResponse || "",
+        "응답일": req.respondedAt ? new Date(req.respondedAt).toLocaleDateString("ko-KR") : "",
+      };
+      // 나머지 데이터 필드도 추가
+      Object.entries(req).forEach(([k, v]) => {
+        if (["id", "email", "status", "createdAt", "adminResponse", "respondedAt", "_type", "_label", "_api", "_titleField"].includes(k)) return;
+        const label = fieldLabels[k] || k;
+        row[label] = String(v ?? "");
+      });
+      return row;
+    });
+
+    const ws = XLSX.utils.json_to_sheet(rows);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "의뢰 목록");
+
+    // 열 너비 자동 조정
+    const colWidths = Object.keys(rows[0] || {}).map((key) => ({
+      wch: Math.max(key.length * 2, ...rows.map((r) => String(r[key] || "").length).slice(0, 50), 10),
+    }));
+    ws["!cols"] = colWidths;
+
+    XLSX.writeFile(wb, `의뢰목록_${new Date().toISOString().slice(0, 10)}.xlsx`);
+  };
+
+  // 개별 의뢰 상세 Excel 내보내기
+  const handleExportDetail = (req: GenericRequest & { _label?: string }) => {
+    const rows = Object.entries(req)
+      .filter(([k]) => !["_type", "_label", "_api", "_titleField"].includes(k))
+      .map(([k, v]) => ({
+        "항목": fieldLabels[k] || k,
+        "내용": k === "status" ? (statusLabels[String(v)] || String(v)) : String(v ?? ""),
+      }));
+
+    const ws = XLSX.utils.json_to_sheet(rows);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "의뢰 상세");
+    ws["!cols"] = [{ wch: 20 }, { wch: 60 }];
+
+    const label = (req as Record<string, unknown>)._label || "의뢰";
+    XLSX.writeFile(wb, `${label}_${req.id.slice(0, 8)}.xlsx`);
+  };
+
   const handleReplyInquiry = async () => {
     if (!selectedInquiry || !adminReply.trim()) return;
     setReplyUpdating(true);
@@ -391,6 +465,17 @@ export default function AdminPage() {
               ))}
             </div>
             <span className="text-sm text-gray-400">{filteredRequests.length}건</span>
+            {filteredRequests.length > 0 && (
+              <button
+                onClick={handleExportAll}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors ml-auto"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Excel 내보내기
+              </button>
+            )}
           </div>
 
           {/* Request list */}
@@ -452,7 +537,18 @@ export default function AdminPage() {
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
               <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto border border-gray-200">
                 <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-                  <h3 className="font-bold text-gray-900">의뢰 상세</h3>
+                  <div className="flex items-center gap-3">
+                    <h3 className="font-bold text-gray-900">의뢰 상세</h3>
+                    <button
+                      onClick={() => handleExportDetail(selectedReq.req)}
+                      className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-green-700 bg-green-50 border border-green-200 rounded-md hover:bg-green-100 transition-colors"
+                    >
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      </svg>
+                      Excel
+                    </button>
+                  </div>
                   <button onClick={() => { setSelectedReq(null); setChatMessages([]); setReqFiles([]); }} className="p-2 hover:bg-gray-100 rounded-lg">
                     <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
