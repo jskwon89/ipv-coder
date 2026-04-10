@@ -327,8 +327,12 @@ export default function LandingPage() {
 
       {/* Services Section */}
       {sections.services && (
-        <section id="services" className="py-16 sm:py-28 px-4 sm:px-6 bg-gray-50/80">
-          <div className="max-w-7xl mx-auto">
+        <section id="services" className="relative py-16 sm:py-28 px-4 sm:px-6 overflow-hidden">
+          <div className="absolute inset-0">
+            <Image src="/images/campaign-creators-gMsnXqILjp4-unsplash.jpg" alt="" fill className="object-cover" />
+            <div className="absolute inset-0 bg-white/95" />
+          </div>
+          <div className="relative z-10 max-w-7xl mx-auto">
             <div className="max-w-2xl mb-12 sm:mb-16">
               <span className="text-sm font-semibold text-teal-600 tracking-wide uppercase">Services</span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mt-3 mb-4">
@@ -364,8 +368,12 @@ export default function LandingPage() {
 
       {/* Why PRIMER */}
       {sections.value_proposition && (
-        <section id="why-primer" className="py-16 sm:py-28 px-4 sm:px-6 bg-[#0f172a]">
-          <div className="max-w-7xl mx-auto">
+        <section id="why-primer" className="relative py-16 sm:py-28 px-4 sm:px-6 overflow-hidden">
+          <div className="absolute inset-0">
+            <Image src="/images/headway-5QgIuuBxKwM-unsplash.jpg" alt="" fill className="object-cover" />
+            <div className="absolute inset-0 bg-[#0f172a]/93" />
+          </div>
+          <div className="relative z-10 max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <span className="text-sm font-semibold text-teal-400 tracking-wide uppercase">Why PRIMER</span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mt-3 mb-4">왜 PRIMER인가요?</h2>
