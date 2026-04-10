@@ -89,91 +89,82 @@ export default function LandingPage() {
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a] via-[#0f172a] to-teal-900/30" />
 
-          {/* Full SVG background — dense network analysis visuals */}
+          {/* Academic visualization background */}
           <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1400 700" fill="none" preserveAspectRatio="xMidYMid slice">
-            {/* 1. 200+ colorful topic scatter dots (image 1/3 — galaxy of colored clusters) */}
-            <g opacity="0.3">
-              {Array.from({length: 200}, (_,i) => {
-                const colors = ["#94a3b8","#64748b","#78909c","#a0aec0","#718096","#90a4ae","#b0bec5","#7b8a94","#8899a6","#6b7f8e"];
-                const cx = 650 + Math.cos(i*0.7+i*0.03)*340 + Math.sin(i*1.3)*90;
-                const cy = 330 + Math.sin(i*0.6+i*0.04)*270 + Math.cos(i*1.1)*70;
-                const r = 2 + (i%7)*1.3;
-                return <circle key={`ts${i}`} cx={cx} cy={cy} r={r} fill={colors[i%10]} opacity={0.5+(i%5)*0.1} />;
-              })}
+            {/* ===== 1. WORD CLOUD (center-right, large, 논문 워드클라우드 형태) ===== */}
+            <g opacity="0.22" transform="translate(700, 200)">
+              {/* 핵심 키워드 — 크기=빈도, 빽빽하게 모여있는 형태 */}
+              <text x="0" y="0" textAnchor="middle" fill="#b0bec5" fontSize="58" fontWeight="900" fontFamily="sans-serif">연구</text>
+              <text x="120" y="-30" textAnchor="middle" fill="#90a4ae" fontSize="42" fontWeight="800" fontFamily="sans-serif">정책</text>
+              <text x="-110" y="15" textAnchor="middle" fill="#94a3b8" fontSize="44" fontWeight="800" fontFamily="sans-serif">분석</text>
+              <text x="60" y="50" textAnchor="middle" fill="#78909c" fontSize="38" fontWeight="700" fontFamily="sans-serif">데이터</text>
+              <text x="-60" y="60" textAnchor="middle" fill="#a0aec0" fontSize="34" fontWeight="700" fontFamily="sans-serif">통계</text>
+              <text x="180" y="25" textAnchor="middle" fill="#64748b" fontSize="30" fontWeight="700" fontFamily="sans-serif">교육</text>
+              <text x="-160" y="-20" textAnchor="middle" fill="#90a4ae" fontSize="32" fontWeight="700" fontFamily="sans-serif">사회</text>
+              <text x="-30" y="-55" textAnchor="middle" fill="#78909c" fontSize="28" fontWeight="600" fontFamily="sans-serif">설문</text>
+              <text x="200" y="-10" textAnchor="middle" fill="#b0bec5" fontSize="24" fontWeight="600" fontFamily="sans-serif">변수</text>
+              <text x="-180" y="55" textAnchor="middle" fill="#64748b" fontSize="26" fontWeight="600" fontFamily="sans-serif">법률</text>
+              <text x="140" y="70" textAnchor="middle" fill="#94a3b8" fontSize="22" fontWeight="600" fontFamily="sans-serif">모형</text>
+              <text x="-140" y="-50" textAnchor="middle" fill="#a0aec0" fontSize="22" fontWeight="600" fontFamily="sans-serif">제도</text>
+              <text x="80" y="-55" textAnchor="middle" fill="#78909c" fontSize="20" fontWeight="600" fontFamily="sans-serif">키워드</text>
+              <text x="-50" y="90" textAnchor="middle" fill="#90a4ae" fontSize="20" fontWeight="600" fontFamily="sans-serif">네트워크</text>
+              <text x="230" y="55" textAnchor="middle" fill="#64748b" fontSize="18" fontWeight="600" fontFamily="sans-serif">토픽</text>
+              <text x="-200" y="25" textAnchor="middle" fill="#b0bec5" fontSize="18" fontWeight="600" fontFamily="sans-serif">빈도</text>
+              <text x="50" y="90" textAnchor="middle" fill="#78909c" fontSize="16" fontWeight="500" fontFamily="sans-serif">감성</text>
+              <text x="-100" y="85" textAnchor="middle" fill="#94a3b8" fontSize="16" fontWeight="500" fontFamily="sans-serif">판결문</text>
+              <text x="170" y="-50" textAnchor="middle" fill="#a0aec0" fontSize="16" fontWeight="500" fontFamily="sans-serif">회귀</text>
+              <text x="-220" y="-5" textAnchor="middle" fill="#64748b" fontSize="15" fontWeight="500" fontFamily="sans-serif">생존</text>
+              <text x="260" y="30" textAnchor="middle" fill="#90a4ae" fontSize="14" fontWeight="500" fontFamily="sans-serif">매칭</text>
+              <text x="-80" y="-65" textAnchor="middle" fill="#78909c" fontSize="14" fontWeight="500" fontFamily="sans-serif">패널</text>
+              <text x="100" y="100" textAnchor="middle" fill="#b0bec5" fontSize="14" fontWeight="500" fontFamily="sans-serif">인과</text>
+              <text x="-160" y="80" textAnchor="middle" fill="#64748b" fontSize="13" fontWeight="500" fontFamily="sans-serif">평가</text>
+              <text x="240" y="-30" textAnchor="middle" fill="#94a3b8" fontSize="13" fontWeight="500" fontFamily="sans-serif">예측</text>
             </g>
 
-            {/* 2. Giant spider-web radial network (image 4 — dense spokes from center) */}
-            <g opacity="0.15">
-              <circle cx="900" cy="340" r="8" fill="#94a3b8" opacity="0.8" />
-              {Array.from({length: 36}, (_,i) => {
-                const a = (i/36)*Math.PI*2;
-                const colors = ["#94a3b8","#78909c","#64748b","#a0aec0","#90a4ae","#b0bec5"];
-                const x1=900+Math.cos(a)*75, y1=340+Math.sin(a)*75;
-                const x2=900+Math.cos(a+0.05)*150, y2=340+Math.sin(a+0.05)*150;
-                const x3=900+Math.cos(a-0.03)*240, y3=340+Math.sin(a-0.03)*240;
-                return (<g key={`sw${i}`}>
-                  <line x1="900" y1="340" x2={x1} y2={y1} stroke="#5eead4" strokeWidth="0.5" />
-                  <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#2dd4bf" strokeWidth="0.4" />
-                  <line x1={x2} y1={y2} x2={x3} y2={y3} stroke="#5eead4" strokeWidth="0.3" />
-                  {i%2===0 && <circle cx={x1} cy={y1} r={3+(i%3)} fill={colors[i%6]} opacity="0.7" />}
-                  <circle cx={x2} cy={y2} r={2+(i%2)} fill={colors[(i+2)%6]} opacity="0.5" />
-                  {i%3===0 && <circle cx={x3} cy={y3} r={1.5+(i%2)} fill={colors[(i+4)%6]} opacity="0.35" />}
-                </g>);
-              })}
-              {[75,150,240].map((r,ri) => (<g key={`rg${ri}`}>{Array.from({length:36},(_,i)=>{const a1=(i/36)*Math.PI*2,a2=((i+1)/36)*Math.PI*2;return <line key={`rc${ri}${i}`} x1={900+Math.cos(a1)*r} y1={340+Math.sin(a1)*r} x2={900+Math.cos(a2)*r} y2={340+Math.sin(a2)*r} stroke="#2dd4bf" strokeWidth={0.4-ri*0.1}/>;})}</g>))}
-              {Array.from({length:20},(_,i)=>{const a1=(i*3/36)*Math.PI*2,a2=((i*7+5)/36)*Math.PI*2;return <line key={`cc${i}`} x1={900+Math.cos(a1)*150} y1={340+Math.sin(a1)*150} x2={900+Math.cos(a2)*75} y2={340+Math.sin(a2)*75} stroke="#5eead4" strokeWidth="0.3" opacity="0.4"/>;
-              })}
-            </g>
-
-            {/* 3. Hierarchical network (image 2 — green hubs, blue peripherals) */}
-            <g opacity="0.15">
-              {[[200,450,10],[300,380,8],[140,520,7],[350,500,9],[250,560,6]].map(([cx,cy,r],i)=>(<circle key={`gh${i}`} cx={Number(cx)} cy={Number(cy)} r={Number(r)} fill="#94a3b8" opacity="0.6"/>))}
-              {[[160,400],[240,400],[180,480],[260,480],[120,460],[280,430],[320,440],[350,420],[380,460],[140,550],[200,580],[280,570],[330,540],[100,500],[220,520],[360,550],[170,560],[310,580],[250,610],[400,490]].map(([cx,cy],i)=>(<circle key={`bn${i}`} cx={Number(cx)} cy={Number(cy)} r={2.5+(i%3)} fill="#78909c" opacity="0.4"/>))}
-              {[[200,450,160,400],[200,450,240,400],[200,450,180,480],[200,450,220,520],[300,380,280,430],[300,380,320,440],[300,380,350,420],[300,380,260,480],[140,520,120,460],[140,520,100,500],[140,520,140,550],[140,520,170,560],[350,500,380,460],[350,500,360,550],[350,500,400,490],[350,500,330,540],[250,560,200,580],[250,560,280,570],[250,560,310,580],[250,560,250,610]].map(([x1,y1,x2,y2],i)=>(<line key={`hl${i}`} x1={Number(x1)} y1={Number(y1)} x2={Number(x2)} y2={Number(y2)} stroke="#5eead4" strokeWidth="0.8"/>))}
-              {[[200,450,300,380],[300,380,350,500],[140,520,250,560],[200,450,140,520],[350,500,250,560]].map(([x1,y1,x2,y2],i)=>(<line key={`hh${i}`} x1={Number(x1)} y1={Number(y1)} x2={Number(x2)} y2={Number(y2)} stroke="#94a3b8" strokeWidth="1.2" opacity="0.5"/>))}
-            </g>
-
-            {/* 4. Word network / co-occurrence cloud (top left — keywords with connection lines) */}
-            <g opacity="0.18">
-              {/* Connection lines first (behind text) — co-occurrence relationships */}
-              {[
-                [160,120,280,95],[160,120,100,160],[160,120,240,160],[160,120,200,55],
-                [280,95,370,110],[280,95,240,160],[280,95,340,60],
-                [100,160,60,220],[100,160,160,200],[100,160,50,110],
-                [240,160,300,195],[240,160,340,170],[240,160,160,200],
-                [160,200,100,245],[160,200,230,240],[160,200,60,220],
-                [370,110,420,80],[370,110,400,165],[340,60,420,80],
-                [230,240,300,195],[100,245,160,280],[300,195,400,165],
-              ].map(([x1,y1,x2,y2],i) => (
-                <line key={`wcl${i}`} x1={Number(x1)} y1={Number(y1)} x2={Number(x2)} y2={Number(y2)} stroke="#64748b" strokeWidth={1.2 - (i%3)*0.3} opacity={0.25} />
-              ))}
-              {/* Keyword nodes (sized circles behind text) */}
-              {[
-                [160,120,20],[280,95,16],[100,160,14],[240,160,15],[160,200,13],
-                [370,110,11],[60,220,10],[300,195,10],[340,60,9],[400,165,9],
-                [50,110,8],[200,55,10],[230,240,9],[420,80,8],[100,245,8],[340,170,7],[160,280,7],
-              ].map(([cx,cy,r],i) => (
-                <circle key={`wcn${i}`} cx={Number(cx)} cy={Number(cy)} r={Number(r)} fill="#475569" opacity="0.15" />
-              ))}
-              {/* Keywords text — clustered and organized */}
-              {[
-                [160,125,"연구",28],[280,100,"정책",22],[100,165,"데이터",20],[240,165,"분석",21],
-                [160,205,"통계",18],[370,115,"교육",16],[60,225,"법률",16],[300,200,"변수",14],
-                [340,65,"사회",15],[400,170,"모형",13],[50,115,"의료",12],[200,60,"설문",15],
-                [230,245,"토픽",14],[420,85,"제도",12],[100,250,"감성",12],[340,175,"회귀",11],[160,285,"네트워크",11],
-              ].map(([x,y,text,size],i)=>(<text key={`wct${i}`} x={Number(x)} y={Number(y)} textAnchor="middle" fill="#94a3b8" fontSize={Number(size)} fontWeight={Number(size)>20?"800":Number(size)>15?"700":"600"} opacity={0.4+Number(size)/70} fontFamily="sans-serif">{text}</text>))}
-            </g>
-
-            {/* 5. Survival curves (bottom center, subtle accent) */}
-            <g opacity="0.12">
-              <path d="M500,620 L500,600 L540,600 L540,575 L580,575 L580,545 L620,545 L620,515 L665,515 L665,480 L710,480 L710,450 L760,450" stroke="#90a4ae" strokeWidth="2" fill="none" />
-              <path d="M500,620 L530,620 L530,590 L560,590 L560,555 L600,555 L600,520 L640,520 L640,485 L680,485 L680,455 L720,455 L720,430 L760,430" stroke="#64748b" strokeWidth="1.5" fill="none" strokeDasharray="5,3" />
-            </g>
-
-            {/* 6. Semantic co-occurrence network (bottom right) */}
+            {/* ===== 2. KEYWORD NETWORK (left, 노드+엣지 밀도 있게) ===== */}
             <g opacity="0.16">
-              {[[1120,520,16,"정책","#94a3b8"],[1200,480,14,"제도","#b0bec5"],[1160,580,12,"법률","#78909c"],[1060,560,10,"사회","#a0aec0"],[1260,540,13,"개선","#90a4ae"],[1100,460,11,"교육","#64748b"],[1220,610,9,"평가","#b0bec5"],[1300,500,10,"연구","#94a3b8"],[1040,490,8,"변화","#78909c"],[1180,640,8,"인식","#90a4ae"],[1280,600,7,"조사","#a0aec0"],[1320,560,9,"분석","#64748b"]].map(([cx,cy,r,label,fill],i)=>(<g key={`sn${i}`}><circle cx={Number(cx)} cy={Number(cy)} r={Number(r)} fill={String(fill)} opacity="0.6"/><text x={Number(cx)} y={Number(cy)-Number(r)-4} textAnchor="middle" fill={String(fill)} fontSize="8" opacity="0.7">{label}</text></g>))}
-              {[[1120,520,1200,480,2.5],[1120,520,1160,580,2],[1120,520,1060,560,1.5],[1120,520,1100,460,2],[1200,480,1260,540,1.8],[1200,480,1300,500,1.2],[1160,580,1220,610,1.5],[1160,580,1060,560,1],[1260,540,1320,560,1.8],[1260,540,1300,500,1.5],[1100,460,1040,490,1.2],[1220,610,1180,640,1],[1220,610,1280,600,1.3],[1320,560,1280,600,1],[1300,500,1320,560,0.8],[1060,560,1040,490,1]].map(([x1,y1,x2,y2,w],i)=>(<line key={`se${i}`} x1={Number(x1)} y1={Number(y1)} x2={Number(x2)} y2={Number(y2)} stroke="#5eead4" strokeWidth={Number(w)} opacity={0.3+Number(w)/8}/>))}
+              {/* Edges */}
+              {[[160,300,260,250],[160,300,100,360],[160,300,220,370],[160,300,80,250],[260,250,340,290],[260,250,300,200],[260,250,220,370],[100,360,60,420],[100,360,160,420],[80,250,40,200],[80,250,160,300],[340,290,380,240],[340,290,300,360],[300,200,380,240],[300,200,240,160],[220,370,300,360],[220,370,160,420],[60,420,120,460],[160,420,120,460],[380,240,420,300],[300,360,380,340],[240,160,300,200],[240,160,160,300],[40,200,80,250],[420,300,380,340]].map(([x1,y1,x2,y2],i)=>(<line key={`kne${i}`} x1={Number(x1)} y1={Number(y1)} x2={Number(x2)} y2={Number(y2)} stroke="#64748b" strokeWidth={1.5-(i%4)*0.3} opacity="0.3"/>))}
+              {/* Nodes */}
+              {[[160,300,14],[260,250,11],[100,360,10],[220,370,9],[80,250,8],[340,290,10],[300,200,9],[380,240,7],[60,420,6],[160,420,7],[300,360,8],[240,160,6],[40,200,5],[120,460,5],[420,300,6],[380,340,5]].map(([cx,cy,r],i)=>(<circle key={`knn${i}`} cx={Number(cx)} cy={Number(cy)} r={Number(r)} fill="#78909c" opacity={0.4+Number(r)/30}/>))}
+              {/* Labels */}
+              {[[160,304,"정책",11],[260,254,"제도",9],[100,364,"법률",9],[220,374,"사회",8],[80,254,"의료",7],[340,294,"교육",9],[300,204,"경제",8],[380,244,"환경",6],[60,424,"복지",6],[160,424,"안전",6],[300,364,"인식",7],[240,164,"변화",6]].map(([x,y,t,s],i)=>(<text key={`knl${i}`} x={Number(x)} y={Number(y)} textAnchor="middle" fill="#94a3b8" fontSize={Number(s)} fontWeight="600" opacity="0.6">{t}</text>))}
+            </g>
+
+            {/* ===== 3. KAPLAN-MEIER SURVIVAL CURVE (bottom left, with axes) ===== */}
+            <g opacity="0.14">
+              {/* Axes */}
+              <line x1="80" y1="480" x2="80" y2="650" stroke="#64748b" strokeWidth="1" />
+              <line x1="80" y1="650" x2="400" y2="650" stroke="#64748b" strokeWidth="1" />
+              {/* Tick marks */}
+              {[0,1,2,3,4].map(i=>(<g key={`yt${i}`}><line x1="75" y1={490+i*40} x2="80" y2={490+i*40} stroke="#64748b" strokeWidth="0.8"/><text x="70" y={493+i*40} textAnchor="end" fill="#64748b" fontSize="7">{(1-i*0.25).toFixed(1)}</text></g>))}
+              {[0,1,2,3,4,5,6].map(i=>(<g key={`xt${i}`}><line x1={80+i*50} y1="650" x2={80+i*50} y2="655" stroke="#64748b" strokeWidth="0.8"/><text x={80+i*50} y="665" textAnchor="middle" fill="#64748b" fontSize="7">{i*10}</text></g>))}
+              {/* Curve 1 (treatment) */}
+              <path d="M80,490 L120,490 L120,510 L160,510 L160,530 L195,530 L195,555 L230,555 L230,575 L270,575 L270,595 L310,595 L310,615 L350,615 L350,630 L390,630" stroke="#94a3b8" strokeWidth="2" fill="none" />
+              {/* Curve 2 (control, dashed) */}
+              <path d="M80,490 L110,490 L110,520 L140,520 L140,550 L175,550 L175,580 L210,580 L210,605 L250,605 L250,625 L290,625 L290,640 L340,640" stroke="#64748b" strokeWidth="1.5" fill="none" strokeDasharray="5,3" />
+              {/* Censored marks */}
+              {[[135,510],[185,530],[250,555],[280,575],[155,550],[225,580],[265,605]].map(([x,y],i)=>(<text key={`cm${i}`} x={Number(x)} y={Number(y)} fill="#78909c" fontSize="10" textAnchor="middle">+</text>))}
+              {/* Axis labels */}
+              <text x="230" y="680" textAnchor="middle" fill="#64748b" fontSize="8">Time (months)</text>
+              <text x="55" y="575" textAnchor="middle" fill="#64748b" fontSize="8" transform="rotate(-90,55,575)">Survival</text>
+            </g>
+
+            {/* ===== 4. TOPIC MODEL RESULT (bottom right, LDA 토픽 분포) ===== */}
+            <g opacity="0.14">
+              {/* Topic distribution bars — 가로 막대 */}
+              {[
+                [1050,490,"Topic 1",220,"정책 · 제도 · 개선 · 법률"],
+                [1050,520,"Topic 2",175,"교육 · 학습 · 성과 · 평가"],
+                [1050,550,"Topic 3",140,"사회 · 인식 · 변화 · 조사"],
+                [1050,580,"Topic 4",100,"경제 · 성장 · 투자 · 산업"],
+                [1050,610,"Topic 5",70,"환경 · 에너지 · 기후 · 탄소"],
+              ].map(([x,y,label,w,words],i)=>(<g key={`tp${i}`}>
+                <text x={Number(x)-5} y={Number(y)+4} textAnchor="end" fill="#78909c" fontSize="8" fontWeight="600">{label}</text>
+                <rect x={Number(x)} y={Number(y)-6} width={Number(w)} height="12" rx="2" fill="#64748b" opacity={0.35-i*0.04}/>
+                <text x={Number(x)+Number(w)+8} y={Number(y)+4} fill="#64748b" fontSize="6.5" opacity="0.6">{words}</text>
+              </g>))}
+              <text x="1150" y="640" textAnchor="middle" fill="#64748b" fontSize="8">Topic Probability</text>
             </g>
           </svg>
 
