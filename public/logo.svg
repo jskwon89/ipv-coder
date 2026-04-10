@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 50" fill="none">
+  <!-- Geometric ascending blocks symbol -->
+  <g transform="translate(0, 5)">
+    <!-- Back block (lightest) -->
+    <path d="M8 28L18 18L28 28L18 38Z" fill="#5eead4"/>
+    <!-- Middle block -->
+    <path d="M16 20L26 10L36 20L26 30Z" fill="#2dd4bf"/>
+    <!-- Front block (darkest, tallest) -->
+    <path d="M24 12L34 2L44 12L34 22Z" fill="#0d9488"/>
+    <!-- Rising arrow accent -->
+    <path d="M30 8L38 0L42 4L34 12Z" fill="#0f766e"/>
+  </g>
+  <!-- PRIMER wordmark -->
+  <text x="52" y="37" font-family="Inter, -apple-system, system-ui, sans-serif" font-size="34" font-weight="800" letter-spacing="-0.5" fill="#0f172a">PRIMER</text>
+</svg>

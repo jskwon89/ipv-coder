@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { CreditBalance } from "./credits/CreditBalance";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUser } from "@/contexts/UserAuthContext";
@@ -179,7 +180,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           <div className="flex items-center justify-between h-16 sm:h-20">
             {/* Logo */}
             <Link href="/" className="flex items-center shrink-0">
-              <span className="text-[32px] font-bold text-gray-900 tracking-tight">PRIMER</span>
+              <Image src="/logo.svg" alt="PRIMER" width={200} height={36} className="h-9 w-auto" priority />
             </Link>
 
             {/* Desktop nav - centered */}
