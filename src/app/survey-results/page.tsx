@@ -1,4 +1,5 @@
 "use client";
+import ServiceTabs from "@/components/ServiceTabs";
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
@@ -123,10 +124,7 @@ export default function SurveyResultsPage() {
 
   return (
     <div className="p-8 max-w-5xl mx-auto">
-      <Link href="/dashboard" className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 hover:border-gray-300 transition-all mb-4">
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-        대시보드로 돌아가기
-      </Link>
+      <ServiceTabs tabs={[{ label: "의뢰", href: "/survey-request" }, { label: "결과 확인", href: "/survey-results" }]} />
 
       <h1 className="text-2xl font-bold mb-2">설문조사 결과 확인</h1>
       <p className="text-gray-600 text-sm mb-8">의뢰하신 설문조사의 진행 상황과 결과를 확인합니다.</p>

@@ -1,4 +1,5 @@
 "use client";
+import ServiceTabs from "@/components/ServiceTabs";
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
@@ -215,10 +216,7 @@ export default function JudgmentCollectionPage() {
             </div>
           </div>
         )}
-        <Link href="/dashboard" className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 hover:border-gray-300 transition-all mb-4">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-          대시보드로 돌아가기
-        </Link>
+      <ServiceTabs tabs={[{ label: "판결문 코딩", href: "/judgment" }, { label: "수집 의뢰", href: "/judgment-collection" }, { label: "결과 확인", href: "/judgment-results" }]} />
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">판결문 수집 의뢰</h1>

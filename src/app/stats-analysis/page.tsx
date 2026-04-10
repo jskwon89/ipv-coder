@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import ServiceTabs from "@/components/ServiceTabs";
 import CreditConfirmDialog from "@/components/CreditConfirmDialog";
 import PageHeader from "@/components/PageHeader";
 
@@ -64,10 +65,7 @@ export default function StatsAnalysisPage() {
 
   return (
     <div className="p-8 max-w-7xl mx-auto">
-      <Link href="/dashboard" className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 hover:border-gray-300 transition-all mb-4">
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-        대시보드로 돌아가기
-      </Link>
+      <ServiceTabs tabs={[{ label: "데이터 변환", href: "/data-transform" }, { label: "결과 확인", href: "/data-transform-results" }, { label: "기초통계", href: "/stats-analysis" }]} />
       <PageHeader
         title="통계분석 / 시각화"
         subtitle="기술통계와 시각화는 바로 실행, 고급 분석은 의뢰 형태로 진행됩니다"

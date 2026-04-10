@@ -1,4 +1,5 @@
 "use client";
+import ServiceTabs from "@/components/ServiceTabs";
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
@@ -80,10 +81,7 @@ export default function DataTransformPage() {
 
   return (
     <div className="p-8 max-w-5xl mx-auto">
-      <Link href="/dashboard" className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 hover:border-gray-300 transition-all mb-4">
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-        대시보드로 돌아가기
-      </Link>
+      <ServiceTabs tabs={[{ label: "데이터 변환", href: "/data-transform" }, { label: "결과 확인", href: "/data-transform-results" }, { label: "기초통계", href: "/stats-analysis" }]} />
       <PageHeader
         title="데이터 전처리 의뢰"
         subtitle="데이터 변환, 리코딩, 병합 등 전처리 작업을 의뢰합니다"

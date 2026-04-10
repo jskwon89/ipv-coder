@@ -1,4 +1,5 @@
 "use client";
+import ServiceTabs from "@/components/ServiceTabs";
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
@@ -77,10 +78,7 @@ export default function QualAnalysisPage() {
 
   return (
     <div className="p-8 max-w-5xl mx-auto">
-      <Link href="/dashboard" className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 hover:border-gray-300 transition-all mb-4">
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-        대시보드로 돌아가기
-      </Link>
+      <ServiceTabs tabs={[{ label: "분석 의뢰", href: "/qual-analysis" }, { label: "결과 확인", href: "/qual-results" }]} />
       <PageHeader
         title="질적분석 의뢰"
         subtitle="인터뷰, 관찰, 문서 등 질적 데이터 분석을 의뢰합니다"
