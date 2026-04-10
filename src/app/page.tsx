@@ -383,48 +383,43 @@ export default function LandingPage() {
         </section>
       )}
 
-      {/* How it Works + CTA (combined, with background image) */}
-      {(sections.how_it_works || sections.contact) && (
+      {/* How it Works — 이미지 배경 + 카드 디자인 */}
+      {sections.how_it_works && (
         <section id="how-it-works" className="relative py-20 sm:py-32 px-4 sm:px-6 overflow-hidden">
-          {/* Background image */}
           <div className="absolute inset-0">
             <Image src="/images/scott-graham-5fNmWej4tAA-unsplash.jpg" alt="" fill className="object-cover" />
-            <div className="absolute inset-0 bg-white/85" />
+            <div className="absolute inset-0 bg-white/95" />
           </div>
-
           <div className="relative z-10 max-w-7xl mx-auto">
-            {/* 4 Steps */}
-            {sections.how_it_works && (
-              <div className="mb-20">
-                <div className="text-center mb-14">
-                  <span className="text-sm font-semibold text-teal-600 tracking-wide uppercase">Process</span>
-                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mt-3 mb-4">간단한 4단계</h2>
-                  <p className="text-lg text-gray-500">복잡한 절차 없이, 빠르게 시작하세요</p>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                  <StepCard step={1} title="회원가입" description="간편 가입 후 바로 시작하세요" />
-                  <StepCard step={2} title="서비스 선택" description="필요한 연구 지원 서비스를 선택합니다" />
-                  <StepCard step={3} title="업로드 & 요청" description="연구 자료와 요구사항을 전달합니다" />
-                  <StepCard step={4} title="결과 확인" description="전문가가 수행한 분석 결과를 받아보세요" />
-                </div>
-              </div>
-            )}
+            <div className="text-center mb-14">
+              <span className="text-sm font-semibold text-teal-600 tracking-wide uppercase">Process</span>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mt-3 mb-4">간단한 4단계</h2>
+              <p className="text-lg text-gray-500">복잡한 절차 없이, 빠르게 시작하세요</p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
+              <ProcessCard step={1} title="회원가입" description="간편 가입 후 바로 시작하세요" icon={<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />} />
+              <ProcessCard step={2} title="서비스 선택" description="필요한 연구 지원 서비스를 선택합니다" icon={<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />} />
+              <ProcessCard step={3} title="업로드 & 요청" description="연구 자료와 요구사항을 전달합니다" icon={<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />} />
+              <ProcessCard step={4} title="결과 확인" description="전문가가 수행한 분석 결과를 받아보세요" icon={<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />} />
+            </div>
+          </div>
+        </section>
+      )}
 
-            {/* CTA */}
-            {sections.contact && (
-              <div id="contact" className="text-center pt-16 sm:pt-20 mt-8 border-t border-gray-200">
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">연구의 새로운 시작</h2>
-                <p className="text-lg text-gray-500 mb-10">PRIMER와 함께 효율적인 연구를 시작하세요</p>
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                  <Link href={user ? "#services" : "/login"} className="px-10 py-4 bg-teal-600 text-white rounded-xl text-lg font-semibold hover:bg-teal-700 transition-all shadow-lg">
-                    {user ? "서비스 이용하기" : "무료로 시작하기"}
-                  </Link>
-                  <Link href="/contact" className="px-10 py-4 border border-gray-300 text-gray-600 rounded-xl text-lg font-semibold hover:bg-gray-50 transition-all">
-                    문의하기
-                  </Link>
-                </div>
-              </div>
-            )}
+      {/* CTA Section — 별도 분리 */}
+      {sections.contact && (
+        <section id="contact" className="py-20 sm:py-28 px-4 sm:px-6 bg-[#0f172a]">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">함께하는 연구의 시작</h2>
+            <p className="text-lg text-slate-400 mb-10">PRIMER와 함께 효율적인 연구를 시작하세요</p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link href={user ? "#services" : "/login"} className="px-10 py-4 bg-teal-600 text-white rounded-xl text-lg font-semibold hover:bg-teal-700 transition-all shadow-lg shadow-teal-900/30">
+                {user ? "서비스 이용하기" : "무료로 시작하기"}
+              </Link>
+              <Link href="/contact" className="px-10 py-4 border border-slate-600 text-slate-300 rounded-xl text-lg font-semibold hover:bg-white/5 transition-all">
+                문의하기
+              </Link>
+            </div>
           </div>
         </section>
       )}
@@ -495,11 +490,16 @@ function ValueCard({ icon, title, description, color = "teal" }: { icon: React.R
   );
 }
 
-function StepCard({ step, title, description }: { step: number; title: string; description: string }) {
+function ProcessCard({ step, title, description, icon }: { step: number; title: string; description: string; icon: React.ReactNode }) {
   return (
-    <div className="relative text-center">
-      <div className="w-14 h-14 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center mx-auto mb-5"><span className="text-xl font-bold">{step}</span></div>
-      <h3 className="text-base font-semibold text-gray-900 mb-2">{title}</h3>
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sm:p-8 hover:shadow-md hover:border-teal-100 transition-all group">
+      <div className="flex items-center gap-3 mb-5">
+        <div className="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center group-hover:bg-teal-100 transition-colors">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">{icon}</svg>
+        </div>
+        <span className="text-sm font-bold text-teal-600">STEP {step}</span>
+      </div>
+      <h3 className="text-lg font-bold text-gray-900 mb-2">{title}</h3>
       <p className="text-sm text-gray-500 leading-relaxed">{description}</p>
     </div>
   );
