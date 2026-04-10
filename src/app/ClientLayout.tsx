@@ -177,10 +177,10 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       {/* Top Navigation */}
       <header className="fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-200">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-22 sm:h-28">
+          <div className="flex items-center justify-between h-28 sm:h-40">
             {/* Logo */}
             <Link href="/" className="flex items-center shrink-0">
-              <Image src="/logo-primer.png" alt="PRIMER" width={440} height={88} className="h-[88px] w-auto mix-blend-multiply" style={{ filter: "contrast(1.15)" }} priority />
+              <Image src="/logo-primer.png" alt="PRIMER" width={600} height={120} className="h-[120px] w-auto mix-blend-multiply" style={{ filter: "contrast(1.15)" }} priority />
             </Link>
 
             {/* Desktop nav - centered */}
@@ -344,7 +344,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       )}
 
       {/* Main content */}
-      <main className="min-h-screen pt-22 sm:pt-28">
+      <main className="min-h-screen pt-28 sm:pt-40">
         {children}
       </main>
 

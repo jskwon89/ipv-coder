@@ -150,31 +150,62 @@ export default function LandingPage() {
               <text x="55" y="575" textAnchor="middle" fill="#64748b" fontSize="8" transform="rotate(-90,55,575)">Survival</text>
             </g>
 
-            {/* ===== 4. MODERATED MEDIATION / 구조방정식 (center bottom) ===== */}
-            <g opacity="0.16" transform="translate(550, 460)">
-              {/* Boxes */}
-              <rect x="0" y="0" width="90" height="36" rx="4" fill="none" stroke="#78909c" strokeWidth="1.2" />
-              <text x="45" y="22" textAnchor="middle" fill="#94a3b8" fontSize="10" fontWeight="600">독립변수 (X)</text>
-              <rect x="180" y="-60" width="90" height="36" rx="4" fill="none" stroke="#78909c" strokeWidth="1.2" />
-              <text x="225" y="-38" textAnchor="middle" fill="#94a3b8" fontSize="10" fontWeight="600">매개변수 (M)</text>
-              <rect x="360" y="0" width="90" height="36" rx="4" fill="none" stroke="#78909c" strokeWidth="1.2" />
-              <text x="405" y="22" textAnchor="middle" fill="#94a3b8" fontSize="10" fontWeight="600">종속변수 (Y)</text>
-              <rect x="180" y="60" width="90" height="36" rx="4" fill="none" stroke="#64748b" strokeWidth="1" strokeDasharray="4,2" />
-              <text x="225" y="82" textAnchor="middle" fill="#78909c" fontSize="9" fontWeight="600">조절변수 (W)</text>
-              {/* Arrows: X→M */}
-              <line x1="90" y1="10" x2="180" y2="-45" stroke="#94a3b8" strokeWidth="1.2" markerEnd="url(#arrowG)" />
-              <text x="120" y="-22" fill="#78909c" fontSize="8">a=.45***</text>
-              {/* M→Y */}
-              <line x1="270" y1="-38" x2="360" y2="10" stroke="#94a3b8" strokeWidth="1.2" markerEnd="url(#arrowG)" />
-              <text x="330" y="-22" fill="#78909c" fontSize="8">b=.38**</text>
-              {/* X→Y (direct, dashed) */}
-              <line x1="90" y1="22" x2="360" y2="22" stroke="#64748b" strokeWidth="1" strokeDasharray="4,2" markerEnd="url(#arrowG)" />
-              <text x="225" y="38" fill="#64748b" fontSize="8">{`c'=.12 (n.s.)`}</text>
-              {/* W moderating a path */}
-              <line x1="225" y1="60" x2="145" y2="-10" stroke="#64748b" strokeWidth="0.8" strokeDasharray="3,2" />
-              <circle cx="145" cy="-10" r="2.5" fill="#78909c" />
-              {/* Arrow marker */}
-              <defs><marker id="arrowG" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#94a3b8" /></marker></defs>
+            {/* ===== 4. AMOS-style SEM / 조절된 매개효과 (center bottom) ===== */}
+            <g opacity="0.16" transform="translate(500, 440)">
+              <defs>
+                <marker id="amosArr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><path d="M0,0 L10,3.5 L0,7 Z" fill="#94a3b8" /></marker>
+                <marker id="amosArrD" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><path d="M0,0 L10,3.5 L0,7 Z" fill="#64748b" /></marker>
+              </defs>
+
+              {/* Latent variables (ellipses) — AMOS style */}
+              <ellipse cx="0" cy="50" rx="55" ry="28" fill="none" stroke="#90a4ae" strokeWidth="1.5" />
+              <text x="0" y="47" textAnchor="middle" fill="#94a3b8" fontSize="11" fontWeight="700">직무스트레스</text>
+              <text x="0" y="60" textAnchor="middle" fill="#78909c" fontSize="8">(X)</text>
+
+              <ellipse cx="240" cy="-30" rx="50" ry="28" fill="none" stroke="#90a4ae" strokeWidth="1.5" />
+              <text x="240" y="-33" textAnchor="middle" fill="#94a3b8" fontSize="11" fontWeight="700">직무소진</text>
+              <text x="240" y="-20" textAnchor="middle" fill="#78909c" fontSize="8">(M)</text>
+
+              <ellipse cx="480" cy="50" rx="55" ry="28" fill="none" stroke="#90a4ae" strokeWidth="1.5" />
+              <text x="480" y="47" textAnchor="middle" fill="#94a3b8" fontSize="11" fontWeight="700">이직의도</text>
+              <text x="480" y="60" textAnchor="middle" fill="#78909c" fontSize="8">(Y)</text>
+
+              {/* Moderator (rectangle — observed variable, AMOS style) */}
+              <rect x="195" y="95" width="90" height="35" rx="0" fill="none" stroke="#78909c" strokeWidth="1.2" />
+              <text x="240" y="112" textAnchor="middle" fill="#90a4ae" fontSize="10" fontWeight="700">사회적지지</text>
+              <text x="240" y="124" textAnchor="middle" fill="#64748b" fontSize="8">(W)</text>
+
+              {/* Error terms (small circles) — AMOS style */}
+              <circle cx="240" cy="-75" r="12" fill="none" stroke="#64748b" strokeWidth="0.8" />
+              <text x="240" y="-72" textAnchor="middle" fill="#64748b" fontSize="8">e1</text>
+              <circle cx="480" cy="-5" r="12" fill="none" stroke="#64748b" strokeWidth="0.8" />
+              <text x="480" y="-2" textAnchor="middle" fill="#64748b" fontSize="8">e2</text>
+
+              {/* Error arrows */}
+              <line x1="240" y1="-63" x2="240" y2="-58" stroke="#64748b" strokeWidth="0.8" markerEnd="url(#amosArrD)" />
+              <line x1="480" y1="7" x2="480" y2="22" stroke="#64748b" strokeWidth="0.8" markerEnd="url(#amosArrD)" />
+
+              {/* Path arrows — AMOS style single-headed */}
+              {/* X → M */}
+              <line x1="48" y1="35" x2="195" y2="-15" stroke="#94a3b8" strokeWidth="1.5" markerEnd="url(#amosArr)" />
+              <text x="105" y="2" fill="#b0bec5" fontSize="9" fontWeight="600">.45***</text>
+
+              {/* M → Y */}
+              <line x1="285" y1="-15" x2="430" y2="35" stroke="#94a3b8" strokeWidth="1.5" markerEnd="url(#amosArr)" />
+              <text x="370" y="2" fill="#b0bec5" fontSize="9" fontWeight="600">.38**</text>
+
+              {/* X → Y (direct effect, thinner) */}
+              <line x1="55" y1="55" x2="425" y2="55" stroke="#78909c" strokeWidth="1" markerEnd="url(#amosArr)" />
+              <text x="240" y="70" textAnchor="middle" fill="#78909c" fontSize="8">.12 (n.s.)</text>
+
+              {/* W moderating X→M path (interaction arrow to path midpoint) */}
+              <line x1="240" y1="95" x2="130" y2="18" stroke="#64748b" strokeWidth="1" strokeDasharray="4,2" />
+              <circle cx="130" cy="18" r="3" fill="none" stroke="#64748b" strokeWidth="1" />
+
+              {/* Observed indicators (small rectangles hanging from latent) */}
+              {[-30,-10,10,30].map((offset,i)=>(<g key={`xi${i}`}><rect x={offset-15} y="85" width="24" height="14" fill="none" stroke="#64748b" strokeWidth="0.7" rx="0"/><text x={offset-3} y="95" textAnchor="middle" fill="#64748b" fontSize="6">{`x${i+1}`}</text><line x1={offset-3} y1="78" x2={offset-3} y2="85" stroke="#64748b" strokeWidth="0.6" markerEnd="url(#amosArrD)"/></g>))}
+              {[-20,0,20].map((offset,i)=>(<g key={`yi${i}`}><rect x={460+offset-12} y="85" width="24" height="14" fill="none" stroke="#64748b" strokeWidth="0.7" rx="0"/><text x={460+offset} y="95" textAnchor="middle" fill="#64748b" fontSize="6">{`y${i+1}`}</text><line x1={460+offset} y1="78" x2={460+offset} y2="85" stroke="#64748b" strokeWidth="0.6" markerEnd="url(#amosArrD)"/></g>))}
+              {[-15,5,25].map((offset,i)=>(<g key={`mi${i}`}><rect x={225+offset-12} y="-105" width="24" height="14" fill="none" stroke="#64748b" strokeWidth="0.7" rx="0"/><text x={225+offset} y="-95" textAnchor="middle" fill="#64748b" fontSize="6">{`m${i+1}`}</text><line x1={225+offset} y1="-88" x2={225+offset} y2="-58" stroke="#64748b" strokeWidth="0.6"/></g>))}
             </g>
 
             {/* ===== 5. TOPIC MODEL RESULT (bottom right, LDA 토픽 분포) ===== */}
