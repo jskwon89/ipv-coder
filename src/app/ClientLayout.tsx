@@ -34,11 +34,9 @@ const menuGroups = [
     label: "데이터 분석",
     prefixes: ["/data-transform", "/data-transform-results", "/stats-analysis", "/quant-analysis", "/quant-results", "/text-analysis", "/text-results", "/qual-analysis", "/qual-results"],
     items: [
-      { label: "데이터 전처리", href: "/data-transform" },
-      { label: "기초통계", href: "/stats-analysis" },
-      { label: "계량분석", href: "/quant-analysis" },
-      { label: "텍스트 분석", href: "/text-analysis" },
-      { label: "질적분석", href: "/qual-analysis" },
+      { label: "전처리 & 기초통계", href: "/data-transform" },
+      { label: "통계분석", href: "/quant-analysis" },
+      { label: "텍스트 & 질적분석", href: "/text-analysis" },
     ],
   },
   {

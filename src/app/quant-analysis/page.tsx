@@ -76,7 +76,7 @@ export default function QuantAnalysisPage() {
 
   return (
     <div className="p-8 max-w-5xl mx-auto">
-      <ServiceTabs tabs={[{ label: "분석 의뢰", href: "/quant-analysis" }, { label: "결과 확인", href: "/quant-results" }]} />
+      <ServiceTabs tabs={[{ label: "통계분석 의뢰", href: "/quant-analysis" }, { label: "결과 확인", href: "/quant-results" }]} />
       <PageHeader
         title="계량분석 의뢰"
         subtitle="통계분석을 의뢰하고 전문적인 분석 결과를 받아보세요"

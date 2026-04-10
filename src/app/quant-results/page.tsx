@@ -95,7 +95,7 @@ export default function QuantResultsPage() {
 
   return (
     <div className="p-8 max-w-5xl mx-auto">
-      <ServiceTabs tabs={[{ label: "분석 의뢰", href: "/quant-analysis" }, { label: "결과 확인", href: "/quant-results" }]} />
+      <ServiceTabs tabs={[{ label: "통계분석 의뢰", href: "/quant-analysis" }, { label: "결과 확인", href: "/quant-results" }]} />
 
       <h1 className="text-2xl font-bold mb-2">계량분석 결과 확인</h1>
       <p className="text-gray-600 text-sm mb-8">의뢰하신 계량분석의 진행 상황과 결과를 확인합니다.</p>
