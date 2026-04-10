@@ -92,7 +92,7 @@ export default function LandingPage() {
           {/* Academic visualization background */}
           <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1400 700" fill="none" preserveAspectRatio="xMidYMid slice">
             {/* ===== 1. WORD CLOUD (center-right, large, 논문 워드클라우드 형태) ===== */}
-            <g opacity="0.22" transform="translate(900, 200)">
+            <g opacity="0.22" transform="translate(980, 200)">
               {/* 핵심 키워드 — 크기=빈도, 빽빽하게 모여있는 형태 */}
               <text x="0" y="0" textAnchor="middle" fill="#b0bec5" fontSize="58" fontWeight="900" fontFamily="sans-serif">연구</text>
               <text x="120" y="-30" textAnchor="middle" fill="#90a4ae" fontSize="42" fontWeight="800" fontFamily="sans-serif">정책</text>
