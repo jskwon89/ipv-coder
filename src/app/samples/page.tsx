@@ -88,9 +88,9 @@ export default function SamplesPage() {
           <Link href="/" className="text-sm text-white/50 hover:text-white/80 transition-colors mb-4 inline-block">
             &larr; 메인으로
           </Link>
-          <h1 className="text-2xl sm:text-4xl font-bold mb-3">서비스 안내</h1>
+          <h1 className="text-2xl sm:text-4xl font-bold mb-3">서비스별 결과물 안내</h1>
           <p className="text-sm sm:text-lg text-white/60 max-w-2xl mx-auto">
-            각 서비스의 작업 흐름을 확인하세요. 상세 결과물 예시는 각 의뢰 페이지에서 볼 수 있습니다.
+            각 서비스의 작업 흐름과 납품 결과물을 확인하세요
           </p>
         </div>
       </div>
