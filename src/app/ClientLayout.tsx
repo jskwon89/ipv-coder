@@ -7,6 +7,7 @@ import { CreditBalance } from "./credits/CreditBalance";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUser } from "@/contexts/UserAuthContext";
 import { AdminLoginModal } from "@/components/AdminLoginModal";
+import { getSiteMode, siteConfig } from "@/lib/siteMode";
 
 const NO_SIDEBAR_PATHS = ["/", "/login", "/signup"];
 
@@ -92,6 +93,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const [showLogin, setShowLogin] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [siteName, setSiteName] = useState("PrimeR");
+  useEffect(() => { setSiteName(siteConfig[getSiteMode()].name); }, []);
 
   const isNoSidebar = NO_SIDEBAR_PATHS.includes(pathname);
 
@@ -142,13 +145,13 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       <div className="px-5 py-5 border-b border-white/8">
         <Link href="/" className="flex items-center gap-3 group" onClick={closeSidebar}>
           <div className="w-8 h-8 rounded-lg bg-[#c49a2e] flex items-center justify-center shrink-0">
-            <span className="text-white font-bold text-sm">R</span>
+            <span className="text-white font-bold text-sm">{siteName[0]}</span>
           </div>
           <div>
             <h1 className="text-base font-bold tracking-tight text-white group-hover:text-[#d4a843] transition-colors">
-              ResearchOn
+              {siteName}
             </h1>
-            <p className="text-[10px] text-white/50 tracking-wide">연구 및 데이터 플랫폼</p>
+            <p className="text-[10px] text-white/50 tracking-wide">{siteConfig[getSiteMode()].subtitle}</p>
           </div>
         </Link>
       </div>
@@ -322,7 +325,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
         <div className="flex items-center justify-between px-3">
           <span className="text-[10px] text-white/30 font-medium">v0.2.0</span>
-          <span className="text-[10px] text-white/30">ResearchOn</span>
+          <span className="text-[10px] text-white/30">{siteName}</span>
         </div>
       </div>
     </>
@@ -336,7 +339,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           <div className="w-7 h-7 rounded-lg bg-[#c49a2e] flex items-center justify-center shrink-0">
             <span className="text-white font-bold text-xs">R</span>
           </div>
-          <span className="text-sm font-bold text-white">ResearchOn</span>
+          <span className="text-sm font-bold text-white">{siteName}</span>
         </Link>
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}

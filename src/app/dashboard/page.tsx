@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useUser } from "@/contexts/UserAuthContext";
+import { getSiteMode, siteConfig } from "@/lib/siteMode";
 
 interface Project {
   id: string;
@@ -197,7 +198,7 @@ export default function DashboardPage() {
                   환영합니다
                 </h1>
                 <p className="text-[#d4a843] mt-1.5 sm:mt-2 text-xs sm:text-sm lg:text-base leading-relaxed">
-                  ResearchOn에서 연구를 시작하세요
+                  {siteConfig[getSiteMode()].name}에서 연구를 시작하세요
                 </p>
                 <button
                   onClick={() => setShowModal(true)}
