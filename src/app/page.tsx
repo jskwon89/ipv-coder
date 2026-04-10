@@ -92,7 +92,7 @@ export default function LandingPage() {
           {/* Academic visualization background */}
           <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1400 700" fill="none" preserveAspectRatio="xMidYMid slice">
             {/* ===== 1. WORD CLOUD (center-right, large, 논문 워드클라우드 형태) ===== */}
-            <g opacity="0.22" transform="translate(1000, 120)">
+            <g opacity="0.22" transform="translate(900, 200)">
               {/* 핵심 키워드 — 크기=빈도, 빽빽하게 모여있는 형태 */}
               <text x="0" y="0" textAnchor="middle" fill="#b0bec5" fontSize="58" fontWeight="900" fontFamily="sans-serif">연구</text>
               <text x="120" y="-30" textAnchor="middle" fill="#90a4ae" fontSize="42" fontWeight="800" fontFamily="sans-serif">정책</text>
@@ -151,7 +151,7 @@ export default function LandingPage() {
             </g>
 
             {/* ===== 4. AMOS-style SEM / 조절된 매개효과 (center bottom) ===== */}
-            <g opacity="0.16" transform="translate(350, 430)">
+            <g opacity="0.16" transform="translate(550, 430)">
               <defs>
                 <marker id="amosArr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><path d="M0,0 L10,3.5 L0,7 Z" fill="#94a3b8" /></marker>
                 <marker id="amosArrD" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><path d="M0,0 L10,3.5 L0,7 Z" fill="#64748b" /></marker>
@@ -212,17 +212,17 @@ export default function LandingPage() {
             <g opacity="0.14">
               {/* Topic distribution bars — 가로 막대 */}
               {[
-                [1050,490,"Topic 1",220,"정책 · 제도 · 개선 · 법률"],
-                [1050,520,"Topic 2",175,"교육 · 학습 · 성과 · 평가"],
-                [1050,550,"Topic 3",140,"사회 · 인식 · 변화 · 조사"],
-                [1050,580,"Topic 4",100,"경제 · 성장 · 투자 · 산업"],
-                [1050,610,"Topic 5",70,"환경 · 에너지 · 기후 · 탄소"],
+                [1050,120,"Topic 1",220,"정책 · 제도 · 개선 · 법률"],
+                [1050,150,"Topic 2",175,"교육 · 학습 · 성과 · 평가"],
+                [1050,180,"Topic 3",140,"사회 · 인식 · 변화 · 조사"],
+                [1050,210,"Topic 4",100,"경제 · 성장 · 투자 · 산업"],
+                [1050,240,"Topic 5",70,"환경 · 에너지 · 기후 · 탄소"],
               ].map(([x,y,label,w,words],i)=>(<g key={`tp${i}`}>
                 <text x={Number(x)-5} y={Number(y)+4} textAnchor="end" fill="#78909c" fontSize="8" fontWeight="600">{label}</text>
                 <rect x={Number(x)} y={Number(y)-6} width={Number(w)} height="12" rx="2" fill="#64748b" opacity={0.35-i*0.04}/>
                 <text x={Number(x)+Number(w)+8} y={Number(y)+4} fill="#64748b" fontSize="6.5" opacity="0.6">{words}</text>
               </g>))}
-              <text x="1150" y="640" textAnchor="middle" fill="#64748b" fontSize="8">Topic Probability</text>
+              <text x="1150" y="268" textAnchor="middle" fill="#64748b" fontSize="8">Topic Probability</text>
             </g>
           </svg>
 
