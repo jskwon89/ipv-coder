@@ -189,7 +189,7 @@ export default function DashboardPage() {
       <div className="absolute inset-0 bg-black/30 pointer-events-none" />
       <div className="p-3 sm:p-4 lg:p-6 max-w-full mx-2 sm:mx-4 lg:mx-6 relative z-10">
         {/* Welcome Banner + Stats */}
-        <div className="relative overflow-hidden rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#0f1a2e] to-[#1a2744] p-5 sm:p-8 lg:p-10 mb-6 sm:mb-8 shadow-lg">
+        <div className="relative overflow-hidden rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#2c3e50] to-[#34495e] p-5 sm:p-8 lg:p-10 mb-6 sm:mb-8 shadow-lg">
           <div className="relative z-10">
             <div className="flex items-start justify-between mb-5 sm:mb-8">
               <div>

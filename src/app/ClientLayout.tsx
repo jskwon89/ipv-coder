@@ -143,7 +143,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       <div className="px-5 py-5 border-b border-white/8">
         <Link href="/" className="flex items-center gap-3 group" onClick={closeSidebar}>
           <div className="w-8 h-8 rounded-lg bg-teal-500 flex items-center justify-center shrink-0">
-            <span className="text-white font-bold text-sm">R</span>
+            <span className="text-white font-bold text-sm">P</span>
           </div>
           <div>
             <h1 className="text-base font-bold tracking-tight text-white group-hover:text-teal-400 transition-colors">
@@ -252,7 +252,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       </nav>
 
       {/* Footer */}
-      <div className="px-3 py-4 border-t border-white/10 space-y-3 bg-[#0b1422] mt-auto">
+      <div className="px-3 py-4 border-t border-white/10 space-y-3 bg-[#243447] mt-auto">
         {/* User info - mobile only */}
         <div className="md:hidden">
           {user ? (
@@ -332,10 +332,10 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   return (
     <div className="min-h-screen bg-gray-100 overflow-x-hidden">
       {/* Mobile top bar */}
-      <div className="fixed top-0 left-0 right-0 z-40 bg-[#0f1a2e] flex items-center justify-between px-4 py-3 md:hidden">
+      <div className="fixed top-0 left-0 right-0 z-40 bg-[#2c3e50] flex items-center justify-between px-4 py-3 md:hidden">
         <Link href="/" className="flex items-center gap-2">
           <div className="w-7 h-7 rounded-lg bg-teal-500 flex items-center justify-center shrink-0">
-            <span className="text-white font-bold text-xs">R</span>
+            <span className="text-white font-bold text-xs">P</span>
           </div>
           <span className="text-sm font-bold text-white">PRIMER</span>
         </Link>
@@ -357,7 +357,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
       <aside className={`
         fixed top-0 bottom-0 left-0 z-50
-        w-[260px] md:w-60 bg-[#0f1a2e] text-[#c8d6e5] flex flex-col
+        w-[260px] md:w-60 bg-[#2c3e50] text-[#c8d6e5] flex flex-col
         transition-all duration-300 ease-in-out
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
         ${sidebarCollapsed ? "md:-translate-x-full" : "md:translate-x-0"}
@@ -366,7 +366,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         {/* 데스크톱 토글 버튼 */}
         <button
           onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-          className="hidden md:flex absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-12 bg-[#0f1a2e] border border-white/10 rounded-r-lg items-center justify-center hover:bg-[#1a2744] transition-colors z-50"
+          className="hidden md:flex absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-12 bg-[#2c3e50] border border-white/10 rounded-r-lg items-center justify-center hover:bg-[#34495e] transition-colors z-50"
         >
           <svg className={`w-3.5 h-3.5 text-white/60 transition-transform ${sidebarCollapsed ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -378,7 +378,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       {sidebarCollapsed && (
         <button
           onClick={() => setSidebarCollapsed(false)}
-          className="hidden md:flex fixed left-0 top-1/2 -translate-y-1/2 w-6 h-12 bg-[#0f1a2e] border border-white/10 rounded-r-lg items-center justify-center hover:bg-[#1a2744] transition-colors z-50"
+          className="hidden md:flex fixed left-0 top-1/2 -translate-y-1/2 w-6 h-12 bg-[#2c3e50] border border-white/10 rounded-r-lg items-center justify-center hover:bg-[#34495e] transition-colors z-50"
         >
           <svg className="w-3.5 h-3.5 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
