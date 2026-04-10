@@ -197,8 +197,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               대시보드
             </Link>
 
-            {/* 연구 설계 지원 */}
-            <SectionGroup color="bg-emerald-400/70" label="연구 설계 지원" pathname={pathname} prefixes={["/data-generation", "/stats-design"]} defaultOpen>
+            {/* 연구설계 */}
+            <SectionGroup color="bg-teal-400/70" label="연구설계" pathname={pathname} prefixes={["/data-generation", "/stats-design"]} defaultOpen>
               <NavLink href="/data-generation" label="연구 주제 및 방향 설계" pathname={pathname} onClick={closeSidebar} />
               <NavLink href="/stats-design" label="통계분석 설계" pathname={pathname} onClick={closeSidebar} />
             </SectionGroup>

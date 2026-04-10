@@ -114,42 +114,24 @@ export default function LandingPage() {
             <h2 className="text-2xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">제공 서비스</h2>
             <div className="w-12 sm:w-16 h-1 bg-teal-500 mx-auto rounded-full" />
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-8">
             <ServiceCard
               image="/images/landing-연구설계.png"
-              title="연구 설계 지원"
-              description="연구 주제 설계부터 통계분석 설계까지"
+              title="연구설계"
+              description="연구 주제 설계, 방법론 안내"
               href="/data-generation"
             />
             <ServiceCard
               image="/images/landing-설문조사.png"
-              title="설문조사"
-              description="설문 설계부터 데이터 수집까지 원스톱 서비스"
+              title="자료 수집"
+              description="설문조사, 판결문, 뉴스 수집"
               href="/survey-request"
             />
             <ServiceCard
-              image="/images/landing-판결문.png"
-              title="판결문 분석"
-              description="판결문 수집부터 변수 코딩까지 원스톱 서비스"
-              href="/judgment"
-            />
-            <ServiceCard
-              image="/images/landing-기사검색.png"
-              title="뉴스/언론 보도"
-              description="키워드 기반 뉴스 수집 및 분석"
-              href="/news-search"
-            />
-            <ServiceCard
               image="/images/landing-계량통계.png"
-              title="계량분석"
-              description="기초통계부터 고급 계량분석까지, 전문가가 직접 분석"
+              title="통계분석"
+              description="기초통계부터 고급 계량분석까지"
               href="/quant-analysis"
-            />
-            <ServiceCard
-              image="/images/landing-텍스트분석.png"
-              title="텍스트 분석"
-              description="토픽모델링, 감성분석, 워드클라우드 등 텍스트 분석"
-              href="/text-analysis"
             />
           </div>
         </div>
