@@ -82,9 +82,9 @@ export default function LandingPage() {
   useEffect(() => { fetchDashboard(); }, [fetchDashboard]);
 
   return (
-    <div className="min-h-screen bg-white text-gray-900">
+    <div className="min-h-screen bg-white text-gray-900 snap-y snap-mandatory overflow-y-auto h-screen">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-[#0f172a]">
+      <section className="relative overflow-hidden bg-[#0f172a] min-h-screen snap-start">
         {/* Background layers */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a] via-[#0f172a] to-teal-900/30" />
@@ -255,7 +255,7 @@ export default function LandingPage() {
 
       {/* 연구현황 (My Research) - only when logged in */}
       {user && (
-        <section id="my-research" className="py-12 sm:py-20 px-4 sm:px-6 bg-white border-b border-gray-100">
+        <section id="my-research" className="py-12 sm:py-20 px-4 sm:px-6 bg-white border-b border-gray-100 min-h-screen snap-start flex flex-col justify-center">
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center justify-between mb-8">
               <div>
@@ -329,7 +329,7 @@ export default function LandingPage() {
 
       {/* Services Section */}
       {sections.services && (
-        <section id="services" className="py-16 sm:py-28 px-4 sm:px-6 bg-gray-50/80">
+        <section id="services" className="py-16 sm:py-28 px-4 sm:px-6 bg-gray-50/80 min-h-screen snap-start flex flex-col justify-center">
           <div className="max-w-7xl mx-auto">
             <div className="max-w-2xl mb-12 sm:mb-16">
               <span className="text-sm font-semibold text-teal-600 tracking-wide uppercase">Services</span>
@@ -366,7 +366,7 @@ export default function LandingPage() {
 
       {/* Why PRIMER */}
       {sections.value_proposition && (
-        <section id="why-primer" className="py-16 sm:py-28 px-4 sm:px-6 bg-[#0f172a]">
+        <section id="why-primer" className="py-16 sm:py-28 px-4 sm:px-6 bg-[#0f172a] min-h-screen snap-start flex flex-col justify-center">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <span className="text-sm font-semibold text-teal-400 tracking-wide uppercase">Why PRIMER</span>
@@ -387,7 +387,7 @@ export default function LandingPage() {
 
       {/* How it Works */}
       {sections.how_it_works && (
-        <section id="how-it-works" className="py-16 sm:py-28 px-4 sm:px-6 bg-white">
+        <section id="how-it-works" className="py-16 sm:py-28 px-4 sm:px-6 bg-white min-h-screen snap-start flex flex-col justify-center">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <span className="text-sm font-semibold text-teal-600 tracking-wide uppercase">Process</span>
@@ -406,7 +406,7 @@ export default function LandingPage() {
 
       {/* CTA Section */}
       {sections.contact && (
-        <section id="contact" className="py-16 sm:py-28 px-4 sm:px-6 bg-[#0f172a]">
+        <section id="contact" className="py-16 sm:py-28 px-4 sm:px-6 bg-[#0f172a] min-h-screen snap-start flex flex-col justify-center">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">연구의 새로운 시작</h2>
             <p className="text-lg text-slate-400 mb-10">PRIMER와 함께 효율적인 연구를 시작하세요</p>
@@ -423,7 +423,7 @@ export default function LandingPage() {
       )}
 
       {/* Footer */}
-      <footer className="bg-[#0b1120] text-slate-500 py-12 px-4 sm:px-6 border-t border-white/5">
+      <footer className="bg-[#0b1120] text-slate-500 py-12 px-4 sm:px-6 border-t border-white/5 snap-start">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
             <div>
