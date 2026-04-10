@@ -48,7 +48,7 @@ function LoginForm() {
             </div>
             <div className="text-left">
               <h1 className="text-xl font-bold text-white group-hover:text-teal-400 transition-colors">
-                ResearchOn
+                PRIMER
               </h1>
               <p className="text-[11px] text-white/50 tracking-wide">
                 연구 및 데이터 플랫폼
@@ -122,7 +122,7 @@ function LoginForm() {
         </div>
 
         <p className="text-center text-[11px] text-white/25 mt-6">
-          ResearchOn
+          PRIMER
         </p>
       </div>
     </div>

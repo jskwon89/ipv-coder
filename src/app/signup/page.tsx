@@ -66,7 +66,7 @@ export default function SignupPage() {
               </div>
               <div className="text-left">
                 <h1 className="text-xl font-bold text-white group-hover:text-teal-400 transition-colors">
-                  ResearchOn
+                  PRIMER
                 </h1>
                 <p className="text-[11px] text-white/50 tracking-wide">
                   연구 및 데이터 플랫폼
@@ -120,7 +120,7 @@ export default function SignupPage() {
             </div>
             <div className="text-left">
               <h1 className="text-xl font-bold text-white group-hover:text-teal-400 transition-colors">
-                ResearchOn
+                PRIMER
               </h1>
               <p className="text-[11px] text-white/50 tracking-wide">
                 연구 및 데이터 플랫폼
@@ -133,7 +133,7 @@ export default function SignupPage() {
         <div className="bg-white/[0.06] backdrop-blur-sm border border-white/10 rounded-2xl p-8">
           <h2 className="text-lg font-bold text-white mb-1">회원가입</h2>
           <p className="text-sm text-white/50 mb-6">
-            새 계정을 만들어 ResearchOn을 시작하세요.
+            새 계정을 만들어 PRIMER을 시작하세요.
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -210,7 +210,7 @@ export default function SignupPage() {
         </div>
 
         <p className="text-center text-[11px] text-white/25 mt-6">
-          ResearchOn
+          PRIMER
         </p>
       </div>
     </div>

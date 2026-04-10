@@ -197,7 +197,7 @@ export default function DashboardPage() {
                   환영합니다
                 </h1>
                 <p className="text-teal-400 mt-1.5 sm:mt-2 text-xs sm:text-sm lg:text-base leading-relaxed">
-                  ResearchOn에서 연구를 시작하세요
+                  PRIMER에서 연구를 시작하세요
                 </p>
                 <button
                   onClick={() => setShowModal(true)}

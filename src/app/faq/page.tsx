@@ -12,8 +12,8 @@ interface FaqItem {
 const faqs: FaqItem[] = [
   {
     category: "서비스 일반",
-    q: "ResearchOn은 어떤 서비스인가요?",
-    a: "ResearchOn은 연구자를 위한 통합 연구 지원 플랫폼입니다. 연구 설계, 설문조사, 판결문 코딩, 뉴스 수집, 계량분석, 텍스트 분석, 질적분석 등 연구에 필요한 다양한 서비스를 제공합니다.",
+    q: "PRIMER은 어떤 서비스인가요?",
+    a: "PRIMER은 연구자를 위한 통합 연구 지원 플랫폼입니다. 연구 설계, 설문조사, 판결문 코딩, 뉴스 수집, 계량분석, 텍스트 분석, 질적분석 등 연구에 필요한 다양한 서비스를 제공합니다.",
   },
   {
     category: "서비스 일반",
@@ -28,7 +28,7 @@ const faqs: FaqItem[] = [
   {
     category: "크레딧",
     q: "크레딧은 무엇인가요?",
-    a: "크레딧은 ResearchOn 플랫폼에서 서비스를 이용할 때 사용되는 포인트입니다. 각 서비스마다 필요한 크레딧이 다르며, 크레딧 관리 페이지에서 잔액을 확인할 수 있습니다.",
+    a: "크레딧은 PRIMER 플랫폼에서 서비스를 이용할 때 사용되는 포인트입니다. 각 서비스마다 필요한 크레딧이 다르며, 크레딧 관리 페이지에서 잔액을 확인할 수 있습니다.",
   },
   {
     category: "크레딧",
@@ -115,7 +115,7 @@ export default function FaqPage() {
         </div>
         <div>
           <h1 className="text-2xl font-bold">자주 묻는 질문</h1>
-          <p className="text-gray-500 text-sm">ResearchOn 서비스에 대한 궁금증을 해결해 드립니다</p>
+          <p className="text-gray-500 text-sm">PRIMER 서비스에 대한 궁금증을 해결해 드립니다</p>
         </div>
       </div>
 

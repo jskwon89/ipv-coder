@@ -37,7 +37,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14 sm:h-16">
           <Link href="/" className="flex items-center gap-2">
             <span className={`text-lg sm:text-xl font-bold tracking-tight ${scrolled ? "text-gray-900" : "text-white"}`}>
-              ResearchOn
+              PRIMER
             </span>
           </Link>
           <div className={`hidden md:flex items-center gap-8 text-sm font-medium ${scrolled ? "text-gray-600" : "text-white/90"}`}>
@@ -159,7 +159,7 @@ export default function LandingPage() {
       {sections.value_proposition && <section className="py-12 sm:py-24 px-4 sm:px-6 bg-[#0f1a2e] text-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8 sm:mb-16">
-            <h2 className="text-2xl sm:text-4xl font-bold mb-3 sm:mb-4">왜 ResearchOn인가요?</h2>
+            <h2 className="text-2xl sm:text-4xl font-bold mb-3 sm:mb-4">왜 PRIMER인가요?</h2>
             <p className="text-sm sm:text-lg text-white/60 max-w-2xl mx-auto leading-relaxed">
               합리적인 가격, 최상의 품질, 끝까지 책임지는 서비스
             </p>
@@ -255,7 +255,7 @@ export default function LandingPage() {
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-2xl sm:text-4xl font-bold mb-3 sm:mb-4">연구의 새로운 시작</h2>
           <p className="text-sm sm:text-lg text-white/70 mb-6 sm:mb-10">
-            ResearchOn과 함께 효율적인 연구를 시작하세요
+            PRIMER과 함께 효율적인 연구를 시작하세요
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-8 max-w-md mx-auto">
             <input
@@ -282,7 +282,7 @@ export default function LandingPage() {
       <footer className="bg-[#111827] text-white/60 py-8 sm:py-12 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6">
           <div>
-            <h3 className="text-lg font-bold text-white mb-1">ResearchOn</h3>
+            <h3 className="text-lg font-bold text-white mb-1">PRIMER</h3>
             <p className="text-sm">연구자를 위한 올인원 연구 지원 플랫폼</p>
           </div>
           <div className="flex items-center gap-6 text-sm">
@@ -290,7 +290,7 @@ export default function LandingPage() {
             <span className="hover:text-white transition-colors cursor-pointer">이용약관</span>
             <span className="hover:text-white transition-colors cursor-pointer">개인정보처리방침</span>
           </div>
-          <p className="text-xs text-white/40">&copy; 2026 ResearchOn. All rights reserved.</p>
+          <p className="text-xs text-white/40">&copy; 2026 PRIMER. All rights reserved.</p>
         </div>
       </footer>
 

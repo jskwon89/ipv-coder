@@ -980,7 +980,7 @@ export default function AdminPage() {
             <div className="space-y-4">
               {[
                 { key: "services", label: "제공 서비스", desc: "연구 설계, 설문조사, 판결문 분석 등 서비스 카드 목록" },
-                { key: "value_proposition", label: "왜 ResearchOn인가요?", desc: "합리적인 가격, 검증된 품질, 수정보완 보장 등 강점 소개" },
+                { key: "value_proposition", label: "왜 PRIMER인가요?", desc: "합리적인 가격, 검증된 품질, 수정보완 보장 등 강점 소개" },
                 { key: "how_it_works", label: "이용 절차", desc: "회원가입 → 서비스 선택 → 자료 업로드 → 결과 확인 4단계" },
                 { key: "contact", label: "문의/CTA", desc: "이메일 문의 폼 + '무료로 시작하기' 버튼" },
               ].map((section) => (
