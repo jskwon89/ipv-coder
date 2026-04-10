@@ -107,6 +107,8 @@ export default function LandingPage() {
         </div>
       </section>
 
+      <div className="max-w-5xl mx-auto"><hr className="border-gray-600" /></div>
+
       {/* Services Section */}
       {sections.services && <section id="services" className="py-12 sm:py-24 px-4 sm:px-6 bg-white">
         <div className="max-w-7xl mx-auto">
@@ -138,6 +140,8 @@ export default function LandingPage() {
       </section>}
 
       {/* Value Proposition */}
+      <div className="max-w-5xl mx-auto"><hr className="border-gray-600" /></div>
+
       {sections.value_proposition && <section className="py-12 sm:py-24 px-4 sm:px-6 bg-white text-gray-900">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8 sm:mb-16">
@@ -207,6 +211,8 @@ export default function LandingPage() {
       </section>}
 
       {/* How it Works */}
+      <div className="max-w-5xl mx-auto"><hr className="border-gray-600" /></div>
+
       {sections.how_it_works && <section id="how-it-works" className="py-12 sm:py-24 px-4 sm:px-6 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8 sm:mb-16">
@@ -233,6 +239,8 @@ export default function LandingPage() {
       </section>}
 
       {/* Contact / CTA Section */}
+      <div className="max-w-5xl mx-auto"><hr className="border-gray-600" /></div>
+
       {sections.contact && <section id="contact" className="py-12 sm:py-24 px-4 sm:px-6 bg-white text-gray-900">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-2xl sm:text-4xl font-bold mb-3 sm:mb-4">연구의 새로운 시작</h2>
