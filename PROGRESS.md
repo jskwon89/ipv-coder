@@ -1,4 +1,96 @@
-# ResearchOn 프로젝트 진행상황
+# PRIMER 프로젝트 진행상황
+
+## 2026-04-10 작업 내용 (전일 세션 - Claude Code)
+
+### 대화 요약
+
+코드 정리/불일치 수정 → 폼 데이터 보존 → 결과물 샘플 → PRIMER 리브랜딩 → 레포 분리 시도 → 다시 합침(하나의 레포) → 디자인 전면 개편까지 진행.
+
+### 주요 의사결정 흐름
+
+1. **ResearchOn → PRIMER 리브랜딩**: 상업용 서비스를 대학원 무료 연구지원으로 전환
+2. **별도 레포 분리 시도**: `jskwon89/primer` 레포 생성, PRIMER 전용 코드 정리 (상단 메뉴바, 서비스 3개, 게시판 등)
+3. **다시 하나로 합침**: 외부 피드백으로 "하나로 하되 PRIMER 디자인을 적용"하기로 결정
+4. **ipv-coder에 PRIMER 디자인 적용**: 골드→틸, 다크→밝은 톤, 서비스 3개 축소
+
+### 완료된 작업
+
+**코드 정리 및 불일치 수정**
+- 대시보드 상태 4단계 반영 (received 누락 수정)
+- 대시보드 누락 서비스 3개 추가 (판결문수집, 판결문코딩, 뉴스수집)
+- 판결문 분석 통계: 프로젝트 기반 → 의뢰 기반으로 변경
+- 미사용 라이브러리 삭제 (classify.ts, derived-vars.ts)
+
+**로그인 시 폼 데이터 보존**
+- `src/lib/formDraft.ts` — sessionStorage 기반 save/load 유틸리티
+- 11개 의뢰 페이지에 적용: 의뢰 클릭 → 로그인 → 복귀 시 입력 내용 유지
+
+**결과물 샘플 페이지**
+- `/samples` 페이지: 서비스별 플로우 다이어그램 카드
+- 의뢰 페이지(연구설계, 통계설계, 판결문)에 "결과물 샘플 보기" 모달 버튼
+- `SampleModal` 공유 컴포넌트 (판결문 코딩 + 연구설계 상세)
+
+**PRIMER 리브랜딩 + 디자인 전면 개편**
+- 이름: ResearchOn → **PRIMER** (전체 파일에서 교체)
+- 색상: 골드(`#c49a2e`) → **틸(teal-500/600)** 전체 29개 파일
+- 이미지: PRIMER용 밝은 대학 톤 이미지 9장 교체 (hero, dashboard-bg, landing-*, 서비스_*)
+- 대문: 모든 섹션 흰 배경 통일, 진한 구분선(`border-gray-600`)으로 구분
+- 사이드바: 다크 네이비 → 연한 그레이(`#f1f2f4`), 색상 바 제거 → 선 구분
+- 사이드바 데스크톱 접기/펼치기 토글 추가
+- 대시보드: 프로젝트 목록/모달 제거, 배경이미지 복원 + 베이지 오버레이
+- 요청현황 카드: 2x2 그리드, 연한 회색 배경 + 진한 테두리, 접수/진행/완료 우측 행 배치
+- 서비스 3개로 축소: 연구설계 / 자료 생성 & 수집 / 통계분석
+- "왜 PRIMER인가요" 섹션: 다크 배경 제거 → 흰 배경
+
+**별도 레포 (jskwon89/primer) — 현재 미사용**
+- PRIMER 전용 코드 정리 완료 (상단 메뉴바, 서비스 3개, 게시판, 틸 디자인)
+- Vercel 프로젝트: primer-lab.vercel.app (배포 중이나 현재 미사용)
+- 자유게시판 + 질문과답변 기능 포함 (board_posts, board_comments 테이블)
+- 나중에 대학원 무료 버전 별도 운영 시 사용 가능
+
+### 현재 사이트 상태 (ipv-coder / researchon.vercel.app)
+
+**이름**: PRIMER
+**디자인**: 밝은 톤 (화이트/그레이/틸)
+**서비스 (대문/대시보드에 보이는 것)**: 연구설계, 자료 생성 & 수집, 통계분석 (3개)
+**전체 서비스 (사이드바)**: 10개 모두 접근 가능
+**사이드바**: 연한 그레이 배경, 선 구분, 접기/펼치기 토글
+
+### Supabase 테이블 추가
+
+- `board_posts` (id, title, content, category, author_email, author_name, created_at, view_count)
+- `board_comments` (id, post_id, content, author_email, author_name, created_at)
+
+### 주요 생성/변경 파일
+
+| 파일 | 변경 내용 |
+|------|-----------|
+| `src/lib/formDraft.ts` | **신규** — 폼 데이터 sessionStorage 보존 |
+| `src/lib/siteMode.ts` | **삭제** — PRIMER 분기 제거 후 불필요 |
+| `src/components/SampleModal.tsx` | **신규** — 결과물 샘플 모달 (판결문코딩/연구설계) |
+| `src/app/samples/page.tsx` | 서비스별 플로우 다이어그램 |
+| `src/app/dashboard/page.tsx` | 전면 개편 — 프로젝트 제거, 요청현황 카드, 서비스 3개 |
+| `src/app/page.tsx` | 랜딩 전면 개편 — PRIMER 톤, 서비스 3개, 구분선 |
+| `src/app/ClientLayout.tsx` | 사이드바 연한 그레이 + 선 구분 + 토글 |
+| `src/app/login/page.tsx` | 틸 색상 적용 |
+| `src/app/signup/page.tsx` | 틸 색상 적용 |
+| 29개 .tsx 파일 | 골드→틸 색상 일괄 교체 |
+| `public/images/` | PRIMER용 이미지 9장 추가 |
+
+### Git 태그
+
+- `researchon-v1` — ResearchOn 상업용 상태 보존 (리브랜딩 전)
+
+### 다음 할 일
+
+- **게시판 기능 추가** (ipv-coder에는 아직 없음, primer 레포에만 있음)
+- **로그인/회원가입 페이지 디자인** — 아직 다크 톤 남아있을 수 있음
+- **FAQ/문의 페이지 디자인** — PRIMER 톤 확인
+- **커스텀 도메인 설정**
+- **대학원 무료 버전** — 별도 운영 필요 시 primer 레포 활용
+- **수익 모델** — 고급분석 유료화 + 광고 (조회수 확보 후)
+
+---
 
 ## 2026-04-09 작업 내용 (야간 세션 - Claude Code)
 
