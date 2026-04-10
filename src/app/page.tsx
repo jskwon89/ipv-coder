@@ -434,15 +434,10 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
             <div>
-              <div className="mb-2">
-                <Image src="/logo-primer.png" alt="PRIMER" width={160} height={30} className="h-7 w-auto brightness-0 invert" />
-              </div>
-              <p className="text-sm text-slate-500">연구자를 위한 전문 연구 지원 플랫폼</p>
+              <span className="text-lg font-bold text-white tracking-tight">PRIMER</span>
+              <p className="text-sm text-slate-500 mt-1">연구자를 위한 전문 연구 지원 플랫폼</p>
             </div>
             <div className="flex flex-wrap items-center gap-6 text-sm">
-              <a href="#services" className="hover:text-slate-300 transition-colors">서비스</a>
-              <Link href="/samples" className="hover:text-slate-300 transition-colors">결과물 샘플</Link>
-              <Link href="/faq" className="hover:text-slate-300 transition-colors">FAQ</Link>
               <span className="hover:text-slate-300 transition-colors cursor-pointer">이용약관</span>
               <span className="hover:text-slate-300 transition-colors cursor-pointer">개인정보처리방침</span>
             </div>
