@@ -151,7 +151,7 @@ export default function LandingPage() {
             </g>
 
             {/* ===== 4. AMOS-style SEM / 조절된 매개효과 (center bottom) ===== */}
-            <g opacity="0.16" transform="translate(550, 430)">
+            <g opacity="0.16" transform="translate(750, 430)">
               <defs>
                 <marker id="amosArr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><path d="M0,0 L10,3.5 L0,7 Z" fill="#94a3b8" /></marker>
                 <marker id="amosArrD" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><path d="M0,0 L10,3.5 L0,7 Z" fill="#64748b" /></marker>
@@ -208,22 +208,6 @@ export default function LandingPage() {
               {[-15,5,25].map((offset,i)=>(<g key={`mi${i}`}><rect x={225+offset-12} y="-105" width="24" height="14" fill="none" stroke="#64748b" strokeWidth="0.7" rx="0"/><text x={225+offset} y="-95" textAnchor="middle" fill="#64748b" fontSize="6">{`m${i+1}`}</text><line x1={225+offset} y1="-88" x2={225+offset} y2="-58" stroke="#64748b" strokeWidth="0.6"/></g>))}
             </g>
 
-            {/* ===== 5. TOPIC MODEL RESULT (bottom right, LDA 토픽 분포) ===== */}
-            <g opacity="0.14">
-              {/* Topic distribution bars — 가로 막대 */}
-              {[
-                [1050,120,"Topic 1",220,"정책 · 제도 · 개선 · 법률"],
-                [1050,150,"Topic 2",175,"교육 · 학습 · 성과 · 평가"],
-                [1050,180,"Topic 3",140,"사회 · 인식 · 변화 · 조사"],
-                [1050,210,"Topic 4",100,"경제 · 성장 · 투자 · 산업"],
-                [1050,240,"Topic 5",70,"환경 · 에너지 · 기후 · 탄소"],
-              ].map(([x,y,label,w,words],i)=>(<g key={`tp${i}`}>
-                <text x={Number(x)-5} y={Number(y)+4} textAnchor="end" fill="#78909c" fontSize="8" fontWeight="600">{label}</text>
-                <rect x={Number(x)} y={Number(y)-6} width={Number(w)} height="12" rx="2" fill="#64748b" opacity={0.35-i*0.04}/>
-                <text x={Number(x)+Number(w)+8} y={Number(y)+4} fill="#64748b" fontSize="6.5" opacity="0.6">{words}</text>
-              </g>))}
-              <text x="1150" y="268" textAnchor="middle" fill="#64748b" fontSize="8">Topic Probability</text>
-            </g>
           </svg>
 
           {/* Glow effects */}
