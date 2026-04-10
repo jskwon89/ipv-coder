@@ -199,62 +199,86 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               대시보드
             </Link>
 
-            {/* 연구 설계 지원 */}
-            <SectionGroup color="bg-emerald-400/70" label="연구 설계 지원" pathname={pathname} prefixes={["/data-generation", "/stats-design"]} defaultOpen>
-              <NavLink href="/data-generation" label="연구 주제 및 방향 설계" pathname={pathname} onClick={closeSidebar} />
-              <NavLink href="/stats-design" label="통계분석 설계" pathname={pathname} onClick={closeSidebar} />
-            </SectionGroup>
+            {getSiteMode() === 'primer' ? (
+              <>
+                {/* PRIMER: 연구지원 */}
+                <SectionGroup color="bg-emerald-400/70" label="연구지원" pathname={pathname} prefixes={["/data-generation", "/stats-design", "/survey-request"]} defaultOpen>
+                  <NavLink href="/data-generation" label="연구 설계 상담" pathname={pathname} onClick={closeSidebar} />
+                  <NavLink href="/stats-design" label="통계분석 설계" pathname={pathname} onClick={closeSidebar} />
+                  <NavLink href="/survey-request" label="설문구성 / 조사설계" pathname={pathname} onClick={closeSidebar} />
+                </SectionGroup>
 
-            {/* 연구 자료 생성 */}
-            <SectionGroup color="bg-blue-400/70" label="연구 자료 생성" pathname={pathname} prefixes={["/survey-request", "/survey-results", "/judgment", "/judgment-collection", "/judgment-results", "/news-search", "/news-results"]} defaultOpen>
-              <SubCategory label="설문조사" pathname={pathname} prefixes={["/survey-request", "/survey-results"]}>
-                <NavLink href="/survey-request" label="설문조사 의뢰" pathname={pathname} onClick={closeSidebar} />
-                <NavLink href="/survey-results" label="결과 확인" pathname={pathname} onClick={closeSidebar} />
-              </SubCategory>
-              <SubCategory label="판결문" pathname={pathname} prefixes={["/judgment", "/judgment-collection", "/judgment-results"]}>
-                <NavLink href="/judgment" label="판결문 코딩" pathname={pathname} onClick={closeSidebar} />
-                <NavLink href="/judgment-collection" label="수집 의뢰" pathname={pathname} onClick={closeSidebar} />
-                <NavLink href="/judgment-results" label="결과 확인" pathname={pathname} onClick={closeSidebar} />
-              </SubCategory>
-              <SubCategory label="뉴스/언론 보도" pathname={pathname} prefixes={["/news-search", "/news-results"]}>
-                <NavLink href="/news-search" label="수집 의뢰" pathname={pathname} onClick={closeSidebar} />
-                <NavLink href="/news-results" label="결과 확인" pathname={pathname} onClick={closeSidebar} />
-              </SubCategory>
-            </SectionGroup>
+                {/* PRIMER: 커뮤니티 */}
+                <SectionGroup color="bg-teal-400/70" label="커뮤니티" pathname={pathname} prefixes={["/board"]} defaultOpen>
+                  <NavLink href="/board" label="자유게시판" pathname={pathname} onClick={closeSidebar} />
+                </SectionGroup>
 
-            {/* 데이터 분석 */}
-            <SectionGroup color="bg-rose-400/70" label="데이터 분석" pathname={pathname} prefixes={["/data-transform", "/data-transform-results", "/stats-analysis", "/quant-analysis", "/quant-results", "/text-analysis", "/text-results", "/qual-analysis", "/qual-results"]} defaultOpen>
-              <SubCategory label="데이터 전처리" pathname={pathname} prefixes={["/data-transform", "/data-transform-results", "/stats-analysis"]}>
-                <NavLink href="/data-transform" label="데이터 변환" pathname={pathname} onClick={closeSidebar} />
-                <NavLink href="/data-transform-results" label="결과 확인" pathname={pathname} onClick={closeSidebar} />
-                <NavLink href="/stats-analysis" label="기초통계" pathname={pathname} onClick={closeSidebar} />
-              </SubCategory>
-              <SubCategory label="계량분석" pathname={pathname} prefixes={["/quant-analysis", "/quant-results"]}>
-                <NavLink href="/quant-analysis" label="분석 의뢰" pathname={pathname} onClick={closeSidebar} />
-                <NavLink href="/quant-results" label="결과 확인" pathname={pathname} onClick={closeSidebar} />
-              </SubCategory>
-              <SubCategory label="텍스트 분석" pathname={pathname} prefixes={["/text-analysis", "/text-results"]}>
-                <NavLink href="/text-analysis" label="분석 의뢰" pathname={pathname} onClick={closeSidebar} />
-                <NavLink href="/text-results" label="결과 확인" pathname={pathname} onClick={closeSidebar} />
-              </SubCategory>
-              <SubCategory label="질적분석" pathname={pathname} prefixes={["/qual-analysis", "/qual-results"]}>
-                <NavLink href="/qual-analysis" label="분석 의뢰" pathname={pathname} onClick={closeSidebar} />
-                <NavLink href="/qual-results" label="결과 확인" pathname={pathname} onClick={closeSidebar} />
-              </SubCategory>
-            </SectionGroup>
+                {/* PRIMER: 고객센터 */}
+                <SectionGroup color="bg-amber-400/70" label="고객센터" pathname={pathname} prefixes={["/faq", "/contact"]}>
+                  <NavLink href="/faq" label="자주 묻는 질문" pathname={pathname} onClick={closeSidebar} />
+                  <NavLink href="/contact" label="문의사항" pathname={pathname} onClick={closeSidebar} />
+                </SectionGroup>
+              </>
+            ) : (
+              <>
+                {/* ResearchOn: 연구 설계 지원 */}
+                <SectionGroup color="bg-emerald-400/70" label="연구 설계 지원" pathname={pathname} prefixes={["/data-generation", "/stats-design"]} defaultOpen>
+                  <NavLink href="/data-generation" label="연구 주제 및 방향 설계" pathname={pathname} onClick={closeSidebar} />
+                  <NavLink href="/stats-design" label="통계분석 설계" pathname={pathname} onClick={closeSidebar} />
+                </SectionGroup>
 
-            {/* 커뮤니티 */}
-            <SectionGroup color="bg-teal-400/70" label="커뮤니티" pathname={pathname} prefixes={["/board", "/samples"]} defaultOpen>
-              <NavLink href="/board" label="자유게시판" pathname={pathname} onClick={closeSidebar} />
-              <NavLink href="/samples" label="결과물 안내" pathname={pathname} onClick={closeSidebar} />
-            </SectionGroup>
+                {/* ResearchOn: 연구 자료 생성 */}
+                <SectionGroup color="bg-blue-400/70" label="연구 자료 생성" pathname={pathname} prefixes={["/survey-request", "/survey-results", "/judgment", "/judgment-collection", "/judgment-results", "/news-search", "/news-results"]} defaultOpen>
+                  <SubCategory label="설문조사" pathname={pathname} prefixes={["/survey-request", "/survey-results"]}>
+                    <NavLink href="/survey-request" label="설문조사 의뢰" pathname={pathname} onClick={closeSidebar} />
+                    <NavLink href="/survey-results" label="결과 확인" pathname={pathname} onClick={closeSidebar} />
+                  </SubCategory>
+                  <SubCategory label="판결문" pathname={pathname} prefixes={["/judgment", "/judgment-collection", "/judgment-results"]}>
+                    <NavLink href="/judgment" label="판결문 코딩" pathname={pathname} onClick={closeSidebar} />
+                    <NavLink href="/judgment-collection" label="수집 의뢰" pathname={pathname} onClick={closeSidebar} />
+                    <NavLink href="/judgment-results" label="결과 확인" pathname={pathname} onClick={closeSidebar} />
+                  </SubCategory>
+                  <SubCategory label="뉴스/언론 보도" pathname={pathname} prefixes={["/news-search", "/news-results"]}>
+                    <NavLink href="/news-search" label="수집 의뢰" pathname={pathname} onClick={closeSidebar} />
+                    <NavLink href="/news-results" label="결과 확인" pathname={pathname} onClick={closeSidebar} />
+                  </SubCategory>
+                </SectionGroup>
 
-            {/* 고객센터 */}
-            <SectionGroup color="bg-amber-400/70" label="고객센터" pathname={pathname} prefixes={["/faq", "/contact", "/credits"]}>
-              <NavLink href="/faq" label="자주 묻는 질문" pathname={pathname} onClick={closeSidebar} />
-              <NavLink href="/contact" label="문의사항" pathname={pathname} onClick={closeSidebar} />
-              <NavLink href="/credits" label="크레딧 관리" pathname={pathname} onClick={closeSidebar} />
-            </SectionGroup>
+                {/* ResearchOn: 데이터 분석 */}
+                <SectionGroup color="bg-rose-400/70" label="데이터 분석" pathname={pathname} prefixes={["/data-transform", "/data-transform-results", "/stats-analysis", "/quant-analysis", "/quant-results", "/text-analysis", "/text-results", "/qual-analysis", "/qual-results"]} defaultOpen>
+                  <SubCategory label="데이터 전처리" pathname={pathname} prefixes={["/data-transform", "/data-transform-results", "/stats-analysis"]}>
+                    <NavLink href="/data-transform" label="데이터 변환" pathname={pathname} onClick={closeSidebar} />
+                    <NavLink href="/data-transform-results" label="결과 확인" pathname={pathname} onClick={closeSidebar} />
+                    <NavLink href="/stats-analysis" label="기초통계" pathname={pathname} onClick={closeSidebar} />
+                  </SubCategory>
+                  <SubCategory label="계량분석" pathname={pathname} prefixes={["/quant-analysis", "/quant-results"]}>
+                    <NavLink href="/quant-analysis" label="분석 의뢰" pathname={pathname} onClick={closeSidebar} />
+                    <NavLink href="/quant-results" label="결과 확인" pathname={pathname} onClick={closeSidebar} />
+                  </SubCategory>
+                  <SubCategory label="텍스트 분석" pathname={pathname} prefixes={["/text-analysis", "/text-results"]}>
+                    <NavLink href="/text-analysis" label="분석 의뢰" pathname={pathname} onClick={closeSidebar} />
+                    <NavLink href="/text-results" label="결과 확인" pathname={pathname} onClick={closeSidebar} />
+                  </SubCategory>
+                  <SubCategory label="질적분석" pathname={pathname} prefixes={["/qual-analysis", "/qual-results"]}>
+                    <NavLink href="/qual-analysis" label="분석 의뢰" pathname={pathname} onClick={closeSidebar} />
+                    <NavLink href="/qual-results" label="결과 확인" pathname={pathname} onClick={closeSidebar} />
+                  </SubCategory>
+                </SectionGroup>
+
+                {/* ResearchOn: 커뮤니티 */}
+                <SectionGroup color="bg-teal-400/70" label="커뮤니티" pathname={pathname} prefixes={["/board", "/samples"]} defaultOpen>
+                  <NavLink href="/board" label="자유게시판" pathname={pathname} onClick={closeSidebar} />
+                  <NavLink href="/samples" label="결과물 안내" pathname={pathname} onClick={closeSidebar} />
+                </SectionGroup>
+
+                {/* ResearchOn: 고객센터 */}
+                <SectionGroup color="bg-amber-400/70" label="고객센터" pathname={pathname} prefixes={["/faq", "/contact", "/credits"]}>
+                  <NavLink href="/faq" label="자주 묻는 질문" pathname={pathname} onClick={closeSidebar} />
+                  <NavLink href="/contact" label="문의사항" pathname={pathname} onClick={closeSidebar} />
+                  <NavLink href="/credits" label="크레딧 관리" pathname={pathname} onClick={closeSidebar} />
+                </SectionGroup>
+              </>
+            )}
           </>
         )}
       </nav>
