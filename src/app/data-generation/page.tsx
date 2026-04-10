@@ -6,6 +6,7 @@ import Link from "next/link";
 import InfoTooltip from "@/components/InfoTooltip";
 import { useUser } from "@/contexts/UserAuthContext";
 import { saveDraft, loadDraft } from "@/lib/formDraft";
+import { SampleButton, ResearchDesignDetail } from "@/components/SampleModal";
 
 interface ResearchRequest {
   id: string;
@@ -234,7 +235,10 @@ export default function ResearchDesignPage() {
 
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold">연구 주제 및 방향 설계</h1>
+        <div className="flex items-center gap-3 flex-wrap">
+          <h1 className="text-2xl font-bold">연구 주제 및 방향 설계</h1>
+          <SampleButton title="연구 설계 결과물 샘플"><ResearchDesignDetail /></SampleButton>
+        </div>
         <div className="flex items-start gap-2 mt-2">
           <p className="text-gray-600 text-sm leading-relaxed">
             연구 키워드를 입력하시면, 전문가가 선행연구 동향, 연구 방향, 변수 구성,

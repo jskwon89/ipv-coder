@@ -43,9 +43,9 @@ export default function LandingPage() {
           <div className={`hidden md:flex items-center gap-8 text-sm font-medium ${scrolled ? "text-gray-600" : "text-white/90"}`}>
             <Link href="/dashboard" className="hover:opacity-70 transition-opacity">시작하기</Link>
             <a href="#services" className="hover:opacity-70 transition-opacity">서비스</a>
-            <Link href="/samples" className="hover:opacity-70 transition-opacity">결과물 샘플</Link>
             <a href="#how-it-works" className="hover:opacity-70 transition-opacity">이용절차</a>
             <a href="#contact" className="hover:opacity-70 transition-opacity">문의</a>
+            <Link href="/samples" className="hover:opacity-70 transition-opacity">결과물 예시</Link>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
             <Link href="/login" className={`hidden sm:block text-sm font-medium px-4 py-2 rounded-lg transition-colors ${scrolled ? "text-gray-600 hover:bg-gray-100" : "text-white hover:bg-white/10"}`}>
