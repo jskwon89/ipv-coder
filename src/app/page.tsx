@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useUser } from "@/contexts/UserAuthContext";
 
 interface Project {
@@ -124,13 +124,91 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Stats row */}
+          {/* Analysis Showcase - 고급 통계 시각화 */}
           <div className="mt-16 sm:mt-20 pt-8 sm:pt-10 border-t border-white/10">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8">
-              <StatItem end={500} suffix="+" label="완료된 프로젝트" />
-              <StatItem end={98} suffix="%" label="고객 만족도" />
-              <StatItem end={50} suffix="+" label="전문 분석가" />
-              <StatItem end={30} suffix="분" label="평균 응답 시간" />
+            <p className="text-xs font-medium text-slate-500 uppercase tracking-widest mb-5">Analysis Capabilities</p>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              {/* SEM / 구조방정식 */}
+              <div className="bg-white/[0.04] border border-white/[0.08] rounded-xl p-4 sm:p-5 backdrop-blur-sm hover:bg-white/[0.07] transition-all">
+                <svg viewBox="0 0 140 80" className="w-full h-20 sm:h-24 mb-3">
+                  <defs>
+                    <marker id="ah" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto"><path d="M0,0 L6,2 L0,4" fill="#2dd4bf" /></marker>
+                  </defs>
+                  <ellipse cx="30" cy="20" rx="18" ry="12" fill="none" stroke="#0d9488" strokeWidth="1.2" />
+                  <text x="30" y="23" textAnchor="middle" fill="#5eead4" fontSize="7" fontWeight="600">X₁</text>
+                  <ellipse cx="110" cy="20" rx="18" ry="12" fill="none" stroke="#0d9488" strokeWidth="1.2" />
+                  <text x="110" y="23" textAnchor="middle" fill="#5eead4" fontSize="7" fontWeight="600">X₂</text>
+                  <ellipse cx="70" cy="62" rx="22" ry="12" fill="none" stroke="#14b8a6" strokeWidth="1.5" />
+                  <text x="70" y="65" textAnchor="middle" fill="#2dd4bf" fontSize="7" fontWeight="600">Y</text>
+                  <line x1="42" y1="28" x2="56" y2="52" stroke="#2dd4bf" strokeWidth="1" markerEnd="url(#ah)" />
+                  <line x1="98" y1="28" x2="84" y2="52" stroke="#2dd4bf" strokeWidth="1" markerEnd="url(#ah)" />
+                  <line x1="48" y1="20" x2="92" y2="20" stroke="#5eead4" strokeWidth="0.8" strokeDasharray="3,2" markerEnd="url(#ah)" />
+                  <text x="70" y="16" textAnchor="middle" fill="#5eead4" fontSize="5.5" opacity="0.7">β=.42**</text>
+                  <text x="40" y="44" fill="#5eead4" fontSize="5.5" opacity="0.7">λ=.78</text>
+                  <text x="88" y="44" fill="#5eead4" fontSize="5.5" opacity="0.7">λ=.65</text>
+                </svg>
+                <span className="text-xs font-semibold text-slate-300">구조방정식 (SEM)</span>
+              </div>
+
+              {/* 네트워크 분석 */}
+              <div className="bg-white/[0.04] border border-white/[0.08] rounded-xl p-4 sm:p-5 backdrop-blur-sm hover:bg-white/[0.07] transition-all">
+                <svg viewBox="0 0 140 80" className="w-full h-20 sm:h-24 mb-3">
+                  {[[45,15,55],[95,20,40],[20,50,35],[70,55,50],[120,55,30],[50,75,25],[100,70,20]].map(([cx,cy,s], i) => (
+                    <circle key={`n${i}`} cx={cx} cy={cy} r={Number(s)/10+1.5} fill={`rgba(20,184,166,${Number(s)/80+0.2})`} />
+                  ))}
+                  {[[45,15,95,20],[45,15,20,50],[45,15,70,55],[95,20,120,55],[95,20,70,55],[20,50,70,55],[20,50,50,75],[70,55,120,55],[70,55,100,70],[70,55,50,75],[120,55,100,70]].map(([x1,y1,x2,y2], i) => (
+                    <line key={`l${i}`} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#2dd4bf" strokeWidth="0.6" opacity="0.35" />
+                  ))}
+                  {[[45,15,55],[95,20,40],[20,50,35],[70,55,50],[120,55,30],[50,75,25],[100,70,20]].map(([cx,cy,s], i) => (
+                    <circle key={`nd${i}`} cx={cx} cy={cy} r={Number(s)/10+1.5} fill="none" stroke="#14b8a6" strokeWidth="0.8" opacity="0.6" />
+                  ))}
+                </svg>
+                <span className="text-xs font-semibold text-slate-300">키워드 네트워크</span>
+              </div>
+
+              {/* 다수준 분석 / HLM */}
+              <div className="bg-white/[0.04] border border-white/[0.08] rounded-xl p-4 sm:p-5 backdrop-blur-sm hover:bg-white/[0.07] transition-all">
+                <svg viewBox="0 0 140 80" className="w-full h-20 sm:h-24 mb-3">
+                  {/* Level 2 lines */}
+                  <line x1="10" y1="65" x2="130" y2="20" stroke="#0d9488" strokeWidth="1.5" opacity="0.8" />
+                  {/* Level 1 cluster lines */}
+                  <line x1="15" y1="70" x2="45" y2="50" stroke="#2dd4bf" strokeWidth="0.8" opacity="0.5" />
+                  <line x1="40" y1="58" x2="70" y2="38" stroke="#5eead4" strokeWidth="0.8" opacity="0.5" />
+                  <line x1="75" y1="45" x2="105" y2="25" stroke="#2dd4bf" strokeWidth="0.8" opacity="0.5" />
+                  {/* Data points cluster 1 */}
+                  {[[18,68],[22,62],[30,58],[38,54],[42,50]].map(([x,y],i) => <circle key={`c1${i}`} cx={x} cy={y} r="2" fill="#5eead4" opacity="0.6" />)}
+                  {/* cluster 2 */}
+                  {[[48,55],[55,48],[60,44],[65,42],[72,38]].map(([x,y],i) => <circle key={`c2${i}`} cx={x} cy={y} r="2" fill="#2dd4bf" opacity="0.6" />)}
+                  {/* cluster 3 */}
+                  {[[80,40],[88,34],[95,30],[100,26],[108,24]].map(([x,y],i) => <circle key={`c3${i}`} cx={x} cy={y} r="2" fill="#14b8a6" opacity="0.6" />)}
+                  <text x="125" y="14" fill="#5eead4" fontSize="6" opacity="0.7">Level 2</text>
+                  <text x="45" y="73" fill="#5eead4" fontSize="5" opacity="0.5">Group 1</text>
+                  <text x="75" y="53" fill="#5eead4" fontSize="5" opacity="0.5">Group 2</text>
+                </svg>
+                <span className="text-xs font-semibold text-slate-300">다수준 분석 (HLM)</span>
+              </div>
+
+              {/* 토픽 모델링 */}
+              <div className="bg-white/[0.04] border border-white/[0.08] rounded-xl p-4 sm:p-5 backdrop-blur-sm hover:bg-white/[0.07] transition-all">
+                <div className="h-20 sm:h-24 flex flex-col justify-center gap-2 mb-3">
+                  {[
+                    { label: "Topic 1", words: "정책 · 제도 · 개선 · 법률", w: 85, color: "#0d9488" },
+                    { label: "Topic 2", words: "교육 · 학습 · 성과 · 평가", w: 70, color: "#14b8a6" },
+                    { label: "Topic 3", words: "사회 · 인식 · 변화 · 조사", w: 55, color: "#2dd4bf" },
+                  ].map((t, i) => (
+                    <div key={i}>
+                      <div className="flex items-center justify-between mb-0.5">
+                        <span className="text-[8px] font-bold text-slate-400">{t.label}</span>
+                        <span className="text-[7px] text-slate-500">{t.words}</span>
+                      </div>
+                      <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                        <div className="h-full rounded-full" style={{ width: `${t.w}%`, background: t.color }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <span className="text-xs font-semibold text-slate-300">토픽 모델링 (LDA)</span>
+              </div>
             </div>
           </div>
         </div>
@@ -337,34 +415,6 @@ export default function LandingPage() {
 }
 
 /* ── Sub-components ── */
-
-function StatItem({ end, suffix, label }: { end: number; suffix: string; label: string }) {
-  const [count, setCount] = useState(0);
-  const [started, setStarted] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting && !started) setStarted(true); }, { threshold: 0.3 });
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [started]);
-
-  useEffect(() => {
-    if (!started) return;
-    const duration = 1500; const steps = 40; const increment = end / steps; let current = 0;
-    const timer = setInterval(() => { current += increment; if (current >= end) { setCount(end); clearInterval(timer); } else { setCount(Math.floor(current)); } }, duration / steps);
-    return () => clearInterval(timer);
-  }, [started, end]);
-
-  return (
-    <div ref={ref}>
-      <div className="text-3xl sm:text-4xl font-bold text-white mb-1">{count}{suffix}</div>
-      <div className="text-sm sm:text-base text-slate-500">{label}</div>
-    </div>
-  );
-}
 
 function MainServiceCard({ icon, title, description, features, href, color = "teal" }: { icon: React.ReactNode; title: string; description: string; features: string[]; href: string; color?: string }) {
   const colorMap: Record<string, { bg: string; bgHover: string; text: string; border: string; shadow: string; check: string }> = {
