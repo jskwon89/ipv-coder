@@ -82,9 +82,9 @@ export default function LandingPage() {
   useEffect(() => { fetchDashboard(); }, [fetchDashboard]);
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 snap-y snap-mandatory overflow-y-auto h-screen">
+    <div className="min-h-screen bg-white text-gray-900 snap-y snap-proximity overflow-y-auto h-screen">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-[#0f172a] min-h-screen snap-start">
+      <section className="relative overflow-hidden bg-[#0f172a] min-h-[85vh] snap-start">
         {/* Background layers */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a] via-[#0f172a] to-teal-900/30" />
@@ -219,7 +219,7 @@ export default function LandingPage() {
           <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full py-24 sm:py-32 lg:py-40">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full py-16 sm:py-24 lg:py-28">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-500/10 border border-teal-500/20 mb-8">
               <div className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
