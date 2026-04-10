@@ -180,7 +180,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           <div className="flex items-center justify-between h-16 sm:h-20">
             {/* Logo */}
             <Link href="/" className="flex items-center shrink-0">
-              <Image src="/logo.svg" alt="PRIMER" width={200} height={36} className="h-9 w-auto" priority />
+              <Image src="/logo-primer.png" alt="PRIMER" width={200} height={40} className="h-10 w-auto" priority />
             </Link>
 
             {/* Desktop nav - centered */}

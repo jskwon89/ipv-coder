@@ -311,7 +311,7 @@ export default function LandingPage() {
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
             <div>
               <div className="mb-2">
-                <Image src="/logo-dark.svg" alt="PRIMER" width={160} height={30} className="h-7 w-auto" />
+                <Image src="/logo-primer.png" alt="PRIMER" width={160} height={30} className="h-7 w-auto brightness-0 invert" />
               </div>
               <p className="text-sm text-slate-500">연구자를 위한 전문 연구 지원 플랫폼</p>
             </div>

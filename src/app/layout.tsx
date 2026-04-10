@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   title: "PRIMER - 연구 지원 전문 플랫폼",
   description: "연구설계부터 자료 수집, 통계분석까지. 전문가가 직접 수행하는 연구 지원 서비스",
   icons: {
-    icon: "/logo-icon.svg",
+    icon: "/logo-icon-primer.png",
   },
 };
 

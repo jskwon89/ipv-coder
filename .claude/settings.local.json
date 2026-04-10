@@ -32,7 +32,11 @@
       "Bash(grep -v \"globals\\\\.css$\")",
       "Bash(xargs sed:*)",
       "WebFetch(domain:www.k-stat.go.kr)",
-      "WebFetch(domain:booktory.com)"
+      "WebFetch(domain:booktory.com)",
+      "Bash(npx sharp-cli:*)",
+      "Bash(ls -la public/logo-primer-sm.png)",
+      "Bash(mv public/logo-primer-sm.png public/logo-primer.png)",
+      "Bash(mv public/logo-icon-primer-sm.png public/logo-icon-primer.png)"
     ]
   }
 }
