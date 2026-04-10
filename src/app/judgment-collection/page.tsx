@@ -221,10 +221,7 @@ export default function JudgmentCollectionPage() {
         </Link>
         {/* Header */}
         <div className="mb-8">
-          <div className="flex items-center gap-3 flex-wrap">
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">판결문 수집 의뢰</h1>
-            <SampleButton title="판결문 코딩 결과물 샘플"><JudgmentCodingDetail /></SampleButton>
-          </div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">판결문 수집 의뢰</h1>
           <p className="text-gray-600 mt-2 text-sm sm:text-base">
             필요한 판결문 정보를 입력해주세요. 확인 후 판결문을 수집하여 제공해드립니다.
           </p>
@@ -550,7 +547,8 @@ export default function JudgmentCollectionPage() {
             <p className="text-sm text-red-700">{submitError}</p>
           </div>
         )}
-        <div className="flex justify-end">
+        <div className="flex justify-end items-center gap-3">
+          <SampleButton title="판결문 코딩 결과물 샘플"><JudgmentCodingDetail /></SampleButton>
           <button
             onClick={handleSubmit}
             disabled={submitting}

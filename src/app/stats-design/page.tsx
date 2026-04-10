@@ -6,6 +6,7 @@ import Link from "next/link";
 import InfoTooltip from "@/components/InfoTooltip";
 import { useUser } from "@/contexts/UserAuthContext";
 import { saveDraft, loadDraft } from "@/lib/formDraft";
+import { SampleButton, ResearchDesignDetail } from "@/components/SampleModal";
 
 interface StatsDesignRequest {
   id: string;
@@ -350,13 +351,16 @@ export default function StatsDesignPage() {
             />
           </div>
           <div className="pt-1">
-            <button
-              type="submit"
-              disabled={submitting || !researchType || !dataType || !analysisGoal.trim()}
-              className="px-6 py-2.5 bg-[#c49a2e] text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {submitting ? "제출 중..." : "설계 의뢰하기"}
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                type="submit"
+                disabled={submitting || !researchType || !dataType || !analysisGoal.trim()}
+                className="px-6 py-2.5 bg-[#c49a2e] text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {submitting ? "제출 중..." : "설계 의뢰하기"}
+              </button>
+              <SampleButton title="연구 설계 결과물 샘플"><ResearchDesignDetail /></SampleButton>
+            </div>
           </div>
         </div>
       </form>
