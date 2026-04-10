@@ -407,16 +407,16 @@ export default function LandingPage() {
       )}
 
       {/* CTA + Footer — 통합 */}
-      <footer id="contact" className="bg-[#0c2340] text-white px-4 sm:px-6">
+      <footer id="contact" className="bg-[#0f3460] text-white px-4 sm:px-6">
         {/* CTA */}
         <div className="max-w-3xl mx-auto text-center py-20 sm:py-28">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">함께하는 연구의 시작</h2>
           <p className="text-lg text-gray-400 mb-10">PRIMER와 함께 효율적인 연구를 시작하세요</p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-8">
             <Link href={user ? "#services" : "/login"} className="px-10 py-4 bg-teal-600 text-white rounded-xl text-lg font-semibold hover:bg-teal-700 transition-all shadow-lg">
               {user ? "서비스 이용하기" : "무료로 시작하기"}
             </Link>
-            <Link href="/contact" className="px-10 py-4 border border-gray-700 text-gray-300 rounded-xl text-lg font-semibold hover:bg-white/5 transition-all">
+            <Link href="/contact" className="px-10 py-4 border border-white/20 text-white/80 rounded-xl text-lg font-semibold hover:bg-white/5 transition-all">
               문의하기
             </Link>
           </div>
@@ -424,7 +424,7 @@ export default function LandingPage() {
 
         {/* Footer info */}
         <div className="max-w-7xl mx-auto pb-10 pt-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-2 sm:px-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-0">
             <div className="flex items-center gap-3">
               <span className="text-sm font-bold text-white/80">PRIMER</span>
               <span className="text-xs text-white/30">&copy; 2026 PRIMER. All rights reserved.</span>
