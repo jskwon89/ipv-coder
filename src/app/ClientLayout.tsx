@@ -243,6 +243,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               </SubCategory>
             </SectionGroup>
 
+            {/* 커뮤니티 */}
+            <SectionGroup color="bg-teal-400/70" label="커뮤니티" pathname={pathname} prefixes={["/board", "/samples"]} defaultOpen>
+              <NavLink href="/board" label="자유게시판" pathname={pathname} onClick={closeSidebar} />
+              <NavLink href="/samples" label="결과물 안내" pathname={pathname} onClick={closeSidebar} />
+            </SectionGroup>
+
             {/* 고객센터 */}
             <SectionGroup color="bg-amber-400/70" label="고객센터" pathname={pathname} prefixes={["/faq", "/contact", "/credits"]}>
               <NavLink href="/faq" label="자주 묻는 질문" pathname={pathname} onClick={closeSidebar} />

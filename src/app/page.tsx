@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { getSiteMode, siteConfig } from "@/lib/siteMode";
+import { getSiteMode, siteConfig, getServices, getAdvancedServices, type SiteMode } from "@/lib/siteMode";
 
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false);
@@ -115,43 +115,35 @@ export default function LandingPage() {
             <div className="w-12 sm:w-16 h-1 bg-[#c49a2e] mx-auto rounded-full" />
           </div>
           <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
-            <ServiceCard
-              image="/images/landing-연구설계.png"
-              title="연구 설계 지원"
-              description="연구 주제 설계부터 통계분석 설계까지"
-              href="/data-generation"
-            />
-            <ServiceCard
-              image="/images/landing-설문조사.png"
-              title="설문조사"
-              description="설문 설계부터 데이터 수집까지 원스톱 서비스"
-              href="/survey-request"
-            />
-            <ServiceCard
-              image="/images/landing-판결문.png"
-              title="판결문 분석"
-              description="판결문 수집부터 변수 코딩까지 원스톱 서비스"
-              href="/judgment"
-            />
-            <ServiceCard
-              image="/images/landing-기사검색.png"
-              title="뉴스/언론 보도"
-              description="키워드 기반 뉴스 수집 및 분석"
-              href="/news-search"
-            />
-            <ServiceCard
-              image="/images/landing-계량통계.png"
-              title="계량분석"
-              description="기초통계부터 고급 계량분석까지, 전문가가 직접 분석"
-              href="/quant-analysis"
-            />
-            <ServiceCard
-              image="/images/landing-텍스트분석.png"
-              title="텍스트 분석"
-              description="토픽모델링, 감성분석, 워드클라우드 등 텍스트 분석"
-              href="/text-analysis"
-            />
+            {getServices(mode).map((svc) => (
+              <ServiceCard key={svc.key} image={svc.image} title={svc.title} description={svc.description} href={svc.href} />
+            ))}
           </div>
+
+          {/* PRIMER: 고급 서비스 → ResearchOn 연동 안내 */}
+          {mode === 'primer' && getAdvancedServices(mode).length > 0 && (
+            <div className="mt-8 sm:mt-12 bg-gradient-to-r from-[#0f1a2e] to-[#1a2744] rounded-2xl p-6 sm:p-8">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div>
+                  <h3 className="text-lg font-bold text-white mb-1">고급 분석이 필요하신가요?</h3>
+                  <p className="text-sm text-white/60">판결문 코딩, 고급 계량분석, 텍스트 분석 등은 제휴 기관 <strong className="text-[#d4a843]">ResearchOn</strong>에서 전문적으로 수행합니다.</p>
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    {getAdvancedServices(mode).map((svc) => (
+                      <span key={svc.key} className="px-2.5 py-1 bg-white/10 text-white/70 rounded-lg text-xs">{svc.title}</span>
+                    ))}
+                  </div>
+                </div>
+                <a
+                  href={siteConfig.primer.partnerUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="shrink-0 px-6 py-3 bg-[#c49a2e] text-white rounded-xl text-sm font-semibold hover:bg-[#d4a843] transition-colors shadow-lg"
+                >
+                  ResearchOn 바로가기 &rarr;
+                </a>
+              </div>
+            </div>
+          )}
         </div>
       </section>}
 
