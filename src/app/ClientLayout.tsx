@@ -65,21 +65,18 @@ function SectionGroup({ color, label, children, pathname, prefixes, defaultOpen 
   }, [hasActive]);
 
   return (
-    <div className="pt-4 first:pt-2">
+    <div className="pt-3 first:pt-1">
+      <div className="border-t border-gray-300 mx-3 mb-2" />
       <button
         onClick={() => setOpen(!open)}
         className="flex items-center justify-between w-full px-3 py-1.5 group"
       >
-        <div className="flex items-center gap-2">
-          <div className={`w-1.5 h-5 rounded-full ${color}`} />
-          <span className="text-sm font-bold tracking-wide text-white">{label}</span>
-        </div>
+        <span className="text-sm font-bold tracking-wide text-gray-800">{label}</span>
         <svg className={`w-3.5 h-3.5 text-gray-400 transition-transform duration-200 ${open ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
       </button>
-      <div className="border-b border-gray-200 mt-1 mx-3" />
-      {open && <div className="space-y-0.5 mt-1.5">{children}</div>}
+      {open && <div className="space-y-0.5 mt-1">{children}</div>}
     </div>
   );
 }

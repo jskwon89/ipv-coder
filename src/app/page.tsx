@@ -138,7 +138,7 @@ export default function LandingPage() {
       </section>}
 
       {/* Value Proposition */}
-      {sections.value_proposition && <section className="py-12 sm:py-24 px-4 sm:px-6 bg-[#e9eaec] text-gray-900">
+      {sections.value_proposition && <section className="py-12 sm:py-24 px-4 sm:px-6 bg-white text-gray-900">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8 sm:mb-16">
             <h2 className="text-2xl sm:text-4xl font-bold mb-3 sm:mb-4">왜 PRIMER인가요?</h2>
@@ -207,7 +207,7 @@ export default function LandingPage() {
       </section>}
 
       {/* How it Works */}
-      {sections.how_it_works && <section id="how-it-works" className="py-12 sm:py-24 px-4 sm:px-6 bg-gray-50">
+      {sections.how_it_works && <section id="how-it-works" className="py-12 sm:py-24 px-4 sm:px-6 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8 sm:mb-16">
             <h2 className="text-2xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">이용 절차</h2>
@@ -233,7 +233,7 @@ export default function LandingPage() {
       </section>}
 
       {/* Contact / CTA Section */}
-      {sections.contact && <section id="contact" className="py-12 sm:py-24 px-4 sm:px-6 bg-[#e9eaec] text-gray-900">
+      {sections.contact && <section id="contact" className="py-12 sm:py-24 px-4 sm:px-6 bg-white text-gray-900">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-2xl sm:text-4xl font-bold mb-3 sm:mb-4">연구의 새로운 시작</h2>
           <p className="text-sm sm:text-lg text-gray-500 mb-6 sm:mb-10">
@@ -261,7 +261,7 @@ export default function LandingPage() {
       </section>}
 
       {/* Footer */}
-      <footer className="bg-[#e9eaec] text-gray-500 py-8 sm:py-12 px-4 sm:px-6">
+      <footer className="bg-white text-gray-500 py-8 sm:py-12 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6">
           <div>
             <h3 className="text-lg font-bold text-gray-800 mb-1">PRIMER</h3>
