@@ -131,7 +131,7 @@ export default function LandingPage() {
               {[[160,304,"정책",11],[260,254,"제도",10],[100,364,"법률",9],[220,374,"사회",8],[80,254,"의료",7],[340,294,"교육",10],[300,204,"경제",8],[380,244,"환경",7],[60,424,"복지",6],[160,424,"안전",6],[300,364,"인식",7],[240,164,"변화",6],[200,204,"개선",7],[120,244,"지원",6],[340,204,"성과",6],[400,344,"참여",5],[450,264,"혁신",5],[280,424,"권리",5]].map(([x,y,t,s],i)=>(<text key={`knl${i}`} x={Number(x)} y={Number(y)} textAnchor="middle" fill="#94a3b8" fontSize={Number(s)} fontWeight="600" opacity="0.55">{t}</text>))}
             </g>
 
-            {/* ===== 3. KAPLAN-MEIER SURVIVAL CURVE (bottom left, with axes) ===== */}
+            {/* ===== 3. SMOOTH SURVIVAL CURVES (bottom left) ===== */}
             <g opacity="0.14">
               {/* Axes */}
               <line x1="80" y1="480" x2="80" y2="650" stroke="#64748b" strokeWidth="1" />
@@ -139,15 +139,17 @@ export default function LandingPage() {
               {/* Tick marks */}
               {[0,1,2,3,4].map(i=>(<g key={`yt${i}`}><line x1="75" y1={490+i*40} x2="80" y2={490+i*40} stroke="#64748b" strokeWidth="0.8"/><text x="70" y={493+i*40} textAnchor="end" fill="#64748b" fontSize="7">{(1-i*0.25).toFixed(1)}</text></g>))}
               {[0,1,2,3,4,5,6].map(i=>(<g key={`xt${i}`}><line x1={80+i*50} y1="650" x2={80+i*50} y2="655" stroke="#64748b" strokeWidth="0.8"/><text x={80+i*50} y="665" textAnchor="middle" fill="#64748b" fontSize="7">{i*10}</text></g>))}
-              {/* Curve 1 (treatment) */}
-              <path d="M80,490 L120,490 L120,510 L160,510 L160,530 L195,530 L195,555 L230,555 L230,575 L270,575 L270,595 L310,595 L310,615 L350,615 L350,630 L390,630" stroke="#94a3b8" strokeWidth="2" fill="none" />
-              {/* Curve 2 (control, dashed) */}
-              <path d="M80,490 L110,490 L110,520 L140,520 L140,550 L175,550 L175,580 L210,580 L210,605 L250,605 L250,625 L290,625 L290,640 L340,640" stroke="#64748b" strokeWidth="1.5" fill="none" strokeDasharray="5,3" />
+              {/* Smooth curve 1 (treatment — gentle S-curve) */}
+              <path d="M80,490 C120,492 140,500 160,515 C180,530 200,548 230,565 C260,582 290,600 330,618 C355,628 375,635 395,638" stroke="#94a3b8" strokeWidth="2" fill="none" />
+              {/* Confidence band */}
+              <path d="M80,487 C120,488 140,494 160,506 C180,518 200,534 230,550 C260,566 290,585 330,605 C355,616 375,624 395,628 L395,648 C375,646 355,640 330,632 C290,616 260,598 230,580 C200,562 180,542 160,524 C140,506 120,496 80,493 Z" fill="#94a3b8" opacity="0.08" />
+              {/* Smooth curve 2 (control, dashed) */}
+              <path d="M80,490 C110,494 130,510 150,530 C170,550 190,572 220,592 C250,612 280,628 320,638 C345,643 365,646 390,647" stroke="#64748b" strokeWidth="1.5" fill="none" strokeDasharray="5,3" />
               {/* Censored marks */}
-              {[[135,510],[185,530],[250,555],[280,575],[155,550],[225,580],[265,605]].map(([x,y],i)=>(<text key={`cm${i}`} x={Number(x)} y={Number(y)} fill="#78909c" fontSize="10" textAnchor="middle">+</text>))}
+              {[[120,495],[170,525],[220,558],[275,590],[145,535],[205,578],[260,610]].map(([x,y],i)=>(<text key={`cm${i}`} x={Number(x)} y={Number(y)} fill="#78909c" fontSize="10" textAnchor="middle">+</text>))}
               {/* Axis labels */}
               <text x="230" y="680" textAnchor="middle" fill="#64748b" fontSize="8">Time (months)</text>
-              <text x="55" y="575" textAnchor="middle" fill="#64748b" fontSize="8" transform="rotate(-90,55,575)">Survival</text>
+              <text x="55" y="575" textAnchor="middle" fill="#64748b" fontSize="8" transform="rotate(-90,55,575)">Survival Probability</text>
             </g>
 
             {/* ===== 4. AMOS-style SEM / 조절된 매개효과 (center bottom) ===== */}
@@ -221,19 +223,15 @@ export default function LandingPage() {
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full py-16 sm:py-24 lg:py-28">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-500/10 border border-teal-500/20 mb-8">
-              <div className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
-              <span className="text-xs font-medium text-teal-300">연구 지원 전문 플랫폼</span>
-            </div>
             <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white leading-[1.05] mb-6 tracking-tight animate-fade-in">
-              연구의 시작부터
+              연구의 설계부터
               <br />
               <span className="text-teal-400">완성까지</span>
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-slate-400 mb-10 leading-relaxed max-w-2xl">
-              연구설계부터 자료 수집, 통계분석까지.
+              자료 수집, 통계분석, 결과 해석까지.
               <br className="hidden sm:block" />
-              전문가가 직접 수행하는 연구 지원 서비스.
+              전문가가 직접 수행하는 연구 지원 플랫폼.
             </p>
             <div className="flex flex-col sm:flex-row items-start gap-4">
               {user ? (
