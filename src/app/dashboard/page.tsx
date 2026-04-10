@@ -14,10 +14,15 @@ interface Project {
   codedCount: number;
 }
 
-const allServiceCards = [
-  { title: "연구 설계 상담", desc: "연구 주제 설계, 방법론 안내", href: "/data-generation", image: "/images/서비스_연구설계지원.png", primer: true },
-  { title: "통계분석 설계", desc: "분석 방법 선정 및 설계 지원", href: "/stats-design", image: "/images/서비스_계량통계분석.png", primer: true },
-  { title: "설문구성 / 조사설계", desc: "설문 구성 및 조사 설계 안내", href: "/survey-request", image: "/images/서비스_설문조사.png", primer: true },
+const primerServiceCards = [
+  { title: "연구 설계 상담", desc: "연구 주제 설계, 방법론 안내", href: "/data-generation", image: "/images/서비스_연구설계지원.png" },
+  { title: "통계분석 설계", desc: "분석 방법 선정 및 설계 지원", href: "/stats-design", image: "/images/서비스_계량통계분석.png" },
+  { title: "설문구성 / 조사설계", desc: "설문 구성 및 조사 설계 안내", href: "/survey-request", image: "/images/서비스_설문조사.png" },
+];
+
+const researchonServiceCards = [
+  { title: "연구 설계 지원", desc: "연구 주제 설계, 통계분석 설계", href: "/data-generation", image: "/images/서비스_연구설계지원.png" },
+  { title: "설문조사", desc: "설문 설계부터 데이터 수집까지", href: "/survey-request", image: "/images/서비스_설문조사.png" },
   { title: "판결문 분석", desc: "판결문 수집부터 변수 코딩까지", href: "/judgment", image: "/images/서비스_판결문 코딩.png" },
   { title: "뉴스/언론 보도", desc: "키워드 기반 뉴스 수집 및 분석", href: "/news-search", image: "/images/서비스_기사분석.png" },
   { title: "계량분석", desc: "기초통계부터 고급 계량분석까지", href: "/quant-analysis", image: "/images/서비스_계량통계분석.png" },
@@ -25,7 +30,7 @@ const allServiceCards = [
 ];
 
 function getServiceCards(mode: SiteMode) {
-  return mode === 'primer' ? allServiceCards.filter(c => c.primer) : allServiceCards;
+  return mode === 'primer' ? primerServiceCards : researchonServiceCards;
 }
 
 interface StatusBreakdown {
