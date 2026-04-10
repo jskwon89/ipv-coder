@@ -57,7 +57,7 @@ export const siteConfig = {
     name: 'PRIMER',
     subtitle: '아산학파 연구지원',
     heroTitle: '연구의 첫 걸음,\n함께 시작합니다',
-    heroDesc: '연구설계, 통계분석, 자료수집까지\n아산학파가 여러분의 연구를 지원합니다',
+    heroDesc: '연구설계, 자료수집방법, 통계방법, 논문작성 시 주의사항까지\nPRIMER가 여러분과 함께합니다',
     ctaText: '지원 요청하기',
     requestLabel: '지원 요청',
     requestVerb: '요청',
