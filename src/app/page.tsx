@@ -48,7 +48,7 @@ export default function LandingPage() {
             <Link href="/samples" className="hover:opacity-70 transition-opacity">결과물 안내</Link>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
-            <Link href="/login" className={`hidden sm:block text-sm font-medium px-4 py-2 rounded-lg transition-colors ${scrolled ? "text-gray-600 hover:bg-gray-100" : "text-white hover:bg-white/10"}`}>
+            <Link href="/login" className={`hidden sm:block text-sm font-medium px-4 py-2 rounded-lg transition-colors ${scrolled ? "text-gray-600 hover:bg-gray-100" : "text-white hover:bg-gray-50"}`}>
               로그인
             </Link>
             <Link
@@ -93,7 +93,7 @@ export default function LandingPage() {
             </Link>
             <a
               href="#services"
-              className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 border-2 border-white text-white rounded-xl text-sm sm:text-base font-semibold hover:bg-white/10 transition-colors text-center"
+              className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 border-2 border-white text-white rounded-xl text-sm sm:text-base font-semibold hover:bg-gray-50 transition-colors text-center"
             >
               서비스 둘러보기
             </a>
@@ -101,7 +101,7 @@ export default function LandingPage() {
         </div>
         {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-          <svg className="w-6 h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>
         </div>
@@ -138,11 +138,11 @@ export default function LandingPage() {
       </section>}
 
       {/* Value Proposition */}
-      {sections.value_proposition && <section className="py-12 sm:py-24 px-4 sm:px-6 bg-[#0f1a2e] text-white">
+      {sections.value_proposition && <section className="py-12 sm:py-24 px-4 sm:px-6 bg-[#e8e4df] text-gray-900">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8 sm:mb-16">
             <h2 className="text-2xl sm:text-4xl font-bold mb-3 sm:mb-4">왜 PRIMER인가요?</h2>
-            <p className="text-sm sm:text-lg text-white/60 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-sm sm:text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed">
               합리적인 가격, 최상의 품질, 끝까지 책임지는 서비스
             </p>
             <div className="w-12 sm:w-16 h-1 bg-teal-500 mx-auto rounded-full mt-4" />
@@ -233,17 +233,17 @@ export default function LandingPage() {
       </section>}
 
       {/* Contact / CTA Section */}
-      {sections.contact && <section id="contact" className="py-12 sm:py-24 px-4 sm:px-6 bg-[#0f1a2e] text-white">
+      {sections.contact && <section id="contact" className="py-12 sm:py-24 px-4 sm:px-6 bg-[#e8e4df] text-gray-900">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-2xl sm:text-4xl font-bold mb-3 sm:mb-4">연구의 새로운 시작</h2>
-          <p className="text-sm sm:text-lg text-white/70 mb-6 sm:mb-10">
+          <p className="text-sm sm:text-lg text-gray-500 mb-6 sm:mb-10">
             PRIMER과 함께 효율적인 연구를 시작하세요
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-8 max-w-md mx-auto">
             <input
               type="email"
               placeholder="이메일 주소를 입력하세요"
-              className="w-full px-5 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-white/30"
+              className="w-full px-5 py-3 rounded-xl bg-white border border-gray-200 text-gray-900 placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400/30"
             />
             <button className="shrink-0 px-6 py-3 bg-teal-500 text-white rounded-xl text-sm font-semibold hover:bg-teal-400 transition-colors">
               문의하기
@@ -261,18 +261,18 @@ export default function LandingPage() {
       </section>}
 
       {/* Footer */}
-      <footer className="bg-[#111827] text-white/60 py-8 sm:py-12 px-4 sm:px-6">
+      <footer className="bg-[#e8e4df] text-gray-500 py-8 sm:py-12 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6">
           <div>
-            <h3 className="text-lg font-bold text-white mb-1">PRIMER</h3>
+            <h3 className="text-lg font-bold text-gray-800 mb-1">PRIMER</h3>
             <p className="text-sm">연구자를 위한 올인원 연구 지원 플랫폼</p>
           </div>
           <div className="flex items-center gap-6 text-sm">
-            <a href="#services" className="hover:text-white transition-colors">서비스</a>
-            <span className="hover:text-white transition-colors cursor-pointer">이용약관</span>
-            <span className="hover:text-white transition-colors cursor-pointer">개인정보처리방침</span>
+            <a href="#services" className="hover:text-gray-800 transition-colors">서비스</a>
+            <span className="hover:text-gray-800 transition-colors cursor-pointer">이용약관</span>
+            <span className="hover:text-gray-800 transition-colors cursor-pointer">개인정보처리방침</span>
           </div>
-          <p className="text-xs text-white/40">&copy; 2026 PRIMER. All rights reserved.</p>
+          <p className="text-xs text-gray-400">&copy; 2026 PRIMER. All rights reserved.</p>
         </div>
       </footer>
 
@@ -343,12 +343,12 @@ function ValueCard({
   description: string;
 }) {
   return (
-    <div className="bg-white/5 border border-white/10 rounded-xl p-5 sm:p-6 hover:bg-white/10 transition-colors">
+    <div className="bg-white border border-gray-200 rounded-xl p-5 sm:p-6 hover:bg-gray-50 transition-colors">
       <div className="w-12 h-12 rounded-lg bg-teal-500/15 flex items-center justify-center mb-4">
         {icon}
       </div>
       <h3 className="text-base sm:text-lg font-semibold text-white mb-2">{title}</h3>
-      <p className="text-xs sm:text-sm text-white/60 leading-relaxed">{description}</p>
+      <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">{description}</p>
     </div>
   );
 }
