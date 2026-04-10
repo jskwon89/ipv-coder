@@ -391,7 +391,7 @@ export default function LandingPage() {
           {/* Background image */}
           <div className="absolute inset-0">
             <Image src="/images/scott-graham-5fNmWej4tAA-unsplash.jpg" alt="" fill className="object-cover" />
-            <div className="absolute inset-0 bg-[#0f172a]/85" />
+            <div className="absolute inset-0 bg-white/90" />
           </div>
 
           <div className="relative z-10 max-w-7xl mx-auto">
@@ -399,29 +399,29 @@ export default function LandingPage() {
             {sections.how_it_works && (
               <div className="mb-20">
                 <div className="text-center mb-14">
-                  <span className="text-sm font-semibold text-teal-400 tracking-wide uppercase">Process</span>
-                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mt-3 mb-4">간단한 4단계</h2>
-                  <p className="text-lg text-slate-400">복잡한 절차 없이, 빠르게 시작하세요</p>
+                  <span className="text-sm font-semibold text-teal-600 tracking-wide uppercase">Process</span>
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mt-3 mb-4">간단한 4단계</h2>
+                  <p className="text-lg text-gray-500">복잡한 절차 없이, 빠르게 시작하세요</p>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                  <StepCardDark step={1} title="회원가입" description="간편 가입 후 바로 시작하세요" />
-                  <StepCardDark step={2} title="서비스 선택" description="필요한 연구 지원 서비스를 선택합니다" />
-                  <StepCardDark step={3} title="업로드 & 요청" description="연구 자료와 요구사항을 전달합니다" />
-                  <StepCardDark step={4} title="결과 확인" description="전문가가 수행한 분석 결과를 받아보세요" />
+                  <StepCard step={1} title="회원가입" description="간편 가입 후 바로 시작하세요" />
+                  <StepCard step={2} title="서비스 선택" description="필요한 연구 지원 서비스를 선택합니다" />
+                  <StepCard step={3} title="업로드 & 요청" description="연구 자료와 요구사항을 전달합니다" />
+                  <StepCard step={4} title="결과 확인" description="전문가가 수행한 분석 결과를 받아보세요" />
                 </div>
               </div>
             )}
 
             {/* CTA */}
             {sections.contact && (
-              <div id="contact" className="text-center pt-10 border-t border-white/10">
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">연구의 새로운 시작</h2>
-                <p className="text-lg text-slate-400 mb-10">PRIMER와 함께 효율적인 연구를 시작하세요</p>
+              <div id="contact" className="text-center pt-10 border-t border-gray-200">
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">연구의 새로운 시작</h2>
+                <p className="text-lg text-gray-500 mb-10">PRIMER와 함께 효율적인 연구를 시작하세요</p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                  <Link href={user ? "#services" : "/login"} className="px-10 py-4 bg-teal-600 text-white rounded-xl text-lg font-semibold hover:bg-teal-700 transition-all shadow-lg shadow-teal-900/30">
+                  <Link href={user ? "#services" : "/login"} className="px-10 py-4 bg-teal-600 text-white rounded-xl text-lg font-semibold hover:bg-teal-700 transition-all shadow-lg">
                     {user ? "서비스 이용하기" : "무료로 시작하기"}
                   </Link>
-                  <Link href="/contact" className="px-10 py-4 border border-white/20 text-white/80 rounded-xl text-lg font-semibold hover:bg-white/5 transition-all">
+                  <Link href="/contact" className="px-10 py-4 border border-gray-300 text-gray-600 rounded-xl text-lg font-semibold hover:bg-gray-50 transition-all">
                     문의하기
                   </Link>
                 </div>
@@ -502,12 +502,12 @@ function ValueCard({ icon, title, description, color = "teal" }: { icon: React.R
   );
 }
 
-function StepCardDark({ step, title, description }: { step: number; title: string; description: string }) {
+function StepCard({ step, title, description }: { step: number; title: string; description: string }) {
   return (
     <div className="relative text-center">
-      <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/10 text-teal-400 flex items-center justify-center mx-auto mb-5"><span className="text-xl font-bold">{step}</span></div>
-      <h3 className="text-base font-semibold text-white mb-2">{title}</h3>
-      <p className="text-sm text-slate-400 leading-relaxed">{description}</p>
+      <div className="w-14 h-14 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center mx-auto mb-5"><span className="text-xl font-bold">{step}</span></div>
+      <h3 className="text-base font-semibold text-gray-900 mb-2">{title}</h3>
+      <p className="text-sm text-gray-500 leading-relaxed">{description}</p>
     </div>
   );
 }
