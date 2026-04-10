@@ -30,7 +30,8 @@
       "Bash(grep -v \"layout\\\\.tsx$\")",
       "Bash(grep -v \"ClientLayout\\\\.tsx$\")",
       "Bash(grep -v \"globals\\\\.css$\")",
-      "Bash(xargs sed:*)"
+      "Bash(xargs sed:*)",
+      "WebFetch(domain:www.k-stat.go.kr)"
     ]
   }
 }

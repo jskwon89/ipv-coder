@@ -109,10 +109,10 @@ export default function LandingPage() {
           {/* Stats row */}
           <div className="mt-20 pt-10 border-t border-white/10">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
-              <StatItem number="500+" label="완료된 프로젝트" />
-              <StatItem number="98%" label="고객 만족도" />
-              <StatItem number="50+" label="전문 분석가" />
-              <StatItem number="24h" label="평균 응답 시간" />
+              <StatItem end={500} suffix="+" label="완료된 프로젝트" />
+              <StatItem end={98} suffix="%" label="고객 만족도" />
+              <StatItem end={50} suffix="+" label="전문 분석가" />
+              <StatItem end={30} suffix="분" label="평균 응답 시간" />
             </div>
           </div>
         </div>
@@ -127,7 +127,7 @@ export default function LandingPage() {
 
       {/* Services Section - 3 main services */}
       {sections.services && (
-        <section id="services" className="py-20 sm:py-32 px-4 sm:px-6 bg-white">
+        <section id="services" className="py-20 sm:py-32 px-4 sm:px-6 bg-gray-50/80">
           <div className="max-w-7xl mx-auto">
             <div className="max-w-2xl mb-16">
               <span className="text-sm font-semibold text-teal-600 tracking-wide uppercase">Services</span>
@@ -150,6 +150,7 @@ export default function LandingPage() {
                 description="연구 주제 선정, 연구 방향 설계, 통계분석 설계까지. 체계적인 연구의 첫 단추를 채워드립니다."
                 features={["연구 주제 및 방향 설계", "통계분석 설계", "변수 및 모형 설정"]}
                 href="/data-generation"
+                color="emerald"
               />
               <MainServiceCard
                 icon={
@@ -161,6 +162,7 @@ export default function LandingPage() {
                 description="설문조사, 판결문, 뉴스/언론 보도까지. 연구에 필요한 데이터를 수집하고 정리합니다."
                 features={["설문조사 설계 및 수집", "판결문 수집 및 코딩", "뉴스/언론 보도 수집"]}
                 href="/survey-request"
+                color="blue"
               />
               <MainServiceCard
                 icon={
@@ -172,6 +174,7 @@ export default function LandingPage() {
                 description="기초통계부터 계량분석, 텍스트 분석, 질적분석까지. 전문가가 직접 분석하고 해석합니다."
                 features={["데이터 전처리 및 변환", "계량분석 및 텍스트 분석", "결과 해석 및 보고서"]}
                 href="/quant-analysis"
+                color="violet"
               />
             </div>
           </div>
@@ -180,14 +183,14 @@ export default function LandingPage() {
 
       {/* Why PRIMER */}
       {sections.value_proposition && (
-        <section id="why-primer" className="py-20 sm:py-32 px-4 sm:px-6 bg-slate-50">
+        <section id="why-primer" className="py-20 sm:py-32 px-4 sm:px-6 bg-[#0f172a]">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
-              <span className="text-sm font-semibold text-teal-600 tracking-wide uppercase">Why PRIMER</span>
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mt-3 mb-4">
+              <span className="text-sm font-semibold text-teal-400 tracking-wide uppercase">Why PRIMER</span>
+              <h2 className="text-3xl sm:text-4xl font-bold text-white mt-3 mb-4">
                 왜 PRIMER인가요?
               </h2>
-              <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+              <p className="text-lg text-slate-400 max-w-2xl mx-auto">
                 합리적인 가격, 검증된 품질, 끝까지 책임지는 서비스
               </p>
             </div>
@@ -200,6 +203,7 @@ export default function LandingPage() {
                 }
                 title="합리적인 가격"
                 description="불필요한 중간 과정 없이, 연구에 꼭 필요한 서비스를 합리적인 비용으로 제공합니다."
+                color="emerald"
               />
               <ValueCard
                 icon={
@@ -209,6 +213,7 @@ export default function LandingPage() {
                 }
                 title="검증된 품질"
                 description="각 분야 전문가가 직접 분석하며, 모든 결과물에 구체적인 해석과 설명을 함께 제공합니다."
+                color="blue"
               />
               <ValueCard
                 icon={
@@ -218,6 +223,7 @@ export default function LandingPage() {
                 }
                 title="수정/보완 보장"
                 description="결과물 납품 후에도 요청에 따라 수정과 보완을 진행합니다. 만족하실 때까지 책임집니다."
+                color="violet"
               />
               <ValueCard
                 icon={
@@ -227,6 +233,7 @@ export default function LandingPage() {
                 }
                 title="1:1 맞춤 소통"
                 description="의뢰 접수부터 완료까지 담당자와 직접 소통합니다. 궁금한 점은 언제든 물어보세요."
+                color="amber"
               />
               <ValueCard
                 icon={
@@ -236,6 +243,7 @@ export default function LandingPage() {
                 }
                 title="데이터 보안"
                 description="모든 자료는 암호화 저장되며, 작업 완료 후 요청 시 즉시 삭제합니다."
+                color="rose"
               />
               <ValueCard
                 icon={
@@ -245,6 +253,7 @@ export default function LandingPage() {
                 }
                 title="빠른 처리"
                 description="체계적인 프로세스로 신속하게 결과를 제공합니다. 급한 일정도 최대한 맞춰드립니다."
+                color="cyan"
               />
             </div>
           </div>
@@ -354,10 +363,45 @@ export default function LandingPage() {
 
 /* ── Sub-components ── */
 
-function StatItem({ number, label }: { number: string; label: string }) {
+function StatItem({ end, suffix, label }: { end: number; suffix: string; label: string }) {
+  const [count, setCount] = useState(0);
+  const [started, setStarted] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started) setStarted(true);
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [started]);
+
+  useEffect(() => {
+    if (!started) return;
+    const duration = 1500;
+    const steps = 40;
+    const increment = end / steps;
+    let current = 0;
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= end) {
+        setCount(end);
+        clearInterval(timer);
+      } else {
+        setCount(Math.floor(current));
+      }
+    }, duration / steps);
+    return () => clearInterval(timer);
+  }, [started, end]);
+
   return (
-    <div>
-      <div className="text-2xl sm:text-3xl font-bold text-white mb-1">{number}</div>
+    <div ref={ref}>
+      <div className="text-2xl sm:text-3xl font-bold text-white mb-1">{count}{suffix}</div>
       <div className="text-sm text-slate-500">{label}</div>
     </div>
   );
@@ -369,19 +413,29 @@ function MainServiceCard({
   description,
   features,
   href,
+  color = "teal",
 }: {
   icon: React.ReactNode;
   title: string;
   description: string;
   features: string[];
   href: string;
+  color?: string;
 }) {
+  const colorMap: Record<string, { bg: string; bgHover: string; text: string; border: string; shadow: string; check: string }> = {
+    emerald: { bg: "bg-emerald-50", bgHover: "group-hover:bg-emerald-100", text: "text-emerald-600", border: "hover:border-emerald-200", shadow: "hover:shadow-emerald-50", check: "text-emerald-500" },
+    blue: { bg: "bg-blue-50", bgHover: "group-hover:bg-blue-100", text: "text-blue-600", border: "hover:border-blue-200", shadow: "hover:shadow-blue-50", check: "text-blue-500" },
+    violet: { bg: "bg-violet-50", bgHover: "group-hover:bg-violet-100", text: "text-violet-600", border: "hover:border-violet-200", shadow: "hover:shadow-violet-50", check: "text-violet-500" },
+    teal: { bg: "bg-teal-50", bgHover: "group-hover:bg-teal-100", text: "text-teal-600", border: "hover:border-teal-200", shadow: "hover:shadow-teal-50", check: "text-teal-500" },
+  };
+  const c = colorMap[color] || colorMap.teal;
+
   return (
     <Link
       href={href}
-      className="group relative bg-white rounded-2xl border border-gray-200 p-8 hover:border-teal-200 hover:shadow-lg hover:shadow-teal-50 transition-all duration-300 block"
+      className={`group relative bg-white rounded-2xl border border-gray-200 p-8 ${c.border} hover:shadow-lg ${c.shadow} transition-all duration-300 block`}
     >
-      <div className="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center mb-6 group-hover:bg-teal-100 transition-colors">
+      <div className={`w-12 h-12 rounded-xl ${c.bg} ${c.text} flex items-center justify-center mb-6 ${c.bgHover} transition-colors`}>
         {icon}
       </div>
       <h3 className="text-xl font-bold text-gray-900 mb-3">{title}</h3>
@@ -389,14 +443,14 @@ function MainServiceCard({
       <ul className="space-y-2.5 mb-6">
         {features.map((f, i) => (
           <li key={i} className="flex items-center gap-2.5 text-sm text-gray-600">
-            <svg className="w-4 h-4 text-teal-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className={`w-4 h-4 ${c.check} shrink-0`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
             {f}
           </li>
         ))}
       </ul>
-      <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-teal-600 group-hover:gap-3 transition-all">
+      <span className={`inline-flex items-center gap-1.5 text-sm font-semibold ${c.text} group-hover:gap-3 transition-all`}>
         자세히 보기
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -410,18 +464,31 @@ function ValueCard({
   icon,
   title,
   description,
+  color = "teal",
 }: {
   icon: React.ReactNode;
   title: string;
   description: string;
+  color?: string;
 }) {
+  const colorMap: Record<string, { bg: string; text: string }> = {
+    emerald: { bg: "bg-emerald-500/15", text: "text-emerald-400" },
+    blue: { bg: "bg-blue-500/15", text: "text-blue-400" },
+    violet: { bg: "bg-violet-500/15", text: "text-violet-400" },
+    amber: { bg: "bg-amber-500/15", text: "text-amber-400" },
+    rose: { bg: "bg-rose-500/15", text: "text-rose-400" },
+    cyan: { bg: "bg-cyan-500/15", text: "text-cyan-400" },
+    teal: { bg: "bg-teal-500/15", text: "text-teal-400" },
+  };
+  const c = colorMap[color] || colorMap.teal;
+
   return (
-    <div className="bg-white rounded-xl border border-gray-100 p-6 hover:border-teal-100 hover:shadow-md transition-all duration-300">
-      <div className="w-10 h-10 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center mb-4">
+    <div className="bg-white/5 border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-all duration-300">
+      <div className={`w-10 h-10 rounded-lg ${c.bg} ${c.text} flex items-center justify-center mb-4`}>
         {icon}
       </div>
-      <h3 className="text-base font-semibold text-gray-900 mb-2">{title}</h3>
-      <p className="text-sm text-gray-500 leading-relaxed">{description}</p>
+      <h3 className="text-base font-semibold text-white mb-2">{title}</h3>
+      <p className="text-sm text-slate-400 leading-relaxed">{description}</p>
     </div>
   );
 }
