@@ -84,7 +84,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white text-gray-900">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-[#0f172a] min-h-[85vh]">
+      <section className="relative overflow-hidden bg-[#0f172a] min-h-[85vh] flex items-center">
         {/* Background layers */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a] via-[#0f172a] to-teal-900/30" />
@@ -221,7 +221,7 @@ export default function LandingPage() {
           <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full py-16 sm:py-24 lg:py-28">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full py-10 sm:py-16">
           <div className="max-w-3xl">
             <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white leading-[1.05] mb-6 tracking-tight animate-fade-in">
               연구의 설계부터
@@ -229,9 +229,9 @@ export default function LandingPage() {
               <span className="text-teal-400">완성까지</span>
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-slate-400 mb-10 leading-relaxed max-w-2xl">
-              자료 수집, 통계분석, 결과 해석까지.
+              자료 수집, 통계분석, 결과 해석까지
               <br className="hidden sm:block" />
-              전문가가 직접 수행하는 연구 지원 플랫폼.
+              전문가가 직접 수행하는 연구 지원 플랫폼
             </p>
             <div className="flex flex-col sm:flex-row items-start gap-4">
               {user ? (
