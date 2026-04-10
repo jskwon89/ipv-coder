@@ -117,7 +117,7 @@ export default function DataTransformResultsPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
             </svg>
             <p className="text-sm text-gray-400 mb-4">아직 의뢰 내역이 없습니다.</p>
-            <Link href="/data-transform" className="inline-flex items-center gap-2 px-4 py-2 bg-[#c49a2e] text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors">
+            <Link href="/data-transform" className="inline-flex items-center gap-2 px-4 py-2 bg-teal-500 text-white rounded-lg text-sm font-medium hover:bg-teal-600 transition-colors">
               데이터 전처리 의뢰하기
             </Link>
           </div>
@@ -164,7 +164,7 @@ export default function DataTransformResultsPage() {
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
           {["의뢰 접수", "데이터 확인", "전처리 진행", "결과 전달"].map((step, i) => (
             <div key={step} className="text-center">
-              <div className="w-10 h-10 rounded-full bg-[#c49a2e] text-white flex items-center justify-center mx-auto mb-2 text-sm font-bold">{i + 1}</div>
+              <div className="w-10 h-10 rounded-full bg-teal-500 text-white flex items-center justify-center mx-auto mb-2 text-sm font-bold">{i + 1}</div>
               <p className="text-sm font-medium">{step}</p>
             </div>
           ))}
@@ -256,9 +256,9 @@ export default function DataTransformResultsPage() {
                   <div className="space-y-3">
                     {messages.map((msg) => (
                       <div key={msg.id} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
-                        <div className={`max-w-[80%] rounded-xl px-4 py-2.5 ${msg.sender === "user" ? "bg-[#c49a2e]/10 border border-[#c49a2e]/20 text-gray-900" : "bg-gray-100 text-gray-900"}`}>
+                        <div className={`max-w-[80%] rounded-xl px-4 py-2.5 ${msg.sender === "user" ? "bg-teal-500/10 border border-teal-500/20 text-gray-900" : "bg-gray-100 text-gray-900"}`}>
                           <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.message}</p>
-                          <p className={`text-[10px] mt-1 ${msg.sender === "user" ? "text-[#c49a2e]/60 text-right" : "text-gray-400"}`}>
+                          <p className={`text-[10px] mt-1 ${msg.sender === "user" ? "text-teal-500/60 text-right" : "text-gray-400"}`}>
                             {new Date(msg.createdAt).toLocaleString("ko-KR", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
                           </p>
                         </div>
@@ -279,12 +279,12 @@ export default function DataTransformResultsPage() {
                   onChange={(e) => setChatInput(e.target.value)}
                   onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSendMessage(); } }}
                   placeholder="메시지를 입력하세요..."
-                  className="flex-1 px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
+                  className="flex-1 px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400/40 focus:border-teal-500"
                 />
                 <button
                   onClick={handleSendMessage}
                   disabled={sendingChat || !chatInput.trim()}
-                  className="px-4 py-2.5 bg-[#c49a2e] text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+                  className="px-4 py-2.5 bg-teal-500 text-white rounded-lg text-sm font-medium hover:bg-teal-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />

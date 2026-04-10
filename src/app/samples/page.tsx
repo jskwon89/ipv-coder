@@ -128,7 +128,7 @@ export default function SamplesPage() {
         {/* CTA */}
         <div className="text-center mt-12">
           <p className="text-sm text-gray-500 mb-4">원하시는 서비스가 있으신가요?</p>
-          <Link href="/dashboard" className="inline-flex px-6 py-3 bg-[#c49a2e] text-white rounded-xl text-sm font-semibold hover:bg-[#b08a28] transition-colors shadow-sm">
+          <Link href="/dashboard" className="inline-flex px-6 py-3 bg-teal-500 text-white rounded-xl text-sm font-semibold hover:bg-teal-600 transition-colors shadow-sm">
             의뢰하러 가기
           </Link>
         </div>

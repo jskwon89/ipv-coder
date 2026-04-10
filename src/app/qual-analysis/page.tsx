@@ -101,7 +101,7 @@ export default function QualAnalysisPage() {
           { label: "질적분석" },
         ]}
         iconBgClass="bg-amber-50"
-        iconTextClass="text-[#c49a2e]"
+        iconTextClass="text-teal-500"
         icon={
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
@@ -123,7 +123,7 @@ export default function QualAnalysisPage() {
               </p>
               <Link
                 href="/qual-results"
-                className="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-[#c49a2e] text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors"
+                className="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-teal-500 text-white rounded-lg text-sm font-medium hover:bg-teal-600 transition-colors"
               >
                 결과 확인 페이지로 이동
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -146,7 +146,7 @@ export default function QualAnalysisPage() {
             <select
               value={analysisType}
               onChange={(e) => setAnalysisType(e.target.value)}
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-400/40 focus:border-teal-500"
             >
               <option value="">선택하세요</option>
               {analysisTypes.map((t) => (
@@ -159,7 +159,7 @@ export default function QualAnalysisPage() {
             <select
               value={dataFormat}
               onChange={(e) => setDataFormat(e.target.value)}
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-400/40 focus:border-teal-500"
             >
               <option value="">선택하세요</option>
               {dataFormatOptions.map((f) => (
@@ -174,7 +174,7 @@ export default function QualAnalysisPage() {
               onChange={(e) => setDataDescription(e.target.value)}
               rows={3}
               placeholder="보유하신 데이터의 내용, 규모, 수집 방법 등을 설명해주세요"
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e] resize-none"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-400/40 focus:border-teal-500 resize-none"
             />
           </div>
           <div className="md:col-span-2">
@@ -184,7 +184,7 @@ export default function QualAnalysisPage() {
               onChange={(e) => setAnalysisGoal(e.target.value)}
               rows={3}
               placeholder="분석을 통해 알고자 하는 것, 연구 질문 등을 기술해주세요"
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e] resize-none"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-400/40 focus:border-teal-500 resize-none"
             />
           </div>
         </div>
@@ -199,7 +199,7 @@ export default function QualAnalysisPage() {
           onDragLeave={() => setDragging(false)}
           onClick={() => fileInputRef.current?.click()}
           className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${
-            dragging ? "border-[#c49a2e] bg-amber-50" : "border-gray-300 hover:border-[#c49a2e]/50 hover:bg-amber-50/30"
+            dragging ? "border-teal-500 bg-amber-50" : "border-gray-300 hover:border-teal-500/50 hover:bg-amber-50/30"
           }`}
         >
           <input
@@ -247,7 +247,7 @@ export default function QualAnalysisPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="결과를 받을 이메일 주소"
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-400/40 focus:border-teal-500"
             />
           </div>
         </div>
@@ -258,7 +258,7 @@ export default function QualAnalysisPage() {
             onChange={(e) => setAdditionalNotes(e.target.value)}
             rows={3}
             placeholder="추가적으로 요청하실 사항이 있으시면 작성해주세요."
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e] resize-none"
+            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-400/40 focus:border-teal-500 resize-none"
           />
         </div>
       </div>
@@ -274,7 +274,7 @@ export default function QualAnalysisPage() {
         <button
           onClick={handleSubmit}
           disabled={submitting || !email.trim() || !analysisType}
-          className="px-8 py-3 bg-[#c49a2e] text-white rounded-lg text-sm font-semibold hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-8 py-3 bg-teal-500 text-white rounded-lg text-sm font-semibold hover:bg-teal-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {submitting ? "제출 중..." : "질적분석 의뢰하기"}
         </button>

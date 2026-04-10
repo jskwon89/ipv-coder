@@ -53,7 +53,7 @@ export default function LandingPage() {
             </Link>
             <Link
               href="/dashboard"
-              className="text-xs sm:text-sm font-medium px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-colors bg-[#c49a2e] text-white hover:bg-[#d4a843]"
+              className="text-xs sm:text-sm font-medium px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-colors bg-teal-500 text-white hover:bg-teal-400"
             >
               시작하기
             </Link>
@@ -87,7 +87,7 @@ export default function LandingPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
             <Link
               href="/dashboard"
-              className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-[#c49a2e] text-white rounded-xl text-sm sm:text-base font-semibold hover:bg-[#d4a843] transition-colors shadow-lg text-center"
+              className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-teal-500 text-white rounded-xl text-sm sm:text-base font-semibold hover:bg-teal-400 transition-colors shadow-lg text-center"
             >
               무료로 시작하기
             </Link>
@@ -112,7 +112,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8 sm:mb-16">
             <h2 className="text-2xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">제공 서비스</h2>
-            <div className="w-12 sm:w-16 h-1 bg-[#c49a2e] mx-auto rounded-full" />
+            <div className="w-12 sm:w-16 h-1 bg-teal-500 mx-auto rounded-full" />
           </div>
           <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
             <ServiceCard
@@ -163,12 +163,12 @@ export default function LandingPage() {
             <p className="text-sm sm:text-lg text-white/60 max-w-2xl mx-auto leading-relaxed">
               합리적인 가격, 최상의 품질, 끝까지 책임지는 서비스
             </p>
-            <div className="w-12 sm:w-16 h-1 bg-[#c49a2e] mx-auto rounded-full mt-4" />
+            <div className="w-12 sm:w-16 h-1 bg-teal-500 mx-auto rounded-full mt-4" />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
             <ValueCard
               icon={
-                <svg className="w-7 h-7 text-[#c49a2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-7 h-7 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               }
@@ -177,7 +177,7 @@ export default function LandingPage() {
             />
             <ValueCard
               icon={
-                <svg className="w-7 h-7 text-[#c49a2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-7 h-7 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
                 </svg>
               }
@@ -186,7 +186,7 @@ export default function LandingPage() {
             />
             <ValueCard
               icon={
-                <svg className="w-7 h-7 text-[#c49a2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-7 h-7 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
               }
@@ -195,7 +195,7 @@ export default function LandingPage() {
             />
             <ValueCard
               icon={
-                <svg className="w-7 h-7 text-[#c49a2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-7 h-7 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
               }
@@ -204,7 +204,7 @@ export default function LandingPage() {
             />
             <ValueCard
               icon={
-                <svg className="w-7 h-7 text-[#c49a2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-7 h-7 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
               }
@@ -213,7 +213,7 @@ export default function LandingPage() {
             />
             <ValueCard
               icon={
-                <svg className="w-7 h-7 text-[#c49a2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-7 h-7 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               }
@@ -229,7 +229,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8 sm:mb-16">
             <h2 className="text-2xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">이용 절차</h2>
-            <div className="w-12 sm:w-16 h-1 bg-[#c49a2e] mx-auto rounded-full" />
+            <div className="w-12 sm:w-16 h-1 bg-teal-500 mx-auto rounded-full" />
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-16 items-center">
             <div className="grid grid-cols-2 sm:grid-cols-2 gap-3 sm:gap-6">
@@ -263,14 +263,14 @@ export default function LandingPage() {
               placeholder="이메일 주소를 입력하세요"
               className="w-full px-5 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-white/30"
             />
-            <button className="shrink-0 px-6 py-3 bg-[#c49a2e] text-white rounded-xl text-sm font-semibold hover:bg-[#d4a843] transition-colors">
+            <button className="shrink-0 px-6 py-3 bg-teal-500 text-white rounded-xl text-sm font-semibold hover:bg-teal-400 transition-colors">
               문의하기
             </button>
           </div>
           <div className="pt-4">
             <Link
               href="/dashboard"
-              className="inline-block px-10 py-4 bg-[#c49a2e] text-white rounded-xl text-base font-semibold hover:bg-[#d4a843] transition-colors shadow-lg"
+              className="inline-block px-10 py-4 bg-teal-500 text-white rounded-xl text-base font-semibold hover:bg-teal-400 transition-colors shadow-lg"
             >
               무료로 시작하기
             </Link>
@@ -343,7 +343,7 @@ function ServiceCard({
       <div className="p-3 sm:p-6">
         <h3 className="text-sm sm:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">{title}</h3>
         <p className="text-[11px] sm:text-sm text-gray-500 leading-relaxed mb-2 sm:mb-4 line-clamp-2">{description}</p>
-        <span className="hidden sm:inline text-sm font-medium text-[#c49a2e] group-hover:underline">
+        <span className="hidden sm:inline text-sm font-medium text-teal-500 group-hover:underline">
           자세히 보기 &rarr;
         </span>
       </div>
@@ -362,7 +362,7 @@ function ValueCard({
 }) {
   return (
     <div className="bg-white/5 border border-white/10 rounded-xl p-5 sm:p-6 hover:bg-white/10 transition-colors">
-      <div className="w-12 h-12 rounded-lg bg-[#c49a2e]/15 flex items-center justify-center mb-4">
+      <div className="w-12 h-12 rounded-lg bg-teal-500/15 flex items-center justify-center mb-4">
         {icon}
       </div>
       <h3 className="text-base sm:text-lg font-semibold text-white mb-2">{title}</h3>
@@ -382,7 +382,7 @@ function StepCard({
 }) {
   return (
     <div className="bg-white rounded-lg sm:rounded-xl p-4 sm:p-6 shadow-sm border border-gray-200 text-center flex flex-col items-center">
-      <div className="text-3xl sm:text-5xl font-extrabold text-[#c49a2e] mb-2 sm:mb-4 tracking-tight" style={{ fontFamily: "'Georgia', serif" }}>
+      <div className="text-3xl sm:text-5xl font-extrabold text-teal-500 mb-2 sm:mb-4 tracking-tight" style={{ fontFamily: "'Georgia', serif" }}>
         {step}
       </div>
       <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-0.5 sm:mb-1">{title}</h3>

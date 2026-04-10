@@ -105,7 +105,7 @@ export default function DataTransformPage() {
           { label: "데이터 전처리" },
         ]}
         iconBgClass="bg-amber-50"
-        iconTextClass="text-[#c49a2e]"
+        iconTextClass="text-teal-500"
         icon={
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
@@ -127,7 +127,7 @@ export default function DataTransformPage() {
               </p>
               <Link
                 href="/data-transform-results"
-                className="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-[#c49a2e] text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors"
+                className="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-teal-500 text-white rounded-lg text-sm font-medium hover:bg-teal-600 transition-colors"
               >
                 결과 확인 페이지로 이동
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -152,7 +152,7 @@ export default function DataTransformPage() {
               onChange={(e) => setDataDescription(e.target.value)}
               rows={3}
               placeholder="데이터의 내용, 규모, 변수 구성 등을 설명해주세요"
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e] resize-none"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-400/40 focus:border-teal-500 resize-none"
             />
           </div>
           <div>
@@ -160,7 +160,7 @@ export default function DataTransformPage() {
             <select
               value={dataFormat}
               onChange={(e) => setDataFormat(e.target.value)}
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-400/40 focus:border-teal-500"
             >
               <option value="">선택하세요</option>
               {dataFormats.map((f) => (
@@ -175,7 +175,7 @@ export default function DataTransformPage() {
               value={currentState}
               onChange={(e) => setCurrentState(e.target.value)}
               placeholder="예: 결측치 많음, wide format 등"
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-400/40 focus:border-teal-500"
             />
           </div>
         </div>
@@ -191,13 +191,13 @@ export default function DataTransformPage() {
               onClick={() => toggleType(opt)}
               className={`text-left px-4 py-3 rounded-lg border transition-colors ${
                 selectedTypes.includes(opt)
-                  ? "border-[#c49a2e] bg-amber-50 text-[#c49a2e]"
+                  ? "border-teal-500 bg-amber-50 text-teal-500"
                   : "border-gray-200 hover:bg-gray-50 text-gray-700"
               }`}
             >
               <div className="flex items-center gap-2">
                 <div className={`w-4 h-4 rounded border flex items-center justify-center ${
-                  selectedTypes.includes(opt) ? "border-[#c49a2e] bg-[#c49a2e]" : "border-gray-300"
+                  selectedTypes.includes(opt) ? "border-teal-500 bg-teal-500" : "border-gray-300"
                 }`}>
                   {selectedTypes.includes(opt) && (
                     <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -217,7 +217,7 @@ export default function DataTransformPage() {
             onChange={(e) => setTransformationDetail(e.target.value)}
             rows={3}
             placeholder="필요한 전처리 작업을 구체적으로 설명해주세요"
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e] resize-none"
+            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-400/40 focus:border-teal-500 resize-none"
           />
         </div>
       </div>
@@ -231,7 +231,7 @@ export default function DataTransformPage() {
           onDragLeave={() => setDragging(false)}
           onClick={() => fileInputRef.current?.click()}
           className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${
-            dragging ? "border-[#c49a2e] bg-amber-50" : "border-gray-300 hover:border-[#c49a2e]/50 hover:bg-amber-50/30"
+            dragging ? "border-teal-500 bg-amber-50" : "border-gray-300 hover:border-teal-500/50 hover:bg-amber-50/30"
           }`}
         >
           <input
@@ -279,7 +279,7 @@ export default function DataTransformPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="결과를 받을 이메일 주소"
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-400/40 focus:border-teal-500"
             />
           </div>
         </div>
@@ -290,7 +290,7 @@ export default function DataTransformPage() {
             onChange={(e) => setAdditionalNotes(e.target.value)}
             rows={3}
             placeholder="추가적으로 요청하실 사항이 있으시면 작성해주세요."
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e] resize-none"
+            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-400/40 focus:border-teal-500 resize-none"
           />
         </div>
       </div>
@@ -306,7 +306,7 @@ export default function DataTransformPage() {
         <button
           onClick={handleSubmit}
           disabled={submitting || !email.trim() || !dataDescription.trim()}
-          className="px-8 py-3 bg-[#c49a2e] text-white rounded-lg text-sm font-semibold hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-8 py-3 bg-teal-500 text-white rounded-lg text-sm font-semibold hover:bg-teal-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {submitting ? "제출 중..." : "전처리 의뢰하기"}
         </button>

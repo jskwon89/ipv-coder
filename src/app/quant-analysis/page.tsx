@@ -100,7 +100,7 @@ export default function QuantAnalysisPage() {
           { label: "계량분석" },
         ]}
         iconBgClass="bg-amber-50"
-        iconTextClass="text-[#c49a2e]"
+        iconTextClass="text-teal-500"
         icon={
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -122,7 +122,7 @@ export default function QuantAnalysisPage() {
               </p>
               <Link
                 href="/quant-results"
-                className="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-[#c49a2e] text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors"
+                className="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-teal-500 text-white rounded-lg text-sm font-medium hover:bg-teal-600 transition-colors"
               >
                 결과 확인 페이지로 이동
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -145,7 +145,7 @@ export default function QuantAnalysisPage() {
             <select
               value={analysisType}
               onChange={(e) => setAnalysisType(e.target.value)}
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-400/40 focus:border-teal-500"
             >
               <option value="">선택하세요</option>
               {analysisTypes.map((t) => (
@@ -158,7 +158,7 @@ export default function QuantAnalysisPage() {
             <select
               value={dataFormat}
               onChange={(e) => setDataFormat(e.target.value)}
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-400/40 focus:border-teal-500"
             >
               <option value="">선택하세요</option>
               {dataFormats.map((f) => (
@@ -173,7 +173,7 @@ export default function QuantAnalysisPage() {
               onChange={(e) => setDataDescription(e.target.value)}
               rows={3}
               placeholder="데이터셋의 내용, 규모, 수집 방법 등을 설명해주세요"
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e] resize-none"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-400/40 focus:border-teal-500 resize-none"
             />
           </div>
           <div className="md:col-span-2">
@@ -183,7 +183,7 @@ export default function QuantAnalysisPage() {
               onChange={(e) => setVariables(e.target.value)}
               rows={3}
               placeholder="독립변수, 종속변수, 통제변수 등을 기술해주세요"
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e] resize-none"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-400/40 focus:border-teal-500 resize-none"
             />
           </div>
           <div className="md:col-span-2">
@@ -193,7 +193,7 @@ export default function QuantAnalysisPage() {
               onChange={(e) => setHypothesis(e.target.value)}
               rows={3}
               placeholder="검증하고자 하는 가설이나 연구 질문을 기술해주세요"
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e] resize-none"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-400/40 focus:border-teal-500 resize-none"
             />
           </div>
         </div>
@@ -208,7 +208,7 @@ export default function QuantAnalysisPage() {
           onDragLeave={() => setDragging(false)}
           onClick={() => fileInputRef.current?.click()}
           className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${
-            dragging ? "border-[#c49a2e] bg-amber-50" : "border-gray-300 hover:border-[#c49a2e]/50 hover:bg-amber-50/30"
+            dragging ? "border-teal-500 bg-amber-50" : "border-gray-300 hover:border-teal-500/50 hover:bg-amber-50/30"
           }`}
         >
           <input
@@ -256,7 +256,7 @@ export default function QuantAnalysisPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="결과를 받을 이메일 주소"
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-400/40 focus:border-teal-500"
             />
           </div>
         </div>
@@ -267,7 +267,7 @@ export default function QuantAnalysisPage() {
             onChange={(e) => setAdditionalNotes(e.target.value)}
             rows={3}
             placeholder="추가적으로 요청하실 사항이 있으시면 작성해주세요."
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e] resize-none"
+            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-400/40 focus:border-teal-500 resize-none"
           />
         </div>
       </div>
@@ -283,7 +283,7 @@ export default function QuantAnalysisPage() {
         <button
           onClick={handleSubmit}
           disabled={submitting || !email.trim() || !analysisType}
-          className="px-8 py-3 bg-[#c49a2e] text-white rounded-lg text-sm font-semibold hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-8 py-3 bg-teal-500 text-white rounded-lg text-sm font-semibold hover:bg-teal-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {submitting ? "제출 중..." : "분석 의뢰하기"}
         </button>
