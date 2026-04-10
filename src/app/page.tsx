@@ -89,41 +89,68 @@ export default function LandingPage() {
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a] via-[#0f172a] to-teal-900/30" />
 
-          {/* Real analysis images - scattered behind text */}
-          {/* Network visualization - large, right */}
-          <div className="absolute top-[5%] right-[-5%] w-[55%] sm:w-[45%] opacity-[0.18] sm:opacity-[0.22]">
-            <Image src="/images/hero-bg-3.png" alt="" width={800} height={500} className="w-full h-auto rounded-2xl" />
-          </div>
-          {/* Network analysis - center right */}
-          <div className="absolute top-[40%] right-[5%] w-[40%] sm:w-[30%] opacity-[0.15] sm:opacity-[0.18]">
-            <Image src="/images/hero-bg-4.png" alt="" width={800} height={500} className="w-full h-auto rounded-2xl" />
-          </div>
-          {/* Tree diagram - bottom right */}
-          <div className="absolute bottom-[5%] right-[15%] w-[35%] sm:w-[28%] opacity-[0.12] sm:opacity-[0.15]">
-            <Image src="/images/hero-bg-1.png" alt="" width={800} height={500} className="w-full h-auto rounded-2xl" />
-          </div>
-          {/* Network graph - left bottom (subtle) */}
-          <div className="absolute bottom-[10%] left-[0%] w-[30%] sm:w-[22%] opacity-[0.08] sm:opacity-[0.1]">
-            <Image src="/images/hero-bg-2.png" alt="" width={800} height={500} className="w-full h-auto rounded-2xl" />
-          </div>
+          {/* Full SVG visualization background - all hand-drawn */}
+          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1400 700" fill="none" preserveAspectRatio="xMidYMid slice">
+            {/* ── Large keyword network (right, main visual) ── */}
+            <g opacity="0.2">
+              {/* Edges first */}
+              {[[820,180,920,120],[820,180,780,280],[820,180,930,240],[820,180,720,160],[920,120,1020,160],[920,120,960,60],[930,240,1020,160],[930,240,1000,320],[780,280,700,340],[780,280,820,360],[720,160,640,120],[720,160,660,220],[1020,160,1080,100],[1020,160,1100,220],[1000,320,1080,360],[1000,320,920,380],[820,360,920,380],[820,360,740,400],[700,340,740,400],[660,220,580,280],[640,120,560,160],[1080,100,1140,60],[1100,220,1160,280],[580,280,520,340],[560,160,500,120],[1080,360,1140,320],[920,380,960,440],[740,400,680,460],[520,340,480,400],[1160,280,1200,220]].map(([x1,y1,x2,y2],i) => (
+                <line key={`ne${i}`} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#2dd4bf" strokeWidth="1" />
+              ))}
+              {/* Nodes with varying sizes */}
+              {[[820,180,22],[920,120,16],[780,280,14],[930,240,18],[720,160,12],[1020,160,15],[960,60,8],[1000,320,13],[700,340,10],[820,360,12],[660,220,9],[640,120,8],[1080,100,10],[1100,220,11],[580,280,7],[560,160,6],[1080,360,9],[920,380,11],[740,400,8],[480,400,5],[1160,280,7],[520,340,6],[680,460,7],[960,440,6],[500,120,5],[1140,60,5],[1200,220,6],[1140,320,5]].map(([cx,cy,r],i) => (
+                <circle key={`nn${i}`} cx={cx} cy={cy} r={r} fill={i < 5 ? "#0d9488" : i < 12 ? "#14b8a6" : "#2dd4bf"} opacity={0.6 + Number(r)/60} />
+              ))}
+            </g>
 
-          {/* SVG overlay - additional network/scatter elements */}
-          <svg className="absolute inset-0 w-full h-full opacity-[0.08]" viewBox="0 0 1200 600" fill="none" preserveAspectRatio="xMidYMid slice">
-            {/* Network nodes */}
-            {[[900,100,14],[980,160,10],[850,180,8],[1020,120,12],[940,220,9],[1060,200,7],[870,260,11],[760,150,6],[1100,280,8],[800,80,5]].map(([cx,cy,r],i) => (
-              <circle key={`n${i}`} cx={cx} cy={cy} r={r} fill={`rgba(20,184,166,${0.3+Number(r)/40})`} />
-            ))}
-            {[[900,100,980,160],[900,100,850,180],[980,160,1020,120],[940,220,980,160],[850,180,870,260],[1020,120,1060,200],[870,260,940,220],[760,150,850,180],[1060,200,1100,280],[800,80,900,100]].map(([x1,y1,x2,y2],i) => (
-              <line key={`e${i}`} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#2dd4bf" strokeWidth="1" opacity="0.4" />
-            ))}
-            {/* Scatter cluster */}
-            {[[150,420],[170,400],[160,440],[190,410],[180,430],[200,390],[210,420],[195,450],[220,400],[230,415],[175,460],[205,380]].map(([x,y],i) => (
-              <circle key={`s${i}`} cx={x} cy={y} r="3.5" fill="#5eead4" opacity="0.5" />
-            ))}
-            <line x1="130" y1="470" x2="250" y2="370" stroke="#14b8a6" strokeWidth="1.5" opacity="0.5" />
-            {/* Survival curve hint */}
-            <path d="M400,500 L400,480 L440,480 L440,450 L490,450 L490,420 L550,420 L550,380 L620,380 L620,340 L700,340" stroke="#2dd4bf" strokeWidth="1.5" fill="none" opacity="0.4" />
-            <path d="M400,500 L400,470 L430,470 L430,430 L470,430 L470,390 L520,390 L520,350 L580,350 L580,310 L650,310" stroke="#5eead4" strokeWidth="1" fill="none" opacity="0.3" strokeDasharray="4,3" />
+            {/* ── Survival analysis curves (bottom left) ── */}
+            <g opacity="0.18">
+              {/* Axes */}
+              <line x1="60" y1="360" x2="60" y2="580" stroke="#5eead4" strokeWidth="1" />
+              <line x1="60" y1="580" x2="380" y2="580" stroke="#5eead4" strokeWidth="1" />
+              {/* Kaplan-Meier step curve 1 */}
+              <path d="M60,370 L100,370 L100,395 L140,395 L140,415 L180,415 L180,440 L215,440 L215,465 L250,465 L250,490 L290,490 L290,510 L330,510 L330,535 L370,535" stroke="#14b8a6" strokeWidth="2.5" fill="none" />
+              {/* Curve 2 (dashed - control group) */}
+              <path d="M60,370 L90,370 L90,410 L120,410 L120,445 L155,445 L155,475 L190,475 L190,505 L225,505 L225,530 L260,530 L260,555 L300,555 L300,570 L370,570" stroke="#5eead4" strokeWidth="1.5" fill="none" strokeDasharray="6,4" />
+              {/* Censored marks */}
+              {[[115,395],[175,415],[235,465],[305,510],[160,445],[210,475],[270,530]].map(([x,y],i) => (
+                <g key={`cm${i}`}><line x1={Number(x)-4} y1={Number(y)-4} x2={Number(x)+4} y2={Number(y)+4} stroke="#2dd4bf" strokeWidth="1.5" /><line x1={Number(x)-4} y1={Number(y)+4} x2={Number(x)+4} y2={Number(y)-4} stroke="#2dd4bf" strokeWidth="1.5" /></g>
+              ))}
+              {/* Confidence band */}
+              <path d="M60,365 L100,365 L100,388 L140,388 L140,405 L180,405 L180,428 L215,428 L215,452 L250,452 L250,478 L290,478 L290,498 L330,498 L330,522 L370,522 L370,548 L330,548 L330,548 L290,522 L290,522 L250,502 L250,502 L215,478 L215,478 L180,452 L180,452 L140,425 L140,425 L100,402 L100,402 L60,375 Z" fill="#14b8a6" opacity="0.08" />
+              {/* Labels */}
+              <text x="80" y="358" fill="#5eead4" fontSize="9">1.0</text>
+              <text x="80" y="585" fill="#5eead4" fontSize="9">0.0</text>
+              <text x="200" y="600" fill="#5eead4" fontSize="9">Time</text>
+            </g>
+
+            {/* ── Topic modeling bubbles (top left) ── */}
+            <g opacity="0.15">
+              {[[120,80,35,"정책"],[200,120,28,"교육"],[160,160,22,"법률"],[80,140,18,"제도"],[250,70,24,"사회"],[300,140,20,"경제"],[220,180,15,"문화"],[340,90,12,"환경"],[90,200,14,"복지"],[180,220,10,"안전"],[50,80,10,"기술"],[280,190,11,"의료"]].map(([cx,cy,r,label],i) => (
+                <g key={`tb${i}`}>
+                  <circle cx={Number(cx)} cy={Number(cy)} r={Number(r)} fill={i % 3 === 0 ? "#0d9488" : i % 3 === 1 ? "#14b8a6" : "#2dd4bf"} opacity={0.5 + Number(r)/100} />
+                  <text x={Number(cx)} y={Number(cy)+3} textAnchor="middle" fill="white" fontSize={Number(r) > 20 ? "9" : "7"} opacity="0.8">{label}</text>
+                </g>
+              ))}
+            </g>
+
+            {/* ── Word co-occurrence / association lines (center) ── */}
+            <g opacity="0.1">
+              {[[420,300],[480,260],[540,320],[460,380],[520,400],[580,280],[500,340],[440,340],[560,360],[490,420],[550,440],[600,340],[420,420],[470,460],[530,460],[610,400],[380,360],[640,300],[400,260],[580,240]].map(([cx,cy],i) => (
+                <circle key={`wc${i}`} cx={cx} cy={cy} r={3 + (i % 4) * 1.5} fill="#5eead4" />
+              ))}
+              {[[420,300,480,260],[480,260,540,320],[540,320,580,280],[460,380,520,400],[500,340,540,320],[500,340,460,380],[440,340,500,340],[560,360,580,280],[580,280,600,340],[490,420,530,460],[420,420,470,460],[380,360,420,300],[640,300,600,340],[400,260,420,300],[580,240,580,280],[610,400,560,360]].map(([x1,y1,x2,y2],i) => (
+                <line key={`wl${i}`} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#2dd4bf" strokeWidth={0.8 + (i % 3) * 0.4} />
+              ))}
+            </g>
+
+            {/* ── Bar chart / frequency (bottom right) ── */}
+            <g opacity="0.12">
+              {[140,105,130,85,120,95,70,110,60,80,55,65,45,40].map((h,i) => (
+                <rect key={`bar${i}`} x={1050 + i * 22} y={620 - h * 1.5} width="16" rx="2" height={h * 1.5} fill={i < 5 ? "#0d9488" : i < 10 ? "#14b8a6" : "#2dd4bf"} />
+              ))}
+              <line x1="1045" y1="620" x2="1370" y2="620" stroke="#5eead4" strokeWidth="1" />
+            </g>
           </svg>
 
           {/* Glow effects */}
