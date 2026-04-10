@@ -135,7 +135,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen" style={{ backgroundImage: "url('/images/dashboard-bg.png')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
       <div className="absolute inset-0 bg-[#faf9f6]/80 pointer-events-none" />
-      <div className="relative z-10 max-w-5xl mx-auto px-5 sm:px-8 py-8 sm:py-12">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* 환영 */}
         <div className="mb-10">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
@@ -157,7 +157,7 @@ export default function DashboardPage() {
           <div className="flex items-center justify-between mb-4 sm:mb-5">
             <h2 className="text-lg sm:text-xl font-bold text-gray-900">서비스</h2>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-5">
             {serviceCards.map((card) => (
               <Link key={card.title} href={card.href} className="group block">
                 <div className="rounded-xl sm:rounded-2xl border border-gray-200 bg-white overflow-hidden hover:border-teal-500/40 hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02]">
@@ -187,24 +187,21 @@ export default function DashboardPage() {
   );
 }
 
-function MiniStatCard({ label, count, pending, inProgress, completed, color, href }: {
-  label: string; count: number; pending: number; inProgress: number; completed: number; color: string; href?: string;
+function MiniStatCard({ label, count, pending, inProgress, completed, href }: {
+  label: string; count: number; pending: number; inProgress: number; completed: number; color?: string; href?: string;
 }) {
-  const colors: Record<string, { bg: string; border: string; text: string; num: string }> = {
-    teal: { bg: "bg-gray-50", border: "border-gray-300", text: "text-gray-700", num: "text-gray-800" },
-    sky: { bg: "bg-gray-50", border: "border-gray-300", text: "text-gray-700", num: "text-gray-800" },
-    violet: { bg: "bg-gray-50", border: "border-gray-300", text: "text-gray-700", num: "text-gray-800" },
-    amber: { bg: "bg-gray-50", border: "border-gray-300", text: "text-gray-700", num: "text-gray-800" },
-  };
-  const c = colors[color] || colors.teal;
   const card = (
-    <div className={`${c.bg} border ${c.border} rounded-2xl p-6 sm:p-8 ${href ? "hover:shadow-lg cursor-pointer" : ""} transition-all`}>
-      <p className={`text-sm font-semibold ${c.text} mb-3`}>{label}</p>
-      <p className={`text-4xl sm:text-5xl font-bold ${c.num} mb-4`}>{count}</p>
-      <div className="flex items-center gap-4 text-sm">
-        <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-amber-400" /><span className="text-gray-500">접수 {pending}</span></span>
-        <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-blue-400" /><span className="text-gray-500">진행 {inProgress}</span></span>
-        <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-400" /><span className="text-gray-500">완료 {completed}</span></span>
+    <div className={`bg-gray-50 border border-gray-300 rounded-2xl p-6 sm:p-7 ${href ? "hover:shadow-lg hover:border-teal-300 cursor-pointer" : ""} transition-all`}>
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-sm font-semibold text-gray-500 mb-1">{label}</p>
+          <p className="text-4xl sm:text-5xl font-bold text-gray-800">{count}</p>
+        </div>
+        <div className="flex flex-col gap-2 text-sm text-right">
+          <span className="flex items-center justify-end gap-1.5"><span className="text-gray-500">접수</span><span className="font-bold text-gray-700 min-w-[20px]">{pending}</span><span className="w-2.5 h-2.5 rounded-full bg-amber-300" /></span>
+          <span className="flex items-center justify-end gap-1.5"><span className="text-gray-500">진행</span><span className="font-bold text-gray-700 min-w-[20px]">{inProgress}</span><span className="w-2.5 h-2.5 rounded-full bg-sky-300" /></span>
+          <span className="flex items-center justify-end gap-1.5"><span className="text-gray-500">완료</span><span className="font-bold text-gray-700 min-w-[20px]">{completed}</span><span className="w-2.5 h-2.5 rounded-full bg-emerald-300" /></span>
+        </div>
       </div>
     </div>
   );
