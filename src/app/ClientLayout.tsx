@@ -85,7 +85,7 @@ function TopMenuGroup({
     >
       <button
         onClick={() => (isOpen ? onClose() : onOpen(group.label))}
-        className={`flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-[15px] font-semibold transition-colors ${
+        className={`flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-lg font-semibold transition-colors ${
           isGroupActive
             ? "text-teal-600 bg-teal-50"
             : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
@@ -176,23 +176,20 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       {/* Top Navigation */}
       <header className="fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-200">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 sm:h-[72px]">
+          <div className="flex items-center justify-between h-16 sm:h-20">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2.5 shrink-0">
-              <div className="w-8 h-8 rounded-lg bg-teal-600 flex items-center justify-center">
-                <span className="text-white font-bold text-sm">P</span>
-              </div>
-              <span className="text-lg font-bold text-gray-900 tracking-tight">PRIMER</span>
+            <Link href="/" className="flex items-center shrink-0">
+              <span className="text-[32px] font-bold text-gray-900 tracking-tight">PRIMER</span>
             </Link>
 
-            {/* Desktop nav */}
-            <nav className="hidden lg:flex items-center gap-1">
+            {/* Desktop nav - centered */}
+            <nav className="hidden lg:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
               {menuGroups.map((group) =>
                 group.items.length === 1 ? (
                   <Link
                     key={group.label}
                     href={group.items[0].href}
-                    className={`px-4 py-2.5 rounded-lg text-[15px] font-semibold transition-colors ${
+                    className={`px-4 py-2.5 rounded-lg text-lg font-semibold transition-colors ${
                       group.prefixes.some((p) => pathname === p || pathname.startsWith(p + "/"))
                         ? "text-teal-600 bg-teal-50"
                         : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
@@ -346,7 +343,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       )}
 
       {/* Main content */}
-      <main className="min-h-screen pt-16 sm:pt-[72px]">
+      <main className="min-h-screen pt-16 sm:pt-20">
         {children}
       </main>
 

@@ -309,11 +309,8 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
             <div>
-              <div className="flex items-center gap-2.5 mb-2">
-                <div className="w-7 h-7 rounded-lg bg-teal-600 flex items-center justify-center">
-                  <span className="text-white font-bold text-xs">P</span>
-                </div>
-                <span className="text-base font-bold text-white">PRIMER</span>
+              <div className="mb-2">
+                <span className="text-lg font-bold text-white tracking-tight">PRIMER</span>
               </div>
               <p className="text-sm text-slate-500">연구자를 위한 전문 연구 지원 플랫폼</p>
             </div>
