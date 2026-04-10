@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ResearchOn - 연구 및 데이터 플랫폼",
-  description: "연구 및 데이터 분석 플랫폼",
+  title: "PRIMER - 연구 지원 전문 플랫폼",
+  description: "연구설계부터 자료 수집, 통계분석까지. 전문가가 직접 수행하는 연구 지원 서비스",
 };
 
 export default function RootLayout({

@@ -43,12 +43,12 @@ function LoginForm() {
         {/* Branding */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-[#c49a2e] flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
               <span className="text-white font-bold text-lg">R</span>
             </div>
             <div className="text-left">
-              <h1 className="text-xl font-bold text-white group-hover:text-[#d4a843] transition-colors">
-                ResearchOn
+              <h1 className="text-xl font-bold text-white group-hover:text-teal-500 transition-colors">
+                PRIMER
               </h1>
               <p className="text-[11px] text-white/50 tracking-wide">
                 연구 및 데이터 플랫폼
@@ -75,7 +75,7 @@ function LoginForm() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="이메일 주소를 입력하세요"
                 autoComplete="email"
-                className="w-full px-4 py-2.5 rounded-lg bg-white/[0.07] border border-white/15 text-white text-sm placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/50 focus:border-[#c49a2e]/50 transition-all"
+                className="w-full px-4 py-2.5 rounded-lg bg-white/[0.07] border border-white/15 text-white text-sm placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-teal-600/50 focus:border-teal-600/50 transition-all"
               />
             </div>
 
@@ -89,7 +89,7 @@ function LoginForm() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="비밀번호를 입력하세요"
                 autoComplete="current-password"
-                className="w-full px-4 py-2.5 rounded-lg bg-white/[0.07] border border-white/15 text-white text-sm placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/50 focus:border-[#c49a2e]/50 transition-all"
+                className="w-full px-4 py-2.5 rounded-lg bg-white/[0.07] border border-white/15 text-white text-sm placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-teal-600/50 focus:border-teal-600/50 transition-all"
               />
             </div>
 
@@ -102,7 +102,7 @@ function LoginForm() {
             <button
               type="submit"
               disabled={loading || !email.trim() || !password}
-              className="w-full py-2.5 bg-[#c49a2e] text-white rounded-lg text-sm font-semibold hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "로그인 중..." : "로그인"}
             </button>
@@ -113,7 +113,7 @@ function LoginForm() {
               계정이 없으신가요?{" "}
               <Link
                 href="/signup"
-                className="text-[#c49a2e] hover:text-[#d4a843] font-medium transition-colors"
+                className="text-primary hover:text-teal-500 font-medium transition-colors"
               >
                 회원가입
               </Link>
@@ -122,7 +122,7 @@ function LoginForm() {
         </div>
 
         <p className="text-center text-[11px] text-white/25 mt-6">
-          ResearchOn
+          PRIMER
         </p>
       </div>
     </div>

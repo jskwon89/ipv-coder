@@ -17,7 +17,20 @@
       "mcp__claude_ai_Vercel__list_projects",
       "mcp__claude_ai_Vercel__list_deployments",
       "Bash(ls:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(npm ls:*)",
+      "Bash(grep -E \"\\\\.\\(tsx|ts|jsx|js\\)$\")",
+      "Bash(node -e \"const fs = require\\('fs'\\); const path = require\\('path'\\); const dir = path.join\\(process.cwd\\(\\), 'uploads', 'test'\\); fs.mkdirSync\\(dir, {recursive:true}\\); fs.writeFileSync\\(path.join\\(dir, 'test.txt'\\), 'hello'\\); console.log\\('OK:', fs.readdirSync\\(dir\\)\\); fs.rmSync\\(dir, {recursive:true}\\);\")",
+      "Bash(node -e ':*)",
+      "Bash(curl:*)",
+      "WebFetch(domain:www.chainalysis.com)",
+      "WebFetch(domain:koddi.or.kr)",
+      "Bash(xargs grep:*)",
+      "Bash(grep -v \"page\\\\.tsx$\")",
+      "Bash(grep -v \"layout\\\\.tsx$\")",
+      "Bash(grep -v \"ClientLayout\\\\.tsx$\")",
+      "Bash(grep -v \"globals\\\\.css$\")",
+      "Bash(xargs sed:*)"
     ]
   }
 }

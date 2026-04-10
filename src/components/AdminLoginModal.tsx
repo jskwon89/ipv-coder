@@ -62,7 +62,7 @@ export function AdminLoginModal({ onClose }: { onClose: () => void }) {
       <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-sm mx-4 border border-gray-200">
         <div className="text-center mb-8">
           <div className="w-14 h-14 rounded-2xl bg-[#0f1a2e] flex items-center justify-center mx-auto mb-4">
-            <svg className="w-7 h-7 text-[#c49a2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-7 h-7 text-[teal-600]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
           </div>
@@ -85,8 +85,8 @@ export function AdminLoginModal({ onClose }: { onClose: () => void }) {
                 error
                   ? "border-red-400 bg-red-50 text-red-500"
                   : digit
-                  ? "border-[#c49a2e] bg-[#c49a2e]/5 text-gray-900"
-                  : "border-gray-200 bg-gray-50 text-gray-900 focus:border-[#c49a2e] focus:bg-white"
+                  ? "border-[teal-600] bg-[teal-600]/5 text-gray-900"
+                  : "border-gray-200 bg-gray-50 text-gray-900 focus:border-[teal-600] focus:bg-white"
               }`}
             />
           ))}

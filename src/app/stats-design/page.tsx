@@ -231,7 +231,7 @@ export default function StatsDesignPage() {
               <select
                 value={researchType}
                 onChange={(e) => setResearchType(e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600"
                 required
               >
                 <option value="">선택해주세요</option>
@@ -249,7 +249,7 @@ export default function StatsDesignPage() {
               <select
                 value={dataType}
                 onChange={(e) => setDataType(e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600"
                 required
               >
                 <option value="">선택해주세요</option>
@@ -269,7 +269,7 @@ export default function StatsDesignPage() {
                 value={sampleInfo}
                 onChange={(e) => setSampleInfo(e.target.value)}
                 placeholder="예: 대학생 300명, 무작위 표집"
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600"
               />
             </div>
           </div>
@@ -284,7 +284,7 @@ export default function StatsDesignPage() {
               onChange={(e) => setVariables(e.target.value)}
               placeholder={"독립변수, 종속변수, 통제변수 등을 작성해주세요\n예: 독립-상담 유형(3집단), 종속-우울(PHQ-9), 통제-성별,나이"}
               rows={3}
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e] resize-none"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600 resize-none"
             />
           </div>
           <div>
@@ -296,7 +296,7 @@ export default function StatsDesignPage() {
               onChange={(e) => setAnalysisGoal(e.target.value)}
               placeholder="알고 싶은 것, 검증하고자 하는 가설 등"
               rows={3}
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e] resize-none"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600 resize-none"
               required
             />
           </div>
@@ -309,7 +309,7 @@ export default function StatsDesignPage() {
               value={currentMethods}
               onChange={(e) => setCurrentMethods(e.target.value)}
               placeholder="예: t-test, ANOVA, 회귀분석, SEM 등 (모르시면 비워두세요)"
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600"
             />
           </div>
           <div>
@@ -321,7 +321,7 @@ export default function StatsDesignPage() {
               onChange={(e) => setDescription(e.target.value)}
               placeholder="기타 참고 사항이나 추가 설명 (선택)"
               rows={3}
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e] resize-none"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600 resize-none"
             />
           </div>
           <div>
@@ -333,14 +333,14 @@ export default function StatsDesignPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="결과 알림을 받을 이메일"
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e] md:max-w-sm"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600 md:max-w-sm"
             />
           </div>
           <div className="pt-1">
             <button
               type="submit"
               disabled={submitting || !researchType || !dataType || !analysisGoal.trim()}
-              className="px-6 py-2.5 bg-[#c49a2e] text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {submitting ? "제출 중..." : "설계 의뢰하기"}
             </button>
@@ -581,7 +581,7 @@ export default function StatsDesignPage() {
                         <div
                           className={`max-w-[80%] rounded-xl px-4 py-2.5 ${
                             msg.sender === "user"
-                              ? "bg-[#c49a2e]/10 border border-[#c49a2e]/20 text-gray-900"
+                              ? "bg-primary/10 border border-teal-600/20 text-gray-900"
                               : "bg-gray-100 text-gray-900"
                           }`}
                         >
@@ -591,7 +591,7 @@ export default function StatsDesignPage() {
                           <p
                             className={`text-[10px] mt-1 ${
                               msg.sender === "user"
-                                ? "text-[#c49a2e]/60 text-right"
+                                ? "text-primary/60 text-right"
                                 : "text-gray-400"
                             }`}
                           >
@@ -625,12 +625,12 @@ export default function StatsDesignPage() {
                     }
                   }}
                   placeholder="메시지를 입력하세요..."
-                  className="flex-1 px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
+                  className="flex-1 px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600"
                 />
                 <button
                   onClick={handleSendMessage}
                   disabled={sendingChat || !chatInput.trim()}
-                  className="px-4 py-2.5 bg-[#c49a2e] text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+                  className="px-4 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
                 >
                   <svg
                     className="w-4 h-4"

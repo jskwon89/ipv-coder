@@ -107,7 +107,7 @@ export default function CreditConfirmDialog({
           <button
             onClick={onConfirm}
             disabled={insufficient || loading}
-            className="px-5 py-2 bg-[#c49a2e] text-[#0f1a2e] rounded-lg text-sm font-medium hover:bg-[#d4a843] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-5 py-2 bg-[teal-600] text-[#0f1a2e] rounded-lg text-sm font-medium hover:bg-[teal-500] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? "처리 중..." : "진행"}
           </button>

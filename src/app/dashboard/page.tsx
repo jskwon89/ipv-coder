@@ -186,12 +186,12 @@ export default function DashboardPage() {
                 <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white tracking-tight">
                   환영합니다
                 </h1>
-                <p className="text-[#d4a843] mt-1.5 sm:mt-2 text-xs sm:text-sm lg:text-base leading-relaxed">
-                  ResearchOn에서 연구를 시작하세요
+                <p className="text-teal-500 mt-1.5 sm:mt-2 text-xs sm:text-sm lg:text-base leading-relaxed">
+                  PRIMER에서 연구를 시작하세요
                 </p>
                 <button
                   onClick={() => setShowModal(true)}
-                  className="mt-4 sm:mt-5 inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-[#c49a2e] text-white rounded-lg text-xs sm:text-sm font-semibold hover:bg-[#d4a843] transition-colors shadow-md"
+                  className="mt-4 sm:mt-5 inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-primary text-white rounded-lg text-xs sm:text-sm font-semibold hover:bg-teal-500 transition-colors shadow-md"
                 >
                   <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -202,8 +202,8 @@ export default function DashboardPage() {
               <div className="flex items-center gap-2 shrink-0">
                 {user ? (
                   <div className="flex items-center gap-2 bg-white/10 rounded-lg px-3 py-2">
-                    <div className="w-6 h-6 rounded-full bg-[#c49a2e]/30 flex items-center justify-center">
-                      <svg className="w-3.5 h-3.5 text-[#c49a2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-6 h-6 rounded-full bg-primary/30 flex items-center justify-center">
+                      <svg className="w-3.5 h-3.5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                       </svg>
                     </div>
@@ -218,7 +218,7 @@ export default function DashboardPage() {
                 ) : (
                   <Link
                     href="/login"
-                    className="flex items-center gap-2 bg-[#c49a2e] hover:bg-[#d4a843] rounded-lg px-4 py-2 transition-colors shadow-md"
+                    className="flex items-center gap-2 bg-primary hover:bg-teal-500 rounded-lg px-4 py-2 transition-colors shadow-md"
                   >
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
@@ -239,7 +239,7 @@ export default function DashboardPage() {
             </div>
           </div>
           <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/5" />
-          <div className="absolute -bottom-16 -left-8 w-48 h-48 rounded-full bg-[#c49a2e]/10" />
+          <div className="absolute -bottom-16 -left-8 w-48 h-48 rounded-full bg-primary/10" />
         </div>
 
         {/* Service Cards */}
@@ -250,7 +250,7 @@ export default function DashboardPage() {
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-5">
             {serviceCards.map((card) => (
               <Link key={card.title} href={card.href} className="group block">
-                <div className="rounded-xl sm:rounded-2xl border border-gray-200 bg-white overflow-hidden hover:border-[#c49a2e]/40 hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02]">
+                <div className="rounded-xl sm:rounded-2xl border border-gray-200 bg-white overflow-hidden hover:border-teal-600/40 hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02]">
                   <div className="relative bg-gray-50 h-28 sm:h-44">
                     <Image
                       src={card.image}
@@ -264,7 +264,7 @@ export default function DashboardPage() {
                   <div className="p-3 sm:p-5 border-t border-gray-100">
                     <h3 className="text-sm sm:text-lg font-bold text-gray-900">{card.title}</h3>
                     <p className="text-[11px] sm:text-sm text-gray-500 mt-0.5 sm:mt-1.5 line-clamp-2">{card.desc}</p>
-                    <span className="hidden sm:inline-block text-sm text-[#c49a2e] font-medium group-hover:underline underline-offset-4 mt-2">시작하기 &rarr;</span>
+                    <span className="hidden sm:inline-block text-sm text-primary font-medium group-hover:underline underline-offset-4 mt-2">시작하기 &rarr;</span>
                   </div>
                 </div>
               </Link>
@@ -281,7 +281,7 @@ export default function DashboardPage() {
             </div>
             <button
               onClick={() => setShowModal(true)}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 text-sm font-medium text-[#c49a2e] border border-[#c49a2e]/30 rounded-lg hover:bg-[#c49a2e]/5 transition-colors"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 text-sm font-medium text-primary border border-teal-600/30 rounded-lg hover:bg-primary/5 transition-colors"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -322,13 +322,13 @@ export default function DashboardPage() {
                     className="flex items-center justify-between px-3 sm:px-6 py-3 sm:py-4 hover:bg-gray-50 transition-colors group"
                   >
                     <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
-                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[#c49a2e]/10 flex items-center justify-center shrink-0">
-                        <svg className="w-4 h-4 sm:w-5 sm:h-5 text-[#c49a2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                        <svg className="w-4 h-4 sm:w-5 sm:h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                         </svg>
                       </div>
                       <div className="min-w-0">
-                        <h3 className="text-sm sm:text-base font-semibold text-gray-900 group-hover:text-[#c49a2e] transition-colors truncate">{project.name}</h3>
+                        <h3 className="text-sm sm:text-base font-semibold text-gray-900 group-hover:text-primary transition-colors truncate">{project.name}</h3>
                         <p className="text-[10px] sm:text-xs text-gray-400 mt-0.5">
                           {project.caseCount}건 중 {project.codedCount}건 완료 &middot; {project.createdAt.slice(0, 10)}
                         </p>
@@ -340,13 +340,13 @@ export default function DashboardPage() {
                       </div>
                       <div className="w-16 sm:w-24 h-1.5 sm:h-2 bg-gray-100 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-gradient-to-r from-[#c49a2e] to-[#d4a843] rounded-full transition-all"
+                          className="h-full bg-gradient-to-r from-[#0d9488] to-[#14b8a6] rounded-full transition-all"
                           style={{
                             width: `${project.caseCount > 0 ? (project.codedCount / project.caseCount) * 100 : 0}%`,
                           }}
                         />
                       </div>
-                      <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-300 group-hover:text-[#c49a2e] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-300 group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                     </div>
@@ -362,8 +362,8 @@ export default function DashboardPage() {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
             <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md mx-4 border border-gray-200">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-[#c49a2e]/10 flex items-center justify-center">
-                  <svg className="w-5 h-5 text-[#c49a2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                   </svg>
                 </div>
@@ -380,7 +380,7 @@ export default function DashboardPage() {
                     onClick={() => setSelectedTemplate("judgment")}
                     className={`px-3 py-2.5 rounded-xl text-sm border-2 transition-all ${
                       selectedTemplate === "judgment"
-                        ? "border-[#c49a2e] bg-[#c49a2e]/10 text-[#c49a2e] font-medium"
+                        ? "border-teal-600 bg-primary/10 text-primary font-medium"
                         : "border-gray-200 hover:bg-gray-50 text-gray-500"
                     }`}
                   >
@@ -402,7 +402,7 @@ export default function DashboardPage() {
                 onKeyDown={(e) => e.key === "Enter" && handleCreate()}
                 placeholder="프로젝트 이름 입력"
                 autoFocus
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/30 focus:border-[#c49a2e] transition-shadow placeholder-gray-300"
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-600/30 focus:border-teal-600 transition-shadow placeholder-gray-300"
               />
               <div className="flex justify-end gap-3 mt-6">
                 <button
@@ -414,7 +414,7 @@ export default function DashboardPage() {
                 <button
                   onClick={handleCreate}
                   disabled={creating || !newName.trim()}
-                  className="px-5 py-2.5 bg-[#c49a2e] text-white rounded-xl text-sm font-medium hover:bg-[#d4a843] transition-colors disabled:opacity-50 shadow-sm"
+                  className="px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-medium hover:bg-teal-500 transition-colors disabled:opacity-50 shadow-sm"
                 >
                   {creating ? "생성 중..." : "생성"}
                 </button>
@@ -442,7 +442,7 @@ function StatCard({
 }) {
   const colorMap: Record<string, { text: string; iconBg: string }> = {
     blue: { text: "text-blue-300", iconBg: "bg-blue-400/20" },
-    amber: { text: "text-[#d4a843]", iconBg: "bg-[#c49a2e]/20" },
+    amber: { text: "text-teal-500", iconBg: "bg-primary/20" },
     green: { text: "text-emerald-400", iconBg: "bg-emerald-400/20" },
     purple: { text: "text-purple-400", iconBg: "bg-purple-400/20" },
     rose: { text: "text-rose-400", iconBg: "bg-rose-400/20" },

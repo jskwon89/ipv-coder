@@ -106,7 +106,7 @@ export default function NewsSearchPage() {
           { label: "뉴스 수집 의뢰" },
         ]}
         iconBgClass="bg-amber-50"
-        iconTextClass="text-[#c49a2e]"
+        iconTextClass="text-primary"
         icon={
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
@@ -128,7 +128,7 @@ export default function NewsSearchPage() {
               </p>
               <Link
                 href="/news-results"
-                className="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-[#c49a2e] text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors"
+                className="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors"
               >
                 결과 확인 페이지로 이동
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -148,7 +148,7 @@ export default function NewsSearchPage() {
             onClick={() => setSearchType("keyword")}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               searchType === "keyword"
-                ? "bg-[#c49a2e] text-white"
+                ? "bg-primary text-white"
                 : "bg-gray-50 text-gray-600 hover:bg-gray-100"
             }`}
           >
@@ -158,7 +158,7 @@ export default function NewsSearchPage() {
             onClick={() => setSearchType("sentence")}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               searchType === "sentence"
-                ? "bg-[#c49a2e] text-white"
+                ? "bg-primary text-white"
                 : "bg-gray-50 text-gray-600 hover:bg-gray-100"
             }`}
           >
@@ -180,11 +180,11 @@ export default function NewsSearchPage() {
                   }
                 }}
                 placeholder="키워드를 하나씩 입력 후 Enter (쉼표로 여러 개 동시 입력 가능)"
-                className="flex-1 px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
+                className="flex-1 px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600"
               />
               <button
                 onClick={addKeyword}
-                className="px-4 py-2.5 bg-[#c49a2e] text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors"
+                className="px-4 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors"
               >
                 추가
               </button>
@@ -203,7 +203,7 @@ export default function NewsSearchPage() {
                         {operator}
                       </button>
                     )}
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-[#c49a2e] rounded-full text-sm border border-[#c49a2e]/20">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-primary rounded-full text-sm border border-teal-600/20">
                       {kw}
                       <button
                         onClick={() => removeKeyword(kw)}
@@ -235,7 +235,7 @@ export default function NewsSearchPage() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="필요로 하는 기사 내용을 입력하세요 (예: 가정폭력 가해자에 대한 법원의 양형 기준 변화)"
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e] mb-3"
+            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600 mb-3"
           />
         )}
 
@@ -249,7 +249,7 @@ export default function NewsSearchPage() {
               type="date"
               value={dateFrom}
               onChange={(e) => setDateFrom(e.target.value)}
-              className="px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
+              className="px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600"
             />
           </div>
           <div>
@@ -260,7 +260,7 @@ export default function NewsSearchPage() {
               type="date"
               value={dateTo}
               onChange={(e) => setDateTo(e.target.value)}
-              className="px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
+              className="px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600"
             />
           </div>
         </div>
@@ -277,7 +277,7 @@ export default function NewsSearchPage() {
             <select
               value={purpose}
               onChange={(e) => setPurpose(e.target.value)}
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600"
             >
               {purposeOptions.map((opt) => (
                 <option key={opt.value} value={opt.value}>
@@ -295,7 +295,7 @@ export default function NewsSearchPage() {
               value={maxCount}
               onChange={(e) => setMaxCount(Number(e.target.value) || 100)}
               min={1}
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e]"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600"
             />
           </div>
         </div>
@@ -308,7 +308,7 @@ export default function NewsSearchPage() {
             onChange={(e) => setAdditionalNotes(e.target.value)}
             rows={3}
             placeholder="수집과 관련하여 추가적으로 요청하실 사항이 있으시면 작성해주세요."
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e] resize-none"
+            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600 resize-none"
           />
         </div>
         <div className="mt-4">
@@ -320,7 +320,7 @@ export default function NewsSearchPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="결과를 받을 이메일 주소"
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#c49a2e]/40 focus:border-[#c49a2e] md:max-w-sm"
+            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600 md:max-w-sm"
           />
         </div>
       </div>
@@ -340,7 +340,7 @@ export default function NewsSearchPage() {
             !email.trim() ||
             (searchType === "keyword" ? keywords.length === 0 : !query.trim())
           }
-          className="px-8 py-3 bg-[#c49a2e] text-white rounded-lg text-sm font-semibold hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-8 py-3 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {submitting ? "제출 중..." : "수집 의뢰하기"}
         </button>

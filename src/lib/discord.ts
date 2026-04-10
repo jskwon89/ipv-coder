@@ -28,7 +28,7 @@ export async function notifyNewRequest(serviceType: string, email: string, detai
       { name: '접수 시간', value: now, inline: false },
       ...(details ? [{ name: '내용', value: details.slice(0, 200), inline: false }] : []),
     ],
-    footer: { text: 'ResearchOn 알림' },
+    footer: { text: 'PRIMER 알림' },
   };
 
   try {
@@ -36,7 +36,7 @@ export async function notifyNewRequest(serviceType: string, email: string, detai
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        username: 'ResearchOn',
+        username: 'PRIMER',
         embeds: [embed],
       }),
     });
@@ -55,7 +55,7 @@ export async function notifyContactInquiry(email: string, subject: string) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        username: 'ResearchOn',
+        username: 'PRIMER',
         embeds: [{
           title: '새 문의 접수',
           color: 0x5865f2,
@@ -64,7 +64,7 @@ export async function notifyContactInquiry(email: string, subject: string) {
             { name: '제목', value: subject.slice(0, 100), inline: true },
             { name: '접수 시간', value: now, inline: false },
           ],
-          footer: { text: 'ResearchOn 알림' },
+          footer: { text: 'PRIMER 알림' },
         }],
       }),
     });

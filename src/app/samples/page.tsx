@@ -88,8 +88,8 @@ export default function SamplesPage() {
               onClick={() => setActiveService(svc.key)}
               className={`shrink-0 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                 activeService === svc.key
-                  ? "bg-[#c49a2e] text-white shadow-sm"
-                  : "bg-white text-gray-600 border border-gray-200 hover:border-[#c49a2e]/50"
+                  ? "bg-primary text-white shadow-sm"
+                  : "bg-white text-gray-600 border border-gray-200 hover:border-teal-600/50"
               }`}
             >
               {svc.label}
@@ -125,7 +125,7 @@ export default function SamplesPage() {
                         <div key={f.path} className="group">
                           <button
                             onClick={() => setLightboxImg(f.path)}
-                            className="w-full relative aspect-[4/3] rounded-xl overflow-hidden border border-gray-200 hover:border-[#c49a2e]/50 transition-colors cursor-zoom-in"
+                            className="w-full relative aspect-[4/3] rounded-xl overflow-hidden border border-gray-200 hover:border-teal-600/50 transition-colors cursor-zoom-in"
                           >
                             <Image
                               src={f.path}
@@ -153,7 +153,7 @@ export default function SamplesPage() {
                           key={f.path}
                           href={f.path}
                           download
-                          className="flex items-center gap-3 p-4 rounded-xl border border-gray-200 hover:border-[#c49a2e]/50 hover:bg-[#c49a2e]/5 transition-colors group"
+                          className="flex items-center gap-3 p-4 rounded-xl border border-gray-200 hover:border-teal-600/50 hover:bg-primary/5 transition-colors group"
                         >
                           <div className="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center shrink-0">
                             <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -165,7 +165,7 @@ export default function SamplesPage() {
                             {f.description && <p className="text-xs text-gray-400 mt-0.5">{f.description}</p>}
                           </div>
                           <div className="shrink-0">
-                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[#c49a2e] border border-[#c49a2e]/30 rounded-lg group-hover:bg-[#c49a2e] group-hover:text-white transition-colors">
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-primary border border-teal-600/30 rounded-lg group-hover:bg-primary group-hover:text-white transition-colors">
                               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                               </svg>
@@ -186,7 +186,7 @@ export default function SamplesPage() {
           <p className="text-sm text-gray-500 mb-4">원하시는 서비스가 있으신가요?</p>
           <Link
             href="/dashboard"
-            className="inline-flex px-6 py-3 bg-[#c49a2e] text-white rounded-xl text-sm font-semibold hover:bg-[#b08a28] transition-colors shadow-sm"
+            className="inline-flex px-6 py-3 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-[#b08a28] transition-colors shadow-sm"
           >
             의뢰하러 가기
           </Link>

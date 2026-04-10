@@ -12,8 +12,8 @@ interface FaqItem {
 const faqs: FaqItem[] = [
   {
     category: "서비스 일반",
-    q: "ResearchOn은 어떤 서비스인가요?",
-    a: "ResearchOn은 연구자를 위한 통합 연구 지원 플랫폼입니다. 연구 설계, 설문조사, 판결문 코딩, 뉴스 수집, 계량분석, 텍스트 분석, 질적분석 등 연구에 필요한 다양한 서비스를 제공합니다.",
+    q: "PRIMER은 어떤 서비스인가요?",
+    a: "PRIMER은 연구자를 위한 통합 연구 지원 플랫폼입니다. 연구 설계, 설문조사, 판결문 코딩, 뉴스 수집, 계량분석, 텍스트 분석, 질적분석 등 연구에 필요한 다양한 서비스를 제공합니다.",
   },
   {
     category: "서비스 일반",
@@ -28,7 +28,7 @@ const faqs: FaqItem[] = [
   {
     category: "크레딧",
     q: "크레딧은 무엇인가요?",
-    a: "크레딧은 ResearchOn 플랫폼에서 서비스를 이용할 때 사용되는 포인트입니다. 각 서비스마다 필요한 크레딧이 다르며, 크레딧 관리 페이지에서 잔액을 확인할 수 있습니다.",
+    a: "크레딧은 PRIMER 플랫폼에서 서비스를 이용할 때 사용되는 포인트입니다. 각 서비스마다 필요한 크레딧이 다르며, 크레딧 관리 페이지에서 잔액을 확인할 수 있습니다.",
   },
   {
     category: "크레딧",
@@ -109,13 +109,13 @@ export default function FaqPage() {
 
       <div className="flex items-center gap-3 mb-2">
         <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
-          <svg className="w-5 h-5 text-[#c49a2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </div>
         <div>
           <h1 className="text-2xl font-bold">자주 묻는 질문</h1>
-          <p className="text-gray-500 text-sm">ResearchOn 서비스에 대한 궁금증을 해결해 드립니다</p>
+          <p className="text-gray-500 text-sm">PRIMER 서비스에 대한 궁금증을 해결해 드립니다</p>
         </div>
       </div>
 
@@ -127,7 +127,7 @@ export default function FaqPage() {
             onClick={() => { setActiveCategory(cat); setOpenId(null); }}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               activeCategory === cat
-                ? "bg-[#c49a2e] text-white"
+                ? "bg-primary text-white"
                 : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
             }`}
           >
@@ -148,7 +148,7 @@ export default function FaqPage() {
                 className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
               >
                 <div className="flex items-center gap-3 min-w-0 flex-1">
-                  <span className="text-[#c49a2e] font-bold text-sm shrink-0">Q</span>
+                  <span className="text-primary font-bold text-sm shrink-0">Q</span>
                   <span className="text-sm font-medium text-gray-900">{faq.q}</span>
                 </div>
                 <svg className={`w-5 h-5 text-gray-400 shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -173,7 +173,7 @@ export default function FaqPage() {
         <p className="text-sm text-gray-600 mb-3">원하는 답변을 찾지 못하셨나요?</p>
         <Link
           href="/contact"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#c49a2e] text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors"
         >
           문의하기
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
