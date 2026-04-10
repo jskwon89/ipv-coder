@@ -407,7 +407,7 @@ export default function LandingPage() {
       )}
 
       {/* CTA + Footer — 통합 */}
-      <footer id="contact" className="bg-[#0f3460] text-white px-4 sm:px-6">
+      <footer id="contact" className="bg-[#1a5276] text-white px-4 sm:px-6">
         {/* CTA */}
         <div className="max-w-3xl mx-auto text-center py-20 sm:py-28">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">함께하는 연구의 시작</h2>
@@ -423,7 +423,7 @@ export default function LandingPage() {
         </div>
 
         {/* Footer info */}
-        <div className="max-w-7xl mx-auto pb-10 pt-6">
+        <div className="max-w-[1600px] mx-auto pb-12 pt-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-0">
             <div className="flex items-center gap-3">
               <span className="text-sm font-bold text-white/80">PRIMER</span>
