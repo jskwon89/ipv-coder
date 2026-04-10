@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { CreditBalance } from "./credits/CreditBalance";
@@ -10,7 +10,7 @@ import { AdminLoginModal } from "@/components/AdminLoginModal";
 
 const NO_TOPNAV_PATHS = ["/", "/login", "/signup"];
 
-/* ── Menu data ── */
+/* ── Simplified menu data ── */
 const menuGroups = [
   {
     label: "연구 설계",
@@ -24,28 +24,20 @@ const menuGroups = [
     label: "자료 생성 & 수집",
     prefixes: ["/survey-request", "/survey-results", "/judgment", "/judgment-collection", "/judgment-results", "/news-search", "/news-results"],
     items: [
-      { label: "설문조사 의뢰", href: "/survey-request" },
-      { label: "설문조사 결과 확인", href: "/survey-results" },
-      { label: "판결문 코딩", href: "/judgment" },
-      { label: "판결문 수집 의뢰", href: "/judgment-collection" },
-      { label: "판결문 결과 확인", href: "/judgment-results" },
-      { label: "뉴스/언론 보도 수집", href: "/news-search" },
-      { label: "뉴스/언론 보도 결과", href: "/news-results" },
+      { label: "설문조사", href: "/survey-request" },
+      { label: "판결문", href: "/judgment" },
+      { label: "뉴스/언론 보도", href: "/news-search" },
     ],
   },
   {
     label: "데이터 분석",
     prefixes: ["/data-transform", "/data-transform-results", "/stats-analysis", "/quant-analysis", "/quant-results", "/text-analysis", "/text-results", "/qual-analysis", "/qual-results"],
     items: [
-      { label: "데이터 변환", href: "/data-transform" },
-      { label: "데이터 전처리 결과", href: "/data-transform-results" },
+      { label: "데이터 전처리", href: "/data-transform" },
       { label: "기초통계", href: "/stats-analysis" },
-      { label: "계량분석 의뢰", href: "/quant-analysis" },
-      { label: "계량분석 결과 확인", href: "/quant-results" },
-      { label: "텍스트 분석 의뢰", href: "/text-analysis" },
-      { label: "텍스트 분석 결과", href: "/text-results" },
-      { label: "질적분석 의뢰", href: "/qual-analysis" },
-      { label: "질적분석 결과 확인", href: "/qual-results" },
+      { label: "계량분석", href: "/quant-analysis" },
+      { label: "텍스트 분석", href: "/text-analysis" },
+      { label: "질적분석", href: "/qual-analysis" },
     ],
   },
   {
@@ -63,50 +55,38 @@ const menuGroups = [
 function TopMenuGroup({
   group,
   pathname,
-  onNavigate,
+  activeGroup,
+  onOpen,
+  onClose,
 }: {
   group: (typeof menuGroups)[0];
   pathname: string;
-  onNavigate?: () => void;
+  activeGroup: string | null;
+  onOpen: (label: string) => void;
+  onClose: () => void;
 }) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
-
+  const isOpen = activeGroup === group.label;
   const isGroupActive = group.prefixes.some(
     (p) => pathname === p || pathname.startsWith(p + "/")
   );
 
-  const handleEnter = () => {
-    clearTimeout(timeoutRef.current);
-    setOpen(true);
-  };
-  const handleLeave = () => {
-    timeoutRef.current = setTimeout(() => setOpen(false), 150);
-  };
-
-  useEffect(() => {
-    return () => clearTimeout(timeoutRef.current);
-  }, []);
-
   return (
     <div
-      ref={ref}
       className="relative"
-      onMouseEnter={handleEnter}
-      onMouseLeave={handleLeave}
+      onMouseEnter={() => onOpen(group.label)}
+      onMouseLeave={onClose}
     >
       <button
-        onClick={() => setOpen(!open)}
-        className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+        onClick={() => (isOpen ? onClose() : onOpen(group.label))}
+        className={`flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-[15px] font-semibold transition-colors ${
           isGroupActive
             ? "text-teal-600 bg-teal-50"
-            : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+            : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
         }`}
       >
         {group.label}
         <svg
-          className={`w-3.5 h-3.5 transition-transform ${open ? "rotate-180" : ""}`}
+          className={`w-3.5 h-3.5 transition-transform duration-150 ${isOpen ? "rotate-180" : ""}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -115,18 +95,17 @@ function TopMenuGroup({
         </svg>
       </button>
 
-      {open && (
-        <div className="absolute top-full left-0 mt-1 w-56 bg-white rounded-xl border border-gray-200 shadow-lg py-2 z-50">
+      {isOpen && (
+        <div className="absolute top-full left-0 mt-1 w-52 bg-white rounded-xl border border-gray-200 shadow-lg py-1.5 z-50">
           {group.items.map((item) => {
-            const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+            const isActive = group.prefixes.some(
+              (p) => p.startsWith(item.href) && (pathname === p || pathname.startsWith(p + "/"))
+            ) || pathname === item.href || pathname.startsWith(item.href + "/");
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                onClick={() => {
-                  setOpen(false);
-                  onNavigate?.();
-                }}
+                onClick={onClose}
                 className={`block px-4 py-2.5 text-sm transition-colors ${
                   isActive
                     ? "text-teal-600 bg-teal-50 font-medium"
@@ -150,13 +129,31 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const [showLogin, setShowLogin] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileExpandedGroup, setMobileExpandedGroup] = useState<string | null>(null);
+  const [activeDesktopGroup, setActiveDesktopGroup] = useState<string | null>(null);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const isNoTopnav = NO_TOPNAV_PATHS.includes(pathname);
 
+  // Close everything on route change
   useEffect(() => {
     setMobileMenuOpen(false);
     setMobileExpandedGroup(null);
+    setActiveDesktopGroup(null);
+    clearTimeout(closeTimerRef.current);
   }, [pathname]);
+
+  const handleDesktopOpen = useCallback((label: string) => {
+    clearTimeout(closeTimerRef.current);
+    setActiveDesktopGroup(label);
+  }, []);
+
+  const handleDesktopClose = useCallback(() => {
+    closeTimerRef.current = setTimeout(() => setActiveDesktopGroup(null), 120);
+  }, []);
+
+  useEffect(() => {
+    return () => clearTimeout(closeTimerRef.current);
+  }, []);
 
   if (isNoTopnav) {
     return <>{children}</>;
@@ -171,9 +168,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     <div className="min-h-screen bg-slate-50/50">
       {/* Top Navigation */}
       <header className="fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-200">
-        {/* Main nav bar */}
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-14 sm:h-16">
+          <div className="flex items-center justify-between h-16 sm:h-[72px]">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2.5 shrink-0">
               <div className="w-8 h-8 rounded-lg bg-teal-600 flex items-center justify-center">
@@ -186,27 +182,32 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             <nav className="hidden lg:flex items-center gap-1">
               <Link
                 href="/dashboard"
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`px-4 py-2.5 rounded-lg text-[15px] font-semibold transition-colors ${
                   pathname === "/dashboard"
                     ? "text-teal-600 bg-teal-50"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                    : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
                 }`}
               >
                 대시보드
               </Link>
               {menuGroups.map((group) => (
-                <TopMenuGroup key={group.label} group={group} pathname={pathname} />
+                <TopMenuGroup
+                  key={group.label}
+                  group={group}
+                  pathname={pathname}
+                  activeGroup={activeDesktopGroup}
+                  onOpen={handleDesktopOpen}
+                  onClose={handleDesktopClose}
+                />
               ))}
             </nav>
 
             {/* Right side */}
             <div className="flex items-center gap-2 sm:gap-3">
-              {/* Credits - desktop */}
               <div className="hidden sm:block">
                 <CreditBalance />
               </div>
 
-              {/* User area */}
               {user ? (
                 <div className="hidden sm:flex items-center gap-2">
                   <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-50">
@@ -216,31 +217,22 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                       </svg>
                     </div>
                     <span className="text-xs text-gray-600 max-w-[120px] truncate">{user.email}</span>
-                    <button
-                      onClick={() => userSignOut()}
-                      className="text-[10px] text-gray-400 hover:text-gray-600 transition-colors"
-                    >
+                    <button onClick={() => userSignOut()} className="text-[10px] text-gray-400 hover:text-gray-600 transition-colors">
                       로그아웃
                     </button>
                   </div>
                 </div>
               ) : (
-                <Link
-                  href="/login"
-                  className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors"
-                >
+                <Link href="/login" className="hidden sm:inline-flex items-center px-4 py-2 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors">
                   로그인
                 </Link>
               )}
 
-              {/* Admin */}
               {isAdmin ? (
                 <Link
                   href="/admin"
                   className={`hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
-                    pathname === "/admin"
-                      ? "bg-teal-50 text-teal-700"
-                      : "text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                    pathname === "/admin" ? "bg-teal-50 text-teal-700" : "text-gray-500 hover:bg-gray-50"
                   }`}
                 >
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -281,125 +273,63 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         </div>
       </header>
 
-      {/* Mobile menu overlay */}
+      {/* Mobile menu */}
       {mobileMenuOpen && (
         <>
           <div className="fixed inset-0 z-30 bg-black/30 lg:hidden" onClick={closeMobile} />
           <div className="fixed top-14 left-0 right-0 z-40 bg-white border-b border-gray-200 shadow-lg lg:hidden max-h-[80vh] overflow-y-auto">
             <div className="px-4 py-3 space-y-1">
-              {/* Dashboard */}
-              <Link
-                href="/dashboard"
-                onClick={closeMobile}
-                className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                  pathname === "/dashboard"
-                    ? "text-teal-600 bg-teal-50"
-                    : "text-gray-700 hover:bg-gray-50"
-                }`}
-              >
+              <Link href="/dashboard" onClick={closeMobile} className={`block px-3 py-2.5 rounded-lg text-sm font-medium ${pathname === "/dashboard" ? "text-teal-600 bg-teal-50" : "text-gray-700 hover:bg-gray-50"}`}>
                 대시보드
               </Link>
-
-              {/* Menu groups */}
               {menuGroups.map((group) => {
                 const isExpanded = mobileExpandedGroup === group.label;
-                const isGroupActive = group.prefixes.some(
-                  (p) => pathname === p || pathname.startsWith(p + "/")
-                );
+                const isGroupActive = group.prefixes.some((p) => pathname === p || pathname.startsWith(p + "/"));
                 return (
                   <div key={group.label}>
                     <button
-                      onClick={() =>
-                        setMobileExpandedGroup(isExpanded ? null : group.label)
-                      }
-                      className={`flex items-center justify-between w-full px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                        isGroupActive
-                          ? "text-teal-600 bg-teal-50"
-                          : "text-gray-700 hover:bg-gray-50"
-                      }`}
+                      onClick={() => setMobileExpandedGroup(isExpanded ? null : group.label)}
+                      className={`flex items-center justify-between w-full px-3 py-2.5 rounded-lg text-sm font-medium ${isGroupActive ? "text-teal-600 bg-teal-50" : "text-gray-700 hover:bg-gray-50"}`}
                     >
                       {group.label}
-                      <svg
-                        className={`w-4 h-4 transition-transform ${isExpanded ? "rotate-180" : ""}`}
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
+                      <svg className={`w-4 h-4 transition-transform duration-150 ${isExpanded ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
                     </button>
                     {isExpanded && (
                       <div className="ml-3 mt-1 space-y-0.5 border-l-2 border-gray-100 pl-3">
-                        {group.items.map((item) => {
-                          const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
-                          return (
-                            <Link
-                              key={item.href}
-                              href={item.href}
-                              onClick={closeMobile}
-                              className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
-                                isActive
-                                  ? "text-teal-600 font-medium"
-                                  : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
-                              }`}
-                            >
-                              {item.label}
-                            </Link>
-                          );
-                        })}
+                        {group.items.map((item) => (
+                          <Link
+                            key={item.href}
+                            href={item.href}
+                            onClick={closeMobile}
+                            className={`block px-3 py-2 rounded-lg text-sm ${pathname === item.href || pathname.startsWith(item.href + "/") ? "text-teal-600 font-medium" : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"}`}
+                          >
+                            {item.label}
+                          </Link>
+                        ))}
                       </div>
                     )}
                   </div>
                 );
               })}
-
-              {/* Mobile extras */}
               <div className="pt-3 mt-3 border-t border-gray-100 space-y-2">
-                <div className="px-3">
-                  <CreditBalance />
-                </div>
+                <div className="px-3"><CreditBalance /></div>
                 {user ? (
                   <div className="px-3 py-2 flex items-center justify-between">
                     <span className="text-xs text-gray-500 truncate">{user.email}</span>
-                    <button
-                      onClick={() => { userSignOut(); closeMobile(); }}
-                      className="text-xs text-gray-400 hover:text-gray-600"
-                    >
-                      로그아웃
-                    </button>
+                    <button onClick={() => { userSignOut(); closeMobile(); }} className="text-xs text-gray-400 hover:text-gray-600">로그아웃</button>
                   </div>
                 ) : (
-                  <Link
-                    href="/login"
-                    onClick={closeMobile}
-                    className="block px-3 py-2.5 text-sm font-medium text-teal-600 hover:bg-teal-50 rounded-lg"
-                  >
-                    로그인
-                  </Link>
+                  <Link href="/login" onClick={closeMobile} className="block px-3 py-2.5 text-sm font-medium text-teal-600 hover:bg-teal-50 rounded-lg">로그인</Link>
                 )}
                 {isAdmin ? (
                   <div className="space-y-1">
-                    <Link
-                      href="/admin"
-                      onClick={closeMobile}
-                      className="block px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg"
-                    >
-                      관리자 패널
-                    </Link>
-                    <button
-                      onClick={() => { logout(); closeMobile(); }}
-                      className="block w-full text-left px-3 py-2 text-sm text-red-500 hover:bg-red-50 rounded-lg"
-                    >
-                      관리자 로그아웃
-                    </button>
+                    <Link href="/admin" onClick={closeMobile} className="block px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg">관리자 패널</Link>
+                    <button onClick={() => { logout(); closeMobile(); }} className="block w-full text-left px-3 py-2 text-sm text-red-500 hover:bg-red-50 rounded-lg">관리자 로그아웃</button>
                   </div>
                 ) : (
-                  <button
-                    onClick={() => { setShowLogin(true); closeMobile(); }}
-                    className="block w-full text-left px-3 py-2 text-sm text-gray-400 hover:bg-gray-50 rounded-lg"
-                  >
-                    관리자
-                  </button>
+                  <button onClick={() => { setShowLogin(true); closeMobile(); }} className="block w-full text-left px-3 py-2 text-sm text-gray-400 hover:bg-gray-50 rounded-lg">관리자</button>
                 )}
               </div>
             </div>
@@ -408,7 +338,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       )}
 
       {/* Main content */}
-      <main className="min-h-screen pt-14 sm:pt-16">
+      <main className="min-h-screen pt-16 sm:pt-[72px]">
         {children}
       </main>
 
