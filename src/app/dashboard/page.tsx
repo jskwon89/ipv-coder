@@ -55,6 +55,7 @@ const serviceCards = [
 interface StatusBreakdown {
   total: number;
   pending: number;
+  received: number;
   in_progress: number;
   completed: number;
 }
@@ -69,7 +70,7 @@ interface ServiceStats {
 export default function DashboardPage() {
   const { user, signOut: userSignOut } = useUser();
   const [projects, setProjects] = useState<Project[]>([]);
-  const emptyBreakdown: StatusBreakdown = { total: 0, pending: 0, in_progress: 0, completed: 0 };
+  const emptyBreakdown: StatusBreakdown = { total: 0, pending: 0, received: 0, in_progress: 0, completed: 0 };
   const [stats, setStats] = useState<ServiceStats>({ researchDesign: { ...emptyBreakdown }, judgment: { ...emptyBreakdown }, survey: { ...emptyBreakdown }, dataAnalysis: { ...emptyBreakdown } });
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -85,7 +86,7 @@ export default function DashboardPage() {
     }
     try {
       const emailParam = user.email ? `?email=${encodeURIComponent(user.email)}` : "";
-      const [projRes, researchRes, statsDesignRes, surveyRes, dtRes, quantRes, textRes, qualRes] = await Promise.all([
+      const [projRes, researchRes, statsDesignRes, surveyRes, dtRes, quantRes, textRes, qualRes, jcRes, jcodingRes, newsRes] = await Promise.all([
         fetch("/api/projects"),
         fetch(`/api/research-design${emailParam}`),
         fetch(`/api/stats-design${emailParam}`),
@@ -94,6 +95,9 @@ export default function DashboardPage() {
         fetch(`/api/quant-analysis${emailParam}`),
         fetch(`/api/text-analysis-request${emailParam}`),
         fetch(`/api/qual-analysis${emailParam}`),
+        fetch(`/api/judgment-collection${emailParam}`),
+        fetch(`/api/judgment-coding${emailParam}`),
+        fetch(`/api/news-collection${emailParam}`),
       ]);
       const projData = await projRes.json();
       const researchData = await researchRes.json();
@@ -103,6 +107,9 @@ export default function DashboardPage() {
       const quantData = await quantRes.json();
       const textData = await textRes.json();
       const qualData = await qualRes.json();
+      const jcData = await jcRes.json();
+      const jcodingData = await jcodingRes.json();
+      const newsData = await newsRes.json();
       const prjs = projData.projects || [];
       setProjects(prjs);
 
@@ -110,7 +117,8 @@ export default function DashboardPage() {
         const all = lists.flat();
         return {
           total: all.length,
-          pending: all.filter(r => r.status === "pending").length,
+          pending: all.filter(r => r.status === "pending" || r.status === "received").length,
+          received: all.filter(r => r.status === "received").length,
           in_progress: all.filter(r => r.status === "in_progress").length,
           completed: all.filter(r => r.status === "completed").length,
         };
@@ -118,11 +126,12 @@ export default function DashboardPage() {
 
       const rdReqs = [...(researchData.requests || []), ...(statsDesignData.requests || [])];
       const surveyReqs = surveyData.requests || [];
-      const daReqs = [...(dtData.requests || []), ...(quantData.requests || []), ...(textData.requests || []), ...(qualData.requests || [])];
+      const judgmentReqs = [...(jcData.requests || []), ...(jcodingData.requests || [])];
+      const daReqs = [...(dtData.requests || []), ...(quantData.requests || []), ...(textData.requests || []), ...(qualData.requests || []), ...(newsData.requests || [])];
 
       setStats({
         researchDesign: countByStatus(rdReqs),
-        judgment: { total: prjs.length, pending: 0, in_progress: prjs.filter((p: Project) => p.codedCount < p.caseCount).length, completed: prjs.filter((p: Project) => p.caseCount > 0 && p.codedCount >= p.caseCount).length },
+        judgment: countByStatus(judgmentReqs),
         survey: countByStatus(surveyReqs),
         dataAnalysis: countByStatus(daReqs),
       });
@@ -162,6 +171,7 @@ export default function DashboardPage() {
   const totalStats: StatusBreakdown = {
     total: stats.researchDesign.total + stats.judgment.total + stats.survey.total + stats.dataAnalysis.total,
     pending: stats.researchDesign.pending + stats.judgment.pending + stats.survey.pending + stats.dataAnalysis.pending,
+    received: stats.researchDesign.received + stats.judgment.received + stats.survey.received + stats.dataAnalysis.received,
     in_progress: stats.researchDesign.in_progress + stats.judgment.in_progress + stats.survey.in_progress + stats.dataAnalysis.in_progress,
     completed: stats.researchDesign.completed + stats.judgment.completed + stats.survey.completed + stats.dataAnalysis.completed,
   };
