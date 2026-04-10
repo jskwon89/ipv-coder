@@ -89,51 +89,50 @@ export default function LandingPage() {
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a] via-[#0f172a] to-teal-900/30" />
 
-          {/* Large background visualization - right side */}
-          <svg className="absolute right-0 top-1/2 -translate-y-1/2 w-[60%] h-[90%] opacity-[0.12] sm:opacity-[0.15]" viewBox="0 0 600 500" fill="none">
-            {/* SEM path diagram - large */}
-            <ellipse cx="150" cy="100" rx="55" ry="35" stroke="#14b8a6" strokeWidth="1.5" />
-            <text x="150" y="105" textAnchor="middle" fill="#2dd4bf" fontSize="16" fontWeight="600">X₁</text>
-            <ellipse cx="450" cy="100" rx="55" ry="35" stroke="#14b8a6" strokeWidth="1.5" />
-            <text x="450" y="105" textAnchor="middle" fill="#2dd4bf" fontSize="16" fontWeight="600">X₂</text>
-            <ellipse cx="300" cy="280" rx="65" ry="38" stroke="#2dd4bf" strokeWidth="2" />
-            <text x="300" y="286" textAnchor="middle" fill="#5eead4" fontSize="18" fontWeight="600">Y</text>
-            <line x1="190" y1="128" x2="255" y2="248" stroke="#2dd4bf" strokeWidth="1.2" />
-            <line x1="410" y1="128" x2="345" y2="248" stroke="#2dd4bf" strokeWidth="1.2" />
-            <line x1="205" y1="100" x2="395" y2="100" stroke="#5eead4" strokeWidth="0.8" strokeDasharray="8,4" />
-            <text x="300" y="90" textAnchor="middle" fill="#5eead4" fontSize="11">β=.42***</text>
-            <text x="205" y="200" fill="#5eead4" fontSize="10">λ=.78</text>
-            <text x="370" y="200" fill="#5eead4" fontSize="10">λ=.65</text>
+          {/* Real analysis images - scattered behind text */}
+          {/* Network visualization - large, right */}
+          <div className="absolute top-[5%] right-[-5%] w-[55%] sm:w-[45%] opacity-[0.18] sm:opacity-[0.22]">
+            <Image src="/images/hero-bg-3.png" alt="" width={800} height={500} className="w-full h-auto rounded-2xl" />
+          </div>
+          {/* Network analysis - center right */}
+          <div className="absolute top-[40%] right-[5%] w-[40%] sm:w-[30%] opacity-[0.15] sm:opacity-[0.18]">
+            <Image src="/images/hero-bg-4.png" alt="" width={800} height={500} className="w-full h-auto rounded-2xl" />
+          </div>
+          {/* Tree diagram - bottom right */}
+          <div className="absolute bottom-[5%] right-[15%] w-[35%] sm:w-[28%] opacity-[0.12] sm:opacity-[0.15]">
+            <Image src="/images/hero-bg-1.png" alt="" width={800} height={500} className="w-full h-auto rounded-2xl" />
+          </div>
+          {/* Network graph - left bottom (subtle) */}
+          <div className="absolute bottom-[10%] left-[0%] w-[30%] sm:w-[22%] opacity-[0.08] sm:opacity-[0.1]">
+            <Image src="/images/hero-bg-2.png" alt="" width={800} height={500} className="w-full h-auto rounded-2xl" />
+          </div>
 
-            {/* Network nodes scattered */}
-            {[[380,350,18],[450,380,12],[500,330,15],[420,420,10],[350,410,8],[480,400,6],[520,370,9],[340,360,7]].map(([cx,cy,r],i) => (
-              <g key={`bg-n${i}`}>
-                <circle cx={cx} cy={cy} r={r} fill={`rgba(20,184,166,${0.15 + Number(r)/60})`} />
-                <circle cx={cx} cy={cy} r={r} fill="none" stroke="#14b8a6" strokeWidth="0.6" />
-              </g>
+          {/* SVG overlay - additional network/scatter elements */}
+          <svg className="absolute inset-0 w-full h-full opacity-[0.08]" viewBox="0 0 1200 600" fill="none" preserveAspectRatio="xMidYMid slice">
+            {/* Network nodes */}
+            {[[900,100,14],[980,160,10],[850,180,8],[1020,120,12],[940,220,9],[1060,200,7],[870,260,11],[760,150,6],[1100,280,8],[800,80,5]].map(([cx,cy,r],i) => (
+              <circle key={`n${i}`} cx={cx} cy={cy} r={r} fill={`rgba(20,184,166,${0.3+Number(r)/40})`} />
             ))}
-            {[[380,350,450,380],[380,350,500,330],[450,380,500,330],[450,380,420,420],[380,350,350,410],[500,330,520,370],[420,420,350,410],[520,370,480,400],[480,400,450,380]].map(([x1,y1,x2,y2],i) => (
-              <line key={`bg-l${i}`} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#2dd4bf" strokeWidth="0.5" opacity="0.4" />
+            {[[900,100,980,160],[900,100,850,180],[980,160,1020,120],[940,220,980,160],[850,180,870,260],[1020,120,1060,200],[870,260,940,220],[760,150,850,180],[1060,200,1100,280],[800,80,900,100]].map(([x1,y1,x2,y2],i) => (
+              <line key={`e${i}`} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#2dd4bf" strokeWidth="1" opacity="0.4" />
             ))}
-
-            {/* Scatter plot dots */}
-            {[[80,340],[100,360],[120,330],[90,380],[140,310],[160,320],[130,350],[170,300],[110,370],[150,335],[180,290],[200,280],[190,305],[210,270],[220,260],[240,275],[230,250]].map(([x,y],i) => (
-              <circle key={`sc${i}`} cx={x} cy={y} r="3" fill="#5eead4" opacity={0.3 + (i * 0.03)} />
+            {/* Scatter cluster */}
+            {[[150,420],[170,400],[160,440],[190,410],[180,430],[200,390],[210,420],[195,450],[220,400],[230,415],[175,460],[205,380]].map(([x,y],i) => (
+              <circle key={`s${i}`} cx={x} cy={y} r="3.5" fill="#5eead4" opacity="0.5" />
             ))}
-            <line x1="70" y1="390" x2="250" y2="240" stroke="#14b8a6" strokeWidth="1.2" opacity="0.5" />
-
-            {/* Topic bars bottom */}
-            <rect x="300" y="450" width="180" height="8" rx="4" fill="#0d9488" opacity="0.4" />
-            <rect x="300" y="465" width="140" height="8" rx="4" fill="#14b8a6" opacity="0.3" />
-            <rect x="300" y="480" width="100" height="8" rx="4" fill="#2dd4bf" opacity="0.25" />
+            <line x1="130" y1="470" x2="250" y2="370" stroke="#14b8a6" strokeWidth="1.5" opacity="0.5" />
+            {/* Survival curve hint */}
+            <path d="M400,500 L400,480 L440,480 L440,450 L490,450 L490,420 L550,420 L550,380 L620,380 L620,340 L700,340" stroke="#2dd4bf" strokeWidth="1.5" fill="none" opacity="0.4" />
+            <path d="M400,500 L400,470 L430,470 L430,430 L470,430 L470,390 L520,390 L520,350 L580,350 L580,310 L650,310" stroke="#5eead4" strokeWidth="1" fill="none" opacity="0.3" strokeDasharray="4,3" />
           </svg>
 
           {/* Glow effects */}
-          <div className="absolute top-0 right-0 w-[700px] h-[700px] bg-teal-500/[0.06] rounded-full blur-[120px] -translate-y-1/4 translate-x-1/4" />
-          <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-teal-600/[0.04] rounded-full blur-[100px] translate-y-1/3" />
+          <div className="absolute top-0 right-0 w-[700px] h-[700px] bg-teal-500/[0.07] rounded-full blur-[120px] -translate-y-1/4 translate-x-1/4" />
+          <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-teal-600/[0.05] rounded-full blur-[100px] translate-y-1/3" />
+          <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-cyan-500/[0.03] rounded-full blur-[80px]" />
 
           {/* Grid */}
-          <div className="absolute inset-0 opacity-[0.025]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
+          <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full py-24 sm:py-32 lg:py-40">
