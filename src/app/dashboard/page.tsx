@@ -145,7 +145,7 @@ export default function DashboardPage() {
         </div>
 
         {/* 요청 현황 — 카드 그리드 */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 mb-10">
           <MiniStatCard label="전체 요청" count={totalStats.total} pending={totalStats.pending} inProgress={totalStats.in_progress} completed={totalStats.completed} color="teal" />
           <MiniStatCard label="연구설계" count={stats.researchDesign.total} pending={stats.researchDesign.pending} inProgress={stats.researchDesign.in_progress} completed={stats.researchDesign.completed} color="sky" href="/data-generation" />
           <MiniStatCard label="자료수집" count={stats.survey.total} pending={stats.survey.pending} inProgress={stats.survey.in_progress} completed={stats.survey.completed} color="violet" href="/survey-results" />
@@ -191,17 +191,17 @@ function MiniStatCard({ label, count, pending, inProgress, completed, color, hre
   label: string; count: number; pending: number; inProgress: number; completed: number; color: string; href?: string;
 }) {
   const colors: Record<string, { bg: string; border: string; text: string; num: string }> = {
-    teal: { bg: "bg-teal-50", border: "border-teal-100", text: "text-teal-700", num: "text-teal-600" },
-    sky: { bg: "bg-sky-50", border: "border-sky-100", text: "text-sky-700", num: "text-sky-600" },
-    violet: { bg: "bg-slate-50", border: "border-slate-100", text: "text-slate-700", num: "text-slate-600" },
-    amber: { bg: "bg-stone-50", border: "border-stone-200", text: "text-stone-700", num: "text-stone-600" },
+    teal: { bg: "bg-gray-50", border: "border-gray-300", text: "text-gray-700", num: "text-gray-800" },
+    sky: { bg: "bg-gray-50", border: "border-gray-300", text: "text-gray-700", num: "text-gray-800" },
+    violet: { bg: "bg-gray-50", border: "border-gray-300", text: "text-gray-700", num: "text-gray-800" },
+    amber: { bg: "bg-gray-50", border: "border-gray-300", text: "text-gray-700", num: "text-gray-800" },
   };
   const c = colors[color] || colors.teal;
   const card = (
-    <div className={`${c.bg} border ${c.border} rounded-2xl p-5 sm:p-6 ${href ? "hover:shadow-lg cursor-pointer" : ""} transition-all`}>
-      <p className={`text-xs font-semibold ${c.text} mb-2`}>{label}</p>
-      <p className={`text-3xl sm:text-4xl font-bold ${c.num} mb-3`}>{count}</p>
-      <div className="flex items-center gap-3 text-xs">
+    <div className={`${c.bg} border ${c.border} rounded-2xl p-6 sm:p-8 ${href ? "hover:shadow-lg cursor-pointer" : ""} transition-all`}>
+      <p className={`text-sm font-semibold ${c.text} mb-3`}>{label}</p>
+      <p className={`text-4xl sm:text-5xl font-bold ${c.num} mb-4`}>{count}</p>
+      <div className="flex items-center gap-4 text-sm">
         <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-amber-400" /><span className="text-gray-500">접수 {pending}</span></span>
         <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-blue-400" /><span className="text-gray-500">진행 {inProgress}</span></span>
         <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-400" /><span className="text-gray-500">완료 {completed}</span></span>
