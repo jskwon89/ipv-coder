@@ -125,8 +125,8 @@ export default function LandingPage() {
             <div className="mt-8 sm:mt-12 bg-gradient-to-r from-[#0f1a2e] to-[#1a2744] rounded-2xl p-6 sm:p-8">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
-                  <h3 className="text-lg font-bold text-white mb-1">고급 분석이 필요하신가요?</h3>
-                  <p className="text-sm text-white/60">판결문 코딩, 고급 계량분석, 텍스트 분석 등은 제휴 기관 <strong className="text-[#d4a843]">ResearchOn</strong>에서 전문적으로 수행합니다.</p>
+                  <h3 className="text-lg font-bold text-white mb-1">전문적인 자료 분석이나 고급분석이 필요하신가요?</h3>
+                  <p className="text-sm text-white/60">제휴 기관 <strong className="text-[#d4a843]">ResearchOn</strong>에서 전문적으로 수행합니다.</p>
                   <div className="flex flex-wrap gap-2 mt-3">
                     {getAdvancedServices(mode).map((svc) => (
                       <span key={svc.key} className="px-2.5 py-1 bg-white/10 text-white/70 rounded-lg text-xs">{svc.title}</span>
