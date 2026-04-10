@@ -389,7 +389,7 @@ export default function LandingPage() {
           {/* Background image */}
           <div className="absolute inset-0">
             <Image src="/images/scott-graham-5fNmWej4tAA-unsplash.jpg" alt="" fill className="object-cover" />
-            <div className="absolute inset-0 bg-white/90" />
+            <div className="absolute inset-0 bg-white/70" />
           </div>
 
           <div className="relative z-10 max-w-7xl mx-auto">
@@ -412,7 +412,7 @@ export default function LandingPage() {
 
             {/* CTA */}
             {sections.contact && (
-              <div id="contact" className="text-center pt-10 border-t border-gray-200">
+              <div id="contact" className="text-center pt-16 sm:pt-20 mt-8 border-t border-gray-200">
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">연구의 새로운 시작</h2>
                 <p className="text-lg text-gray-500 mb-10">PRIMER와 함께 효율적인 연구를 시작하세요</p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
