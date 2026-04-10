@@ -8,7 +8,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useUser } from "@/contexts/UserAuthContext";
 import { AdminLoginModal } from "@/components/AdminLoginModal";
 
-const NO_TOPNAV_PATHS = ["/", "/login", "/signup"];
+const NO_TOPNAV_PATHS = ["/login", "/signup"];
 
 /* ── Simplified menu data ── */
 const menuGroups = [
@@ -38,6 +38,13 @@ const menuGroups = [
       { label: "계량분석", href: "/quant-analysis" },
       { label: "텍스트 분석", href: "/text-analysis" },
       { label: "질적분석", href: "/qual-analysis" },
+    ],
+  },
+  {
+    label: "결과물 샘플",
+    prefixes: ["/samples"],
+    items: [
+      { label: "결과물 샘플", href: "/samples" },
     ],
   },
   {
@@ -180,26 +187,30 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
             {/* Desktop nav */}
             <nav className="hidden lg:flex items-center gap-1">
-              <Link
-                href="/dashboard"
-                className={`px-4 py-2.5 rounded-lg text-[15px] font-semibold transition-colors ${
-                  pathname === "/dashboard"
-                    ? "text-teal-600 bg-teal-50"
-                    : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
-                }`}
-              >
-                대시보드
-              </Link>
-              {menuGroups.map((group) => (
-                <TopMenuGroup
-                  key={group.label}
-                  group={group}
-                  pathname={pathname}
-                  activeGroup={activeDesktopGroup}
-                  onOpen={handleDesktopOpen}
-                  onClose={handleDesktopClose}
-                />
-              ))}
+              {menuGroups.map((group) =>
+                group.items.length === 1 ? (
+                  <Link
+                    key={group.label}
+                    href={group.items[0].href}
+                    className={`px-4 py-2.5 rounded-lg text-[15px] font-semibold transition-colors ${
+                      group.prefixes.some((p) => pathname === p || pathname.startsWith(p + "/"))
+                        ? "text-teal-600 bg-teal-50"
+                        : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                    }`}
+                  >
+                    {group.label}
+                  </Link>
+                ) : (
+                  <TopMenuGroup
+                    key={group.label}
+                    group={group}
+                    pathname={pathname}
+                    activeGroup={activeDesktopGroup}
+                    onOpen={handleDesktopOpen}
+                    onClose={handleDesktopClose}
+                  />
+                )
+              )}
             </nav>
 
             {/* Right side */}
@@ -279,9 +290,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           <div className="fixed inset-0 z-30 bg-black/30 lg:hidden" onClick={closeMobile} />
           <div className="fixed top-14 left-0 right-0 z-40 bg-white border-b border-gray-200 shadow-lg lg:hidden max-h-[80vh] overflow-y-auto">
             <div className="px-4 py-3 space-y-1">
-              <Link href="/dashboard" onClick={closeMobile} className={`block px-3 py-2.5 rounded-lg text-sm font-medium ${pathname === "/dashboard" ? "text-teal-600 bg-teal-50" : "text-gray-700 hover:bg-gray-50"}`}>
-                대시보드
-              </Link>
               {menuGroups.map((group) => {
                 const isExpanded = mobileExpandedGroup === group.label;
                 const isGroupActive = group.prefixes.some((p) => pathname === p || pathname.startsWith(p + "/"));
