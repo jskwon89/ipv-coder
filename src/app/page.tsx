@@ -389,7 +389,7 @@ export default function LandingPage() {
           {/* Background image */}
           <div className="absolute inset-0">
             <Image src="/images/scott-graham-5fNmWej4tAA-unsplash.jpg" alt="" fill className="object-cover" />
-            <div className="absolute inset-0 bg-white/70" />
+            <div className="absolute inset-0 bg-white/85" />
           </div>
 
           <div className="relative z-10 max-w-7xl mx-auto">
