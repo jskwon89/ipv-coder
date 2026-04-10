@@ -89,121 +89,75 @@ export default function LandingPage() {
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a] via-[#0f172a] to-teal-900/30" />
 
-          {/* Full SVG visualization background */}
+          {/* Full SVG background — dense network analysis visuals */}
           <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1400 700" fill="none" preserveAspectRatio="xMidYMid slice">
-
-            {/* ── 1. Dense colorful network (right half, like NetMiner scatter) ── */}
-            <g opacity="0.25">
-              {/* Many colorful scattered dots - topic clustering feel */}
-              {[
-                [780,90,"#f97316",6],[820,60,"#ef4444",4],[860,110,"#f97316",8],[900,80,"#eab308",5],[940,130,"#22c55e",7],
-                [980,70,"#3b82f6",6],[1020,100,"#8b5cf6",9],[1060,140,"#ef4444",4],[1100,90,"#f97316",5],[1140,120,"#22c55e",7],
-                [1180,80,"#3b82f6",4],[1220,150,"#eab308",6],[800,160,"#8b5cf6",5],[840,190,"#22c55e",10],[880,150,"#3b82f6",6],
-                [920,200,"#ef4444",8],[960,170,"#eab308",5],[1000,210,"#f97316",7],[1040,180,"#22c55e",4],[1080,230,"#8b5cf6",6],
-                [1120,190,"#3b82f6",8],[1160,220,"#ef4444",5],[1200,200,"#eab308",4],[760,240,"#22c55e",6],[800,270,"#f97316",4],
-                [840,250,"#3b82f6",7],[880,290,"#8b5cf6",5],[920,260,"#ef4444",9],[960,300,"#22c55e",6],[1000,280,"#eab308",4],
-                [1040,310,"#3b82f6",7],[1080,290,"#f97316",5],[1120,320,"#8b5cf6",8],[1160,280,"#22c55e",4],[1200,310,"#ef4444",6],
-                [1240,260,"#eab308",5],[780,330,"#3b82f6",5],[820,350,"#ef4444",7],[860,370,"#22c55e",4],[900,340,"#8b5cf6",6],
-                [940,380,"#f97316",5],[980,360,"#eab308",8],[1020,390,"#3b82f6",4],[1060,370,"#22c55e",6],[1100,400,"#ef4444",5],
-                [1140,380,"#8b5cf6",7],[1180,350,"#f97316",4],[750,400,"#eab308",5],[790,430,"#3b82f6",6],[830,410,"#22c55e",4],
-                [870,450,"#ef4444",5],[910,420,"#8b5cf6",7],[950,460,"#f97316",4],[990,440,"#22c55e",6],[1030,470,"#3b82f6",5],
-              ].map(([cx,cy,fill,r],i) => (
-                <circle key={`dot${i}`} cx={Number(cx)} cy={Number(cy)} r={Number(r)} fill={String(fill)} opacity={0.7} />
-              ))}
-            </g>
-
-            {/* ── 2. Spider-web network (center-right, like NetMiner radial) ── */}
-            <g opacity="0.16">
-              {/* Hub node */}
-              <circle cx="950" cy="350" r="5" fill="#14b8a6" />
-              {/* Spokes radiating out */}
-              {Array.from({length: 24}, (_,i) => {
-                const angle = (i / 24) * Math.PI * 2;
-                const r1 = 80 + (i % 3) * 30;
-                const r2 = 160 + (i % 4) * 25;
-                const x1 = 950 + Math.cos(angle) * r1;
-                const y1 = 350 + Math.sin(angle) * r1;
-                const x2 = 950 + Math.cos(angle) * r2;
-                const y2 = 350 + Math.sin(angle) * r2;
-                return (
-                  <g key={`spoke${i}`}>
-                    <line x1="950" y1="350" x2={x1} y2={y1} stroke="#2dd4bf" strokeWidth="0.6" />
-                    <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#5eead4" strokeWidth="0.4" />
-                    <circle cx={x1} cy={y1} r={3 + (i%3)} fill={["#3b82f6","#22c55e","#8b5cf6","#ef4444","#eab308","#f97316"][i%6]} opacity="0.6" />
-                    <circle cx={x2} cy={y2} r={2 + (i%2)} fill={["#22c55e","#3b82f6","#f97316","#8b5cf6","#ef4444","#eab308"][i%6]} opacity="0.4" />
-                  </g>
-                );
-              })}
-              {/* Ring connections */}
-              {Array.from({length: 24}, (_,i) => {
-                const a1 = (i / 24) * Math.PI * 2;
-                const a2 = ((i+1) / 24) * Math.PI * 2;
-                const r = 110;
-                return <line key={`ring${i}`} x1={950+Math.cos(a1)*r} y1={350+Math.sin(a1)*r} x2={950+Math.cos(a2)*r} y2={350+Math.sin(a2)*r} stroke="#2dd4bf" strokeWidth="0.4" />;
+            {/* 1. 200+ colorful topic scatter dots (image 1/3 — galaxy of colored clusters) */}
+            <g opacity="0.3">
+              {Array.from({length: 200}, (_,i) => {
+                const colors = ["#ef4444","#f97316","#eab308","#22c55e","#14b8a6","#3b82f6","#8b5cf6","#ec4899","#06b6d4","#84cc16"];
+                const cx = 650 + Math.cos(i*0.7+i*0.03)*340 + Math.sin(i*1.3)*90;
+                const cy = 330 + Math.sin(i*0.6+i*0.04)*270 + Math.cos(i*1.1)*70;
+                const r = 2 + (i%7)*1.3;
+                return <circle key={`ts${i}`} cx={cx} cy={cy} r={r} fill={colors[i%10]} opacity={0.5+(i%5)*0.1} />;
               })}
             </g>
 
-            {/* ── 3. Survival analysis (bottom left) ── */}
-            <g opacity="0.18">
-              <line x1="60" y1="400" x2="60" y2="600" stroke="#5eead4" strokeWidth="1" />
-              <line x1="60" y1="600" x2="350" y2="600" stroke="#5eead4" strokeWidth="1" />
-              <path d="M60,410 L95,410 L95,430 L130,430 L130,450 L160,450 L160,475 L195,475 L195,500 L230,500 L230,520 L265,520 L265,545 L300,545 L300,565 L340,565" stroke="#14b8a6" strokeWidth="2" fill="none" />
-              <path d="M60,410 L85,410 L85,440 L115,440 L115,470 L145,470 L145,500 L180,500 L180,525 L215,525 L215,550 L250,550 L250,575 L290,575 L290,590 L340,590" stroke="#f97316" strokeWidth="1.5" fill="none" strokeDasharray="5,3" />
-              {[[110,430],[170,450],[240,500],[155,470],[220,525]].map(([x,y],i) => (
-                <g key={`cx${i}`}><line x1={Number(x)-3} y1={Number(y)-3} x2={Number(x)+3} y2={Number(y)+3} stroke="#2dd4bf" strokeWidth="1.5" /><line x1={Number(x)-3} y1={Number(y)+3} x2={Number(x)+3} y2={Number(y)-3} stroke="#2dd4bf" strokeWidth="1.5" /></g>
-              ))}
+            {/* 2. Giant spider-web radial network (image 4 — dense spokes from center) */}
+            <g opacity="0.15">
+              <circle cx="900" cy="340" r="8" fill="#22c55e" opacity="0.8" />
+              {Array.from({length: 36}, (_,i) => {
+                const a = (i/36)*Math.PI*2;
+                const colors = ["#3b82f6","#22c55e","#8b5cf6","#ef4444","#eab308","#f97316"];
+                const x1=900+Math.cos(a)*75, y1=340+Math.sin(a)*75;
+                const x2=900+Math.cos(a+0.05)*150, y2=340+Math.sin(a+0.05)*150;
+                const x3=900+Math.cos(a-0.03)*240, y3=340+Math.sin(a-0.03)*240;
+                return (<g key={`sw${i}`}>
+                  <line x1="900" y1="340" x2={x1} y2={y1} stroke="#5eead4" strokeWidth="0.5" />
+                  <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#2dd4bf" strokeWidth="0.4" />
+                  <line x1={x2} y1={y2} x2={x3} y2={y3} stroke="#5eead4" strokeWidth="0.3" />
+                  {i%2===0 && <circle cx={x1} cy={y1} r={3+(i%3)} fill={colors[i%6]} opacity="0.7" />}
+                  <circle cx={x2} cy={y2} r={2+(i%2)} fill={colors[(i+2)%6]} opacity="0.5" />
+                  {i%3===0 && <circle cx={x3} cy={y3} r={1.5+(i%2)} fill={colors[(i+4)%6]} opacity="0.35" />}
+                </g>);
+              })}
+              {[75,150,240].map((r,ri) => (<g key={`rg${ri}`}>{Array.from({length:36},(_,i)=>{const a1=(i/36)*Math.PI*2,a2=((i+1)/36)*Math.PI*2;return <line key={`rc${ri}${i}`} x1={900+Math.cos(a1)*r} y1={340+Math.sin(a1)*r} x2={900+Math.cos(a2)*r} y2={340+Math.sin(a2)*r} stroke="#2dd4bf" strokeWidth={0.4-ri*0.1}/>;})}</g>))}
+              {Array.from({length:20},(_,i)=>{const a1=(i*3/36)*Math.PI*2,a2=((i*7+5)/36)*Math.PI*2;return <line key={`cc${i}`} x1={900+Math.cos(a1)*150} y1={340+Math.sin(a1)*150} x2={900+Math.cos(a2)*75} y2={340+Math.sin(a2)*75} stroke="#5eead4" strokeWidth="0.3" opacity="0.4"/>;
+              })}
             </g>
 
-            {/* ── 4. Word cloud (top left) ── */}
+            {/* 3. Hierarchical network (image 2 — green hubs, blue peripherals) */}
+            <g opacity="0.15">
+              {[[200,450,10],[300,380,8],[140,520,7],[350,500,9],[250,560,6]].map(([cx,cy,r],i)=>(<circle key={`gh${i}`} cx={Number(cx)} cy={Number(cy)} r={Number(r)} fill="#22c55e" opacity="0.7"/>))}
+              {[[160,400],[240,400],[180,480],[260,480],[120,460],[280,430],[320,440],[350,420],[380,460],[140,550],[200,580],[280,570],[330,540],[100,500],[220,520],[360,550],[170,560],[310,580],[250,610],[400,490]].map(([cx,cy],i)=>(<circle key={`bn${i}`} cx={Number(cx)} cy={Number(cy)} r={2.5+(i%3)} fill="#3b82f6" opacity="0.5"/>))}
+              {[[200,450,160,400],[200,450,240,400],[200,450,180,480],[200,450,220,520],[300,380,280,430],[300,380,320,440],[300,380,350,420],[300,380,260,480],[140,520,120,460],[140,520,100,500],[140,520,140,550],[140,520,170,560],[350,500,380,460],[350,500,360,550],[350,500,400,490],[350,500,330,540],[250,560,200,580],[250,560,280,570],[250,560,310,580],[250,560,250,610]].map(([x1,y1,x2,y2],i)=>(<line key={`hl${i}`} x1={Number(x1)} y1={Number(y1)} x2={Number(x2)} y2={Number(y2)} stroke="#5eead4" strokeWidth="0.8"/>))}
+              {[[200,450,300,380],[300,380,350,500],[140,520,250,560],[200,450,140,520],[350,500,250,560]].map(([x1,y1,x2,y2],i)=>(<line key={`hh${i}`} x1={Number(x1)} y1={Number(y1)} x2={Number(x2)} y2={Number(y2)} stroke="#22c55e" strokeWidth="1.2" opacity="0.5"/>))}
+            </g>
+
+            {/* 4. Word cloud (top left, large Korean keywords) */}
             <g opacity="0.2">
               {[
-                [60,60,"연구",32,"#3b82f6"],[170,45,"정책",26,"#ef4444"],[280,70,"분석",28,"#22c55e"],
-                [100,110,"데이터",24,"#8b5cf6"],[220,105,"사회",20,"#f97316"],[340,50,"교육",18,"#eab308"],
-                [50,155,"통계",22,"#14b8a6"],[160,150,"설문",16,"#ec4899"],[260,140,"변수",14,"#06b6d4"],
-                [350,120,"모형",15,"#84cc16"],[80,200,"법률",18,"#ef4444"],[190,195,"키워드",13,"#3b82f6"],
-                [300,180,"빈도",12,"#8b5cf6"],[130,240,"네트워크",14,"#22c55e"],[240,230,"토픽",16,"#f97316"],
-                [370,170,"회귀",11,"#eab308"],[55,250,"감성",11,"#ec4899"],[320,220,"패널",10,"#14b8a6"],
-                [400,100,"인과",12,"#3b82f6"],[180,80,"제도",15,"#ef4444"],[90,45,"학습",13,"#22c55e"],
-                [340,250,"매칭",9,"#8b5cf6"],[420,55,"예측",14,"#f97316"],[270,35,"평가",12,"#eab308"],
-              ].map(([x,y,text,size,fill],i) => (
-                <text key={`wc${i}`} x={Number(x)} y={Number(y)} fill={String(fill)} fontSize={Number(size)} fontWeight={Number(size) > 20 ? "800" : Number(size) > 14 ? "700" : "600"} opacity={0.4 + Number(size)/80} transform={i % 5 === 0 ? `rotate(-8,${x},${y})` : i % 7 === 0 ? `rotate(5,${x},${y})` : ""}>{text}</text>
-              ))}
+                [50,55,"연구",36,"#3b82f6"],[170,40,"정책",30,"#ef4444"],[300,65,"분석",32,"#22c55e"],
+                [95,110,"데이터",28,"#8b5cf6"],[230,100,"사회",24,"#f97316"],[380,48,"교육",22,"#eab308"],
+                [40,165,"통계",26,"#14b8a6"],[165,155,"설문",20,"#ec4899"],[285,145,"변수",17,"#06b6d4"],
+                [390,125,"모형",18,"#84cc16"],[75,210,"법률",22,"#ef4444"],[200,200,"키워드",16,"#3b82f6"],
+                [320,185,"빈도",15,"#8b5cf6"],[120,255,"네트워크",17,"#22c55e"],[250,245,"토픽",20,"#f97316"],
+                [400,175,"회귀",14,"#eab308"],[50,270,"감성",14,"#ec4899"],[340,240,"생존",13,"#14b8a6"],
+                [440,95,"인과",15,"#3b82f6"],[185,78,"제도",18,"#ef4444"],[85,40,"학습",16,"#22c55e"],
+                [360,265,"매칭",12,"#8b5cf6"],[465,55,"예측",16,"#f97316"],[280,32,"평가",15,"#eab308"],
+                [140,45,"판결",14,"#ec4899"],[430,220,"패널",12,"#06b6d4"],[30,125,"의료",13,"#84cc16"],
+              ].map(([x,y,text,size,fill],i)=>(<text key={`wc${i}`} x={Number(x)} y={Number(y)} fill={String(fill)} fontSize={Number(size)} fontWeight={Number(size)>24?"800":Number(size)>17?"700":"600"} opacity={0.35+Number(size)/90} transform={i%4===0?`rotate(-10,${x},${y})`:i%5===0?`rotate(6,${x},${y})`:i%7===0?`rotate(-4,${x},${y})`:""} fontFamily="sans-serif">{text}</text>))}
             </g>
 
-            {/* ── 5. Dense connection mesh (overlay, very subtle) ── */}
-            <g opacity="0.06">
-              {Array.from({length: 40}, (_,i) => {
-                const x1 = 600 + Math.cos(i * 0.8) * (150 + i * 5);
-                const y1 = 300 + Math.sin(i * 1.1) * (100 + i * 4);
-                const x2 = 700 + Math.cos(i * 1.3 + 1) * (120 + i * 4);
-                const y2 = 350 + Math.sin(i * 0.9 + 2) * (80 + i * 3);
-                return <line key={`mesh${i}`} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#5eead4" strokeWidth="0.5" />;
-              })}
+            {/* 5. Survival curves (bottom center, subtle accent) */}
+            <g opacity="0.12">
+              <path d="M500,620 L500,600 L540,600 L540,575 L580,575 L580,545 L620,545 L620,515 L665,515 L665,480 L710,480 L710,450 L760,450" stroke="#14b8a6" strokeWidth="2" fill="none" />
+              <path d="M500,620 L530,620 L530,590 L560,590 L560,555 L600,555 L600,520 L640,520 L640,485 L680,485 L680,455 L720,455 L720,430 L760,430" stroke="#f97316" strokeWidth="1.5" fill="none" strokeDasharray="5,3" />
             </g>
 
-            {/* ── 6. Semantic network / co-occurrence (bottom right) ── */}
+            {/* 6. Semantic co-occurrence network (bottom right) */}
             <g opacity="0.16">
-              {/* Nodes with labels */}
-              {[
-                [1120,520,16,"정책","#3b82f6"],[1200,480,14,"제도","#22c55e"],[1160,580,12,"법률","#8b5cf6"],
-                [1060,560,10,"사회","#ef4444"],[1260,540,13,"개선","#f97316"],[1100,460,11,"교육","#eab308"],
-                [1220,610,9,"평가","#14b8a6"],[1300,500,10,"연구","#ec4899"],[1040,490,8,"변화","#06b6d4"],
-                [1180,640,8,"인식","#84cc16"],[1280,600,7,"조사","#3b82f6"],[1320,560,9,"분석","#22c55e"],
-              ].map(([cx,cy,r,label,fill],i) => (
-                <g key={`sn${i}`}>
-                  <circle cx={Number(cx)} cy={Number(cy)} r={Number(r)} fill={String(fill)} opacity="0.6" />
-                  <text x={Number(cx)} y={Number(cy) - Number(r) - 4} textAnchor="middle" fill={String(fill)} fontSize="8" opacity="0.7">{label}</text>
-                </g>
-              ))}
-              {/* Edges with varying thickness = co-occurrence strength */}
-              {[
-                [1120,520,1200,480,2.5],[1120,520,1160,580,2],[1120,520,1060,560,1.5],[1120,520,1100,460,2],
-                [1200,480,1260,540,1.8],[1200,480,1300,500,1.2],[1160,580,1220,610,1.5],[1160,580,1060,560,1],
-                [1260,540,1320,560,1.8],[1260,540,1300,500,1.5],[1100,460,1040,490,1.2],[1220,610,1180,640,1],
-                [1220,610,1280,600,1.3],[1320,560,1280,600,1],[1300,500,1320,560,0.8],[1060,560,1040,490,1],
-              ].map(([x1,y1,x2,y2,w],i) => (
-                <line key={`se${i}`} x1={Number(x1)} y1={Number(y1)} x2={Number(x2)} y2={Number(y2)} stroke="#5eead4" strokeWidth={Number(w)} opacity={0.3 + Number(w)/8} />
-              ))}
+              {[[1120,520,16,"정책","#3b82f6"],[1200,480,14,"제도","#22c55e"],[1160,580,12,"법률","#8b5cf6"],[1060,560,10,"사회","#ef4444"],[1260,540,13,"개선","#f97316"],[1100,460,11,"교육","#eab308"],[1220,610,9,"평가","#14b8a6"],[1300,500,10,"연구","#ec4899"],[1040,490,8,"변화","#06b6d4"],[1180,640,8,"인식","#84cc16"],[1280,600,7,"조사","#3b82f6"],[1320,560,9,"분석","#22c55e"]].map(([cx,cy,r,label,fill],i)=>(<g key={`sn${i}`}><circle cx={Number(cx)} cy={Number(cy)} r={Number(r)} fill={String(fill)} opacity="0.6"/><text x={Number(cx)} y={Number(cy)-Number(r)-4} textAnchor="middle" fill={String(fill)} fontSize="8" opacity="0.7">{label}</text></g>))}
+              {[[1120,520,1200,480,2.5],[1120,520,1160,580,2],[1120,520,1060,560,1.5],[1120,520,1100,460,2],[1200,480,1260,540,1.8],[1200,480,1300,500,1.2],[1160,580,1220,610,1.5],[1160,580,1060,560,1],[1260,540,1320,560,1.8],[1260,540,1300,500,1.5],[1100,460,1040,490,1.2],[1220,610,1180,640,1],[1220,610,1280,600,1.3],[1320,560,1280,600,1],[1300,500,1320,560,0.8],[1060,560,1040,490,1]].map(([x1,y1,x2,y2,w],i)=>(<line key={`se${i}`} x1={Number(x1)} y1={Number(y1)} x2={Number(x2)} y2={Number(y2)} stroke="#5eead4" strokeWidth={Number(w)} opacity={0.3+Number(w)/8}/>))}
             </g>
           </svg>
 
