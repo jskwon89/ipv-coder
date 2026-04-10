@@ -21,7 +21,7 @@ export async function notifyNewRequest(serviceType: string, email: string, detai
 
   const embed = {
     title: `새 의뢰 접수: ${label}`,
-    color: 0xc49a2e,
+    color: 0x14b8a6,
     fields: [
       { name: '서비스', value: label, inline: true },
       { name: '이메일', value: email, inline: true },
