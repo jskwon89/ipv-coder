@@ -133,8 +133,9 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#faf9f6]">
-      <div className="max-w-5xl mx-auto px-5 sm:px-8 py-8 sm:py-12">
+    <div className="min-h-screen" style={{ backgroundImage: "url('/images/dashboard-bg.png')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
+      <div className="absolute inset-0 bg-[#faf9f6]/80 pointer-events-none" />
+      <div className="relative z-10 max-w-5xl mx-auto px-5 sm:px-8 py-8 sm:py-12">
         {/* 환영 */}
         <div className="mb-10">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
@@ -154,7 +155,7 @@ export default function DashboardPage() {
         {/* Service Cards */}
         <div className="mb-6 sm:mb-8">
           <div className="flex items-center justify-between mb-4 sm:mb-5">
-            <h2 className="text-lg sm:text-xl font-bold text-white drop-shadow-sm">서비스</h2>
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900">서비스</h2>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-5">
             {serviceCards.map((card) => (
@@ -190,10 +191,10 @@ function MiniStatCard({ label, count, pending, inProgress, completed, color, hre
   label: string; count: number; pending: number; inProgress: number; completed: number; color: string; href?: string;
 }) {
   const colors: Record<string, { bg: string; border: string; text: string; num: string }> = {
-    teal: { bg: "bg-teal-100/70", border: "border-teal-200", text: "text-teal-800", num: "text-teal-700" },
-    sky: { bg: "bg-sky-100/70", border: "border-sky-200", text: "text-sky-800", num: "text-sky-700" },
-    violet: { bg: "bg-violet-100/70", border: "border-violet-200", text: "text-violet-800", num: "text-violet-700" },
-    amber: { bg: "bg-amber-100/70", border: "border-amber-200", text: "text-amber-800", num: "text-amber-700" },
+    teal: { bg: "bg-teal-50", border: "border-teal-100", text: "text-teal-700", num: "text-teal-600" },
+    sky: { bg: "bg-sky-50", border: "border-sky-100", text: "text-sky-700", num: "text-sky-600" },
+    violet: { bg: "bg-slate-50", border: "border-slate-100", text: "text-slate-700", num: "text-slate-600" },
+    amber: { bg: "bg-stone-50", border: "border-stone-200", text: "text-stone-700", num: "text-stone-600" },
   };
   const c = colors[color] || colors.teal;
   const card = (
