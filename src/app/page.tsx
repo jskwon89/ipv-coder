@@ -92,7 +92,7 @@ export default function LandingPage() {
           {/* Academic visualization background */}
           <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1400 700" fill="none" preserveAspectRatio="xMidYMid slice">
             {/* ===== 1. WORD CLOUD (center-right, large, 논문 워드클라우드 형태) ===== */}
-            <g opacity="0.22" transform="translate(700, 200)">
+            <g opacity="0.22" transform="translate(900, 200)">
               {/* 핵심 키워드 — 크기=빈도, 빽빽하게 모여있는 형태 */}
               <text x="0" y="0" textAnchor="middle" fill="#b0bec5" fontSize="58" fontWeight="900" fontFamily="sans-serif">연구</text>
               <text x="120" y="-30" textAnchor="middle" fill="#90a4ae" fontSize="42" fontWeight="800" fontFamily="sans-serif">정책</text>
@@ -123,12 +123,12 @@ export default function LandingPage() {
 
             {/* ===== 2. KEYWORD NETWORK (left, 노드+엣지 밀도 있게) ===== */}
             <g opacity="0.16">
-              {/* Edges */}
-              {[[160,300,260,250],[160,300,100,360],[160,300,220,370],[160,300,80,250],[260,250,340,290],[260,250,300,200],[260,250,220,370],[100,360,60,420],[100,360,160,420],[80,250,40,200],[80,250,160,300],[340,290,380,240],[340,290,300,360],[300,200,380,240],[300,200,240,160],[220,370,300,360],[220,370,160,420],[60,420,120,460],[160,420,120,460],[380,240,420,300],[300,360,380,340],[240,160,300,200],[240,160,160,300],[40,200,80,250],[420,300,380,340]].map(([x1,y1,x2,y2],i)=>(<line key={`kne${i}`} x1={Number(x1)} y1={Number(y1)} x2={Number(x2)} y2={Number(y2)} stroke="#64748b" strokeWidth={1.5-(i%4)*0.3} opacity="0.3"/>))}
-              {/* Nodes */}
-              {[[160,300,14],[260,250,11],[100,360,10],[220,370,9],[80,250,8],[340,290,10],[300,200,9],[380,240,7],[60,420,6],[160,420,7],[300,360,8],[240,160,6],[40,200,5],[120,460,5],[420,300,6],[380,340,5]].map(([cx,cy,r],i)=>(<circle key={`knn${i}`} cx={Number(cx)} cy={Number(cy)} r={Number(r)} fill="#78909c" opacity={0.4+Number(r)/30}/>))}
+              {/* Edges — dense connections */}
+              {[[160,300,260,250],[160,300,100,360],[160,300,220,370],[160,300,80,250],[160,300,200,200],[160,300,120,240],[260,250,340,290],[260,250,300,200],[260,250,220,370],[260,250,200,200],[260,250,340,200],[100,360,60,420],[100,360,160,420],[100,360,50,300],[100,360,140,440],[80,250,40,200],[80,250,160,300],[80,250,50,300],[80,250,120,240],[340,290,380,240],[340,290,300,360],[340,290,400,340],[340,290,340,200],[300,200,380,240],[300,200,240,160],[300,200,200,200],[300,200,340,200],[220,370,300,360],[220,370,160,420],[220,370,280,420],[60,420,120,460],[60,420,50,300],[160,420,120,460],[160,420,140,440],[160,420,280,420],[380,240,420,300],[380,240,400,340],[380,240,450,260],[300,360,380,340],[300,360,280,420],[300,360,400,340],[240,160,300,200],[240,160,160,300],[240,160,340,200],[40,200,80,250],[40,200,50,300],[420,300,380,340],[420,300,450,260],[420,300,400,340],[200,200,120,240],[200,200,240,160],[340,200,380,240],[50,300,100,360],[450,260,420,300],[140,440,120,460],[280,420,300,360]].map(([x1,y1,x2,y2],i)=>(<line key={`kne${i}`} x1={Number(x1)} y1={Number(y1)} x2={Number(x2)} y2={Number(y2)} stroke="#64748b" strokeWidth={1.2-(i%4)*0.2} opacity={0.2+((55-i)%5)*0.03}/>))}
+              {/* Nodes — more, with size variation */}
+              {[[160,300,16],[260,250,13],[100,360,11],[220,370,10],[80,250,9],[340,290,12],[300,200,10],[380,240,8],[60,420,7],[160,420,8],[300,360,9],[240,160,7],[40,200,6],[120,460,6],[420,300,7],[380,340,6],[200,200,8],[120,240,6],[50,300,5],[340,200,7],[400,340,6],[450,260,5],[140,440,5],[280,420,6]].map(([cx,cy,r],i)=>(<circle key={`knn${i}`} cx={Number(cx)} cy={Number(cy)} r={Number(r)} fill="#78909c" opacity={0.35+Number(r)/35}/>))}
               {/* Labels */}
-              {[[160,304,"정책",11],[260,254,"제도",9],[100,364,"법률",9],[220,374,"사회",8],[80,254,"의료",7],[340,294,"교육",9],[300,204,"경제",8],[380,244,"환경",6],[60,424,"복지",6],[160,424,"안전",6],[300,364,"인식",7],[240,164,"변화",6]].map(([x,y,t,s],i)=>(<text key={`knl${i}`} x={Number(x)} y={Number(y)} textAnchor="middle" fill="#94a3b8" fontSize={Number(s)} fontWeight="600" opacity="0.6">{t}</text>))}
+              {[[160,304,"정책",11],[260,254,"제도",10],[100,364,"법률",9],[220,374,"사회",8],[80,254,"의료",7],[340,294,"교육",10],[300,204,"경제",8],[380,244,"환경",7],[60,424,"복지",6],[160,424,"안전",6],[300,364,"인식",7],[240,164,"변화",6],[200,204,"개선",7],[120,244,"지원",6],[340,204,"성과",6],[400,344,"참여",5],[450,264,"혁신",5],[280,424,"권리",5]].map(([x,y,t,s],i)=>(<text key={`knl${i}`} x={Number(x)} y={Number(y)} textAnchor="middle" fill="#94a3b8" fontSize={Number(s)} fontWeight="600" opacity="0.55">{t}</text>))}
             </g>
 
             {/* ===== 3. KAPLAN-MEIER SURVIVAL CURVE (bottom left, with axes) ===== */}
@@ -150,7 +150,34 @@ export default function LandingPage() {
               <text x="55" y="575" textAnchor="middle" fill="#64748b" fontSize="8" transform="rotate(-90,55,575)">Survival</text>
             </g>
 
-            {/* ===== 4. TOPIC MODEL RESULT (bottom right, LDA 토픽 분포) ===== */}
+            {/* ===== 4. MODERATED MEDIATION / 구조방정식 (center bottom) ===== */}
+            <g opacity="0.16" transform="translate(550, 460)">
+              {/* Boxes */}
+              <rect x="0" y="0" width="90" height="36" rx="4" fill="none" stroke="#78909c" strokeWidth="1.2" />
+              <text x="45" y="22" textAnchor="middle" fill="#94a3b8" fontSize="10" fontWeight="600">독립변수 (X)</text>
+              <rect x="180" y="-60" width="90" height="36" rx="4" fill="none" stroke="#78909c" strokeWidth="1.2" />
+              <text x="225" y="-38" textAnchor="middle" fill="#94a3b8" fontSize="10" fontWeight="600">매개변수 (M)</text>
+              <rect x="360" y="0" width="90" height="36" rx="4" fill="none" stroke="#78909c" strokeWidth="1.2" />
+              <text x="405" y="22" textAnchor="middle" fill="#94a3b8" fontSize="10" fontWeight="600">종속변수 (Y)</text>
+              <rect x="180" y="60" width="90" height="36" rx="4" fill="none" stroke="#64748b" strokeWidth="1" strokeDasharray="4,2" />
+              <text x="225" y="82" textAnchor="middle" fill="#78909c" fontSize="9" fontWeight="600">조절변수 (W)</text>
+              {/* Arrows: X→M */}
+              <line x1="90" y1="10" x2="180" y2="-45" stroke="#94a3b8" strokeWidth="1.2" markerEnd="url(#arrowG)" />
+              <text x="120" y="-22" fill="#78909c" fontSize="8">a=.45***</text>
+              {/* M→Y */}
+              <line x1="270" y1="-38" x2="360" y2="10" stroke="#94a3b8" strokeWidth="1.2" markerEnd="url(#arrowG)" />
+              <text x="330" y="-22" fill="#78909c" fontSize="8">b=.38**</text>
+              {/* X→Y (direct, dashed) */}
+              <line x1="90" y1="22" x2="360" y2="22" stroke="#64748b" strokeWidth="1" strokeDasharray="4,2" markerEnd="url(#arrowG)" />
+              <text x="225" y="38" fill="#64748b" fontSize="8">{`c'=.12 (n.s.)`}</text>
+              {/* W moderating a path */}
+              <line x1="225" y1="60" x2="145" y2="-10" stroke="#64748b" strokeWidth="0.8" strokeDasharray="3,2" />
+              <circle cx="145" cy="-10" r="2.5" fill="#78909c" />
+              {/* Arrow marker */}
+              <defs><marker id="arrowG" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#94a3b8" /></marker></defs>
+            </g>
+
+            {/* ===== 5. TOPIC MODEL RESULT (bottom right, LDA 토픽 분포) ===== */}
             <g opacity="0.14">
               {/* Topic distribution bars — 가로 막대 */}
               {[
