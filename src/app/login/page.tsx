@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, Suspense, useEffect } from "react";
+import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useUser } from "@/contexts/UserAuthContext";
-import { getSiteMode, siteConfig, type SiteConfig } from "@/lib/siteMode";
 
 function LoginForm() {
   const router = useRouter();
@@ -15,8 +14,6 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [cfg, setCfg] = useState<SiteConfig>(siteConfig.primer);
-  useEffect(() => { setCfg(siteConfig[getSiteMode()]); }, []);
 
   const redirect = searchParams.get("redirect") || "/dashboard";
 
@@ -51,10 +48,10 @@ function LoginForm() {
             </div>
             <div className="text-left">
               <h1 className="text-xl font-bold text-white group-hover:text-[#d4a843] transition-colors">
-                {cfg.name}
+                ResearchOn
               </h1>
               <p className="text-[11px] text-white/50 tracking-wide">
-                {cfg.subtitle}
+                연구 및 데이터 플랫폼
               </p>
             </div>
           </Link>
@@ -125,7 +122,7 @@ function LoginForm() {
         </div>
 
         <p className="text-center text-[11px] text-white/25 mt-6">
-          {cfg.name}
+          ResearchOn
         </p>
       </div>
     </div>

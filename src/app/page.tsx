@@ -3,12 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { getSiteMode, siteConfig, getServices, getAdvancedServices, type SiteMode } from "@/lib/siteMode";
 
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false);
-  const [mode, setMode] = useState<'primer' | 'researchon'>('primer');
-  const cfg = siteConfig[mode];
   const [sections, setSections] = useState<Record<string, boolean>>({
     services: true,
     value_proposition: true,
@@ -17,7 +14,6 @@ export default function LandingPage() {
   });
 
   useEffect(() => {
-    setMode(getSiteMode());
     const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -41,16 +37,15 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14 sm:h-16">
           <Link href="/" className="flex items-center gap-2">
             <span className={`text-lg sm:text-xl font-bold tracking-tight ${scrolled ? "text-gray-900" : "text-white"}`}>
-              {cfg.name}
+              ResearchOn
             </span>
           </Link>
           <div className={`hidden md:flex items-center gap-8 text-sm font-medium ${scrolled ? "text-gray-600" : "text-white/90"}`}>
             <Link href="/dashboard" className="hover:opacity-70 transition-opacity">시작하기</Link>
             <a href="#services" className="hover:opacity-70 transition-opacity">서비스</a>
             <a href="#how-it-works" className="hover:opacity-70 transition-opacity">이용절차</a>
-            <Link href="/board" className="hover:opacity-70 transition-opacity">게시판</Link>
             <a href="#contact" className="hover:opacity-70 transition-opacity">문의</a>
-            {mode === 'researchon' && <Link href="/samples" className="hover:opacity-70 transition-opacity">결과물 안내</Link>}
+            <Link href="/samples" className="hover:opacity-70 transition-opacity">결과물 안내</Link>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
             <Link href="/login" className={`hidden sm:block text-sm font-medium px-4 py-2 rounded-lg transition-colors ${scrolled ? "text-gray-600 hover:bg-gray-100" : "text-white hover:bg-white/10"}`}>
@@ -79,18 +74,22 @@ export default function LandingPage() {
           <div className="absolute inset-0 bg-black/60" />
         </div>
         <div className="relative z-10 text-center text-white px-5 sm:px-6 max-w-4xl mx-auto animate-fade-in">
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold leading-tight mb-4 sm:mb-6 whitespace-pre-line">
-            {cfg.heroTitle}
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold leading-tight mb-4 sm:mb-6">
+            연구의 시작부터
+            <br />
+            완성까지, 한 곳에서
           </h1>
-          <p className="text-sm sm:text-lg md:text-xl text-white/80 mb-6 sm:mb-10 leading-relaxed whitespace-pre-line">
-            {cfg.heroDesc}
+          <p className="text-sm sm:text-lg md:text-xl text-white/80 mb-6 sm:mb-10 leading-relaxed">
+            연구설계, 자료 생성, 데이터 변환, 통계분석, 문서 작성까지
+            <br />
+            하나의 플랫폼에서 쉽고 정확하게 진행하세요
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
             <Link
               href="/dashboard"
               className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-[#c49a2e] text-white rounded-xl text-sm sm:text-base font-semibold hover:bg-[#d4a843] transition-colors shadow-lg text-center"
             >
-              {cfg.ctaText}
+              무료로 시작하기
             </Link>
             <a
               href="#services"
@@ -116,35 +115,43 @@ export default function LandingPage() {
             <div className="w-12 sm:w-16 h-1 bg-[#c49a2e] mx-auto rounded-full" />
           </div>
           <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
-            {getServices(mode).map((svc) => (
-              <ServiceCard key={svc.key} image={svc.image} title={svc.title} description={svc.description} href={svc.href} />
-            ))}
+            <ServiceCard
+              image="/images/landing-연구설계.png"
+              title="연구 설계 지원"
+              description="연구 주제 설계부터 통계분석 설계까지"
+              href="/data-generation"
+            />
+            <ServiceCard
+              image="/images/landing-설문조사.png"
+              title="설문조사"
+              description="설문 설계부터 데이터 수집까지 원스톱 서비스"
+              href="/survey-request"
+            />
+            <ServiceCard
+              image="/images/landing-판결문.png"
+              title="판결문 분석"
+              description="판결문 수집부터 변수 코딩까지 원스톱 서비스"
+              href="/judgment"
+            />
+            <ServiceCard
+              image="/images/landing-기사검색.png"
+              title="뉴스/언론 보도"
+              description="키워드 기반 뉴스 수집 및 분석"
+              href="/news-search"
+            />
+            <ServiceCard
+              image="/images/landing-계량통계.png"
+              title="계량분석"
+              description="기초통계부터 고급 계량분석까지, 전문가가 직접 분석"
+              href="/quant-analysis"
+            />
+            <ServiceCard
+              image="/images/landing-텍스트분석.png"
+              title="텍스트 분석"
+              description="토픽모델링, 감성분석, 워드클라우드 등 텍스트 분석"
+              href="/text-analysis"
+            />
           </div>
-
-          {/* PRIMER: 고급 서비스 → ResearchOn 연동 안내 */}
-          {mode === 'primer' && getAdvancedServices(mode).length > 0 && (
-            <div className="mt-8 sm:mt-12 bg-gradient-to-r from-[#0f1a2e] to-[#1a2744] rounded-2xl p-6 sm:p-8">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <div>
-                  <h3 className="text-lg font-bold text-white mb-1">전문적인 자료 분석이나 고급분석이 필요하신가요?</h3>
-                  <p className="text-sm text-white/60">제휴 기관 <strong className="text-[#d4a843]">ResearchOn</strong>에서 전문적으로 수행합니다.</p>
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    {getAdvancedServices(mode).map((svc) => (
-                      <span key={svc.key} className="px-2.5 py-1 bg-white/10 text-white/70 rounded-lg text-xs">{svc.title}</span>
-                    ))}
-                  </div>
-                </div>
-                <a
-                  href={siteConfig.primer.partnerUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="shrink-0 px-6 py-3 bg-[#c49a2e] text-white rounded-xl text-sm font-semibold hover:bg-[#d4a843] transition-colors shadow-lg"
-                >
-                  ResearchOn 바로가기 &rarr;
-                </a>
-              </div>
-            </div>
-          )}
         </div>
       </section>}
 
@@ -152,9 +159,9 @@ export default function LandingPage() {
       {sections.value_proposition && <section className="py-12 sm:py-24 px-4 sm:px-6 bg-[#0f1a2e] text-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8 sm:mb-16">
-            <h2 className="text-2xl sm:text-4xl font-bold mb-3 sm:mb-4">{mode === 'primer' ? '왜 PrimeR인가요?' : '왜 ResearchOn인가요?'}</h2>
+            <h2 className="text-2xl sm:text-4xl font-bold mb-3 sm:mb-4">왜 ResearchOn인가요?</h2>
             <p className="text-sm sm:text-lg text-white/60 max-w-2xl mx-auto leading-relaxed">
-              {mode === 'primer' ? '아산학파의 연구 경험을 바탕으로, 체계적인 지원을 제공합니다' : '합리적인 가격, 최상의 품질, 끝까지 책임지는 서비스'}
+              합리적인 가격, 최상의 품질, 끝까지 책임지는 서비스
             </p>
             <div className="w-12 sm:w-16 h-1 bg-[#c49a2e] mx-auto rounded-full mt-4" />
           </div>
@@ -229,7 +236,7 @@ export default function LandingPage() {
               <StepCard step={1} title="회원가입" description="간편 가입 후 바로 시작" />
               <StepCard step={2} title="서비스 선택" description="필요한 분석/코딩 서비스 선택" />
               <StepCard step={3} title="자료 업로드" description="판결문, 설문지, 데이터 업로드" />
-              <StepCard step={4} title="결과 확인" description={mode === 'primer' ? '분석 결과 및 최종의견 제시' : '분석 결과 및 보고서 완성'} />
+              <StepCard step={4} title="결과 확인" description="분석 결과 및 보고서 완성" />
             </div>
             <div className="relative h-48 sm:h-80 rounded-xl sm:rounded-2xl overflow-hidden shadow-lg">
               <Image
@@ -248,7 +255,7 @@ export default function LandingPage() {
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-2xl sm:text-4xl font-bold mb-3 sm:mb-4">연구의 새로운 시작</h2>
           <p className="text-sm sm:text-lg text-white/70 mb-6 sm:mb-10">
-            {cfg.name}과 함께 효율적인 연구를 시작하세요
+            ResearchOn과 함께 효율적인 연구를 시작하세요
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-8 max-w-md mx-auto">
             <input
@@ -265,7 +272,7 @@ export default function LandingPage() {
               href="/dashboard"
               className="inline-block px-10 py-4 bg-[#c49a2e] text-white rounded-xl text-base font-semibold hover:bg-[#d4a843] transition-colors shadow-lg"
             >
-              {cfg.ctaText}
+              무료로 시작하기
             </Link>
           </div>
         </div>
@@ -275,15 +282,15 @@ export default function LandingPage() {
       <footer className="bg-[#111827] text-white/60 py-8 sm:py-12 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6">
           <div>
-            <h3 className="text-lg font-bold text-white mb-1">{cfg.name}</h3>
-            <p className="text-sm">{cfg.subtitle}</p>
+            <h3 className="text-lg font-bold text-white mb-1">ResearchOn</h3>
+            <p className="text-sm">연구자를 위한 올인원 연구 지원 플랫폼</p>
           </div>
           <div className="flex items-center gap-6 text-sm">
             <a href="#services" className="hover:text-white transition-colors">서비스</a>
             <span className="hover:text-white transition-colors cursor-pointer">이용약관</span>
             <span className="hover:text-white transition-colors cursor-pointer">개인정보처리방침</span>
           </div>
-          <p className="text-xs text-white/40">&copy; 2026 {cfg.name}. All rights reserved.</p>
+          <p className="text-xs text-white/40">&copy; 2026 ResearchOn. All rights reserved.</p>
         </div>
       </footer>
 

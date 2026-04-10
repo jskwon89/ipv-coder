@@ -1,16 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useUser } from "@/contexts/UserAuthContext";
-import { getSiteMode, siteConfig, type SiteConfig } from "@/lib/siteMode";
 
 export default function SignupPage() {
   const router = useRouter();
   const { signIn } = useUser();
-  const [cfg, setCfg] = useState<SiteConfig>(siteConfig.primer);
-  useEffect(() => { setCfg(siteConfig[getSiteMode()]); }, []);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -65,14 +62,14 @@ export default function SignupPage() {
           <div className="text-center mb-8">
             <Link href="/" className="inline-flex items-center gap-3 group">
               <div className="w-10 h-10 rounded-xl bg-[#c49a2e] flex items-center justify-center">
-                <span className="text-white font-bold text-lg">{cfg.name[0]}</span>
+                <span className="text-white font-bold text-lg">R</span>
               </div>
               <div className="text-left">
                 <h1 className="text-xl font-bold text-white group-hover:text-[#d4a843] transition-colors">
-                  {cfg.name}
+                  ResearchOn
                 </h1>
                 <p className="text-[11px] text-white/50 tracking-wide">
-                  {cfg.subtitle}
+                  연구 및 데이터 플랫폼
                 </p>
               </div>
             </Link>
@@ -119,14 +116,14 @@ export default function SignupPage() {
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-3 group">
             <div className="w-10 h-10 rounded-xl bg-[#c49a2e] flex items-center justify-center">
-              <span className="text-white font-bold text-lg">{cfg.name[0]}</span>
+              <span className="text-white font-bold text-lg">R</span>
             </div>
             <div className="text-left">
               <h1 className="text-xl font-bold text-white group-hover:text-[#d4a843] transition-colors">
-                {cfg.name}
+                ResearchOn
               </h1>
               <p className="text-[11px] text-white/50 tracking-wide">
-                {cfg.subtitle}
+                연구 및 데이터 플랫폼
               </p>
             </div>
           </Link>
@@ -136,7 +133,7 @@ export default function SignupPage() {
         <div className="bg-white/[0.06] backdrop-blur-sm border border-white/10 rounded-2xl p-8">
           <h2 className="text-lg font-bold text-white mb-1">회원가입</h2>
           <p className="text-sm text-white/50 mb-6">
-            새 계정을 만들어 {cfg.name}을 시작하세요.
+            새 계정을 만들어 ResearchOn을 시작하세요.
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -213,7 +210,7 @@ export default function SignupPage() {
         </div>
 
         <p className="text-center text-[11px] text-white/25 mt-6">
-          {cfg.name}
+          ResearchOn
         </p>
       </div>
     </div>

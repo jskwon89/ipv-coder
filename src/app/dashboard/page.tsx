@@ -4,7 +4,6 @@ import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useUser } from "@/contexts/UserAuthContext";
-import { getSiteMode, siteConfig, type SiteMode } from "@/lib/siteMode";
 
 interface Project {
   id: string;
@@ -14,24 +13,44 @@ interface Project {
   codedCount: number;
 }
 
-const primerServiceCards = [
-  { title: "연구 설계 상담", desc: "연구 주제 설계, 방법론 안내", href: "/data-generation", image: "/images/서비스_연구설계지원.png" },
-  { title: "통계분석 설계", desc: "분석 방법 선정 및 설계 지원", href: "/stats-design", image: "/images/서비스_계량통계분석.png" },
-  { title: "설문구성 / 조사설계", desc: "설문 구성 및 조사 설계 안내", href: "/survey-request", image: "/images/서비스_설문조사.png" },
+const serviceCards = [
+  {
+    title: "연구 설계 지원",
+    desc: "연구 주제 설계, 통계분석 설계",
+    href: "/data-generation",
+    image: "/images/서비스_연구설계지원.png",
+  },
+  {
+    title: "설문조사",
+    desc: "설문 설계부터 데이터 수집까지",
+    href: "/survey-request",
+    image: "/images/서비스_설문조사.png",
+  },
+  {
+    title: "판결문 분석",
+    desc: "판결문 수집부터 변수 코딩까지",
+    href: "/judgment",
+    image: "/images/서비스_판결문 코딩.png",
+  },
+  {
+    title: "뉴스/언론 보도",
+    desc: "키워드 기반 뉴스 수집 및 분석",
+    href: "/news-search",
+    image: "/images/서비스_기사분석.png",
+  },
+  {
+    title: "계량분석",
+    desc: "기초통계부터 고급 계량분석까지",
+    href: "/quant-analysis",
+    image: "/images/서비스_계량통계분석.png",
+  },
+  {
+    title: "텍스트 분석",
+    desc: "토픽모델링, 감성분석, 워드클라우드",
+    href: "/text-analysis",
+    image: "/images/서비스_텍스트분석.png",
+  },
 ];
-
-const researchonServiceCards = [
-  { title: "연구 설계 지원", desc: "연구 주제 설계, 통계분석 설계", href: "/data-generation", image: "/images/서비스_연구설계지원.png" },
-  { title: "설문조사", desc: "설문 설계부터 데이터 수집까지", href: "/survey-request", image: "/images/서비스_설문조사.png" },
-  { title: "판결문 분석", desc: "판결문 수집부터 변수 코딩까지", href: "/judgment", image: "/images/서비스_판결문 코딩.png" },
-  { title: "뉴스/언론 보도", desc: "키워드 기반 뉴스 수집 및 분석", href: "/news-search", image: "/images/서비스_기사분석.png" },
-  { title: "계량분석", desc: "기초통계부터 고급 계량분석까지", href: "/quant-analysis", image: "/images/서비스_계량통계분석.png" },
-  { title: "텍스트 분석", desc: "토픽모델링, 감성분석, 워드클라우드", href: "/text-analysis", image: "/images/서비스_텍스트분석.png" },
-];
-
-function getServiceCards(mode: SiteMode) {
-  return mode === 'primer' ? primerServiceCards : researchonServiceCards;
-}
 
 interface StatusBreakdown {
   total: number;
@@ -178,7 +197,7 @@ export default function DashboardPage() {
                   환영합니다
                 </h1>
                 <p className="text-[#d4a843] mt-1.5 sm:mt-2 text-xs sm:text-sm lg:text-base leading-relaxed">
-                  {siteConfig[getSiteMode()].name}에서 연구를 시작하세요
+                  ResearchOn에서 연구를 시작하세요
                 </p>
                 <button
                   onClick={() => setShowModal(true)}
@@ -239,7 +258,7 @@ export default function DashboardPage() {
             <h2 className="text-lg sm:text-xl font-bold text-white drop-shadow-sm">서비스</h2>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-5">
-            {getServiceCards(getSiteMode()).map((card) => (
+            {serviceCards.map((card) => (
               <Link key={card.title} href={card.href} className="group block">
                 <div className="rounded-xl sm:rounded-2xl border border-gray-200 bg-white overflow-hidden hover:border-[#c49a2e]/40 hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02]">
                   <div className="relative bg-gray-50 h-28 sm:h-44">

@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PrimeR - 아산학파 연구지원",
-  description: "아산학파 연구지원 플랫폼 — 연구설계, 통계분석, 자료수집 지원",
+  title: "ResearchOn - 연구 및 데이터 플랫폼",
+  description: "연구 및 데이터 분석 플랫폼",
 };
 
 export default function RootLayout({
