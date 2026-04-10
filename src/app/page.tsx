@@ -94,7 +94,7 @@ export default function LandingPage() {
             {/* 1. 200+ colorful topic scatter dots (image 1/3 — galaxy of colored clusters) */}
             <g opacity="0.3">
               {Array.from({length: 200}, (_,i) => {
-                const colors = ["#5eead4","#2dd4bf","#14b8a6","#0d9488","#99f6e4","#a5f3fc","#67e8f9","#0891b2","#06b6d4","#94a3b8"];
+                const colors = ["#94a3b8","#64748b","#78909c","#a0aec0","#718096","#90a4ae","#b0bec5","#7b8a94","#8899a6","#6b7f8e"];
                 const cx = 650 + Math.cos(i*0.7+i*0.03)*340 + Math.sin(i*1.3)*90;
                 const cy = 330 + Math.sin(i*0.6+i*0.04)*270 + Math.cos(i*1.1)*70;
                 const r = 2 + (i%7)*1.3;
@@ -104,10 +104,10 @@ export default function LandingPage() {
 
             {/* 2. Giant spider-web radial network (image 4 — dense spokes from center) */}
             <g opacity="0.15">
-              <circle cx="900" cy="340" r="8" fill="#14b8a6" opacity="0.8" />
+              <circle cx="900" cy="340" r="8" fill="#94a3b8" opacity="0.8" />
               {Array.from({length: 36}, (_,i) => {
                 const a = (i/36)*Math.PI*2;
-                const colors = ["#5eead4","#2dd4bf","#14b8a6","#0d9488","#67e8f9","#94a3b8"];
+                const colors = ["#94a3b8","#78909c","#64748b","#a0aec0","#90a4ae","#b0bec5"];
                 const x1=900+Math.cos(a)*75, y1=340+Math.sin(a)*75;
                 const x2=900+Math.cos(a+0.05)*150, y2=340+Math.sin(a+0.05)*150;
                 const x3=900+Math.cos(a-0.03)*240, y3=340+Math.sin(a-0.03)*240;
@@ -127,36 +127,52 @@ export default function LandingPage() {
 
             {/* 3. Hierarchical network (image 2 — green hubs, blue peripherals) */}
             <g opacity="0.15">
-              {[[200,450,10],[300,380,8],[140,520,7],[350,500,9],[250,560,6]].map(([cx,cy,r],i)=>(<circle key={`gh${i}`} cx={Number(cx)} cy={Number(cy)} r={Number(r)} fill="#14b8a6" opacity="0.7"/>))}
-              {[[160,400],[240,400],[180,480],[260,480],[120,460],[280,430],[320,440],[350,420],[380,460],[140,550],[200,580],[280,570],[330,540],[100,500],[220,520],[360,550],[170,560],[310,580],[250,610],[400,490]].map(([cx,cy],i)=>(<circle key={`bn${i}`} cx={Number(cx)} cy={Number(cy)} r={2.5+(i%3)} fill="#67e8f9" opacity="0.4"/>))}
+              {[[200,450,10],[300,380,8],[140,520,7],[350,500,9],[250,560,6]].map(([cx,cy,r],i)=>(<circle key={`gh${i}`} cx={Number(cx)} cy={Number(cy)} r={Number(r)} fill="#94a3b8" opacity="0.6"/>))}
+              {[[160,400],[240,400],[180,480],[260,480],[120,460],[280,430],[320,440],[350,420],[380,460],[140,550],[200,580],[280,570],[330,540],[100,500],[220,520],[360,550],[170,560],[310,580],[250,610],[400,490]].map(([cx,cy],i)=>(<circle key={`bn${i}`} cx={Number(cx)} cy={Number(cy)} r={2.5+(i%3)} fill="#78909c" opacity="0.4"/>))}
               {[[200,450,160,400],[200,450,240,400],[200,450,180,480],[200,450,220,520],[300,380,280,430],[300,380,320,440],[300,380,350,420],[300,380,260,480],[140,520,120,460],[140,520,100,500],[140,520,140,550],[140,520,170,560],[350,500,380,460],[350,500,360,550],[350,500,400,490],[350,500,330,540],[250,560,200,580],[250,560,280,570],[250,560,310,580],[250,560,250,610]].map(([x1,y1,x2,y2],i)=>(<line key={`hl${i}`} x1={Number(x1)} y1={Number(y1)} x2={Number(x2)} y2={Number(y2)} stroke="#5eead4" strokeWidth="0.8"/>))}
-              {[[200,450,300,380],[300,380,350,500],[140,520,250,560],[200,450,140,520],[350,500,250,560]].map(([x1,y1,x2,y2],i)=>(<line key={`hh${i}`} x1={Number(x1)} y1={Number(y1)} x2={Number(x2)} y2={Number(y2)} stroke="#14b8a6" strokeWidth="1.2" opacity="0.5"/>))}
+              {[[200,450,300,380],[300,380,350,500],[140,520,250,560],[200,450,140,520],[350,500,250,560]].map(([x1,y1,x2,y2],i)=>(<line key={`hh${i}`} x1={Number(x1)} y1={Number(y1)} x2={Number(x2)} y2={Number(y2)} stroke="#94a3b8" strokeWidth="1.2" opacity="0.5"/>))}
             </g>
 
-            {/* 4. Word cloud (top left, large Korean keywords) */}
-            <g opacity="0.2">
+            {/* 4. Word network / co-occurrence cloud (top left — keywords with connection lines) */}
+            <g opacity="0.18">
+              {/* Connection lines first (behind text) — co-occurrence relationships */}
               {[
-                [50,55,"연구",36,"#5eead4"],[170,40,"정책",30,"#99f6e4"],[300,65,"분석",32,"#2dd4bf"],
-                [95,110,"데이터",28,"#67e8f9"],[230,100,"사회",24,"#a5f3fc"],[380,48,"교육",22,"#94a3b8"],
-                [40,165,"통계",26,"#14b8a6"],[165,155,"설문",20,"#5eead4"],[285,145,"변수",17,"#06b6d4"],
-                [390,125,"모형",18,"#94a3b8"],[75,210,"법률",22,"#2dd4bf"],[200,200,"키워드",16,"#67e8f9"],
-                [320,185,"빈도",15,"#a5f3fc"],[120,255,"네트워크",17,"#5eead4"],[250,245,"토픽",20,"#99f6e4"],
-                [400,175,"회귀",14,"#94a3b8"],[50,270,"감성",14,"#2dd4bf"],[340,240,"생존",13,"#14b8a6"],
-                [440,95,"인과",15,"#67e8f9"],[185,78,"제도",18,"#5eead4"],[85,40,"학습",16,"#a5f3fc"],
-                [360,265,"매칭",12,"#94a3b8"],[465,55,"예측",16,"#2dd4bf"],[280,32,"평가",15,"#99f6e4"],
-                [140,45,"판결",14,"#06b6d4"],[430,220,"패널",12,"#67e8f9"],[30,125,"의료",13,"#94a3b8"],
-              ].map(([x,y,text,size,fill],i)=>(<text key={`wc${i}`} x={Number(x)} y={Number(y)} fill={String(fill)} fontSize={Number(size)} fontWeight={Number(size)>24?"800":Number(size)>17?"700":"600"} opacity={0.35+Number(size)/90} transform={i%4===0?`rotate(-10,${x},${y})`:i%5===0?`rotate(6,${x},${y})`:i%7===0?`rotate(-4,${x},${y})`:""} fontFamily="sans-serif">{text}</text>))}
+                [160,120,280,95],[160,120,100,160],[160,120,240,160],[160,120,200,55],
+                [280,95,370,110],[280,95,240,160],[280,95,340,60],
+                [100,160,60,220],[100,160,160,200],[100,160,50,110],
+                [240,160,300,195],[240,160,340,170],[240,160,160,200],
+                [160,200,100,245],[160,200,230,240],[160,200,60,220],
+                [370,110,420,80],[370,110,400,165],[340,60,420,80],
+                [230,240,300,195],[100,245,160,280],[300,195,400,165],
+              ].map(([x1,y1,x2,y2],i) => (
+                <line key={`wcl${i}`} x1={Number(x1)} y1={Number(y1)} x2={Number(x2)} y2={Number(y2)} stroke="#64748b" strokeWidth={1.2 - (i%3)*0.3} opacity={0.25} />
+              ))}
+              {/* Keyword nodes (sized circles behind text) */}
+              {[
+                [160,120,20],[280,95,16],[100,160,14],[240,160,15],[160,200,13],
+                [370,110,11],[60,220,10],[300,195,10],[340,60,9],[400,165,9],
+                [50,110,8],[200,55,10],[230,240,9],[420,80,8],[100,245,8],[340,170,7],[160,280,7],
+              ].map(([cx,cy,r],i) => (
+                <circle key={`wcn${i}`} cx={Number(cx)} cy={Number(cy)} r={Number(r)} fill="#475569" opacity="0.15" />
+              ))}
+              {/* Keywords text — clustered and organized */}
+              {[
+                [160,125,"연구",28],[280,100,"정책",22],[100,165,"데이터",20],[240,165,"분석",21],
+                [160,205,"통계",18],[370,115,"교육",16],[60,225,"법률",16],[300,200,"변수",14],
+                [340,65,"사회",15],[400,170,"모형",13],[50,115,"의료",12],[200,60,"설문",15],
+                [230,245,"토픽",14],[420,85,"제도",12],[100,250,"감성",12],[340,175,"회귀",11],[160,285,"네트워크",11],
+              ].map(([x,y,text,size],i)=>(<text key={`wct${i}`} x={Number(x)} y={Number(y)} textAnchor="middle" fill="#94a3b8" fontSize={Number(size)} fontWeight={Number(size)>20?"800":Number(size)>15?"700":"600"} opacity={0.4+Number(size)/70} fontFamily="sans-serif">{text}</text>))}
             </g>
 
             {/* 5. Survival curves (bottom center, subtle accent) */}
             <g opacity="0.12">
-              <path d="M500,620 L500,600 L540,600 L540,575 L580,575 L580,545 L620,545 L620,515 L665,515 L665,480 L710,480 L710,450 L760,450" stroke="#14b8a6" strokeWidth="2" fill="none" />
-              <path d="M500,620 L530,620 L530,590 L560,590 L560,555 L600,555 L600,520 L640,520 L640,485 L680,485 L680,455 L720,455 L720,430 L760,430" stroke="#94a3b8" strokeWidth="1.5" fill="none" strokeDasharray="5,3" />
+              <path d="M500,620 L500,600 L540,600 L540,575 L580,575 L580,545 L620,545 L620,515 L665,515 L665,480 L710,480 L710,450 L760,450" stroke="#90a4ae" strokeWidth="2" fill="none" />
+              <path d="M500,620 L530,620 L530,590 L560,590 L560,555 L600,555 L600,520 L640,520 L640,485 L680,485 L680,455 L720,455 L720,430 L760,430" stroke="#64748b" strokeWidth="1.5" fill="none" strokeDasharray="5,3" />
             </g>
 
             {/* 6. Semantic co-occurrence network (bottom right) */}
             <g opacity="0.16">
-              {[[1120,520,16,"정책","#5eead4"],[1200,480,14,"제도","#2dd4bf"],[1160,580,12,"법률","#67e8f9"],[1060,560,10,"사회","#99f6e4"],[1260,540,13,"개선","#14b8a6"],[1100,460,11,"교육","#94a3b8"],[1220,610,9,"평가","#a5f3fc"],[1300,500,10,"연구","#5eead4"],[1040,490,8,"변화","#06b6d4"],[1180,640,8,"인식","#2dd4bf"],[1280,600,7,"조사","#67e8f9"],[1320,560,9,"분석","#14b8a6"]].map(([cx,cy,r,label,fill],i)=>(<g key={`sn${i}`}><circle cx={Number(cx)} cy={Number(cy)} r={Number(r)} fill={String(fill)} opacity="0.6"/><text x={Number(cx)} y={Number(cy)-Number(r)-4} textAnchor="middle" fill={String(fill)} fontSize="8" opacity="0.7">{label}</text></g>))}
+              {[[1120,520,16,"정책","#94a3b8"],[1200,480,14,"제도","#b0bec5"],[1160,580,12,"법률","#78909c"],[1060,560,10,"사회","#a0aec0"],[1260,540,13,"개선","#90a4ae"],[1100,460,11,"교육","#64748b"],[1220,610,9,"평가","#b0bec5"],[1300,500,10,"연구","#94a3b8"],[1040,490,8,"변화","#78909c"],[1180,640,8,"인식","#90a4ae"],[1280,600,7,"조사","#a0aec0"],[1320,560,9,"분석","#64748b"]].map(([cx,cy,r,label,fill],i)=>(<g key={`sn${i}`}><circle cx={Number(cx)} cy={Number(cy)} r={Number(r)} fill={String(fill)} opacity="0.6"/><text x={Number(cx)} y={Number(cy)-Number(r)-4} textAnchor="middle" fill={String(fill)} fontSize="8" opacity="0.7">{label}</text></g>))}
               {[[1120,520,1200,480,2.5],[1120,520,1160,580,2],[1120,520,1060,560,1.5],[1120,520,1100,460,2],[1200,480,1260,540,1.8],[1200,480,1300,500,1.2],[1160,580,1220,610,1.5],[1160,580,1060,560,1],[1260,540,1320,560,1.8],[1260,540,1300,500,1.5],[1100,460,1040,490,1.2],[1220,610,1180,640,1],[1220,610,1280,600,1.3],[1320,560,1280,600,1],[1300,500,1320,560,0.8],[1060,560,1040,490,1]].map(([x1,y1,x2,y2,w],i)=>(<line key={`se${i}`} x1={Number(x1)} y1={Number(y1)} x2={Number(x2)} y2={Number(y2)} stroke="#5eead4" strokeWidth={Number(w)} opacity={0.3+Number(w)/8}/>))}
             </g>
           </svg>
