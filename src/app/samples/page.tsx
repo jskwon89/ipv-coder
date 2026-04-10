@@ -100,24 +100,22 @@ export default function SamplesPage() {
           {serviceSamples.map((svc) => (
             <div
               key={svc.key}
-              className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow"
+              className="bg-[#f7f7f8] rounded-2xl border border-gray-100 p-6 hover:shadow-md transition-shadow"
             >
               <h2 className="text-lg font-bold text-gray-900 mb-1">{svc.label}</h2>
               <p className="text-sm text-gray-500 mb-5 leading-relaxed">{svc.description}</p>
 
-              {/* 플로우 다이어그램 */}
-              <div className="flex items-center gap-1.5">
+              {/* 플로우 다이어그램 — 2행 가능 */}
+              <div className="grid grid-cols-4 gap-2">
                 {svc.steps.map((step, i) => (
-                  <div key={i} className="flex items-center gap-1.5 flex-1 min-w-0">
-                    <div className="flex-1 min-w-0">
-                      <div className={`${step.bg} ${step.text} border border-current/10 text-[10px] sm:text-xs font-medium px-2 py-2.5 rounded-lg text-center truncate`}>
-                        <span className="opacity-40 text-[9px] font-bold block leading-none mb-0.5">{i + 1}</span>
-                        {step.label}
-                      </div>
+                  <div key={i} className="relative">
+                    <div className={`${step.bg} ${step.text} border border-current/10 text-xs font-medium px-3 py-3 rounded-lg text-center`}>
+                      <span className="opacity-40 text-[9px] font-bold block leading-none mb-1">{i + 1}</span>
+                      {step.label}
                     </div>
                     {i < svc.steps.length - 1 && (
-                      <svg className="w-3.5 h-3.5 text-gray-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                      <svg className="hidden sm:block absolute -right-2.5 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-300 z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
                       </svg>
                     )}
                   </div>
