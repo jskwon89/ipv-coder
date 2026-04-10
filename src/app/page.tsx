@@ -85,14 +85,58 @@ export default function LandingPage() {
     <div className="min-h-screen bg-white text-gray-900">
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-[#0f172a]">
+        {/* Background layers */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a] via-[#0f172a] to-teal-900/40" />
-          <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-teal-500/8 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
-          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-teal-600/5 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4" />
-          <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a] via-[#0f172a] to-teal-900/30" />
+
+          {/* Large background visualization - right side */}
+          <svg className="absolute right-0 top-1/2 -translate-y-1/2 w-[60%] h-[90%] opacity-[0.12] sm:opacity-[0.15]" viewBox="0 0 600 500" fill="none">
+            {/* SEM path diagram - large */}
+            <ellipse cx="150" cy="100" rx="55" ry="35" stroke="#14b8a6" strokeWidth="1.5" />
+            <text x="150" y="105" textAnchor="middle" fill="#2dd4bf" fontSize="16" fontWeight="600">X₁</text>
+            <ellipse cx="450" cy="100" rx="55" ry="35" stroke="#14b8a6" strokeWidth="1.5" />
+            <text x="450" y="105" textAnchor="middle" fill="#2dd4bf" fontSize="16" fontWeight="600">X₂</text>
+            <ellipse cx="300" cy="280" rx="65" ry="38" stroke="#2dd4bf" strokeWidth="2" />
+            <text x="300" y="286" textAnchor="middle" fill="#5eead4" fontSize="18" fontWeight="600">Y</text>
+            <line x1="190" y1="128" x2="255" y2="248" stroke="#2dd4bf" strokeWidth="1.2" />
+            <line x1="410" y1="128" x2="345" y2="248" stroke="#2dd4bf" strokeWidth="1.2" />
+            <line x1="205" y1="100" x2="395" y2="100" stroke="#5eead4" strokeWidth="0.8" strokeDasharray="8,4" />
+            <text x="300" y="90" textAnchor="middle" fill="#5eead4" fontSize="11">β=.42***</text>
+            <text x="205" y="200" fill="#5eead4" fontSize="10">λ=.78</text>
+            <text x="370" y="200" fill="#5eead4" fontSize="10">λ=.65</text>
+
+            {/* Network nodes scattered */}
+            {[[380,350,18],[450,380,12],[500,330,15],[420,420,10],[350,410,8],[480,400,6],[520,370,9],[340,360,7]].map(([cx,cy,r],i) => (
+              <g key={`bg-n${i}`}>
+                <circle cx={cx} cy={cy} r={r} fill={`rgba(20,184,166,${0.15 + Number(r)/60})`} />
+                <circle cx={cx} cy={cy} r={r} fill="none" stroke="#14b8a6" strokeWidth="0.6" />
+              </g>
+            ))}
+            {[[380,350,450,380],[380,350,500,330],[450,380,500,330],[450,380,420,420],[380,350,350,410],[500,330,520,370],[420,420,350,410],[520,370,480,400],[480,400,450,380]].map(([x1,y1,x2,y2],i) => (
+              <line key={`bg-l${i}`} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#2dd4bf" strokeWidth="0.5" opacity="0.4" />
+            ))}
+
+            {/* Scatter plot dots */}
+            {[[80,340],[100,360],[120,330],[90,380],[140,310],[160,320],[130,350],[170,300],[110,370],[150,335],[180,290],[200,280],[190,305],[210,270],[220,260],[240,275],[230,250]].map(([x,y],i) => (
+              <circle key={`sc${i}`} cx={x} cy={y} r="3" fill="#5eead4" opacity={0.3 + (i * 0.03)} />
+            ))}
+            <line x1="70" y1="390" x2="250" y2="240" stroke="#14b8a6" strokeWidth="1.2" opacity="0.5" />
+
+            {/* Topic bars bottom */}
+            <rect x="300" y="450" width="180" height="8" rx="4" fill="#0d9488" opacity="0.4" />
+            <rect x="300" y="465" width="140" height="8" rx="4" fill="#14b8a6" opacity="0.3" />
+            <rect x="300" y="480" width="100" height="8" rx="4" fill="#2dd4bf" opacity="0.25" />
+          </svg>
+
+          {/* Glow effects */}
+          <div className="absolute top-0 right-0 w-[700px] h-[700px] bg-teal-500/[0.06] rounded-full blur-[120px] -translate-y-1/4 translate-x-1/4" />
+          <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-teal-600/[0.04] rounded-full blur-[100px] translate-y-1/3" />
+
+          {/* Grid */}
+          <div className="absolute inset-0 opacity-[0.025]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full py-20 sm:py-28 lg:py-36">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full py-24 sm:py-32 lg:py-40">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-500/10 border border-teal-500/20 mb-8">
               <div className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
@@ -121,94 +165,6 @@ export default function LandingPage() {
               <a href="#services" className="px-8 py-4 border border-slate-600 text-slate-300 rounded-xl text-lg font-semibold hover:bg-white/5 hover:border-slate-500 transition-all">
                 서비스 둘러보기
               </a>
-            </div>
-          </div>
-
-          {/* Analysis Showcase - 고급 통계 시각화 */}
-          <div className="mt-16 sm:mt-20 pt-8 sm:pt-10 border-t border-white/10">
-            <p className="text-xs font-medium text-slate-500 uppercase tracking-widest mb-5">Analysis Capabilities</p>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-              {/* SEM / 구조방정식 */}
-              <div className="bg-white/[0.04] border border-white/[0.08] rounded-xl p-4 sm:p-5 backdrop-blur-sm hover:bg-white/[0.07] transition-all">
-                <svg viewBox="0 0 140 80" className="w-full h-20 sm:h-24 mb-3">
-                  <defs>
-                    <marker id="ah" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto"><path d="M0,0 L6,2 L0,4" fill="#2dd4bf" /></marker>
-                  </defs>
-                  <ellipse cx="30" cy="20" rx="18" ry="12" fill="none" stroke="#0d9488" strokeWidth="1.2" />
-                  <text x="30" y="23" textAnchor="middle" fill="#5eead4" fontSize="7" fontWeight="600">X₁</text>
-                  <ellipse cx="110" cy="20" rx="18" ry="12" fill="none" stroke="#0d9488" strokeWidth="1.2" />
-                  <text x="110" y="23" textAnchor="middle" fill="#5eead4" fontSize="7" fontWeight="600">X₂</text>
-                  <ellipse cx="70" cy="62" rx="22" ry="12" fill="none" stroke="#14b8a6" strokeWidth="1.5" />
-                  <text x="70" y="65" textAnchor="middle" fill="#2dd4bf" fontSize="7" fontWeight="600">Y</text>
-                  <line x1="42" y1="28" x2="56" y2="52" stroke="#2dd4bf" strokeWidth="1" markerEnd="url(#ah)" />
-                  <line x1="98" y1="28" x2="84" y2="52" stroke="#2dd4bf" strokeWidth="1" markerEnd="url(#ah)" />
-                  <line x1="48" y1="20" x2="92" y2="20" stroke="#5eead4" strokeWidth="0.8" strokeDasharray="3,2" markerEnd="url(#ah)" />
-                  <text x="70" y="16" textAnchor="middle" fill="#5eead4" fontSize="5.5" opacity="0.7">β=.42**</text>
-                  <text x="40" y="44" fill="#5eead4" fontSize="5.5" opacity="0.7">λ=.78</text>
-                  <text x="88" y="44" fill="#5eead4" fontSize="5.5" opacity="0.7">λ=.65</text>
-                </svg>
-                <span className="text-xs font-semibold text-slate-300">구조방정식 (SEM)</span>
-              </div>
-
-              {/* 네트워크 분석 */}
-              <div className="bg-white/[0.04] border border-white/[0.08] rounded-xl p-4 sm:p-5 backdrop-blur-sm hover:bg-white/[0.07] transition-all">
-                <svg viewBox="0 0 140 80" className="w-full h-20 sm:h-24 mb-3">
-                  {[[45,15,55],[95,20,40],[20,50,35],[70,55,50],[120,55,30],[50,75,25],[100,70,20]].map(([cx,cy,s], i) => (
-                    <circle key={`n${i}`} cx={cx} cy={cy} r={Number(s)/10+1.5} fill={`rgba(20,184,166,${Number(s)/80+0.2})`} />
-                  ))}
-                  {[[45,15,95,20],[45,15,20,50],[45,15,70,55],[95,20,120,55],[95,20,70,55],[20,50,70,55],[20,50,50,75],[70,55,120,55],[70,55,100,70],[70,55,50,75],[120,55,100,70]].map(([x1,y1,x2,y2], i) => (
-                    <line key={`l${i}`} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#2dd4bf" strokeWidth="0.6" opacity="0.35" />
-                  ))}
-                  {[[45,15,55],[95,20,40],[20,50,35],[70,55,50],[120,55,30],[50,75,25],[100,70,20]].map(([cx,cy,s], i) => (
-                    <circle key={`nd${i}`} cx={cx} cy={cy} r={Number(s)/10+1.5} fill="none" stroke="#14b8a6" strokeWidth="0.8" opacity="0.6" />
-                  ))}
-                </svg>
-                <span className="text-xs font-semibold text-slate-300">키워드 네트워크</span>
-              </div>
-
-              {/* 다수준 분석 / HLM */}
-              <div className="bg-white/[0.04] border border-white/[0.08] rounded-xl p-4 sm:p-5 backdrop-blur-sm hover:bg-white/[0.07] transition-all">
-                <svg viewBox="0 0 140 80" className="w-full h-20 sm:h-24 mb-3">
-                  {/* Level 2 lines */}
-                  <line x1="10" y1="65" x2="130" y2="20" stroke="#0d9488" strokeWidth="1.5" opacity="0.8" />
-                  {/* Level 1 cluster lines */}
-                  <line x1="15" y1="70" x2="45" y2="50" stroke="#2dd4bf" strokeWidth="0.8" opacity="0.5" />
-                  <line x1="40" y1="58" x2="70" y2="38" stroke="#5eead4" strokeWidth="0.8" opacity="0.5" />
-                  <line x1="75" y1="45" x2="105" y2="25" stroke="#2dd4bf" strokeWidth="0.8" opacity="0.5" />
-                  {/* Data points cluster 1 */}
-                  {[[18,68],[22,62],[30,58],[38,54],[42,50]].map(([x,y],i) => <circle key={`c1${i}`} cx={x} cy={y} r="2" fill="#5eead4" opacity="0.6" />)}
-                  {/* cluster 2 */}
-                  {[[48,55],[55,48],[60,44],[65,42],[72,38]].map(([x,y],i) => <circle key={`c2${i}`} cx={x} cy={y} r="2" fill="#2dd4bf" opacity="0.6" />)}
-                  {/* cluster 3 */}
-                  {[[80,40],[88,34],[95,30],[100,26],[108,24]].map(([x,y],i) => <circle key={`c3${i}`} cx={x} cy={y} r="2" fill="#14b8a6" opacity="0.6" />)}
-                  <text x="125" y="14" fill="#5eead4" fontSize="6" opacity="0.7">Level 2</text>
-                  <text x="45" y="73" fill="#5eead4" fontSize="5" opacity="0.5">Group 1</text>
-                  <text x="75" y="53" fill="#5eead4" fontSize="5" opacity="0.5">Group 2</text>
-                </svg>
-                <span className="text-xs font-semibold text-slate-300">다수준 분석 (HLM)</span>
-              </div>
-
-              {/* 토픽 모델링 */}
-              <div className="bg-white/[0.04] border border-white/[0.08] rounded-xl p-4 sm:p-5 backdrop-blur-sm hover:bg-white/[0.07] transition-all">
-                <div className="h-20 sm:h-24 flex flex-col justify-center gap-2 mb-3">
-                  {[
-                    { label: "Topic 1", words: "정책 · 제도 · 개선 · 법률", w: 85, color: "#0d9488" },
-                    { label: "Topic 2", words: "교육 · 학습 · 성과 · 평가", w: 70, color: "#14b8a6" },
-                    { label: "Topic 3", words: "사회 · 인식 · 변화 · 조사", w: 55, color: "#2dd4bf" },
-                  ].map((t, i) => (
-                    <div key={i}>
-                      <div className="flex items-center justify-between mb-0.5">
-                        <span className="text-[8px] font-bold text-slate-400">{t.label}</span>
-                        <span className="text-[7px] text-slate-500">{t.words}</span>
-                      </div>
-                      <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
-                        <div className="h-full rounded-full" style={{ width: `${t.w}%`, background: t.color }} />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <span className="text-xs font-semibold text-slate-300">토픽 모델링 (LDA)</span>
-              </div>
             </div>
           </div>
         </div>
