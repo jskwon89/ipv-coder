@@ -397,7 +397,7 @@ export default function LandingPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               <StepCard step={1} title="회원가입" description="간편 가입 후 바로 시작하세요" />
               <StepCard step={2} title="서비스 선택" description="필요한 연구 지원 서비스를 선택합니다" />
-              <StepCard step={3} title="자료 업로드" description="연구 자료와 요구사항을 전달합니다" />
+              <StepCard step={3} title="업로드 & 요청" description="연구 자료와 요구사항을 전달합니다" />
               <StepCard step={4} title="결과 확인" description="전문가가 수행한 분석 결과를 받아보세요" />
             </div>
           </div>
