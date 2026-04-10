@@ -407,9 +407,14 @@ export default function LandingPage() {
       )}
 
       {/* CTA + Footer — 통합 */}
-      <footer id="contact" className="bg-[#1a5276] text-white px-4 sm:px-6">
+      <footer id="contact" className="relative text-white px-4 sm:px-6 overflow-hidden">
+        {/* Background image */}
+        <div className="absolute inset-0">
+          <Image src="/images/dylan-gillis-KdeqA3aTnBY-unsplash.jpg" alt="" fill className="object-cover" />
+          <div className="absolute inset-0 bg-[#0f172a]/95" />
+        </div>
         {/* CTA */}
-        <div className="max-w-3xl mx-auto text-center py-20 sm:py-28">
+        <div className="relative z-10 max-w-3xl mx-auto text-center py-20 sm:py-28">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">함께하는 연구의 시작</h2>
           <p className="text-lg text-gray-400 mb-10">PRIMER와 함께 효율적인 연구를 시작하세요</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-8">
@@ -423,7 +428,7 @@ export default function LandingPage() {
         </div>
 
         {/* Footer info */}
-        <div className="max-w-[1600px] mx-auto pb-12 pt-6">
+        <div className="relative z-10 max-w-[1600px] mx-auto pb-12 pt-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-0">
             <div className="flex items-center gap-3">
               <span className="text-sm font-bold text-white/80">PRIMER</span>
