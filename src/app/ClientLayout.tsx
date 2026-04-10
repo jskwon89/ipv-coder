@@ -135,6 +135,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     { label: "크레딧 관리", href: "/credits" },
   ];
 
+  const isPrimer = getSiteMode() === 'primer';
+
   const filtered = search.trim()
     ? allMenuItems.filter(item => item.label.toLowerCase().includes(search.trim().toLowerCase()))
     : null;
@@ -144,7 +146,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       {/* Logo */}
       <div className="px-5 py-5 border-b border-white/8">
         <Link href="/" className="flex items-center gap-3 group" onClick={closeSidebar}>
-          <div className="w-8 h-8 rounded-lg bg-[#c49a2e] flex items-center justify-center shrink-0">
+          <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${isPrimer ? "bg-teal-500" : "bg-[#c49a2e]"}`}>
             <span className="text-white font-bold text-sm">{siteName[0]}</span>
           </div>
           <div>
@@ -202,19 +204,20 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             {getSiteMode() === 'primer' ? (
               <>
                 {/* PRIMER: 연구지원 */}
-                <SectionGroup color="bg-emerald-400/70" label="연구지원" pathname={pathname} prefixes={["/data-generation", "/stats-design", "/survey-request"]} defaultOpen>
+                <SectionGroup color="bg-teal-400" label="연구지원" pathname={pathname} prefixes={["/data-generation", "/stats-design", "/survey-request"]} defaultOpen>
                   <NavLink href="/data-generation" label="연구 설계 상담" pathname={pathname} onClick={closeSidebar} />
                   <NavLink href="/stats-design" label="통계분석 설계" pathname={pathname} onClick={closeSidebar} />
                   <NavLink href="/survey-request" label="설문구성 / 조사설계" pathname={pathname} onClick={closeSidebar} />
                 </SectionGroup>
 
                 {/* PRIMER: 커뮤니티 */}
-                <SectionGroup color="bg-teal-400/70" label="커뮤니티" pathname={pathname} prefixes={["/board"]} defaultOpen>
+                <SectionGroup color="bg-sky-400" label="커뮤니티" pathname={pathname} prefixes={["/board"]} defaultOpen>
                   <NavLink href="/board" label="자유게시판" pathname={pathname} onClick={closeSidebar} />
+                  <NavLink href="/board?category=Q%26A" label="Q & A" pathname={pathname} onClick={closeSidebar} />
                 </SectionGroup>
 
                 {/* PRIMER: 고객센터 */}
-                <SectionGroup color="bg-amber-400/70" label="고객센터" pathname={pathname} prefixes={["/faq", "/contact"]}>
+                <SectionGroup color="bg-slate-400" label="고객센터" pathname={pathname} prefixes={["/faq", "/contact"]}>
                   <NavLink href="/faq" label="자주 묻는 질문" pathname={pathname} onClick={closeSidebar} />
                   <NavLink href="/contact" label="문의사항" pathname={pathname} onClick={closeSidebar} />
                 </SectionGroup>
@@ -284,7 +287,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       </nav>
 
       {/* Footer */}
-      <div className="px-3 py-4 border-t border-white/10 space-y-3 bg-[#0b1422] mt-auto">
+      <div className={`px-3 py-4 border-t border-white/10 space-y-3 mt-auto ${isPrimer ? "bg-[#243447]" : "bg-[#0b1422]"}`}>
         {/* User info - mobile only */}
         <div className="md:hidden">
           {user ? (
@@ -364,10 +367,10 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   return (
     <div className="min-h-screen bg-gray-100 overflow-x-hidden">
       {/* Mobile top bar */}
-      <div className="fixed top-0 left-0 right-0 z-40 bg-[#0f1a2e] flex items-center justify-between px-4 py-3 md:hidden">
+      <div className={`fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4 py-3 md:hidden ${isPrimer ? "bg-[#2c3e50]" : "bg-[#0f1a2e]"}`}>
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-[#c49a2e] flex items-center justify-center shrink-0">
-            <span className="text-white font-bold text-xs">R</span>
+          <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${isPrimer ? "bg-teal-500" : "bg-[#c49a2e]"}`}>
+            <span className="text-white font-bold text-xs">{siteName[0]}</span>
           </div>
           <span className="text-sm font-bold text-white">{siteName}</span>
         </Link>
@@ -389,9 +392,10 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
       <aside className={`
         fixed top-0 bottom-0 left-0 z-50
-        w-[260px] md:w-60 bg-[#0f1a2e] text-[#c8d6e5] flex flex-col
+        w-[260px] md:w-60 flex flex-col
         transition-transform duration-300 ease-in-out
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0
+        ${isPrimer ? "bg-[#2c3e50] text-[#dce6f0]" : "bg-[#0f1a2e] text-[#c8d6e5]"}
       `}>
         {sidebarContent}
       </aside>
