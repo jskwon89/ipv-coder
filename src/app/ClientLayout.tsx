@@ -198,13 +198,13 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </Link>
 
             {/* 연구설계 */}
-            <SectionGroup color="bg-teal-400/70" label="연구설계" pathname={pathname} prefixes={["/data-generation", "/stats-design"]} defaultOpen>
+            <SectionGroup color="bg-teal-300" label="연구설계" pathname={pathname} prefixes={["/data-generation", "/stats-design"]} defaultOpen>
               <NavLink href="/data-generation" label="연구 주제 및 방향 설계" pathname={pathname} onClick={closeSidebar} />
               <NavLink href="/stats-design" label="통계분석 설계" pathname={pathname} onClick={closeSidebar} />
             </SectionGroup>
 
             {/* 연구 자료 생성 */}
-            <SectionGroup color="bg-blue-400/70" label="연구 자료 생성" pathname={pathname} prefixes={["/survey-request", "/survey-results", "/judgment", "/judgment-collection", "/judgment-results", "/news-search", "/news-results"]} defaultOpen>
+            <SectionGroup color="bg-slate-300" label="연구 자료 생성" pathname={pathname} prefixes={["/survey-request", "/survey-results", "/judgment", "/judgment-collection", "/judgment-results", "/news-search", "/news-results"]} defaultOpen>
               <SubCategory label="설문조사" pathname={pathname} prefixes={["/survey-request", "/survey-results"]}>
                 <NavLink href="/survey-request" label="설문조사 의뢰" pathname={pathname} onClick={closeSidebar} />
                 <NavLink href="/survey-results" label="결과 확인" pathname={pathname} onClick={closeSidebar} />
@@ -221,7 +221,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </SectionGroup>
 
             {/* 데이터 분석 */}
-            <SectionGroup color="bg-rose-400/70" label="데이터 분석" pathname={pathname} prefixes={["/data-transform", "/data-transform-results", "/stats-analysis", "/quant-analysis", "/quant-results", "/text-analysis", "/text-results", "/qual-analysis", "/qual-results"]} defaultOpen>
+            <SectionGroup color="bg-gray-400" label="데이터 분석" pathname={pathname} prefixes={["/data-transform", "/data-transform-results", "/stats-analysis", "/quant-analysis", "/quant-results", "/text-analysis", "/text-results", "/qual-analysis", "/qual-results"]} defaultOpen>
               <SubCategory label="데이터 전처리" pathname={pathname} prefixes={["/data-transform", "/data-transform-results", "/stats-analysis"]}>
                 <NavLink href="/data-transform" label="데이터 변환" pathname={pathname} onClick={closeSidebar} />
                 <NavLink href="/data-transform-results" label="결과 확인" pathname={pathname} onClick={closeSidebar} />
@@ -242,7 +242,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </SectionGroup>
 
             {/* 고객센터 */}
-            <SectionGroup color="bg-amber-400/70" label="고객센터" pathname={pathname} prefixes={["/faq", "/contact", "/credits"]}>
+            <SectionGroup color="bg-stone-300" label="고객센터" pathname={pathname} prefixes={["/faq", "/contact", "/credits"]}>
               <NavLink href="/faq" label="자주 묻는 질문" pathname={pathname} onClick={closeSidebar} />
               <NavLink href="/contact" label="문의사항" pathname={pathname} onClick={closeSidebar} />
               <NavLink href="/credits" label="크레딧 관리" pathname={pathname} onClick={closeSidebar} />
@@ -252,7 +252,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       </nav>
 
       {/* Footer */}
-      <div className="px-3 py-4 border-t border-gray-200 space-y-3 bg-[#e8e4df] mt-auto">
+      <div className="px-3 py-4 border-t border-gray-200 space-y-3 bg-[#e9eaec] mt-auto">
         {/* User info - mobile only */}
         <div className="md:hidden">
           {user ? (
@@ -332,7 +332,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   return (
     <div className="min-h-screen bg-gray-100 overflow-x-hidden">
       {/* Mobile top bar */}
-      <div className="fixed top-0 left-0 right-0 z-40 bg-[#f0ede8] flex items-center justify-between px-4 py-3 md:hidden">
+      <div className="fixed top-0 left-0 right-0 z-40 bg-[#f1f2f4] flex items-center justify-between px-4 py-3 md:hidden">
         <Link href="/" className="flex items-center gap-2">
           <div className="w-7 h-7 rounded-lg bg-teal-500 flex items-center justify-center shrink-0">
             <span className="text-white font-bold text-xs">P</span>
@@ -357,7 +357,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
       <aside className={`
         fixed top-0 bottom-0 left-0 z-50
-        w-[260px] md:w-60 bg-[#f0ede8] text-gray-700 flex flex-col
+        w-[260px] md:w-60 bg-[#f1f2f4] text-gray-700 flex flex-col
         transition-all duration-300 ease-in-out
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
         ${sidebarCollapsed ? "md:-translate-x-full" : "md:translate-x-0"}
