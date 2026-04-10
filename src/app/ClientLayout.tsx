@@ -201,7 +201,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </SectionGroup>
 
             {/* 연구 자료 생성 */}
-            <SectionGroup color="bg-slate-300" label="연구 자료 생성" pathname={pathname} prefixes={["/survey-request", "/survey-results", "/judgment", "/judgment-collection", "/judgment-results", "/news-search", "/news-results"]} defaultOpen>
+            <SectionGroup color="bg-slate-300" label="자료 생성 & 수집" pathname={pathname} prefixes={["/survey-request", "/survey-results", "/judgment", "/judgment-collection", "/judgment-results", "/news-search", "/news-results"]} defaultOpen>
               <SubCategory label="설문조사" pathname={pathname} prefixes={["/survey-request", "/survey-results"]}>
                 <NavLink href="/survey-request" label="설문조사 의뢰" pathname={pathname} onClick={closeSidebar} />
                 <NavLink href="/survey-results" label="결과 확인" pathname={pathname} onClick={closeSidebar} />

@@ -80,7 +80,7 @@ export default function LandingPage() {
             완성까지, 한 곳에서
           </h1>
           <p className="text-sm sm:text-lg md:text-xl text-white/80 mb-6 sm:mb-10 leading-relaxed">
-            연구설계, 자료 생성, 데이터 변환, 통계분석, 문서 작성까지
+            연구설계, 자료 생성 & 수집, 통계분석까지
             <br />
             하나의 플랫폼에서 쉽고 정확하게 진행하세요
           </p>
@@ -123,7 +123,7 @@ export default function LandingPage() {
             />
             <ServiceCard
               image="/images/landing-설문조사.png"
-              title="자료 수집"
+              title="자료 생성 & 수집"
               description="설문조사, 판결문, 뉴스 수집"
               href="/survey-request"
             />
