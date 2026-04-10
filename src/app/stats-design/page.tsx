@@ -5,6 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import InfoTooltip from "@/components/InfoTooltip";
 import { useUser } from "@/contexts/UserAuthContext";
+import { saveDraft, loadDraft } from "@/lib/formDraft";
 
 interface StatsDesignRequest {
   id: string;
@@ -73,6 +74,17 @@ export default function StatsDesignPage() {
 
   useEffect(() => {
     if (user?.email && !email) setEmail(user.email);
+    const d = loadDraft(pathname);
+    if (d) {
+      if (d.email) setEmail(d.email as string);
+      if (d.researchType) setResearchType(d.researchType as string);
+      if (d.dataType) setDataType(d.dataType as string);
+      if (d.sampleInfo) setSampleInfo(d.sampleInfo as string);
+      if (d.variables) setVariables(d.variables as string);
+      if (d.analysisGoal) setAnalysisGoal(d.analysisGoal as string);
+      if (d.currentMethods) setCurrentMethods(d.currentMethods as string);
+      if (d.description) setDescription(d.description as string);
+    }
   }, [user]);
 
   const fetchRequests = useCallback(async () => {
@@ -120,6 +132,7 @@ export default function StatsDesignPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) {
+      saveDraft(pathname, { email, researchType, dataType, sampleInfo, variables, analysisGoal, currentMethods, description });
       router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
       return;
     }

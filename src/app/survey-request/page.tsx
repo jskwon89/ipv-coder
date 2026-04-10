@@ -7,6 +7,7 @@ import QuestionEditor, { type SurveyQuestion } from "@/components/QuestionEditor
 import SurveyPreview from "@/components/SurveyPreview";
 import PageHeader from "@/components/PageHeader";
 import { useUser } from "@/contexts/UserAuthContext";
+import { saveDraft, loadDraft } from "@/lib/formDraft";
 
 function generateSatisfactionTemplate(): SurveyQuestion[] {
   return [
@@ -84,6 +85,11 @@ export default function SurveyRequestPage() {
   useEffect(() => {
     if (user?.email && !formData.email) {
       setFormData((prev) => ({ ...prev, email: user.email! }));
+    }
+    const d = loadDraft(pathname);
+    if (d) {
+      if (d.formData) setFormData((prev) => ({ ...prev, ...(d.formData as Record<string, unknown>) }));
+      if (d.surveyTitle) setSurveyTitle(d.surveyTitle as string);
     }
   }, [user]);
 
@@ -177,6 +183,7 @@ export default function SurveyRequestPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) {
+      saveDraft(pathname, { formData, surveyTitle });
       router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
       return;
     }
@@ -190,6 +197,7 @@ export default function SurveyRequestPage() {
 
   const handleSubmitAll = async () => {
     if (!user) {
+      saveDraft(pathname, { formData, surveyTitle });
       router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
       return;
     }

@@ -5,6 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
 import { useUser } from "@/contexts/UserAuthContext";
+import { saveDraft, loadDraft } from "@/lib/formDraft";
 
 type SearchType = "keyword" | "sentence";
 
@@ -37,6 +38,19 @@ export default function NewsSearchPage() {
 
   useEffect(() => {
     if (user?.email && !email) setEmail(user.email);
+    const d = loadDraft(pathname);
+    if (d) {
+      if (d.email) setEmail(d.email as string);
+      if (d.searchType) setSearchType(d.searchType as SearchType);
+      if (d.query) setQuery(d.query as string);
+      if (d.keywords) setKeywords(d.keywords as string[]);
+      if (d.operator) setOperator(d.operator as "AND" | "OR");
+      if (d.dateFrom) setDateFrom(d.dateFrom as string);
+      if (d.dateTo) setDateTo(d.dateTo as string);
+      if (d.purpose) setPurpose(d.purpose as string);
+      if (d.maxCount) setMaxCount(d.maxCount as number);
+      if (d.additionalNotes) setAdditionalNotes(d.additionalNotes as string);
+    }
   }, [user]);
 
   const addKeyword = () => {
@@ -54,6 +68,7 @@ export default function NewsSearchPage() {
 
   const handleSubmit = async () => {
     if (!user) {
+      saveDraft(pathname, { email, searchType, query, keywords, operator, dateFrom, dateTo, purpose, maxCount, additionalNotes });
       router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
       return;
     }

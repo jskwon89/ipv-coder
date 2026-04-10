@@ -5,6 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
 import { useUser } from "@/contexts/UserAuthContext";
+import { saveDraft, loadDraft } from "@/lib/formDraft";
 
 const analysisTypes = [
   "인터뷰 분석",
@@ -43,10 +44,20 @@ export default function QualAnalysisPage() {
 
   useEffect(() => {
     if (user?.email && !email) setEmail(user.email);
+    const d = loadDraft(pathname);
+    if (d) {
+      if (d.email) setEmail(d.email as string);
+      if (d.analysisType) setAnalysisType(d.analysisType as string);
+      if (d.dataDescription) setDataDescription(d.dataDescription as string);
+      if (d.dataFormat) setDataFormat(d.dataFormat as string);
+      if (d.analysisGoal) setAnalysisGoal(d.analysisGoal as string);
+      if (d.additionalNotes) setAdditionalNotes(d.additionalNotes as string);
+    }
   }, [user]);
 
   const handleSubmit = async () => {
     if (!user) {
+      saveDraft(pathname, { email, analysisType, dataDescription, dataFormat, analysisGoal, additionalNotes });
       router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
       return;
     }

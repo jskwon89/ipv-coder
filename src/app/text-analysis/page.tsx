@@ -6,6 +6,7 @@ import Link from "next/link";
 import CreditConfirmDialog from "@/components/CreditConfirmDialog";
 import PageHeader from "@/components/PageHeader";
 import { useUser } from "@/contexts/UserAuthContext";
+import { saveDraft, loadDraft } from "@/lib/formDraft";
 
 /* ───── analysis type definitions ───── */
 
@@ -115,6 +116,13 @@ export default function TextAnalysisPage() {
 
   useEffect(() => {
     if (user?.email && !email) setEmail(user.email);
+    const d = loadDraft(pathname);
+    if (d) {
+      if (d.email) setEmail(d.email as string);
+      if (d.textInput) setTextInput(d.textInput as string);
+      if (d.selected) setSelected(d.selected as string[]);
+      if (d.additionalNotes) setAdditionalNotes(d.additionalNotes as string);
+    }
   }, [user]);
 
   /* helpers */
@@ -343,6 +351,7 @@ export default function TextAnalysisPage() {
 
   const handleSubmitRequest = async () => {
     if (!user) {
+      saveDraft(pathname, { email, textInput, selected, additionalNotes });
       router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
       return;
     }

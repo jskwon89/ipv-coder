@@ -5,6 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
 import { useUser } from "@/contexts/UserAuthContext";
+import { saveDraft, loadDraft } from "@/lib/formDraft";
 
 const dataFormats = ["SPSS", "SAS", "Stata", "R", "Excel", "CSV"];
 
@@ -39,6 +40,16 @@ export default function DataTransformPage() {
 
   useEffect(() => {
     if (user?.email && !email) setEmail(user.email);
+    const d = loadDraft(pathname);
+    if (d) {
+      if (d.email) setEmail(d.email as string);
+      if (d.dataDescription) setDataDescription(d.dataDescription as string);
+      if (d.dataFormat) setDataFormat(d.dataFormat as string);
+      if (d.currentState) setCurrentState(d.currentState as string);
+      if (d.selectedTypes) setSelectedTypes(d.selectedTypes as string[]);
+      if (d.transformationDetail) setTransformationDetail(d.transformationDetail as string);
+      if (d.additionalNotes) setAdditionalNotes(d.additionalNotes as string);
+    }
   }, [user]);
 
   const toggleType = (type: string) => {
@@ -49,6 +60,7 @@ export default function DataTransformPage() {
 
   const handleSubmit = async () => {
     if (!user) {
+      saveDraft(pathname, { email, dataDescription, dataFormat, currentState, selectedTypes, transformationDetail, additionalNotes });
       router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
       return;
     }

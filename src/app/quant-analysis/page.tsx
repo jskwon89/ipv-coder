@@ -5,6 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
 import { useUser } from "@/contexts/UserAuthContext";
+import { saveDraft, loadDraft } from "@/lib/formDraft";
 
 const analysisTypes = [
   "t-test",
@@ -40,10 +41,21 @@ export default function QuantAnalysisPage() {
 
   useEffect(() => {
     if (user?.email && !email) setEmail(user.email);
+    const d = loadDraft(pathname);
+    if (d) {
+      if (d.email) setEmail(d.email as string);
+      if (d.analysisType) setAnalysisType(d.analysisType as string);
+      if (d.dataDescription) setDataDescription(d.dataDescription as string);
+      if (d.variables) setVariables(d.variables as string);
+      if (d.hypothesis) setHypothesis(d.hypothesis as string);
+      if (d.dataFormat) setDataFormat(d.dataFormat as string);
+      if (d.additionalNotes) setAdditionalNotes(d.additionalNotes as string);
+    }
   }, [user]);
 
   const handleSubmit = async () => {
     if (!user) {
+      saveDraft(pathname, { email, analysisType, dataDescription, variables, hypothesis, dataFormat, additionalNotes });
       router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
       return;
     }

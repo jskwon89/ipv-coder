@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { useUser } from "@/contexts/UserAuthContext";
+import { saveDraft, loadDraft } from "@/lib/formDraft";
 
 interface ContactInquiry {
   id: string;
@@ -44,6 +45,14 @@ export default function ContactPage() {
 
   useEffect(() => {
     if (user?.email && !email) setEmail(user.email);
+    const d = loadDraft(pathname);
+    if (d) {
+      if (d.email) setEmail(d.email as string);
+      if (d.name) setName(d.name as string);
+      if (d.category) setCategory(d.category as string);
+      if (d.subject) setSubject(d.subject as string);
+      if (d.message) setMessage(d.message as string);
+    }
   }, [user]);
 
   const fetchInquiries = useCallback(async () => {
@@ -58,6 +67,7 @@ export default function ContactPage() {
 
   const handleSubmit = async () => {
     if (!user) {
+      saveDraft(pathname, { email, name, category, subject, message });
       router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
       return;
     }

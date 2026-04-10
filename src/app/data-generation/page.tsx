@@ -5,6 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import InfoTooltip from "@/components/InfoTooltip";
 import { useUser } from "@/contexts/UserAuthContext";
+import { saveDraft, loadDraft } from "@/lib/formDraft";
 
 interface ResearchRequest {
   id: string;
@@ -74,6 +75,14 @@ export default function ResearchDesignPage() {
 
   useEffect(() => {
     if (user?.email && !email) setEmail(user.email);
+    const d = loadDraft(pathname);
+    if (d) {
+      if (d.keywords) setKeywords(d.keywords as string);
+      if (d.field) setField(d.field as string);
+      if (d.researchTypes) setResearchTypes(d.researchTypes as string[]);
+      if (d.description) setDescription(d.description as string);
+      if (d.email) setEmail(d.email as string);
+    }
   }, [user]);
 
   const fetchRequests = useCallback(async () => {
@@ -121,6 +130,7 @@ export default function ResearchDesignPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) {
+      saveDraft(pathname, { keywords, field, researchTypes, description, email });
       router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
       return;
     }

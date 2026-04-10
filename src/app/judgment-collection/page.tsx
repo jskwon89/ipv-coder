@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { useUser } from "@/contexts/UserAuthContext";
+import { saveDraft, loadDraft } from "@/lib/formDraft";
 
 type OutputFormat = "pdf" | "text" | "both";
 type Purpose = "학술연구" | "정책연구" | "실무참고" | "교육" | "기타";
@@ -61,6 +62,23 @@ export default function JudgmentCollectionPage() {
 
   useEffect(() => {
     if (user?.email && !email) setEmail(user.email);
+    const d = loadDraft(pathname);
+    if (d) {
+      if (d.name) setName(d.name as string);
+      if (d.email) setEmail(d.email as string);
+      if (d.org) setOrg(d.org as string);
+      if (d.purpose) setPurpose(d.purpose as Purpose);
+      if (d.keywords) setKeywords(d.keywords as string[]);
+      if (d.keywordLogic) setKeywordLogic(d.keywordLogic as LogicOp);
+      if (d.selectedCourts) setSelectedCourts(d.selectedCourts as string[]);
+      if (d.startYear) setStartYear(d.startYear as number);
+      if (d.endYear) setEndYear(d.endYear as number);
+      if (d.selectedCaseTypes) setSelectedCaseTypes(d.selectedCaseTypes as string[]);
+      if (d.lawKeyword) setLawKeyword(d.lawKeyword as string);
+      if (d.maxCount) setMaxCount(d.maxCount as number);
+      if (d.additionalNotes) setAdditionalNotes(d.additionalNotes as string);
+      if (d.outputFormat) setOutputFormat(d.outputFormat as OutputFormat);
+    }
   }, [user]);
 
   const addKeyword = () => {
@@ -112,6 +130,7 @@ export default function JudgmentCollectionPage() {
 
   const handleSubmit = async () => {
     if (!user) {
+      saveDraft(pathname, { name, email, org, purpose, keywords, keywordLogic, selectedCourts, startYear, endYear, selectedCaseTypes, lawKeyword, maxCount, additionalNotes, outputFormat });
       router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
       return;
     }
