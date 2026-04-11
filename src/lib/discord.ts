@@ -8,7 +8,7 @@ const serviceLabels: Record<string, string> = {
   'judgment-coding': '판결문 코딩',
   'news-collection': '뉴스 수집',
   'data-transform': '데이터 전처리',
-  'quant-analysis': '계량분석',
+  'quant-analysis': '통계분석',
   'text-analysis': '텍스트 분석',
   'qual-analysis': '질적분석',
 };

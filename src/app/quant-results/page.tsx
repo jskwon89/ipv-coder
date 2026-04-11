@@ -97,8 +97,8 @@ export default function QuantResultsPage() {
     <div className="p-8 max-w-5xl mx-auto">
       <ServiceTabs tabs={[{ label: "통계분석 의뢰", href: "/quant-analysis" }, { label: "결과 확인", href: "/quant-results" }]} />
 
-      <h1 className="text-2xl font-bold mb-2">계량분석 결과 확인</h1>
-      <p className="text-gray-600 text-sm mb-8">의뢰하신 계량분석의 진행 상황과 결과를 확인합니다.</p>
+      <h1 className="text-2xl font-bold mb-2">통계분석 결과 확인</h1>
+      <p className="text-gray-600 text-sm mb-8">의뢰하신 통계분석의 진행 상황과 결과를 확인합니다.</p>
 
       {/* Request list */}
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
@@ -112,7 +112,7 @@ export default function QuantResultsPage() {
             </svg>
             <p className="text-sm text-gray-400 mb-4">아직 의뢰 내역이 없습니다.</p>
             <Link href="/quant-analysis" className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors">
-              계량분석 의뢰하기
+              통계분석 의뢰하기
             </Link>
           </div>
         ) : (
@@ -128,7 +128,7 @@ export default function QuantResultsPage() {
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-3">
                       <span className="text-sm font-medium text-gray-900 truncate">
-                        {req.analysisType || "계량분석"}
+                        {req.analysisType || "통계분석"}
                       </span>
                       <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${sc.bg} ${sc.text}`}>
                         {sc.label}
@@ -173,7 +173,7 @@ export default function QuantResultsPage() {
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 shrink-0">
               <div className="min-w-0 flex-1">
-                <h3 className="font-semibold text-gray-900 truncate">{selectedRequest.analysisType || "계량분석"}</h3>
+                <h3 className="font-semibold text-gray-900 truncate">{selectedRequest.analysisType || "통계분석"}</h3>
                 <div className="flex items-center gap-3 mt-1">
                   <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusConfig[selectedRequest.status].bg} ${statusConfig[selectedRequest.status].text}`}>
                     {statusConfig[selectedRequest.status].label}

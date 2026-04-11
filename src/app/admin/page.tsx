@@ -49,7 +49,7 @@ const serviceTypes = [
   { key: "judgment-coding", label: "판결문 코딩", api: "/api/judgment-coding", titleField: "projectName" },
   { key: "news-collection", label: "뉴스 수집", api: "/api/news-collection", titleField: "keywords" },
   { key: "data-transform", label: "데이터 전처리", api: "/api/data-transform", titleField: "dataDescription" },
-  { key: "quant-analysis", label: "계량분석", api: "/api/quant-analysis", titleField: "analysisType" },
+  { key: "quant-analysis", label: "통계분석", api: "/api/quant-analysis", titleField: "analysisType" },
   { key: "text-analysis", label: "텍스트 분석", api: "/api/text-analysis-request", titleField: "analysisTypes" },
   { key: "qual-analysis", label: "질적분석", api: "/api/qual-analysis", titleField: "analysisType" },
 ];

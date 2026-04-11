@@ -46,8 +46,8 @@ const serviceSamples: ServiceSample[] = [
   },
   {
     key: "quant",
-    label: "계량분석",
-    description: "기초통계, 회귀분석, 구조방정식 등 계량분석 결과물 예시입니다.",
+    label: "통계분석",
+    description: "기초통계, 회귀분석, 구조방정식 등 통계분석 결과물 예시입니다.",
     files: [],
   },
   {

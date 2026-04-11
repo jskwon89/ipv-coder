@@ -78,12 +78,12 @@ export default function QuantAnalysisPage() {
     <div className="p-8 max-w-5xl mx-auto">
       <ServiceTabs tabs={[{ label: "통계분석 의뢰", href: "/quant-analysis" }, { label: "결과 확인", href: "/quant-results" }]} />
       <PageHeader
-        title="계량분석 의뢰"
+        title="통계분석 의뢰"
         subtitle="통계분석을 의뢰하고 전문적인 분석 결과를 받아보세요"
         detailTooltip={"📋 요청 순서:\n① 분석 유형·데이터 형식 선택\n② 데이터 설명·변수 정보 작성\n③ 가설/연구 질문 입력\n④ 이메일·추가 요청사항 입력 → 의뢰 접수\n⑤ 결과 확인에서 진행 상황·채팅\n\n지원 분석:\n• 회귀분석 (OLS, 로지스틱, 다항)\n• 패널분석 (고정효과, 랜덤효과, GMM)\n• 인과추론 (DID, RDD, IV, PSM)\n• SEM, 시계열, 생존분석 등"}
         breadcrumbs={[
           { label: "데이터 분석" },
-          { label: "계량분석" },
+          { label: "통계분석" },
         ]}
         iconBgClass="bg-amber-50"
         iconTextClass="text-primary"
