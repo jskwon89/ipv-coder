@@ -145,10 +145,10 @@ export default function JudgmentResultsPage() {
 
   return (
     <div className="p-8 max-w-5xl mx-auto">
-      <ServiceTabs tabs={[{ label: "판결문 코딩", href: "/judgment" }, { label: "수집 의뢰", href: "/judgment-collection" }, { label: "결과 확인", href: "/judgment-results" }]} />
+      <ServiceTabs tabs={[{ label: "판결문 의뢰", href: "/judgment" }, { label: "결과 확인", href: "/judgment-results" }]} />
 
-      <h1 className="text-2xl font-bold mb-2">판결문 수집 결과 확인</h1>
-      <p className="text-gray-600 text-sm mb-8">의뢰하신 판결문 수집의 진행 상황과 결과를 확인합니다.</p>
+      <h1 className="text-2xl font-bold mb-2">판결문 결과 확인</h1>
+      <p className="text-gray-600 text-sm mb-8">의뢰하신 판결문의 진행 상황과 결과를 확인합니다.</p>
 
       {/* 의뢰 목록 */}
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
@@ -162,7 +162,7 @@ export default function JudgmentResultsPage() {
             </svg>
             <p className="text-sm text-gray-400 mb-4">아직 의뢰 내역이 없습니다.</p>
             <Link
-              href="/judgment-collection"
+              href="/judgment"
               className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors"
             >
               판결문 수집 의뢰하기

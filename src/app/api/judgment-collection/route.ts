@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email, name, searchType } = body;
+    const { email, searchType } = body;
 
     if (!email || typeof email !== 'string' || email.trim() === '') {
       return Response.json(
@@ -26,13 +26,8 @@ export async function POST(request: NextRequest) {
         { status: 400 },
       );
     }
-    if (!name || typeof name !== 'string' || name.trim() === '') {
-      return Response.json(
-        { error: '이름을 입력해주세요.' },
-        { status: 400 },
-      );
-    }
-    if (!searchType || !['caseNumber', 'keyword'].includes(searchType)) {
+    const name = body.name || '';
+    if (!searchType || !['caseNumber', 'keyword', 'pdf', 'excel'].includes(searchType)) {
       return Response.json(
         { error: '검색 방식을 선택해주세요.' },
         { status: 400 },
