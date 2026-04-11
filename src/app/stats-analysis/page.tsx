@@ -65,14 +65,14 @@ export default function StatsAnalysisPage() {
 
   return (
     <div className="p-8 max-w-7xl mx-auto">
-      <ServiceTabs tabs={[{ label: "데이터 변환", href: "/data-transform" }, { label: "결과 확인", href: "/data-transform-results" }, { label: "기초통계", href: "/stats-analysis" }]} />
+      <ServiceTabs tabs={[{ label: "데이터 전처리", href: "/data-transform" }, { label: "결과 확인", href: "/data-transform-results" }, { label: "기초통계", href: "/stats-analysis" }]} />
       <PageHeader
         title="통계분석 / 시각화"
         subtitle="기술통계와 시각화는 바로 실행, 고급 분석은 의뢰 형태로 진행됩니다"
         detailTooltip={"📋 작업 순서:\n① 데이터 입력 (프로젝트 연결/파일 업로드/직접 입력)\n② 즉시 실행: 빈도분석·기술통계·교차표·시각화\n③ 또는 고급 분석 의뢰 (하단 폼)\n\n기초통계 (직접 실행):\n• 기술통계량 (평균, 표준편차, 분위수)\n• 빈도표, 교차표\n• 히스토그램, 박스플롯 시각화\n\n고급 분석 → 하단에서 의뢰 접수 가능"}
         breadcrumbs={[
-          { label: "계량통계분석" },
-          { label: "기초통계 및 시각화" },
+          { label: "데이터 분석" },
+          { label: "기초통계" },
         ]}
         iconBgClass="bg-rose-50"
         iconTextClass="text-rose-600"

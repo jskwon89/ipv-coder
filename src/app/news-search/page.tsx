@@ -100,8 +100,8 @@ export default function NewsSearchPage() {
         subtitle="키워드 또는 문장으로 뉴스 기사 수집을 의뢰합니다"
         detailTooltip={"📋 요청 순서:\n① 검색 조건 설정 (키워드 조합 / 문장 검색)\n② 수집 목적·기간·최대 건수 설정\n③ 추가 요청사항 작성 (선택)\n④ 이메일 입력 → 의뢰 접수\n⑤ 결과 확인에서 수집 현황·채팅\n\n수집 결과:\n• 기사 제목, 본문, 매체명, 날짜\n• 메타데이터 포함 엑셀 제공"}
         breadcrumbs={[
-          { label: "문서 코딩" },
-          { label: "뉴스 수집 의뢰" },
+          { label: "자료 생성 & 수집" },
+          { label: "뉴스/언론 보도" },
         ]}
         iconBgClass="bg-amber-50"
         iconTextClass="text-primary"

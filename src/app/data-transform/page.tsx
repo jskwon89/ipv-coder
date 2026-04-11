@@ -81,7 +81,7 @@ export default function DataTransformPage() {
 
   return (
     <div className="p-8 max-w-5xl mx-auto">
-      <ServiceTabs tabs={[{ label: "데이터 변환", href: "/data-transform" }, { label: "결과 확인", href: "/data-transform-results" }, { label: "기초통계", href: "/stats-analysis" }]} />
+      <ServiceTabs tabs={[{ label: "데이터 전처리", href: "/data-transform" }, { label: "결과 확인", href: "/data-transform-results" }, { label: "기초통계", href: "/stats-analysis" }]} />
       <PageHeader
         title="데이터 전처리 의뢰"
         subtitle="데이터 변환, 리코딩, 병합 등 전처리 작업을 의뢰합니다"

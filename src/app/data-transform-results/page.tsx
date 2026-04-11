@@ -99,7 +99,7 @@ export default function DataTransformResultsPage() {
 
   return (
     <div className="p-8 max-w-5xl mx-auto">
-      <ServiceTabs tabs={[{ label: "데이터 변환", href: "/data-transform" }, { label: "결과 확인", href: "/data-transform-results" }, { label: "기초통계", href: "/stats-analysis" }]} />
+      <ServiceTabs tabs={[{ label: "데이터 전처리", href: "/data-transform" }, { label: "결과 확인", href: "/data-transform-results" }, { label: "기초통계", href: "/stats-analysis" }]} />
 
       <h1 className="text-2xl font-bold mb-2">데이터 전처리 결과 확인</h1>
       <p className="text-gray-600 text-sm mb-8">의뢰하신 데이터 전처리의 진행 상황과 결과를 확인합니다.</p>
