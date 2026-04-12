@@ -1271,6 +1271,50 @@ export async function getGlobalChatMessages(email: string): Promise<GlobalChatMe
   }));
 }
 
+export interface GlobalChatSession {
+  email: string;
+  lastMessage: string;
+  lastSender: 'user' | 'admin';
+  lastAt: string;
+  messageCount: number;
+}
+
+export async function getGlobalChatSessions(): Promise<GlobalChatSession[]> {
+  const { data, error } = await supabase
+    .from('chat_messages')
+    .select('*')
+    .eq('service_type', 'global-chat')
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+
+  // Group by email (request_id)
+  const map = new Map<string, { messages: { sender: string; message: string; created_at: string }[] }>();
+  for (const row of data ?? []) {
+    const email = row.request_id as string;
+    if (!map.has(email)) map.set(email, { messages: [] });
+    map.get(email)!.messages.push({
+      sender: row.sender as string,
+      message: row.message as string,
+      created_at: row.created_at as string,
+    });
+  }
+
+  const sessions: GlobalChatSession[] = [];
+  for (const [email, { messages }] of map) {
+    const latest = messages[0]; // already sorted desc
+    sessions.push({
+      email,
+      lastMessage: latest.message,
+      lastSender: latest.sender as 'user' | 'admin',
+      lastAt: latest.created_at,
+      messageCount: messages.length,
+    });
+  }
+
+  sessions.sort((a, b) => new Date(b.lastAt).getTime() - new Date(a.lastAt).getTime());
+  return sessions;
+}
+
 export async function addGlobalChatMessage(email: string, sender: 'user' | 'admin', message: string): Promise<GlobalChatMessage> {
   const id = generateId();
   const { data, error } = await supabase

@@ -17,12 +17,12 @@ type HighlightStyle = "consultation" | "journal" | null;
 
 const highlightStyles: Record<string, { base: string; active: string; hover: string }> = {
   consultation: {
-    base: "text-orange-600 lg:text-[1.15rem] font-bold",
+    base: "text-orange-600 lg:text-[0.95rem] font-bold",
     active: "text-orange-700 bg-orange-50",
     hover: "hover:text-orange-700 hover:bg-orange-50/70",
   },
   journal: {
-    base: "text-indigo-600 lg:text-[1.15rem] font-bold",
+    base: "text-indigo-600 lg:text-[0.95rem] font-bold",
     active: "text-indigo-700 bg-indigo-50",
     hover: "hover:text-indigo-700 hover:bg-indigo-50/70",
   },
@@ -118,10 +118,10 @@ function TopMenuGroup({
     >
       <button
         onClick={() => (isOpen ? onClose() : onOpen(group.label))}
-        className={`flex items-center gap-1.5 px-4 py-2.5 rounded-lg transition-colors ${
+        className={`flex items-center gap-1 px-3 py-2 rounded-lg transition-colors whitespace-nowrap ${
           hl
             ? `${hl.base} ${isGroupActive ? hl.active : hl.hover}`
-            : `text-lg font-semibold ${isGroupActive ? "text-teal-600 bg-teal-50" : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"}`
+            : `text-[0.9rem] font-semibold ${isGroupActive ? "text-teal-600 bg-teal-50" : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"}`
         }`}
       >
         {group.label}
@@ -212,15 +212,15 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     <div className="min-h-screen bg-slate-50/50">
       {/* Top Navigation */}
       <header className="fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-200">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 sm:h-20">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center h-16 sm:h-20 gap-4">
             {/* Logo */}
             <Link href="/" className="flex items-center shrink-0">
-              <Image src="/logo-primer.png" alt="PRIMER" width={220} height={50} className="h-12 sm:h-14 w-auto" priority />
+              <Image src="/logo-primer.png" alt="PRIMER" width={220} height={50} className="h-10 sm:h-12 w-auto" priority />
             </Link>
 
-            {/* Desktop nav - centered */}
-            <nav className="hidden lg:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
+            {/* Desktop nav - flex with auto spacing */}
+            <nav className="hidden lg:flex items-center gap-0.5 flex-1 justify-center min-w-0">
               {menuGroups.map((group) => {
                 const hl = group.highlight ? highlightStyles[group.highlight] : null;
                 const isActive = group.prefixes.some((p) => pathname === p || pathname.startsWith(p + "/"));
@@ -228,10 +228,10 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   <Link
                     key={group.label}
                     href={group.items[0].href}
-                    className={`px-4 py-2.5 rounded-lg transition-colors ${
+                    className={`px-3 py-2 rounded-lg transition-colors whitespace-nowrap ${
                       hl
                         ? `${hl.base} ${isActive ? hl.active : hl.hover}`
-                        : `text-lg font-semibold ${isActive ? "text-teal-600 bg-teal-50" : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"}`
+                        : `text-[0.9rem] font-semibold ${isActive ? "text-teal-600 bg-teal-50" : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"}`
                     }`}
                   >
                     {group.label}

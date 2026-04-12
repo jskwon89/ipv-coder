@@ -70,7 +70,14 @@ export default function AdminPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [chargeAmount, setChargeAmount] = useState("");
   const [charging, setCharging] = useState(false);
-  const [activeTab, setActiveTab] = useState<"overview" | "requests" | "inquiries" | "credits" | "projects" | "site-settings">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "requests" | "inquiries" | "live-chat" | "credits" | "projects" | "site-settings">("overview");
+
+  // Live chat (global chat sessions)
+  const [chatSessions, setChatSessions] = useState<{ email: string; lastMessage: string; lastSender: string; lastAt: string; messageCount: number }[]>([]);
+  const [selectedChatEmail, setSelectedChatEmail] = useState<string | null>(null);
+  const [liveChatMessages, setLiveChatMessages] = useState<{ id: string; sender: string; message: string; createdAt: string }[]>([]);
+  const [liveChatInput, setLiveChatInput] = useState("");
+  const [sendingLiveChat, setSendingLiveChat] = useState(false);
 
   // Site settings (landing page sections)
   const [siteSettings, setSiteSettings] = useState<Record<string, boolean>>({
@@ -114,7 +121,52 @@ export default function AdminPage() {
     fetchRequests();
     fetchInquiries();
     fetchSiteSettings();
+    fetchChatSessions();
   }, [isAdmin, router]);
+
+  const fetchChatSessions = async () => {
+    try {
+      const res = await fetch("/api/global-chat/sessions");
+      const data = await res.json();
+      setChatSessions(data.sessions ?? []);
+    } catch { /* ignore */ }
+  };
+
+  const fetchLiveChatMessages = async (email: string) => {
+    try {
+      const res = await fetch(`/api/global-chat?email=${encodeURIComponent(email)}`);
+      const data = await res.json();
+      setLiveChatMessages((data.messages ?? []).map((m: Record<string, string>) => ({
+        id: m.id,
+        sender: m.sender,
+        message: m.message,
+        createdAt: m.createdAt || m.created_at,
+      })));
+    } catch { /* ignore */ }
+  };
+
+  const handleSendLiveChat = async () => {
+    if (!selectedChatEmail || !liveChatInput.trim() || sendingLiveChat) return;
+    setSendingLiveChat(true);
+    try {
+      await fetch("/api/global-chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: selectedChatEmail, sender: "admin", message: liveChatInput.trim() }),
+      });
+      setLiveChatInput("");
+      await fetchLiveChatMessages(selectedChatEmail);
+    } catch { /* ignore */ }
+    finally { setSendingLiveChat(false); }
+  };
+
+  // Poll live chat messages
+  useEffect(() => {
+    if (!selectedChatEmail) return;
+    fetchLiveChatMessages(selectedChatEmail);
+    const interval = setInterval(() => fetchLiveChatMessages(selectedChatEmail), 3000);
+    return () => clearInterval(interval);
+  }, [selectedChatEmail]);
 
   const fetchSiteSettings = async () => {
     try {
@@ -387,6 +439,7 @@ export default function AdminPage() {
           { key: "overview", label: "전체 현황" },
           { key: "requests", label: `의뢰 관리${pendingCount ? ` (${pendingCount})` : ""}` },
           { key: "inquiries", label: `문의 관리${pendingInquiryCount ? ` (${pendingInquiryCount})` : ""}` },
+          { key: "live-chat", label: `실시간 상담${chatSessions.filter(s => s.lastSender === "user").length ? ` (${chatSessions.filter(s => s.lastSender === "user").length})` : ""}` },
           { key: "credits", label: "크레딧 관리" },
           { key: "projects", label: "프로젝트 관리" },
           { key: "site-settings", label: "사이트 설정" },
@@ -919,6 +972,101 @@ export default function AdminPage() {
                 <p className="text-sm text-gray-400 py-4">거래 내역이 없습니다</p>
               )}
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Live Chat */}
+      {activeTab === "live-chat" && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6" style={{ height: "calc(100vh - 220px)" }}>
+          {/* Session List */}
+          <div className="bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden">
+            <div className="px-4 py-3 border-b border-gray-100 shrink-0 flex items-center justify-between">
+              <h3 className="font-bold text-sm text-gray-900">상담 목록</h3>
+              <button onClick={fetchChatSessions} className="text-xs text-gray-400 hover:text-gray-600">새로고침</button>
+            </div>
+            <div className="flex-1 overflow-y-auto divide-y divide-gray-50">
+              {chatSessions.length === 0 ? (
+                <div className="p-8 text-center text-sm text-gray-400">상담 내역이 없습니다</div>
+              ) : chatSessions.map((s) => (
+                <button
+                  key={s.email}
+                  onClick={() => { setSelectedChatEmail(s.email); fetchLiveChatMessages(s.email); }}
+                  className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors ${selectedChatEmail === s.email ? "bg-teal-50 border-l-2 border-teal-500" : ""}`}
+                >
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-medium text-gray-900 truncate">{s.email}</span>
+                    {s.lastSender === "user" && (
+                      <span className="w-2 h-2 bg-red-500 rounded-full shrink-0 ml-2" />
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-500 truncate">{s.lastMessage}</p>
+                  <div className="flex items-center justify-between mt-1">
+                    <span className="text-[10px] text-gray-400">{new Date(s.lastAt).toLocaleString("ko-KR", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}</span>
+                    <span className="text-[10px] text-gray-400">{s.messageCount}건</span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Chat Panel */}
+          <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden">
+            {!selectedChatEmail ? (
+              <div className="flex-1 flex items-center justify-center text-sm text-gray-400">좌측에서 상담을 선택하세요</div>
+            ) : (
+              <>
+                <div className="px-5 py-3 border-b border-gray-100 shrink-0 flex items-center justify-between">
+                  <div>
+                    <h3 className="font-bold text-sm text-gray-900">{selectedChatEmail}</h3>
+                    <p className="text-xs text-gray-400">실시간 상담 채팅</p>
+                  </div>
+                </div>
+
+                <div className="flex-1 overflow-y-auto px-5 py-4">
+                  {liveChatMessages.length === 0 ? (
+                    <p className="text-sm text-gray-400 text-center py-8">메시지가 없습니다</p>
+                  ) : (
+                    <div className="space-y-3">
+                      {liveChatMessages.map((msg) => (
+                        <div key={msg.id} className={`flex ${msg.sender === "admin" ? "justify-end" : "justify-start"}`}>
+                          <div className={`max-w-[70%] rounded-xl px-4 py-2.5 ${
+                            msg.sender === "admin"
+                              ? "bg-teal-600 text-white"
+                              : "bg-gray-100 text-gray-900"
+                          }`}>
+                            <p className="text-sm whitespace-pre-wrap">{msg.message}</p>
+                            <p className={`text-[10px] mt-1 ${msg.sender === "admin" ? "text-white/60 text-right" : "text-gray-400"}`}>
+                              {new Date(msg.createdAt).toLocaleString("ko-KR", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <div className="shrink-0 border-t border-gray-100 px-5 py-3">
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={liveChatInput}
+                      onChange={(e) => setLiveChatInput(e.target.value)}
+                      onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSendLiveChat(); } }}
+                      placeholder="관리자 메시지 입력..."
+                      className="flex-1 px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-600/40"
+                    />
+                    <button
+                      onClick={handleSendLiveChat}
+                      disabled={sendingLiveChat || !liveChatInput.trim()}
+                      className="px-5 py-2.5 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors disabled:opacity-50 shrink-0"
+                    >
+                      전송
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
