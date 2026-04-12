@@ -190,11 +190,9 @@ export default function ChatWidget() {
                   )}
                 </div>
                 <div>
-                  <h3 className="font-semibold text-sm">
-                    {connectedToAgent ? "PRIMER 상담사" : "PRIMER 자동상담"}
-                  </h3>
+                  <h3 className="font-semibold text-sm">PRIMER 상담</h3>
                   <p className="text-xs text-white/70 mt-0.5">
-                    {connectedToAgent ? "상담사가 응답합니다" : "무엇이든 편하게 물어보세요"}
+                    상담시간 10:00 ~ 18:00 (평일)
                   </p>
                 </div>
               </div>
