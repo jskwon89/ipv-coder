@@ -84,13 +84,13 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white text-gray-900">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-[#0f172a] min-h-[85vh] flex items-center">
+      <section className="relative overflow-hidden bg-[#0f172a] min-h-[60vh] sm:min-h-[85vh] flex items-center">
         {/* Background layers */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a] via-[#0f172a] to-teal-900/30" />
 
           {/* Academic visualization background */}
-          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1400 800" fill="none" preserveAspectRatio="xMaxYMid slice">
+          <svg className="absolute inset-0 w-full h-full hidden sm:block" viewBox="0 0 1400 800" fill="none" preserveAspectRatio="xMaxYMid slice">
             {/* ===== 1. WORD CLOUD (center-right, large, 논문 워드클라우드 형태) ===== */}
             <g opacity="0.22" transform="translate(980, 240)">
               {/* 핵심 키워드 — 크기=빈도, 빽빽하게 모여있는 형태 */}

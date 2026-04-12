@@ -17,12 +17,12 @@ type HighlightStyle = "consultation" | "journal" | null;
 
 const highlightStyles: Record<string, { base: string; active: string; hover: string }> = {
   consultation: {
-    base: "text-orange-600 text-[1.15rem] font-bold",
+    base: "text-orange-600 lg:text-[1.15rem] font-bold",
     active: "text-orange-700 bg-orange-50",
     hover: "hover:text-orange-700 hover:bg-orange-50/70",
   },
   journal: {
-    base: "text-indigo-600 text-[1.15rem] font-bold",
+    base: "text-indigo-600 lg:text-[1.15rem] font-bold",
     active: "text-indigo-700 bg-indigo-50",
     hover: "hover:text-indigo-700 hover:bg-indigo-50/70",
   },
@@ -338,7 +338,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                       key={group.label}
                       href={group.items[0].href}
                       onClick={closeMobile}
-                      className={`block px-3 py-2.5 rounded-lg font-semibold text-[0.95rem] ${isGroupActive ? hl.active : `${hl.base} ${hl.hover}`}`}
+                      className={`block px-3 py-2.5 rounded-lg font-semibold text-sm ${isGroupActive ? hl.active : `${hl.base.replace(/lg:text-\[.*?\]/, '')} ${hl.hover}`}`}
                     >
                       {group.label}
                     </Link>
