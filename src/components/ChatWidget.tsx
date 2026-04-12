@@ -152,6 +152,15 @@ export default function ChatWidget() {
     setConnectedToAgent(true);
     await sendMessage("[상담사 연결 요청] 고객이 실시간 상담을 요청했습니다.", "user");
     await sendMessage("상담사에게 연결 요청을 보냈습니다. 잠시만 기다려주세요. 담당자가 곧 응답드리겠습니다.", "admin");
+
+    // Discord 알림으로 관리자에게 통보
+    const lastUserMsg = messages.filter(m => m.sender === "user").pop();
+    fetch("/api/global-chat/connect-agent", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: user.email, lastMessage: lastUserMsg?.message }),
+    }).catch(() => {});
+
     await fetchMessages();
   };
 
