@@ -1159,6 +1159,143 @@ export async function addJudgmentCodingMessage(requestId: string, sender: 'user'
 }
 
 // ---------------------------------------------------------------------------
+// Consultation (간편 상담)
+// ---------------------------------------------------------------------------
+
+export interface ConsultationRequest {
+  id: string;
+  email: string;
+  services: string[];
+  budget: string;
+  timeline: string;
+  description: string;
+  status: 'pending' | 'in_progress' | 'completed';
+  createdAt: string;
+  adminResponse: string;
+  respondedAt: string;
+}
+
+export async function getConsultationRequests(email?: string): Promise<ConsultationRequest[]> {
+  return _getServiceRequests<ConsultationRequest>('consultation', email);
+}
+
+export async function getConsultationRequest(id: string): Promise<ConsultationRequest | undefined> {
+  return _getServiceRequest<ConsultationRequest>('consultation', id);
+}
+
+export async function createConsultationRequest(data: { email: string; services: string[]; budget: string; timeline: string; description: string }): Promise<ConsultationRequest> {
+  return _createServiceRequest<ConsultationRequest>('consultation', data);
+}
+
+export async function updateConsultationRequest(id: string, patch: Record<string, unknown>): Promise<ConsultationRequest | undefined> {
+  return _updateServiceRequest<ConsultationRequest>('consultation', id, patch);
+}
+
+export async function getConsultationMessages(requestId: string): Promise<ChatMessage[]> {
+  return _getMessages('consultation', requestId);
+}
+
+export async function addConsultationMessage(requestId: string, sender: 'user' | 'admin', message: string): Promise<ChatMessage> {
+  return _addMessage('consultation', requestId, sender, message);
+}
+
+// ---------------------------------------------------------------------------
+// Journal Submission (국제학술지 투고 상담)
+// ---------------------------------------------------------------------------
+
+export interface JournalSubmissionRequest {
+  id: string;
+  email: string;
+  serviceType: string;
+  journalField: string;
+  targetJournal: string;
+  paperStage: string;
+  language: string;
+  description: string;
+  status: 'pending' | 'in_progress' | 'completed';
+  createdAt: string;
+  adminResponse: string;
+  respondedAt: string;
+}
+
+export async function getJournalSubmissionRequests(email?: string): Promise<JournalSubmissionRequest[]> {
+  return _getServiceRequests<JournalSubmissionRequest>('journal-submission', email);
+}
+
+export async function getJournalSubmissionRequest(id: string): Promise<JournalSubmissionRequest | undefined> {
+  return _getServiceRequest<JournalSubmissionRequest>('journal-submission', id);
+}
+
+export async function createJournalSubmissionRequest(data: { email: string; serviceType: string; journalField: string; targetJournal: string; paperStage: string; language: string; description: string }): Promise<JournalSubmissionRequest> {
+  return _createServiceRequest<JournalSubmissionRequest>('journal-submission', data);
+}
+
+export async function updateJournalSubmissionRequest(id: string, patch: Record<string, unknown>): Promise<JournalSubmissionRequest | undefined> {
+  return _updateServiceRequest<JournalSubmissionRequest>('journal-submission', id, patch);
+}
+
+export async function getJournalSubmissionMessages(requestId: string): Promise<ChatMessage[]> {
+  return _getMessages('journal-submission', requestId);
+}
+
+export async function addJournalSubmissionMessage(requestId: string, sender: 'user' | 'admin', message: string): Promise<ChatMessage> {
+  return _addMessage('journal-submission', requestId, sender, message);
+}
+
+// ---------------------------------------------------------------------------
+// Global Chat (전역 상담 채팅)
+// ---------------------------------------------------------------------------
+
+export interface GlobalChatMessage {
+  id: string;
+  email: string;
+  sender: 'user' | 'admin';
+  message: string;
+  createdAt: string;
+}
+
+export async function getGlobalChatMessages(email: string): Promise<GlobalChatMessage[]> {
+  const { data, error } = await supabase
+    .from('chat_messages')
+    .select('*')
+    .eq('service_type', 'global-chat')
+    .eq('request_id', email)
+    .order('created_at', { ascending: true });
+  if (error) throw error;
+  return (data ?? []).map((row: Record<string, unknown>) => ({
+    id: row.id as string,
+    email: row.request_id as string,
+    sender: row.sender as 'user' | 'admin',
+    message: row.message as string,
+    createdAt: row.created_at as string,
+  }));
+}
+
+export async function addGlobalChatMessage(email: string, sender: 'user' | 'admin', message: string): Promise<GlobalChatMessage> {
+  const id = generateId();
+  const { data, error } = await supabase
+    .from('chat_messages')
+    .insert({
+      id,
+      service_type: 'global-chat',
+      request_id: email,
+      sender,
+      message,
+      created_at: new Date().toISOString(),
+    })
+    .select()
+    .single();
+  if (error) throw error;
+  return {
+    id: data.id,
+    email: data.request_id,
+    sender: data.sender as 'user' | 'admin',
+    message: data.message,
+    createdAt: data.created_at,
+  };
+}
+
+// ---------------------------------------------------------------------------
 // Contact Inquiries
 // ---------------------------------------------------------------------------
 

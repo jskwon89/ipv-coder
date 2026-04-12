@@ -8,11 +8,19 @@ import { CreditBalance } from "./credits/CreditBalance";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUser } from "@/contexts/UserAuthContext";
 import { AdminLoginModal } from "@/components/AdminLoginModal";
+import ChatWidget from "@/components/ChatWidget";
 
 const NO_TOPNAV_PATHS = ["/login", "/signup"];
 
 /* ── Simplified menu data ── */
 const menuGroups = [
+  {
+    label: "간편 상담",
+    prefixes: ["/consultation"],
+    items: [
+      { label: "간편 상담 신청", href: "/consultation" },
+    ],
+  },
   {
     label: "연구 설계",
     prefixes: ["/data-generation", "/stats-design"],
@@ -37,6 +45,13 @@ const menuGroups = [
       { label: "전처리 & 기초통계", href: "/data-transform" },
       { label: "통계분석", href: "/quant-analysis" },
       { label: "텍스트 & 질적분석", href: "/text-analysis" },
+    ],
+  },
+  {
+    label: "학술지 투고",
+    prefixes: ["/journal-submission"],
+    items: [
+      { label: "국제학술지 투고 상담", href: "/journal-submission" },
     ],
   },
   {
@@ -347,6 +362,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       </main>
 
       {showLogin && <AdminLoginModal onClose={() => setShowLogin(false)} />}
+      <ChatWidget />
     </div>
   );
 }

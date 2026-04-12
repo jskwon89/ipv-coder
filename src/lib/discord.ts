@@ -11,6 +11,8 @@ const serviceLabels: Record<string, string> = {
   'quant-analysis': '통계분석',
   'text-analysis': '텍스트 분석',
   'qual-analysis': '질적분석',
+  'consultation': '간편 상담',
+  'journal-submission': '학술지 투고 상담',
 };
 
 export async function notifyNewRequest(serviceType: string, email: string, details?: string) {
