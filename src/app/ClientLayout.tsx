@@ -12,11 +12,28 @@ import ChatWidget from "@/components/ChatWidget";
 
 const NO_TOPNAV_PATHS = ["/login", "/signup"];
 
+/* ── Highlight styles for special menu items ── */
+type HighlightStyle = "consultation" | "journal" | null;
+
+const highlightStyles: Record<string, { base: string; active: string; hover: string }> = {
+  consultation: {
+    base: "text-orange-600 text-[1.15rem] font-bold",
+    active: "text-orange-700 bg-orange-50",
+    hover: "hover:text-orange-700 hover:bg-orange-50/70",
+  },
+  journal: {
+    base: "text-indigo-600 text-[1.15rem] font-bold",
+    active: "text-indigo-700 bg-indigo-50",
+    hover: "hover:text-indigo-700 hover:bg-indigo-50/70",
+  },
+};
+
 /* ── Simplified menu data ── */
 const menuGroups = [
   {
     label: "간편 상담",
     prefixes: ["/consultation"],
+    highlight: "consultation" as HighlightStyle,
     items: [
       { label: "간편 상담 신청", href: "/consultation" },
     ],
@@ -24,46 +41,47 @@ const menuGroups = [
   {
     label: "연구 설계",
     prefixes: ["/data-generation", "/stats-design"],
+    highlight: null as HighlightStyle,
     items: [
       { label: "연구 주제 및 방향 설계", href: "/data-generation" },
       { label: "통계분석 설계", href: "/stats-design" },
+      { label: "결과물 샘플", href: "/samples", divider: true },
     ],
   },
   {
     label: "자료 생성 & 수집",
     prefixes: ["/survey-request", "/survey-results", "/judgment", "/judgment-collection", "/judgment-results", "/news-search", "/news-results"],
+    highlight: null as HighlightStyle,
     items: [
       { label: "설문조사", href: "/survey-request" },
       { label: "판결문", href: "/judgment" },
       { label: "뉴스/언론 보도", href: "/news-search" },
+      { label: "결과물 샘플", href: "/samples", divider: true },
     ],
   },
   {
     label: "데이터 분석",
     prefixes: ["/data-transform", "/data-transform-results", "/stats-analysis", "/quant-analysis", "/quant-results", "/text-analysis", "/text-results", "/qual-analysis", "/qual-results"],
+    highlight: null as HighlightStyle,
     items: [
       { label: "전처리 & 기초통계", href: "/data-transform" },
       { label: "통계분석", href: "/quant-analysis" },
       { label: "텍스트 & 질적분석", href: "/text-analysis" },
+      { label: "결과물 샘플", href: "/samples", divider: true },
     ],
   },
   {
-    label: "학술지 투고",
+    label: "국제 학술지",
     prefixes: ["/journal-submission"],
+    highlight: "journal" as HighlightStyle,
     items: [
       { label: "국제학술지 투고 상담", href: "/journal-submission" },
     ],
   },
   {
-    label: "결과물 샘플",
-    prefixes: ["/samples"],
-    items: [
-      { label: "결과물 샘플", href: "/samples" },
-    ],
-  },
-  {
     label: "고객센터",
     prefixes: ["/faq", "/contact", "/credits"],
+    highlight: null as HighlightStyle,
     items: [
       { label: "자주 묻는 질문", href: "/faq" },
       { label: "문의사항", href: "/contact" },
@@ -90,6 +108,7 @@ function TopMenuGroup({
   const isGroupActive = group.prefixes.some(
     (p) => pathname === p || pathname.startsWith(p + "/")
   );
+  const hl = group.highlight ? highlightStyles[group.highlight] : null;
 
   return (
     <div
@@ -99,10 +118,10 @@ function TopMenuGroup({
     >
       <button
         onClick={() => (isOpen ? onClose() : onOpen(group.label))}
-        className={`flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-lg font-semibold transition-colors ${
-          isGroupActive
-            ? "text-teal-600 bg-teal-50"
-            : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+        className={`flex items-center gap-1.5 px-4 py-2.5 rounded-lg transition-colors ${
+          hl
+            ? `${hl.base} ${isGroupActive ? hl.active : hl.hover}`
+            : `text-lg font-semibold ${isGroupActive ? "text-teal-600 bg-teal-50" : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"}`
         }`}
       >
         {group.label}
@@ -123,18 +142,22 @@ function TopMenuGroup({
               (p) => p.startsWith(item.href) && (pathname === p || pathname.startsWith(p + "/"))
             ) || pathname === item.href || pathname.startsWith(item.href + "/");
             return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={onClose}
-                className={`block px-4 py-2.5 text-sm transition-colors ${
-                  isActive
-                    ? "text-teal-600 bg-teal-50 font-medium"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                }`}
-              >
-                {item.label}
-              </Link>
+              <div key={item.href}>
+                {"divider" in item && item.divider && (
+                  <div className="my-1 border-t border-gray-100" />
+                )}
+                <Link
+                  href={item.href}
+                  onClick={onClose}
+                  className={`block px-4 py-2.5 text-sm transition-colors ${
+                    isActive
+                      ? "text-teal-600 bg-teal-50 font-medium"
+                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              </div>
             );
           })}
         </div>
@@ -198,15 +221,17 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
             {/* Desktop nav - centered */}
             <nav className="hidden lg:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
-              {menuGroups.map((group) =>
-                group.items.length === 1 ? (
+              {menuGroups.map((group) => {
+                const hl = group.highlight ? highlightStyles[group.highlight] : null;
+                const isActive = group.prefixes.some((p) => pathname === p || pathname.startsWith(p + "/"));
+                return group.items.length === 1 ? (
                   <Link
                     key={group.label}
                     href={group.items[0].href}
-                    className={`px-4 py-2.5 rounded-lg text-lg font-semibold transition-colors ${
-                      group.prefixes.some((p) => pathname === p || pathname.startsWith(p + "/"))
-                        ? "text-teal-600 bg-teal-50"
-                        : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                    className={`px-4 py-2.5 rounded-lg transition-colors ${
+                      hl
+                        ? `${hl.base} ${isActive ? hl.active : hl.hover}`
+                        : `text-lg font-semibold ${isActive ? "text-teal-600 bg-teal-50" : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"}`
                     }`}
                   >
                     {group.label}
@@ -220,8 +245,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                     onOpen={handleDesktopOpen}
                     onClose={handleDesktopClose}
                   />
-                )
-              )}
+                );
+              })}
             </nav>
 
             {/* Right side */}
@@ -304,6 +329,22 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               {menuGroups.map((group) => {
                 const isExpanded = mobileExpandedGroup === group.label;
                 const isGroupActive = group.prefixes.some((p) => pathname === p || pathname.startsWith(p + "/"));
+                const hl = group.highlight ? highlightStyles[group.highlight] : null;
+
+                // Single-item highlighted groups render as direct links on mobile too
+                if (group.items.length === 1 && hl) {
+                  return (
+                    <Link
+                      key={group.label}
+                      href={group.items[0].href}
+                      onClick={closeMobile}
+                      className={`block px-3 py-2.5 rounded-lg font-semibold text-[0.95rem] ${isGroupActive ? hl.active : `${hl.base} ${hl.hover}`}`}
+                    >
+                      {group.label}
+                    </Link>
+                  );
+                }
+
                 return (
                   <div key={group.label}>
                     <button
@@ -318,14 +359,16 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                     {isExpanded && (
                       <div className="ml-3 mt-1 space-y-0.5 border-l-2 border-gray-100 pl-3">
                         {group.items.map((item) => (
-                          <Link
-                            key={item.href}
-                            href={item.href}
-                            onClick={closeMobile}
-                            className={`block px-3 py-2 rounded-lg text-sm ${pathname === item.href || pathname.startsWith(item.href + "/") ? "text-teal-600 font-medium" : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"}`}
-                          >
-                            {item.label}
-                          </Link>
+                          <div key={item.href}>
+                            {"divider" in item && item.divider && <div className="my-1 border-t border-gray-100" />}
+                            <Link
+                              href={item.href}
+                              onClick={closeMobile}
+                              className={`block px-3 py-2 rounded-lg text-sm ${pathname === item.href || pathname.startsWith(item.href + "/") ? "text-teal-600 font-medium" : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"}`}
+                            >
+                              {item.label}
+                            </Link>
+                          </div>
                         ))}
                       </div>
                     )}
