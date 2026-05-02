@@ -1243,6 +1243,90 @@ export async function addJournalSubmissionMessage(requestId: string, sender: 'us
 }
 
 // ---------------------------------------------------------------------------
+// Contest Search (공모전 정보 검색)
+// ---------------------------------------------------------------------------
+
+export interface ContestSearchRequest {
+  id: string;
+  email: string;
+  contestField: string;
+  eligibility: string;
+  urgency: string;
+  keywords: string;
+  description: string;
+  status: 'pending' | 'in_progress' | 'completed';
+  createdAt: string;
+  adminResponse: string;
+  respondedAt: string;
+}
+
+export async function getContestSearchRequests(email?: string): Promise<ContestSearchRequest[]> {
+  return _getServiceRequests<ContestSearchRequest>('contest-search', email);
+}
+
+export async function getContestSearchRequest(id: string): Promise<ContestSearchRequest | undefined> {
+  return _getServiceRequest<ContestSearchRequest>('contest-search', id);
+}
+
+export async function createContestSearchRequest(data: { email: string; contestField: string; eligibility: string; urgency: string; keywords: string; description: string }): Promise<ContestSearchRequest> {
+  return _createServiceRequest<ContestSearchRequest>('contest-search', data);
+}
+
+export async function updateContestSearchRequest(id: string, patch: Record<string, unknown>): Promise<ContestSearchRequest | undefined> {
+  return _updateServiceRequest<ContestSearchRequest>('contest-search', id, patch);
+}
+
+export async function getContestSearchMessages(requestId: string): Promise<ChatMessage[]> {
+  return _getMessages('contest-search', requestId);
+}
+
+export async function addContestSearchMessage(requestId: string, sender: 'user' | 'admin', message: string): Promise<ChatMessage> {
+  return _addMessage('contest-search', requestId, sender, message);
+}
+
+// ---------------------------------------------------------------------------
+// Contest Writing (응모 자료 작성)
+// ---------------------------------------------------------------------------
+
+export interface ContestWritingRequest {
+  id: string;
+  email: string;
+  contestType: string;
+  documentType: string;
+  deadline: string;
+  stage: string;
+  description: string;
+  status: 'pending' | 'in_progress' | 'completed';
+  createdAt: string;
+  adminResponse: string;
+  respondedAt: string;
+}
+
+export async function getContestWritingRequests(email?: string): Promise<ContestWritingRequest[]> {
+  return _getServiceRequests<ContestWritingRequest>('contest-writing', email);
+}
+
+export async function getContestWritingRequest(id: string): Promise<ContestWritingRequest | undefined> {
+  return _getServiceRequest<ContestWritingRequest>('contest-writing', id);
+}
+
+export async function createContestWritingRequest(data: { email: string; contestType: string; documentType: string; deadline: string; stage: string; description: string }): Promise<ContestWritingRequest> {
+  return _createServiceRequest<ContestWritingRequest>('contest-writing', data);
+}
+
+export async function updateContestWritingRequest(id: string, patch: Record<string, unknown>): Promise<ContestWritingRequest | undefined> {
+  return _updateServiceRequest<ContestWritingRequest>('contest-writing', id, patch);
+}
+
+export async function getContestWritingMessages(requestId: string): Promise<ChatMessage[]> {
+  return _getMessages('contest-writing', requestId);
+}
+
+export async function addContestWritingMessage(requestId: string, sender: 'user' | 'admin', message: string): Promise<ChatMessage> {
+  return _addMessage('contest-writing', requestId, sender, message);
+}
+
+// ---------------------------------------------------------------------------
 // Global Chat (전역 상담 채팅)
 // ---------------------------------------------------------------------------
 

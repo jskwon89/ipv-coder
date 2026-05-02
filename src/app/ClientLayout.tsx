@@ -71,6 +71,16 @@ const menuGroups = [
     ],
   },
   {
+    label: "공모전/대회",
+    prefixes: ["/contest-search", "/contest-writing"],
+    highlight: null as HighlightStyle,
+    items: [
+      { label: "공모전 정보 검색", href: "/contest-search" },
+      { label: "응모 자료 작성", href: "/contest-writing" },
+      { label: "결과물 샘플", href: "/samples", divider: true },
+    ],
+  },
+  {
     label: "국제 학술지",
     prefixes: ["/journal-submission"],
     highlight: "journal" as HighlightStyle,

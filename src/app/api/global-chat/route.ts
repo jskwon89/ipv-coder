@@ -9,7 +9,8 @@ export async function GET(request: NextRequest) {
     }
     const messages = await getGlobalChatMessages(email);
     return Response.json({ messages });
-  } catch {
+  } catch (err) {
+    console.error('[global-chat GET] failed:', err);
     return Response.json({ error: '메시지를 불러오는 데 실패했습니다.' }, { status: 500 });
   }
 }
@@ -31,7 +32,8 @@ export async function POST(request: NextRequest) {
 
     const msg = await addGlobalChatMessage(email, sender, message.trim());
     return Response.json({ message: msg }, { status: 201 });
-  } catch {
+  } catch (err) {
+    console.error('[global-chat POST] failed:', err);
     return Response.json({ error: '메시지 전송에 실패했습니다.' }, { status: 500 });
   }
 }

@@ -39,7 +39,9 @@
       "Bash(mv public/logo-icon-primer-sm.png public/logo-icon-primer.png)",
       "Bash(grep -A 1 \"ServiceTabs tabs=\" /d/2026/Coder/src/app/*/page.tsx)",
       "Bash(grep -B 2 -A 1 'title=' /d/2026/Coder/src/app/*/page.tsx)",
-      "Bash(grep -n '<h1' /d/2026/Coder/src/app/*/page.tsx)"
+      "Bash(grep -n '<h1' /d/2026/Coder/src/app/*/page.tsx)",
+      "Bash(find \"D:\\\\2026\\\\Coder/src/app\" -name \"page.tsx\" -type f -exec wc -l {} +)",
+      "Bash(grep -n \"firestore\\\\|firebase\\\\|database\\\\|config\" /d/2026/Coder/src/lib/*.ts)"
     ]
   }
 }
