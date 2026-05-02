@@ -11,8 +11,7 @@ export async function GET(request: NextRequest) {
     return Response.json({ messages });
   } catch (err) {
     console.error('[global-chat GET] failed:', err);
-    const detail = err instanceof Error ? `${err.name}: ${err.message}` : JSON.stringify(err);
-    return Response.json({ error: '메시지를 불러오는 데 실패했습니다.', detail }, { status: 500 });
+    return Response.json({ error: '메시지를 불러오는 데 실패했습니다.' }, { status: 500 });
   }
 }
 
