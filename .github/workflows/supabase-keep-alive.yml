@@ -1,0 +1,23 @@
+name: Supabase Keep-Alive
+
+on:
+  schedule:
+    # 매일 03:00 UTC (한국시간 12:00) — Supabase 무료 티어 일시정지 방지
+    - cron: '0 3 * * *'
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping keep-alive endpoint
+        run: |
+          set -e
+          response=$(curl -s -o /tmp/body.json -w "%{http_code}" "https://researchon.vercel.app/api/keep-alive")
+          echo "Status: $response"
+          cat /tmp/body.json
+          echo
+          if [ "$response" != "200" ]; then
+            echo "::error::keep-alive returned non-200 ($response)"
+            exit 1
+          fi
