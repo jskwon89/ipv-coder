@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { getResearchRequest, updateResearchRequest } from '@/lib/db';
+import { notifyStatusChanged } from '@/lib/email';
 
 export async function GET(
   request: Request,
@@ -24,9 +25,13 @@ export async function PATCH(
   try {
     const { id } = await params;
     const body = await request.json();
+    const before = await getResearchRequest(id);
     const updated = await updateResearchRequest(id, body);
     if (!updated) {
       return Response.json({ error: '의뢰를 찾을 수 없습니다.' }, { status: 404 });
+    }
+    if (before && body.status && before.status !== updated.status && updated.email) {
+      await notifyStatusChanged(updated.email, '연구 주제 및 방향 설계', updated.status);
     }
     return Response.json({ request: updated });
   } catch (error) {

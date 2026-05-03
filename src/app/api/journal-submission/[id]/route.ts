@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { getTextAnalysisRequest, updateTextAnalysisRequest } from '@/lib/db';
+import { getJournalSubmissionRequest, updateJournalSubmissionRequest } from '@/lib/db';
 import { notifyStatusChanged } from '@/lib/email';
 
 export async function GET(
@@ -8,7 +8,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const req = await getTextAnalysisRequest(id);
+    const req = await getJournalSubmissionRequest(id);
     if (!req) {
       return Response.json({ error: '의뢰를 찾을 수 없습니다.' }, { status: 404 });
     }
@@ -25,13 +25,13 @@ export async function PATCH(
   try {
     const { id } = await params;
     const body = await request.json();
-    const before = await getTextAnalysisRequest(id);
-    const updated = await updateTextAnalysisRequest(id, body);
+    const before = await getJournalSubmissionRequest(id);
+    const updated = await updateJournalSubmissionRequest(id, body);
     if (!updated) {
       return Response.json({ error: '의뢰를 찾을 수 없습니다.' }, { status: 404 });
     }
     if (before && body.status && before.status !== updated.status && updated.email) {
-      await notifyStatusChanged(updated.email, '텍스트 분석', updated.status);
+      await notifyStatusChanged(updated.email, '국제학술지 투고 상담', updated.status);
     }
     return Response.json({ request: updated });
   } catch {
