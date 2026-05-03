@@ -46,32 +46,26 @@ export default function LandingPage() {
     if (!user) { setStatsLoading(false); return; }
     try {
       const emailParam = user.email ? `?email=${encodeURIComponent(user.email)}` : "";
-      const [projRes, researchRes, statsDesignRes, surveyRes, dtRes, quantRes, textRes, qualRes] = await Promise.all([
+      const serviceApis = [
+        "/api/research-design", "/api/stats-design", "/api/survey",
+        "/api/judgment-collection", "/api/judgment-coding", "/api/news-collection",
+        "/api/data-transform", "/api/quant-analysis", "/api/qual-analysis",
+        "/api/text-analysis-request", "/api/consultation", "/api/journal-submission",
+        "/api/contest",
+      ];
+      const [projRes, ...svcResList] = await Promise.all([
         fetch("/api/projects"),
-        fetch(`/api/research-design${emailParam}`),
-        fetch(`/api/stats-design${emailParam}`),
-        fetch(`/api/survey${emailParam}`),
-        fetch(`/api/data-transform${emailParam}`),
-        fetch(`/api/quant-analysis${emailParam}`),
-        fetch(`/api/text-analysis-request${emailParam}`),
-        fetch(`/api/qual-analysis${emailParam}`),
+        ...serviceApis.map((api) => fetch(`${api}${emailParam}`)),
       ]);
-      const [projData, researchData, statsDesignData, surveyData, dtData, quantData, textData, qualData] = await Promise.all([
-        projRes.json(), researchRes.json(), statsDesignRes.json(), surveyRes.json(),
-        dtRes.json(), quantRes.json(), textRes.json(), qualRes.json(),
-      ]);
+      const projData = await projRes.json();
+      const svcDataList = await Promise.all(svcResList.map((r) => r.json().catch(() => ({}))));
       setProjects(projData.projects || []);
 
-      const allReqs = [
-        ...(researchData.requests || []), ...(statsDesignData.requests || []),
-        ...(surveyData.requests || []), ...(dtData.requests || []),
-        ...(quantData.requests || []), ...(textData.requests || []),
-        ...(qualData.requests || []),
-      ];
+      const allReqs = svcDataList.flatMap((d) => d.requests || []);
       const prjs = projData.projects || [];
       setTotalStats({
-        total: allReqs.length + prjs.length,
-        pending: allReqs.filter((r: { status?: string }) => r.status === "pending").length,
+        total: allReqs.length,
+        pending: allReqs.filter((r: { status?: string }) => r.status === "pending" || r.status === "received").length,
         in_progress: allReqs.filter((r: { status?: string }) => r.status === "in_progress").length + prjs.filter((p: Project) => p.codedCount < p.caseCount).length,
         completed: allReqs.filter((r: { status?: string }) => r.status === "completed").length + prjs.filter((p: Project) => p.caseCount > 0 && p.codedCount >= p.caseCount).length,
       });
@@ -258,29 +252,35 @@ export default function LandingPage() {
             <div className="flex items-center justify-between mb-8">
               <div>
                 <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">연구현황</h2>
-                <p className="text-sm sm:text-base text-gray-500 mt-1">{user.email}님의 의뢰 현황</p>
+                <p className="text-sm sm:text-base text-gray-500 mt-1">{user.email}님의 의뢰 현황 — 카드 클릭 시 상세 보기</p>
               </div>
+              <Link href="/my" className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-teal-700 bg-teal-50 hover:bg-teal-100 rounded-lg transition-colors">
+                전체 보기
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
             </div>
 
-            {/* Stats cards */}
+            {/* Stats cards (clickable) */}
             {!statsLoading && (
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-                <div className="bg-slate-50 rounded-xl p-5 border border-gray-100">
+                <Link href="/my" className="bg-slate-50 rounded-xl p-5 border border-gray-100 hover:shadow-sm hover:border-gray-200 transition-all group">
                   <div className="text-3xl sm:text-4xl font-bold text-gray-900">{totalStats.total}</div>
-                  <div className="text-sm text-gray-500 mt-1">전체 의뢰</div>
-                </div>
-                <div className="bg-gray-50 rounded-xl p-5 border border-gray-100">
+                  <div className="text-sm text-gray-500 mt-1 group-hover:text-gray-700">전체 의뢰</div>
+                </Link>
+                <Link href="/my?status=pending" className="bg-gray-50 rounded-xl p-5 border border-gray-100 hover:shadow-sm hover:border-gray-200 transition-all group">
                   <div className="text-3xl sm:text-4xl font-bold text-gray-400">{totalStats.pending}</div>
-                  <div className="text-sm text-gray-500 mt-1 flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-gray-400" />접수</div>
-                </div>
-                <div className="bg-blue-50 rounded-xl p-5 border border-blue-100">
+                  <div className="text-sm text-gray-500 mt-1 flex items-center gap-1.5 group-hover:text-gray-700"><span className="w-2 h-2 rounded-full bg-gray-400" />접수</div>
+                </Link>
+                <Link href="/my?status=in_progress" className="bg-blue-50 rounded-xl p-5 border border-blue-100 hover:shadow-sm hover:border-blue-200 transition-all group">
                   <div className="text-3xl sm:text-4xl font-bold text-blue-600">{totalStats.in_progress}</div>
-                  <div className="text-sm text-blue-600 mt-1 flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-blue-500" />진행중</div>
-                </div>
-                <div className="bg-emerald-50 rounded-xl p-5 border border-emerald-100">
+                  <div className="text-sm text-blue-600 mt-1 flex items-center gap-1.5 group-hover:text-blue-700"><span className="w-2 h-2 rounded-full bg-blue-500" />진행중</div>
+                </Link>
+                <Link href="/my?status=completed" className="bg-emerald-50 rounded-xl p-5 border border-emerald-100 hover:shadow-sm hover:border-emerald-200 transition-all group">
                   <div className="text-3xl sm:text-4xl font-bold text-emerald-600">{totalStats.completed}</div>
-                  <div className="text-sm text-emerald-600 mt-1 flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-500" />완료</div>
-                </div>
+                  <div className="text-sm text-emerald-600 mt-1 flex items-center gap-1.5 group-hover:text-emerald-700"><span className="w-2 h-2 rounded-full bg-emerald-500" />완료</div>
+                </Link>
               </div>
             )}
 

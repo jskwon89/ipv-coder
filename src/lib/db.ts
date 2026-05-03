@@ -387,6 +387,86 @@ function defaultCase(partial: Partial<Case> & { id: string; projectId: string })
 }
 
 // ---------------------------------------------------------------------------
+// Result Files (관리자가 의뢰 결과로 첨부하는 파일들 — service_requests.data.result_files)
+// ---------------------------------------------------------------------------
+
+export interface ResultFile {
+  path: string;        // Supabase Storage path
+  name: string;        // 원본 파일명
+  size: number;
+  contentType: string;
+  uploadedAt: string;
+}
+
+/**
+ * Append a result file entry to a service request's data.result_files array.
+ * Reads current row, mutates the JSONB, writes back.
+ */
+export async function addResultFile(
+  serviceType: string,
+  requestId: string,
+  file: ResultFile,
+): Promise<void> {
+  const { data, error } = await supabase
+    .from('service_requests')
+    .select('data')
+    .eq('service_type', serviceType)
+    .eq('id', requestId)
+    .single();
+  if (error) throw error;
+  const dataObj = (data?.data as Record<string, unknown>) ?? {};
+  const existing = Array.isArray(dataObj.result_files) ? (dataObj.result_files as ResultFile[]) : [];
+  const next = [...existing, file];
+  const { error: updateError } = await supabase
+    .from('service_requests')
+    .update({ data: { ...dataObj, result_files: next } })
+    .eq('service_type', serviceType)
+    .eq('id', requestId);
+  if (updateError) throw updateError;
+}
+
+export async function removeResultFile(
+  serviceType: string,
+  requestId: string,
+  path: string,
+): Promise<void> {
+  const { data, error } = await supabase
+    .from('service_requests')
+    .select('data')
+    .eq('service_type', serviceType)
+    .eq('id', requestId)
+    .single();
+  if (error) throw error;
+  const dataObj = (data?.data as Record<string, unknown>) ?? {};
+  const existing = Array.isArray(dataObj.result_files) ? (dataObj.result_files as ResultFile[]) : [];
+  const next = existing.filter((f) => f.path !== path);
+  const { error: updateError } = await supabase
+    .from('service_requests')
+    .update({ data: { ...dataObj, result_files: next } })
+    .eq('service_type', serviceType)
+    .eq('id', requestId);
+  if (updateError) throw updateError;
+}
+
+export async function getResultFiles(
+  serviceType: string,
+  requestId: string,
+): Promise<ResultFile[]> {
+  const { data, error } = await supabase
+    .from('service_requests')
+    .select('data')
+    .eq('service_type', serviceType)
+    .eq('id', requestId)
+    .single();
+  if (error) {
+    if (error.code === 'PGRST116') return [];
+    throw error;
+  }
+  const dataObj = (data?.data as Record<string, unknown>) ?? {};
+  return Array.isArray(dataObj.result_files) ? (dataObj.result_files as ResultFile[]) : [];
+}
+
+// ---------------------------------------------------------------------------
 // Generic Service Request helpers
 // ---------------------------------------------------------------------------
 

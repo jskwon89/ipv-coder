@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import * as XLSX from "xlsx";
+import ResultFilesPanel from "@/components/ResultFilesPanel";
 
 interface CreditData {
   balance: number;
@@ -708,6 +709,14 @@ export default function AdminPage() {
                       </div>
                     </div>
                   )}
+
+                  {/* 결과 파일 업로드/관리 (모든 서비스 공통) */}
+                  <ResultFilesPanel
+                    serviceType={selectedReq.type}
+                    requestId={selectedReq.req.id}
+                    mode="admin"
+                    adminPin="4178"
+                  />
 
                   {/* Status update */}
                   <div className="space-y-3">
