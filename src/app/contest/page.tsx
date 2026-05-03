@@ -1,13 +1,17 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useState, useEffect, useCallback, useRef, Suspense } from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { useUser } from "@/contexts/UserAuthContext";
 import InfoTooltip from "@/components/InfoTooltip";
+
+type Scope = "domestic" | "international";
 
 interface ContestRequestItem {
   id: string;
   email: string;
+  scope: Scope;
   contestField: string;
   contestName: string;
   eligibility: string;
@@ -29,15 +33,35 @@ interface ChatMessage {
   createdAt: string;
 }
 
-const fieldOptions = [
-  "창업/사업화", "학술/논문", "정책 제안", "디자인",
-  "창의 아이디어", "영상/콘텐츠", "광고/마케팅", "공학/기술", "기타",
-];
+const fieldOptionsByScope: Record<Scope, string[]> = {
+  domestic: [
+    "창업/사업화", "학술/논문", "정책 제안", "디자인",
+    "창의 아이디어", "영상/콘텐츠", "광고/마케팅", "공학/기술", "기타",
+  ],
+  international: [
+    "International Startup / Business",
+    "International Research / Academic",
+    "Global Policy / Social Innovation",
+    "Design / Creative",
+    "Tech / Engineering Challenge",
+    "Film / Video / Media",
+    "Marketing / Advertising",
+    "Hackathon / Innovation",
+    "기타",
+  ],
+};
 
-const eligibilityOptions = [
-  "대학생", "대학원생", "일반인 / 직장인", "청소년 / 고등학생",
-  "팀 단위", "스타트업 / 예비창업자", "제한 없음",
-];
+const eligibilityOptionsByScope: Record<Scope, string[]> = {
+  domestic: [
+    "대학생", "대학원생", "일반인 / 직장인", "청소년 / 고등학생",
+    "팀 단위", "스타트업 / 예비창업자", "제한 없음",
+  ],
+  international: [
+    "Undergraduate", "Graduate / PhD", "Professional / Working",
+    "Team", "Startup / Founder", "한국인 거주자 (영문 지원 필요)",
+    "제한 없음",
+  ],
+};
 
 const stageOptions = [
   "공모전 정보 탐색 단계",
@@ -48,16 +72,29 @@ const stageOptions = [
   "최종 마무리 단계",
 ];
 
-const supportItemOptions = [
-  { key: "info", label: "공모전 정보 안내", desc: "분야·자격·마감·수상작 정리" },
-  { key: "topic", label: "주제/아이템 발굴", desc: "차별화된 기획 방향 도출" },
-  { key: "data", label: "자료 수집", desc: "설문·판결문·뉴스 등" },
-  { key: "stats", label: "통계분석", desc: "근거 데이터 분석" },
-  { key: "qual", label: "텍스트/질적분석", desc: "인터뷰·문헌 분석" },
-  { key: "writing", label: "응모 자료 작성", desc: "사업계획서·제안서·논문" },
-  { key: "pt", label: "발표자료 (PT)", desc: "스토리·디자인" },
-  { key: "review", label: "최종 검토·보완", desc: "심사 기준 부합 점검" },
-];
+const supportItemOptionsByScope: Record<Scope, { key: string; label: string; desc: string }[]> = {
+  domestic: [
+    { key: "info", label: "공모전 정보 안내", desc: "분야·자격·마감·수상작 정리" },
+    { key: "topic", label: "주제/아이템 발굴", desc: "차별화된 기획 방향 도출" },
+    { key: "data", label: "자료 수집", desc: "설문·판결문·뉴스 등" },
+    { key: "stats", label: "통계분석", desc: "근거 데이터 분석" },
+    { key: "qual", label: "텍스트/질적분석", desc: "인터뷰·문헌 분석" },
+    { key: "writing", label: "응모 자료 작성", desc: "사업계획서·제안서·논문" },
+    { key: "pt", label: "발표자료 (PT)", desc: "스토리·디자인" },
+    { key: "review", label: "최종 검토·보완", desc: "심사 기준 부합 점검" },
+  ],
+  international: [
+    { key: "info", label: "공모전 정보 안내", desc: "글로벌 공모전 탐색·자격·마감 정리" },
+    { key: "topic", label: "주제/아이템 발굴", desc: "글로벌 트렌드 기반 기획" },
+    { key: "data", label: "자료 수집", desc: "해외 데이터·문헌·시장조사" },
+    { key: "stats", label: "통계분석", desc: "근거 데이터 분석" },
+    { key: "qual", label: "텍스트/질적분석", desc: "영문 문헌·인터뷰 분석" },
+    { key: "writing", label: "영문 응모 자료 작성", desc: "Business Plan·Proposal·Paper" },
+    { key: "pt", label: "영문 발표자료 (PT)", desc: "Pitch Deck·Visual Storytelling" },
+    { key: "translation", label: "번역 / 영문 교정", desc: "한→영 번역, 네이티브 교정" },
+    { key: "review", label: "최종 검토·보완", desc: "심사 기준·언어 표현 점검" },
+  ],
+};
 
 const statusConfig = {
   pending: { label: "대기중", bg: "bg-gray-100", text: "text-gray-600" },
@@ -66,9 +103,26 @@ const statusConfig = {
 };
 
 export default function ContestPage() {
+  return (
+    <Suspense fallback={<div className="p-8 max-w-4xl mx-auto text-sm text-gray-400">불러오는 중...</div>}>
+      <ContestPageInner />
+    </Suspense>
+  );
+}
+
+function ContestPageInner() {
   const { user } = useUser();
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const scopeParam = searchParams.get("scope");
+  const scope: Scope = scopeParam === "international" ? "international" : "domestic";
+  const isIntl = scope === "international";
+
+  const fieldOptions = fieldOptionsByScope[scope];
+  const eligibilityOptions = eligibilityOptionsByScope[scope];
+  const supportItemOptions = supportItemOptionsByScope[scope];
+
   const [email, setEmail] = useState("");
   const [contestField, setContestField] = useState("");
   const [contestName, setContestName] = useState("");
@@ -88,6 +142,13 @@ export default function ContestPage() {
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => { if (user?.email && !email) setEmail(user.email); }, [user]);
+
+  // Reset scope-dependent fields when scope changes (so options stay valid)
+  useEffect(() => {
+    setContestField("");
+    setEligibility("");
+    setSupportItems([]);
+  }, [scope]);
 
   const fetchRequests = useCallback(async () => {
     try {
@@ -136,6 +197,7 @@ export default function ContestPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: email.trim(),
+          scope,
           contestField,
           contestName: contestName.trim(),
           eligibility,
@@ -167,7 +229,9 @@ export default function ContestPage() {
     } catch { /* ignore */ } finally { setSendingChat(false); }
   };
 
-  const sorted = [...requests].sort(
+  // Show only requests matching the current scope (legacy items without scope are treated as domestic)
+  const filtered = requests.filter((r) => (r.scope ?? "domestic") === scope);
+  const sorted = [...filtered].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
 
@@ -183,15 +247,36 @@ export default function ContestPage() {
 
   return (
     <div className="p-8 max-w-4xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold">공모전 참가 지원</h1>
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold">
+          {isIntl ? "국제공모전 상담신청" : "국내공모전 상담신청"}
+        </h1>
         <div className="flex items-start gap-2 mt-2">
           <p className="text-gray-600 text-sm leading-relaxed">
-            참가하고자 하는 공모전 종류를 알려주시면, 주제 발굴부터 자료 수집·통계분석·응모 자료 작성까지
-            필요한 부분을 한 흐름으로 지원해 드립니다. 어떤 단계에서든 도움받을 수 있습니다.
+            {isIntl
+              ? "해외/글로벌 공모전 참가를 준비 중이시라면, 영문 자료 작성·번역·교정부터 주제 발굴·데이터 분석까지 한 흐름으로 지원해 드립니다."
+              : "참가하고자 하는 공모전 종류를 알려주시면, 주제 발굴부터 자료 수집·통계분석·응모 자료 작성까지 필요한 부분을 한 흐름으로 지원해 드립니다."}
           </p>
-          <InfoTooltip text={"📋 지원 가능 항목:\n• 공모전 정보 안내 (분야·자격·마감·수상작)\n• 주제 / 아이템 발굴 및 차별화\n• 자료 수집 (설문·판결문·뉴스)\n• 통계분석 / 텍스트·질적분석\n• 사업계획서·제안서·발표자료 작성\n• 최종 검토 및 심사 기준 부합 점검\n\n잘 모르셔도 괜찮습니다.\n관심 분야와 필요 항목만 선택해 주세요."} />
+          <InfoTooltip text={isIntl
+            ? "📋 국제공모전 지원 항목:\n• 글로벌 공모전 정보 안내\n• 주제 / 아이템 발굴 (글로벌 트렌드 기반)\n• 해외 데이터 수집 / 시장조사\n• 통계분석 / 영문 문헌·인터뷰 분석\n• 영문 Business Plan·Proposal·Paper 작성\n• 영문 Pitch Deck / Visual Storytelling\n• 한→영 번역 및 네이티브 교정\n• 최종 검토 및 심사 기준 부합 점검"
+            : "📋 국내공모전 지원 항목:\n• 공모전 정보 안내 (분야·자격·마감·수상작)\n• 주제 / 아이템 발굴 및 차별화\n• 자료 수집 (설문·판결문·뉴스)\n• 통계분석 / 텍스트·질적분석\n• 사업계획서·제안서·발표자료 작성\n• 최종 검토 및 심사 기준 부합 점검\n\n잘 모르셔도 괜찮습니다.\n관심 분야와 필요 항목만 선택해 주세요."} />
         </div>
+      </div>
+
+      {/* Scope tabs */}
+      <div className="mb-6 inline-flex p-1 bg-gray-100 rounded-lg">
+        <Link href="/contest?scope=domestic"
+          className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${
+            !isIntl ? "bg-white shadow-sm text-teal-700" : "text-gray-500 hover:text-gray-700"
+          }`}>
+          국내공모전
+        </Link>
+        <Link href="/contest?scope=international"
+          className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${
+            isIntl ? "bg-white shadow-sm text-teal-700" : "text-gray-500 hover:text-gray-700"
+          }`}>
+          국제공모전
+        </Link>
       </div>
 
       {submitted && (
@@ -199,13 +284,13 @@ export default function ContestPage() {
           <svg className="w-5 h-5 text-green-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <p className="text-sm text-green-700 font-medium">참가 지원 의뢰가 접수되었습니다. 빠른 시일 내 연락드리겠습니다.</p>
+          <p className="text-sm text-green-700 font-medium">{isIntl ? "국제공모전 상담 신청이 접수되었습니다." : "국내공모전 상담 신청이 접수되었습니다."} 빠른 시일 내 연락드리겠습니다.</p>
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-gray-200 shadow-sm mb-8">
         <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="font-semibold">참가 지원 신청</h2>
+          <h2 className="font-semibold">{isIntl ? "국제공모전 상담 신청" : "국내공모전 상담 신청"}</h2>
           <p className="text-xs text-gray-500 mt-1">공모전 분야와 필요한 지원 항목만 선택해도 됩니다.</p>
         </div>
         <div className="px-6 py-5 space-y-5">
@@ -223,7 +308,7 @@ export default function ContestPage() {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">공모전명 / 주관기관</label>
               <input type="text" value={contestName} onChange={(e) => setContestName(e.target.value)}
-                placeholder="예: 청년 창업 공모전 (○○공단 주관)"
+                placeholder={isIntl ? "예: Hult Prize, MIT Solve, Global Innovation Challenge" : "예: 청년 창업 공모전 (○○공단 주관)"}
                 className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600" />
             </div>
             <div>
@@ -289,7 +374,9 @@ export default function ContestPage() {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">상세 요청사항</label>
             <textarea value={description} onChange={(e) => setDescription(e.target.value)}
-              placeholder="예: 대학생 4인 팀이 참가하는 ESG 관련 창업 공모전입니다. 헬스케어 아이템 방향이고, 차별화 포인트와 시장 분석 데이터가 필요합니다. 사업계획서 5장 분량으로 응모 예정입니다."
+              placeholder={isIntl
+                ? "예: Hult Prize 글로벌 스타트업 공모전에 4인 팀으로 참가합니다. ESG 헬스케어 아이템이고, 영문 사업계획서 10장과 Pitch Deck이 필요합니다. 한→영 번역 및 네이티브 교정도 부탁드립니다."
+                : "예: 대학생 4인 팀이 참가하는 ESG 관련 창업 공모전입니다. 헬스케어 아이템 방향이고, 차별화 포인트와 시장 분석 데이터가 필요합니다. 사업계획서 5장 분량으로 응모 예정입니다."}
               rows={5}
               className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600 resize-none" />
           </div>
@@ -304,20 +391,20 @@ export default function ContestPage() {
           <div className="pt-1">
             <button type="submit" disabled={submitting || !contestField || supportItems.length === 0}
               className="px-6 py-2.5 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-              {submitting ? "제출 중..." : "참가 지원 신청하기"}
+              {submitting ? "제출 중..." : (isIntl ? "국제공모전 상담 신청하기" : "국내공모전 상담 신청하기")}
             </button>
           </div>
         </div>
       </form>
 
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
-        <div className="px-6 py-4 border-b border-gray-200"><h2 className="font-semibold">참가 지원 내역</h2></div>
+        <div className="px-6 py-4 border-b border-gray-200"><h2 className="font-semibold">{isIntl ? "국제공모전 상담 내역" : "국내공모전 상담 내역"}</h2></div>
         {sorted.length === 0 ? (
           <div className="px-6 py-12 text-center">
             <svg className="w-12 h-12 text-gray-200 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
-            <p className="text-sm text-gray-400">아직 참가 지원 내역이 없습니다</p>
+            <p className="text-sm text-gray-400">아직 상담 신청 내역이 없습니다</p>
           </div>
         ) : (
           <div className="divide-y divide-gray-100">

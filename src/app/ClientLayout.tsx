@@ -75,7 +75,8 @@ const menuGroups = [
     prefixes: ["/contest"],
     highlight: null as HighlightStyle,
     items: [
-      { label: "공모전 참가 지원 신청", href: "/contest" },
+      { label: "국내공모전 상담신청", href: "/contest?scope=domestic" },
+      { label: "국제공모전 상담신청", href: "/contest?scope=international" },
       { label: "결과물 샘플", href: "/samples", divider: true },
     ],
   },

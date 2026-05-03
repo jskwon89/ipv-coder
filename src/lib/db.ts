@@ -1249,6 +1249,7 @@ export async function addJournalSubmissionMessage(requestId: string, sender: 'us
 export interface ContestRequest {
   id: string;
   email: string;
+  scope: 'domestic' | 'international';
   contestField: string;
   contestName: string;
   eligibility: string;
@@ -1270,7 +1271,7 @@ export async function getContestRequest(id: string): Promise<ContestRequest | un
   return _getServiceRequest<ContestRequest>('contest', id);
 }
 
-export async function createContestRequest(data: { email: string; contestField: string; contestName: string; eligibility: string; deadline: string; stage: string; supportItems: string; description: string }): Promise<ContestRequest> {
+export async function createContestRequest(data: { email: string; scope: 'domestic' | 'international'; contestField: string; contestName: string; eligibility: string; deadline: string; stage: string; supportItems: string; description: string }): Promise<ContestRequest> {
   return _createServiceRequest<ContestRequest>('contest', data);
 }
 

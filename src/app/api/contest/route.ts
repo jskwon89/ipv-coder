@@ -16,14 +16,18 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email, contestField, contestName, eligibility, deadline, stage, supportItems, description } = body;
+    const { email, scope, contestField, contestName, eligibility, deadline, stage, supportItems, description } = body;
 
     if (!contestField || typeof contestField !== 'string') {
       return Response.json({ error: '공모전 분야를 선택해주세요.' }, { status: 400 });
     }
 
+    const normalizedScope: 'domestic' | 'international' = scope === 'international' ? 'international' : 'domestic';
+    const scopeLabel = normalizedScope === 'international' ? '국제공모전' : '국내공모전';
+
     const created = await createContestRequest({
       email: (email || '').trim(),
+      scope: normalizedScope,
       contestField: contestField.trim(),
       contestName: (contestName || '').trim(),
       eligibility: (eligibility || '').trim(),
@@ -34,9 +38,9 @@ export async function POST(request: NextRequest) {
     });
 
     if (created.email) {
-      await notifyRequestReceived(created.email, `공모전 참가 지원: ${created.contestField}`);
+      await notifyRequestReceived(created.email, `${scopeLabel} 상담: ${created.contestField}`);
     }
-    await notifyNewRequest('contest', created.email || '', `${contestField}${contestName ? ` / ${contestName}` : ''}`);
+    await notifyNewRequest('contest', created.email || '', `${scopeLabel} / ${contestField}${contestName ? ` / ${contestName}` : ''}`);
     return Response.json({ request: created }, { status: 201 });
   } catch {
     return Response.json({ error: '의뢰 생성에 실패했습니다.' }, { status: 500 });
