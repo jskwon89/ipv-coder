@@ -285,31 +285,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 </Link>
               )}
 
-              {isAdmin ? (
-                <Link
-                  href="/admin"
-                  className={`hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
-                    pathname === "/admin" ? "bg-teal-50 text-teal-700" : "text-gray-500 hover:bg-gray-50"
-                  }`}
-                >
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  관리자
-                </Link>
-              ) : (
-                <button
-                  onClick={() => setShowLogin(true)}
-                  className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs text-gray-400 hover:text-gray-600 hover:bg-gray-50 transition-colors"
-                >
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                  </svg>
-                  관리자
-                </button>
-              )}
-
               {/* Mobile menu button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -413,6 +388,32 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       <main className="min-h-screen pt-16 sm:pt-20">
         {children}
       </main>
+
+      {/* Admin floating button — bottom-left corner, subtle */}
+      {isAdmin ? (
+        <Link
+          href="/admin"
+          aria-label="관리자 패널"
+          className={`fixed bottom-5 left-4 sm:left-6 z-40 w-10 h-10 rounded-full flex items-center justify-center shadow-md border transition-all hover:scale-110 ${
+            pathname === "/admin" ? "bg-teal-600 text-white border-teal-700" : "bg-white text-gray-500 border-gray-200 hover:text-teal-700 hover:border-teal-300"
+          }`}
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </Link>
+      ) : (
+        <button
+          onClick={() => setShowLogin(true)}
+          aria-label="관리자 로그인"
+          className="fixed bottom-5 left-4 sm:left-6 z-40 w-9 h-9 rounded-full flex items-center justify-center bg-white/80 backdrop-blur border border-gray-200 text-gray-300 hover:text-gray-500 hover:border-gray-300 transition-colors opacity-60 hover:opacity-100"
+        >
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+        </button>
+      )}
 
       {showLogin && <AdminLoginModal onClose={() => setShowLogin(false)} />}
       <ChatWidget />
