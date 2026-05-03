@@ -33,3 +33,19 @@ export function notifyNewMessage(email: string, keywords: string) {
     body: `안녕하세요.\n\n'${keywords}' 의뢰 건에 담당자의 새로운 메시지가 있습니다.\nPRIMER에 접속하여 확인해주세요.\n\n감사합니다.\nPRIMER 팀`,
   });
 }
+
+const statusKoLabel: Record<string, string> = {
+  pending: '접수 대기중',
+  received: '접수 완료',
+  in_progress: '작업 진행중',
+  completed: '작업 완료',
+};
+
+export function notifyStatusChanged(email: string, subject: string, status: string) {
+  const label = statusKoLabel[status] ?? status;
+  return sendEmail({
+    to: email,
+    subject: `[PRIMER] ${subject} - 상태 변경: ${label}`,
+    body: `안녕하세요.\n\n의뢰하신 '${subject}' 건의 진행 상태가 '${label}'(으)로 변경되었습니다.\nPRIMER에 접속하여 자세한 내용을 확인해주세요.\n\n감사합니다.\nPRIMER 팀`,
+  });
+}
