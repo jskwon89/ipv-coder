@@ -5,13 +5,15 @@ import { useRouter, usePathname } from "next/navigation";
 import { useUser } from "@/contexts/UserAuthContext";
 import InfoTooltip from "@/components/InfoTooltip";
 
-interface ContestSearchRequestItem {
+interface ContestRequestItem {
   id: string;
   email: string;
   contestField: string;
+  contestName: string;
   eligibility: string;
-  urgency: string;
-  keywords: string;
+  deadline: string;
+  stage: string;
+  supportItems: string; // JSON array string
   description: string;
   status: "pending" | "in_progress" | "completed";
   createdAt: string;
@@ -37,28 +39,46 @@ const eligibilityOptions = [
   "팀 단위", "스타트업 / 예비창업자", "제한 없음",
 ];
 
-const urgencyOptions = [
-  "1주 이내 마감", "2주 이내", "1개월 이내", "3개월 이내", "기간 무관",
+const stageOptions = [
+  "공모전 정보 탐색 단계",
+  "참가 확정, 아직 시작 전",
+  "주제/아이템 구상 중",
+  "초안 작성 중",
+  "초안 완성 (검토/보완 필요)",
+  "최종 마무리 단계",
+];
+
+const supportItemOptions = [
+  { key: "info", label: "공모전 정보 안내", desc: "분야·자격·마감·수상작 정리" },
+  { key: "topic", label: "주제/아이템 발굴", desc: "차별화된 기획 방향 도출" },
+  { key: "data", label: "자료 수집", desc: "설문·판결문·뉴스 등" },
+  { key: "stats", label: "통계분석", desc: "근거 데이터 분석" },
+  { key: "qual", label: "텍스트/질적분석", desc: "인터뷰·문헌 분석" },
+  { key: "writing", label: "응모 자료 작성", desc: "사업계획서·제안서·논문" },
+  { key: "pt", label: "발표자료 (PT)", desc: "스토리·디자인" },
+  { key: "review", label: "최종 검토·보완", desc: "심사 기준 부합 점검" },
 ];
 
 const statusConfig = {
   pending: { label: "대기중", bg: "bg-gray-100", text: "text-gray-600" },
-  in_progress: { label: "검색중", bg: "bg-blue-50", text: "text-blue-600" },
+  in_progress: { label: "진행중", bg: "bg-blue-50", text: "text-blue-600" },
   completed: { label: "완료", bg: "bg-green-50", text: "text-green-600" },
 };
 
-export default function ContestSearchPage() {
+export default function ContestPage() {
   const { user } = useUser();
   const router = useRouter();
   const pathname = usePathname();
   const [email, setEmail] = useState("");
   const [contestField, setContestField] = useState("");
+  const [contestName, setContestName] = useState("");
   const [eligibility, setEligibility] = useState("");
-  const [urgency, setUrgency] = useState("");
-  const [keywords, setKeywords] = useState("");
+  const [deadline, setDeadline] = useState("");
+  const [stage, setStage] = useState("");
+  const [supportItems, setSupportItems] = useState<string[]>([]);
   const [description, setDescription] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [requests, setRequests] = useState<ContestSearchRequestItem[]>([]);
+  const [requests, setRequests] = useState<ContestRequestItem[]>([]);
   const [submitted, setSubmitted] = useState(false);
 
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -71,7 +91,7 @@ export default function ContestSearchPage() {
 
   const fetchRequests = useCallback(async () => {
     try {
-      const res = await fetch("/api/contest-search");
+      const res = await fetch("/api/contest");
       const data = await res.json();
       setRequests(data.requests ?? []);
     } catch { /* ignore */ }
@@ -81,7 +101,7 @@ export default function ContestSearchPage() {
 
   const fetchMessages = useCallback(async (reqId: string) => {
     try {
-      const res = await fetch(`/api/contest-search/${reqId}/messages`);
+      const res = await fetch(`/api/contest/${reqId}/messages`);
       const data = await res.json();
       setMessages(data.messages ?? []);
     } catch { /* ignore */ }
@@ -98,22 +118,35 @@ export default function ContestSearchPage() {
 
   const selectedRequest = requests.find((r) => r.id === selectedId);
 
+  const toggleSupport = (key: string) => {
+    setSupportItems((prev) =>
+      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
+    );
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) { router.push(`/login?redirect=${encodeURIComponent(pathname)}`); return; }
     if (!contestField) return;
+    if (supportItems.length === 0) return;
     setSubmitting(true);
     try {
-      await fetch("/api/contest-search", {
+      await fetch("/api/contest", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: email.trim(), contestField, eligibility, urgency,
-          keywords: keywords.trim(), description: description.trim(),
+          email: email.trim(),
+          contestField,
+          contestName: contestName.trim(),
+          eligibility,
+          deadline: deadline.trim(),
+          stage,
+          supportItems: JSON.stringify(supportItems),
+          description: description.trim(),
         }),
       });
-      setContestField(""); setEligibility(""); setUrgency("");
-      setKeywords(""); setDescription("");
+      setContestField(""); setContestName(""); setEligibility("");
+      setDeadline(""); setStage(""); setSupportItems([]); setDescription("");
       setSubmitted(true);
       await fetchRequests();
       setTimeout(() => setSubmitted(false), 5000);
@@ -124,7 +157,7 @@ export default function ContestSearchPage() {
     if (!selectedId || !chatInput.trim() || sendingChat) return;
     setSendingChat(true);
     try {
-      await fetch(`/api/contest-search/${selectedId}/messages`, {
+      await fetch(`/api/contest/${selectedId}/messages`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ sender: "user", message: chatInput.trim() }),
@@ -138,16 +171,26 @@ export default function ContestSearchPage() {
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
 
+  const parseSupportItems = (raw: string): string[] => {
+    try {
+      const arr = JSON.parse(raw || "[]");
+      return Array.isArray(arr) ? arr : [];
+    } catch { return []; }
+  };
+
+  const supportLabel = (key: string) =>
+    supportItemOptions.find((o) => o.key === key)?.label ?? key;
+
   return (
     <div className="p-8 max-w-4xl mx-auto">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold">공모전 정보 검색</h1>
+        <h1 className="text-2xl font-bold">공모전 참가 지원</h1>
         <div className="flex items-start gap-2 mt-2">
           <p className="text-gray-600 text-sm leading-relaxed">
-            관심 분야와 자격 요건을 알려주시면, 적합한 공모전 정보를 정리해 드립니다.
-            진행 중인 공모전, 마감 임박 공모전, 분야별 우수 공모전을 한눈에 받아보세요.
+            참가하고자 하는 공모전 종류를 알려주시면, 주제 발굴부터 자료 수집·통계분석·응모 자료 작성까지
+            필요한 부분을 한 흐름으로 지원해 드립니다. 어떤 단계에서든 도움받을 수 있습니다.
           </p>
-          <InfoTooltip text={"📋 안내 가능한 정보:\n• 분야별 진행 중 공모전 목록\n• 자격 요건에 맞는 공모전 추천\n• 상금/혜택/인지도가 우수한 공모전\n• 마감일·접수처·심사 기준 정리\n• 과거 수상작 사례 안내\n\n잘 모르셔도 괜찮습니다.\n관심 분야만 알려주시면 맞춤 안내를 드립니다."} />
+          <InfoTooltip text={"📋 지원 가능 항목:\n• 공모전 정보 안내 (분야·자격·마감·수상작)\n• 주제 / 아이템 발굴 및 차별화\n• 자료 수집 (설문·판결문·뉴스)\n• 통계분석 / 텍스트·질적분석\n• 사업계획서·제안서·발표자료 작성\n• 최종 검토 및 심사 기준 부합 점검\n\n잘 모르셔도 괜찮습니다.\n관심 분야와 필요 항목만 선택해 주세요."} />
         </div>
       </div>
 
@@ -156,16 +199,16 @@ export default function ContestSearchPage() {
           <svg className="w-5 h-5 text-green-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <p className="text-sm text-green-700 font-medium">검색 의뢰가 접수되었습니다. 빠른 시일 내 결과를 정리해 드리겠습니다.</p>
+          <p className="text-sm text-green-700 font-medium">참가 지원 의뢰가 접수되었습니다. 빠른 시일 내 연락드리겠습니다.</p>
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-gray-200 shadow-sm mb-8">
         <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="font-semibold">검색 의뢰</h2>
-          <p className="text-xs text-gray-500 mt-1">관심 분야만 선택해도 됩니다. 추가 조건은 비워두셔도 좋아요.</p>
+          <h2 className="font-semibold">참가 지원 신청</h2>
+          <p className="text-xs text-gray-500 mt-1">공모전 분야와 필요한 지원 항목만 선택해도 됩니다.</p>
         </div>
-        <div className="px-6 py-5 space-y-4">
+        <div className="px-6 py-5 space-y-5">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -178,7 +221,13 @@ export default function ContestSearchPage() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">자격 요건</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">공모전명 / 주관기관</label>
+              <input type="text" value={contestName} onChange={(e) => setContestName(e.target.value)}
+                placeholder="예: 청년 창업 공모전 (○○공단 주관)"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">자격 / 참가 형태</label>
               <select value={eligibility} onChange={(e) => setEligibility(e.target.value)}
                 className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600">
                 <option value="">선택해주세요 (선택)</option>
@@ -186,69 +235,110 @@ export default function ContestSearchPage() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">마감 임박도</label>
-              <select value={urgency} onChange={(e) => setUrgency(e.target.value)}
+              <label className="block text-sm font-medium text-gray-700 mb-1">마감일 / 일정</label>
+              <input type="text" value={deadline} onChange={(e) => setDeadline(e.target.value)}
+                placeholder="예: 2026-06-15"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600" />
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">현재 진행 단계</label>
+              <select value={stage} onChange={(e) => setStage(e.target.value)}
                 className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600">
                 <option value="">선택해주세요 (선택)</option>
-                {urgencyOptions.map((u) => <option key={u} value={u}>{u}</option>)}
+                {stageOptions.map((s) => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">검색 키워드</label>
-              <input type="text" value={keywords} onChange={(e) => setKeywords(e.target.value)}
-                placeholder="예: AI, ESG, 청년창업"
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600" />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              필요한 지원 항목 <span className="text-red-400">*</span>
+              <span className="ml-2 text-xs font-normal text-gray-400">중복 선택 가능</span>
+            </label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {supportItemOptions.map((opt) => {
+                const checked = supportItems.includes(opt.key);
+                return (
+                  <button key={opt.key} type="button" onClick={() => toggleSupport(opt.key)}
+                    className={`text-left px-4 py-3 rounded-lg border transition-colors ${
+                      checked
+                        ? "bg-teal-50 border-teal-600 ring-1 ring-teal-600/40"
+                        : "bg-white border-gray-200 hover:bg-gray-50"
+                    }`}>
+                    <div className="flex items-start gap-2">
+                      <div className={`mt-0.5 w-4 h-4 rounded border flex items-center justify-center shrink-0 ${
+                        checked ? "bg-teal-600 border-teal-600" : "bg-white border-gray-300"
+                      }`}>
+                        {checked && (
+                          <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </div>
+                      <div className="min-w-0">
+                        <p className={`text-sm font-medium ${checked ? "text-teal-700" : "text-gray-900"}`}>{opt.label}</p>
+                        <p className="text-xs text-gray-500 mt-0.5">{opt.desc}</p>
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">상세 요청사항</label>
             <textarea value={description} onChange={(e) => setDescription(e.target.value)}
-              placeholder="예: 대학생 4인 팀이 참가할 수 있는 ESG 관련 공모전을 찾고 있습니다. 상금 500만원 이상이면 좋겠습니다."
-              rows={4}
+              placeholder="예: 대학생 4인 팀이 참가하는 ESG 관련 창업 공모전입니다. 헬스케어 아이템 방향이고, 차별화 포인트와 시장 분석 데이터가 필요합니다. 사업계획서 5장 분량으로 응모 예정입니다."
+              rows={5}
               className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600 resize-none" />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">이메일</label>
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-              placeholder="결과를 받을 이메일 주소"
+              placeholder="연락받을 이메일 주소"
               className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600 md:max-w-sm" />
           </div>
 
           <div className="pt-1">
-            <button type="submit" disabled={submitting || !contestField}
-              className="px-6 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-              {submitting ? "제출 중..." : "검색 의뢰하기"}
+            <button type="submit" disabled={submitting || !contestField || supportItems.length === 0}
+              className="px-6 py-2.5 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+              {submitting ? "제출 중..." : "참가 지원 신청하기"}
             </button>
           </div>
         </div>
       </form>
 
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
-        <div className="px-6 py-4 border-b border-gray-200"><h2 className="font-semibold">검색 의뢰 내역</h2></div>
+        <div className="px-6 py-4 border-b border-gray-200"><h2 className="font-semibold">참가 지원 내역</h2></div>
         {sorted.length === 0 ? (
           <div className="px-6 py-12 text-center">
             <svg className="w-12 h-12 text-gray-200 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
-            <p className="text-sm text-gray-400">아직 검색 의뢰 내역이 없습니다</p>
+            <p className="text-sm text-gray-400">아직 참가 지원 내역이 없습니다</p>
           </div>
         ) : (
           <div className="divide-y divide-gray-100">
             {sorted.map((req) => {
               const sc = statusConfig[req.status];
+              const items = parseSupportItems(req.supportItems);
               return (
                 <div key={req.id}
                   className="px-6 py-4 flex items-center justify-between cursor-pointer hover:bg-gray-50 transition-colors"
                   onClick={() => setSelectedId(req.id)}>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-3">
-                      <span className="text-sm font-medium text-gray-900 truncate">{req.contestField}</span>
+                      <span className="text-sm font-medium text-gray-900 truncate">
+                        {req.contestField}{req.contestName ? ` · ${req.contestName}` : ""}
+                      </span>
                       <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${sc.bg} ${sc.text}`}>{sc.label}</span>
                     </div>
                     <div className="flex items-center gap-3 mt-1">
-                      <span className="text-xs text-gray-500 truncate max-w-xs">{req.keywords || req.description || ""}</span>
+                      <span className="text-xs text-gray-500 truncate max-w-md">
+                        {items.length > 0 ? items.map(supportLabel).join(" · ") : (req.description || "")}
+                      </span>
                       <span className="text-xs text-gray-400 shrink-0">{new Date(req.createdAt).toLocaleDateString("ko-KR")}</span>
                     </div>
                   </div>
@@ -268,7 +358,9 @@ export default function ContestSearchPage() {
           <div className="fixed inset-y-0 right-0 w-full max-w-lg bg-white shadow-xl z-50 flex flex-col animate-slide-in">
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 shrink-0">
               <div className="min-w-0 flex-1">
-                <h3 className="font-semibold text-gray-900 truncate">{selectedRequest.contestField}</h3>
+                <h3 className="font-semibold text-gray-900 truncate">
+                  {selectedRequest.contestField}{selectedRequest.contestName ? ` · ${selectedRequest.contestName}` : ""}
+                </h3>
                 <div className="flex items-center gap-3 mt-1">
                   <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusConfig[selectedRequest.status].bg} ${statusConfig[selectedRequest.status].text}`}>
                     {statusConfig[selectedRequest.status].label}
@@ -285,22 +377,37 @@ export default function ContestSearchPage() {
 
             <div className="flex-1 overflow-y-auto">
               <div className="px-6 py-4 border-b border-gray-100 space-y-3">
+                {(() => {
+                  const items = parseSupportItems(selectedRequest.supportItems);
+                  return items.length > 0 ? (
+                    <div>
+                      <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1.5">지원 요청 항목</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {items.map((k) => (
+                          <span key={k} className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-teal-50 text-teal-700 border border-teal-200">
+                            {supportLabel(k)}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  ) : null;
+                })()}
                 {selectedRequest.eligibility && (
                   <div>
-                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">자격 요건</p>
+                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">자격 / 참가 형태</p>
                     <p className="text-sm text-gray-700">{selectedRequest.eligibility}</p>
                   </div>
                 )}
-                {selectedRequest.urgency && (
+                {selectedRequest.deadline && (
                   <div>
-                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">마감 임박도</p>
-                    <p className="text-sm text-gray-700">{selectedRequest.urgency}</p>
+                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">마감일</p>
+                    <p className="text-sm text-gray-700">{selectedRequest.deadline}</p>
                   </div>
                 )}
-                {selectedRequest.keywords && (
+                {selectedRequest.stage && (
                   <div>
-                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">키워드</p>
-                    <p className="text-sm text-gray-700">{selectedRequest.keywords}</p>
+                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">진행 단계</p>
+                    <p className="text-sm text-gray-700">{selectedRequest.stage}</p>
                   </div>
                 )}
                 {selectedRequest.description && (
@@ -318,7 +425,7 @@ export default function ContestSearchPage() {
                       <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
-                      <span className="text-sm font-medium text-green-700">검색 결과</span>
+                      <span className="text-sm font-medium text-green-700">지원 결과</span>
                     </div>
                     <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{selectedRequest.adminResponse}</div>
                   </div>
@@ -333,9 +440,9 @@ export default function ContestSearchPage() {
                   <div className="space-y-3">
                     {messages.map((msg) => (
                       <div key={msg.id} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
-                        <div className={`max-w-[80%] rounded-xl px-4 py-2.5 ${msg.sender === "user" ? "bg-primary/10 border border-teal-600/20 text-gray-900" : "bg-gray-100 text-gray-900"}`}>
+                        <div className={`max-w-[80%] rounded-xl px-4 py-2.5 ${msg.sender === "user" ? "bg-teal-50 border border-teal-200 text-gray-900" : "bg-gray-100 text-gray-900"}`}>
                           <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.message}</p>
-                          <p className={`text-[10px] mt-1 ${msg.sender === "user" ? "text-primary/60 text-right" : "text-gray-400"}`}>
+                          <p className={`text-[10px] mt-1 ${msg.sender === "user" ? "text-teal-600/60 text-right" : "text-gray-400"}`}>
                             {new Date(msg.createdAt).toLocaleString("ko-KR", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
                           </p>
                         </div>
@@ -355,7 +462,7 @@ export default function ContestSearchPage() {
                   placeholder="메시지를 입력하세요..."
                   className="flex-1 px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600" />
                 <button onClick={handleSendMessage} disabled={sendingChat || !chatInput.trim()}
-                  className="px-4 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0">
+                  className="px-4 py-2.5 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                   </svg>

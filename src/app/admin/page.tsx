@@ -54,6 +54,7 @@ const serviceTypes = [
   { key: "qual-analysis", label: "질적분석", api: "/api/qual-analysis", titleField: "analysisType" },
   { key: "consultation", label: "간편 상담", api: "/api/consultation", titleField: "description" },
   { key: "journal-submission", label: "학술지 투고", api: "/api/journal-submission", titleField: "serviceType" },
+  { key: "contest", label: "공모전 참가 지원", api: "/api/contest", titleField: "contestField" },
 ];
 
 const statusConfig: Record<string, { label: string; bg: string; text: string }> = {

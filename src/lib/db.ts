@@ -1243,58 +1243,18 @@ export async function addJournalSubmissionMessage(requestId: string, sender: 'us
 }
 
 // ---------------------------------------------------------------------------
-// Contest Search (공모전 정보 검색)
+// Contest (공모전 참가 지원)
 // ---------------------------------------------------------------------------
 
-export interface ContestSearchRequest {
+export interface ContestRequest {
   id: string;
   email: string;
   contestField: string;
+  contestName: string;
   eligibility: string;
-  urgency: string;
-  keywords: string;
-  description: string;
-  status: 'pending' | 'in_progress' | 'completed';
-  createdAt: string;
-  adminResponse: string;
-  respondedAt: string;
-}
-
-export async function getContestSearchRequests(email?: string): Promise<ContestSearchRequest[]> {
-  return _getServiceRequests<ContestSearchRequest>('contest-search', email);
-}
-
-export async function getContestSearchRequest(id: string): Promise<ContestSearchRequest | undefined> {
-  return _getServiceRequest<ContestSearchRequest>('contest-search', id);
-}
-
-export async function createContestSearchRequest(data: { email: string; contestField: string; eligibility: string; urgency: string; keywords: string; description: string }): Promise<ContestSearchRequest> {
-  return _createServiceRequest<ContestSearchRequest>('contest-search', data);
-}
-
-export async function updateContestSearchRequest(id: string, patch: Record<string, unknown>): Promise<ContestSearchRequest | undefined> {
-  return _updateServiceRequest<ContestSearchRequest>('contest-search', id, patch);
-}
-
-export async function getContestSearchMessages(requestId: string): Promise<ChatMessage[]> {
-  return _getMessages('contest-search', requestId);
-}
-
-export async function addContestSearchMessage(requestId: string, sender: 'user' | 'admin', message: string): Promise<ChatMessage> {
-  return _addMessage('contest-search', requestId, sender, message);
-}
-
-// ---------------------------------------------------------------------------
-// Contest Writing (응모 자료 작성)
-// ---------------------------------------------------------------------------
-
-export interface ContestWritingRequest {
-  id: string;
-  email: string;
-  contestType: string;
-  documentType: string;
   deadline: string;
   stage: string;
+  supportItems: string; // JSON array of selected support keys
   description: string;
   status: 'pending' | 'in_progress' | 'completed';
   createdAt: string;
@@ -1302,28 +1262,28 @@ export interface ContestWritingRequest {
   respondedAt: string;
 }
 
-export async function getContestWritingRequests(email?: string): Promise<ContestWritingRequest[]> {
-  return _getServiceRequests<ContestWritingRequest>('contest-writing', email);
+export async function getContestRequests(email?: string): Promise<ContestRequest[]> {
+  return _getServiceRequests<ContestRequest>('contest', email);
 }
 
-export async function getContestWritingRequest(id: string): Promise<ContestWritingRequest | undefined> {
-  return _getServiceRequest<ContestWritingRequest>('contest-writing', id);
+export async function getContestRequest(id: string): Promise<ContestRequest | undefined> {
+  return _getServiceRequest<ContestRequest>('contest', id);
 }
 
-export async function createContestWritingRequest(data: { email: string; contestType: string; documentType: string; deadline: string; stage: string; description: string }): Promise<ContestWritingRequest> {
-  return _createServiceRequest<ContestWritingRequest>('contest-writing', data);
+export async function createContestRequest(data: { email: string; contestField: string; contestName: string; eligibility: string; deadline: string; stage: string; supportItems: string; description: string }): Promise<ContestRequest> {
+  return _createServiceRequest<ContestRequest>('contest', data);
 }
 
-export async function updateContestWritingRequest(id: string, patch: Record<string, unknown>): Promise<ContestWritingRequest | undefined> {
-  return _updateServiceRequest<ContestWritingRequest>('contest-writing', id, patch);
+export async function updateContestRequest(id: string, patch: Record<string, unknown>): Promise<ContestRequest | undefined> {
+  return _updateServiceRequest<ContestRequest>('contest', id, patch);
 }
 
-export async function getContestWritingMessages(requestId: string): Promise<ChatMessage[]> {
-  return _getMessages('contest-writing', requestId);
+export async function getContestMessages(requestId: string): Promise<ChatMessage[]> {
+  return _getMessages('contest', requestId);
 }
 
-export async function addContestWritingMessage(requestId: string, sender: 'user' | 'admin', message: string): Promise<ChatMessage> {
-  return _addMessage('contest-writing', requestId, sender, message);
+export async function addContestMessage(requestId: string, sender: 'user' | 'admin', message: string): Promise<ChatMessage> {
+  return _addMessage('contest', requestId, sender, message);
 }
 
 // ---------------------------------------------------------------------------

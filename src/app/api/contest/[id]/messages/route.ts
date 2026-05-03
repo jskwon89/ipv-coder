@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { getContestWritingMessages, addContestWritingMessage } from '@/lib/db';
+import { getContestMessages, addContestMessage } from '@/lib/db';
 
 export async function GET(
   request: Request,
@@ -7,7 +7,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const messages = await getContestWritingMessages(id);
+    const messages = await getContestMessages(id);
     messages.sort(
       (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
     );
@@ -33,7 +33,7 @@ export async function POST(
       return Response.json({ error: '메시지를 입력해주세요.' }, { status: 400 });
     }
 
-    const msg = await addContestWritingMessage(id, sender, message.trim());
+    const msg = await addContestMessage(id, sender, message.trim());
     return Response.json({ message: msg }, { status: 201 });
   } catch {
     return Response.json({ error: '메시지 전송에 실패했습니다.' }, { status: 500 });
