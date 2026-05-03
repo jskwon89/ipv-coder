@@ -6,8 +6,9 @@ interface EmailParams {
   body: string;
 }
 
-const EMAIL_USER = process.env.EMAIL_USER;
-const EMAIL_PASS = process.env.EMAIL_PASS;
+const EMAIL_USER = process.env.EMAIL_USER?.trim();
+// Gmail shows app password with spaces — strip them so users can paste either form
+const EMAIL_PASS = process.env.EMAIL_PASS?.replace(/\s+/g, '');
 const EMAIL_FROM_NAME = process.env.EMAIL_FROM_NAME ?? 'PRIMER';
 
 let transporter: nodemailer.Transporter | null = null;
