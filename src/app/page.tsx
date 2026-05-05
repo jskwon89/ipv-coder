@@ -327,11 +327,7 @@ export default function LandingPage() {
 
       {/* Services Section */}
       {sections.services && (
-        <section id="services" className="relative py-16 sm:py-28 px-4 sm:px-6 overflow-hidden">
-          <div className="absolute inset-0">
-            <Image src="/images/campaign-creators-gMsnXqILjp4-unsplash.jpg" alt="" fill className="object-cover" />
-            <div className="absolute inset-0 bg-white/95" />
-          </div>
+        <section id="services" className="relative py-16 sm:py-28 px-4 sm:px-6 bg-white">
           <div className="relative z-10 max-w-7xl mx-auto">
             <div className="max-w-2xl mb-12 sm:mb-16">
               <span className="text-sm font-semibold text-teal-600 tracking-wide uppercase">Services</span>
@@ -344,22 +340,28 @@ export default function LandingPage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
               <MainServiceCard
-                icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>}
-                title="연구설계" description="연구 주제 선정, 연구 방향 설계, 통계분석 설계까지."
+                number="01"
+                image="/images/service-1.webp"
+                title="연구설계"
+                tagline="연구 주제 설계부터 방법론 안내까지"
                 features={["연구 주제 및 방향 설계", "통계분석 설계", "변수 및 모형 설정"]}
-                href="/data-generation" color="emerald"
+                href="/data-generation"
               />
               <MainServiceCard
-                icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>}
-                title="자료 생성 & 수집" description="설문조사, 판결문, 뉴스/언론 보도 수집 및 정리."
+                number="02"
+                image="/images/service-2.webp"
+                title="자료 생성 & 수집"
+                tagline="설문, 판결문, 뉴스 등 연구 자료 수집"
                 features={["설문조사 설계 및 수집", "판결문 수집 및 코딩", "뉴스/언론 보도 수집"]}
-                href="/survey-request" color="blue"
+                href="/survey-request"
               />
               <MainServiceCard
-                icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" /></svg>}
-                title="통계분석" description="기초통계부터 통계분석, 텍스트 분석, 질적분석까지."
+                number="03"
+                image="/images/service-3.webp"
+                title="통계분석"
+                tagline="기초통계부터 텍스트·질적 분석까지"
                 features={["데이터 전처리 및 변환", "통계분석 및 텍스트 분석", "결과 해석 및 보고서"]}
-                href="/quant-analysis" color="violet"
+                href="/quant-analysis"
               />
             </div>
           </div>
@@ -461,23 +463,33 @@ export default function LandingPage() {
 
 /* ── Sub-components ── */
 
-function MainServiceCard({ icon, title, description, features, href, color = "teal" }: { icon: React.ReactNode; title: string; description: string; features: string[]; href: string; color?: string }) {
-  const colorMap: Record<string, { bg: string; bgHover: string; text: string; border: string; shadow: string; check: string }> = {
-    emerald: { bg: "bg-emerald-50", bgHover: "group-hover:bg-emerald-100", text: "text-emerald-600", border: "hover:border-emerald-200", shadow: "hover:shadow-emerald-50", check: "text-emerald-500" },
-    blue: { bg: "bg-blue-50", bgHover: "group-hover:bg-blue-100", text: "text-blue-600", border: "hover:border-blue-200", shadow: "hover:shadow-blue-50", check: "text-blue-500" },
-    violet: { bg: "bg-violet-50", bgHover: "group-hover:bg-violet-100", text: "text-violet-600", border: "hover:border-violet-200", shadow: "hover:shadow-violet-50", check: "text-violet-500" },
-    teal: { bg: "bg-teal-50", bgHover: "group-hover:bg-teal-100", text: "text-teal-600", border: "hover:border-teal-200", shadow: "hover:shadow-teal-50", check: "text-teal-500" },
-  };
-  const c = colorMap[color] || colorMap.teal;
+function MainServiceCard({ number, image, title, tagline, features, href }: { number: string; image: string; title: string; tagline: string; features: string[]; href: string }) {
   return (
-    <Link href={href} className={`group relative bg-white rounded-2xl border border-gray-200 p-8 ${c.border} hover:shadow-lg ${c.shadow} transition-all duration-300 block`}>
-      <div className={`w-12 h-12 rounded-xl ${c.bg} ${c.text} flex items-center justify-center mb-6 ${c.bgHover} transition-colors`}>{icon}</div>
-      <h3 className="text-xl font-bold text-gray-900 mb-3">{title}</h3>
-      <p className="text-sm text-gray-500 leading-relaxed mb-6">{description}</p>
-      <ul className="space-y-2.5 mb-6">
-        {features.map((f, i) => (<li key={i} className="flex items-center gap-2.5 text-sm text-gray-600"><svg className={`w-4 h-4 ${c.check} shrink-0`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>{f}</li>))}
-      </ul>
-      <span className={`inline-flex items-center gap-1.5 text-sm font-semibold ${c.text} group-hover:gap-3 transition-all`}>자세히 보기 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg></span>
+    <Link href={href} className="group relative bg-white rounded-2xl border border-gray-200 overflow-hidden hover:border-teal-200 hover:shadow-xl hover:shadow-teal-50 transition-all duration-300 flex flex-col">
+      {/* Image */}
+      <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-teal-50 to-cyan-50">
+        <Image src={image} alt={title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="(max-width:768px) 100vw, 33vw" />
+        <div className="absolute top-4 left-4 px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full">
+          <span className="text-xs font-bold text-teal-600 tracking-widest">{number}</span>
+        </div>
+      </div>
+      {/* Body */}
+      <div className="p-6 sm:p-8 flex flex-col flex-1">
+        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">{title}</h3>
+        <p className="text-sm text-gray-500 leading-relaxed mb-5">{tagline}</p>
+        <ul className="space-y-2 mb-6 flex-1">
+          {features.map((f, i) => (
+            <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
+              <svg className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+              {f}
+            </li>
+          ))}
+        </ul>
+        <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-teal-600 group-hover:gap-3 transition-all">
+          지원 요청
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </span>
+      </div>
     </Link>
   );
 }
