@@ -21,7 +21,7 @@ interface ContactInquiry {
 const categories = [
   "일반 문의",
   "서비스 이용",
-  "크레딧/결제",
+  "견적/결제",
   "기술 문의",
   "데이터 관련",
   "기타",

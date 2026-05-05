@@ -13,6 +13,7 @@
 - 주요 운영 연동은 Supabase, Vercel, GitHub Actions keep-alive, Discord/Nodemailer 알림, 파일 업로드/다운로드, Excel/PDF/ZIP 처리다.
 - `node_modules`가 설치되어 있다. Next.js 코드 수정 전 관련 문서는 `node_modules/next/dist/docs/`에서 먼저 확인한다.
 - 관리자 PIN 세션과 일반 사용자 Supabase Auth 세션은 상호 배타 정책이다. 마지막에 로그인한 쪽을 우선한다.
+- 결제는 크레딧 모델을 폐지하고 계좌이체 + 의뢰별 견적 모델로 전환했다.
 
 ## 다음 작업자에게
 
@@ -39,6 +40,58 @@
 
 다음 작업자 주의:
 ```
+
+## 2026-05-06 00:00 - Codex
+
+담당:
+
+- 크레딧 시스템 폐지 및 무통장입금/견적 모델 전환
+
+변경 파일:
+
+- `src/app/admin/page.tsx`
+- `src/app/stats-analysis/page.tsx`
+- `src/app/text-analysis/page.tsx`
+- `src/app/project/[id]/case/[caseId]/page.tsx`
+- `src/app/contact/page.tsx`
+- `src/app/faq/page.tsx`
+- `src/app/judgment-collection/page.tsx`
+- `src/components/ChatWidget.tsx`
+- `src/lib/variable-groups.ts`
+- `supabase-schema.sql`
+- `docs/AI_COLLABORATION.md`
+- `docs/AI_HANDOFF.md`
+- `PROGRESS.md`
+
+삭제 파일:
+
+- `src/app/credits/page.tsx`
+- `src/app/credits/CreditBalance.tsx`
+- `src/app/api/credits/route.ts`
+- `src/app/api/credits/use/route.ts`
+- `src/components/CreditConfirmDialog.tsx`
+- `src/lib/credits.ts`
+
+완료:
+
+- `/credits` 페이지, 크레딧 API, 크레딧 lib, 크레딧 확인 다이얼로그를 제거했다.
+- 관리자 패널에서 크레딧 잔액/거래내역/충전 탭을 제거했다.
+- 사용자 화면의 비용 안내는 크레딧 대신 견적/계좌이체 기준으로 정리했다.
+- `supabase-schema.sql`에서 `credits`, `credit_transactions` 생성 구문은 제거했고, 운영 DB 수동 DROP SQL은 주석으로 남겼다.
+- `PROGRESS.md`에 "크레딧 시스템 폐지 — 계좌이체 + 견적 모델로 전환" 기록을 추가했다.
+
+검증:
+
+- `npm run build` 통과
+- 로컬 `next start -p 3107` 후 `/credits` 404 확인
+
+남은 일:
+
+- 운영 Supabase에서 직접 실행 여부를 결정: `DROP TABLE IF EXISTS credit_transactions; DROP TABLE IF EXISTS credits;`
+
+다음 작업자 주의:
+
+- 크레딧 관련 UI/API를 되살리지 않는다. 결제는 견적 안내 후 계좌이체 입금확인 모델을 기준으로 설계한다.
 
 ## 2026-05-05 21:28 - Codex
 

@@ -1,12 +1,10 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { useParams } from "next/navigation";
 import Link from "next/link";
 import StatusBadge, { type CaseStatus } from "@/components/StatusBadge";
 import VariableSelector from "@/components/VariableSelector";
 import PricingCalculator from "@/components/PricingCalculator";
-import CreditConfirmDialog from "@/components/CreditConfirmDialog";
 import { VARIABLE_GROUPS, estimateCost, getSelectedVariableCount } from "@/lib/variable-groups";
 
 const ccItems = [
@@ -73,13 +71,11 @@ const defaultSelectedVars = VARIABLE_GROUPS
   .flatMap((g) => g.variables.map((v) => v.id));
 
 export default function CaseDetailPage() {
-  const params = useParams();
   const [ccChecked, setCcChecked] = useState<boolean[]>(new Array(9).fill(false));
   const [expandedIncidents, setExpandedIncidents] = useState<number[]>([1]);
   const [selectedVars, setSelectedVars] = useState<string[]>(defaultSelectedVars);
   const [customRequest, setCustomRequest] = useState("");
   const [showVariableSelector, setShowVariableSelector] = useState(false);
-  const [showPricingConfirm, setShowPricingConfirm] = useState(false);
 
   const textLength = mockJudgmentText.length;
 
@@ -95,11 +91,15 @@ export default function CaseDetailPage() {
   }, [selectedVars, customRequest, textLength]);
 
   const handleAiCoding = () => {
-    setShowPricingConfirm(true);
-  };
-
-  const confirmAiCoding = () => {
-    setShowPricingConfirm(false);
+    const confirmed = window.confirm(
+      [
+        "AI 자동 코딩을 시작할까요?",
+        `선택된 변수: ${selectedVars.length}개`,
+        `판결문 길이: ${textLength.toLocaleString("ko-KR")}자`,
+        `예상 비용: ${pricingInfo.totalKRW.toLocaleString("ko-KR")}원`,
+      ].join("\n")
+    );
+    if (!confirmed) return;
     // TODO: trigger actual AI coding
     alert("AI 자동 코딩을 시작합니다.");
   };
@@ -386,22 +386,6 @@ export default function CaseDetailPage() {
           </div>
         </div>
       </div>
-
-      {/* Pricing Confirmation Dialog */}
-      <CreditConfirmDialog
-        isOpen={showPricingConfirm}
-        onClose={() => setShowPricingConfirm(false)}
-        onConfirm={confirmAiCoding}
-        serviceName="판결문 코딩"
-        creditCost={Math.ceil(pricingInfo.totalKRW / 10)}
-        currentBalance={1000}
-        details={[
-          `선택된 변수: ${selectedVars.length}개`,
-          `판결문 길이: ${textLength.toLocaleString("ko-KR")}자`,
-          `예상 API 비용: $${pricingInfo.apiCost.toFixed(4)}`,
-          `서비스 이용료: ${pricingInfo.totalKRW.toLocaleString("ko-KR")}원`,
-        ]}
-      />
     </div>
   );
 }

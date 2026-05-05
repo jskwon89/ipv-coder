@@ -1,5 +1,18 @@
 # PRIMER 프로젝트 진행상황
 
+## 2026-05-06 작업 내용 - Codex
+
+### 완료된 작업
+
+**크레딧 시스템 폐지**
+- 크레딧 충전/차감/잔액 모델을 제거하고, 계좌이체 + 의뢰별 견적 모델로 전환했다.
+- `/credits` 페이지와 `/api/credits` API를 삭제했다.
+- 관리자 패널의 크레딧 탭과 잔액/거래내역 표시를 제거했다.
+- 사용자 화면의 결제 안내는 견적/무통장입금 기준으로 정리했다.
+- Supabase schema에서 `credits`, `credit_transactions` 생성 구문을 제거했고, 운영 DB 수동 정리용 DROP SQL은 주석으로 남겼다.
+
+---
+
 ## 2026-04-10 작업 내용 (전일 세션 - Claude Code)
 
 ### 대화 요약
@@ -250,7 +263,7 @@
 
 **AI 용어 전면 제거**
 - "AI 기반", "AI 코딩", "AI 분석" → "전문가 기반" 서비스로 문구 통일
-- 랜딩, 대시보드, 판결문, FAQ, 크레딧, 기초통계 등 8개 파일 수정
+- 랜딩, 대시보드, 판결문, FAQ, 기초통계 등 8개 파일 수정
 
 **랜딩페이지 강점 섹션 추가**
 - "왜 ResearchOn인가요?" 섹션 (서비스/이용절차 사이)
@@ -302,7 +315,7 @@
 - 각 의뢰 페이지 파일 첨부 → Supabase Storage 실제 연동 (현재 UI만 있음)
 
 ### 3. 기타 검토
-- 기초통계 페이지 크레딧 결제 흐름 (나중에)
+- 기초통계 페이지 견적/무통장입금 흐름 (나중에)
 - 커스텀 도메인 설정
 
 ---
@@ -318,7 +331,7 @@
 
 ### Supabase 설정
 - 프로젝트: researchon (ozpqlxpiblptcyqaipvd)
-- DB 테이블 9개 (projects, cases, dyads, service_requests, chat_messages, credits, credit_transactions, contact_inquiries, file_uploads)
+- 주요 DB 테이블 (projects, cases, dyads, service_requests, chat_messages, contact_inquiries, file_uploads, board_posts, board_comments)
 - Storage: uploads 버킷
 - RLS 정책: Allow all (서버사이드 API 전용)
 

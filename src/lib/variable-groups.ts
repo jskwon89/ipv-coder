@@ -194,7 +194,7 @@ export function estimateCost(
   const outputCost = (outputTokens / 1_000_000) * 15;
 
   const apiCost = systemCost + inputCost + outputCost;
-  const serviceFee = apiCost * 33; // ~1000 credits for full judgment coding
+  const serviceFee = apiCost * 33;
   const totalKRW = Math.round((serviceFee * 1400) / 100) * 100; // Round to nearest 100원
 
   return {

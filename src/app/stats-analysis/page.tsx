@@ -1,9 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import ServiceTabs from "@/components/ServiceTabs";
-import CreditConfirmDialog from "@/components/CreditConfirmDialog";
 import PageHeader from "@/components/PageHeader";
 
 const dataTabs = ["프로젝트 연결", "파일 업로드", "직접 입력"] as const;
@@ -32,7 +30,6 @@ export default function StatsAnalysisPage() {
   const [selectedRequest, setSelectedRequest] = useState<string[]>([]);
   const [requestDetail, setRequestDetail] = useState("");
   const [requestSubmitted, setRequestSubmitted] = useState(false);
-  const [showExcelCreditDialog, setShowExcelCreditDialog] = useState(false);
   const [excelExporting, setExcelExporting] = useState(false);
   const [excelDone, setExcelDone] = useState(false);
 
@@ -54,7 +51,6 @@ export default function StatsAnalysisPage() {
   };
 
   const handleExcelExport = () => {
-    setShowExcelCreditDialog(false);
     setExcelExporting(true);
     setTimeout(() => {
       setExcelExporting(false);
@@ -174,7 +170,7 @@ export default function StatsAnalysisPage() {
               {/* Excel export button */}
               <button
                 type="button"
-                onClick={() => setShowExcelCreditDialog(true)}
+                onClick={handleExcelExport}
                 disabled={excelExporting}
                 className="w-full px-4 py-2.5 bg-rose-600 text-white rounded-lg text-sm font-medium hover:bg-rose-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
@@ -309,16 +305,6 @@ export default function StatsAnalysisPage() {
         </div>
       </div>
 
-      {/* Excel Export Credit Dialog */}
-      <CreditConfirmDialog
-        isOpen={showExcelCreditDialog}
-        onClose={() => setShowExcelCreditDialog(false)}
-        onConfirm={handleExcelExport}
-        serviceName="기술통계표 Excel 내보내기"
-        creditCost={200}
-        currentBalance={1000}
-        loading={excelExporting}
-      />
     </div>
   );
 }

@@ -4,7 +4,6 @@ import ServiceTabs from "@/components/ServiceTabs";
 import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
-import CreditConfirmDialog from "@/components/CreditConfirmDialog";
 import PageHeader from "@/components/PageHeader";
 import { useUser } from "@/contexts/UserAuthContext";
 
@@ -21,7 +20,7 @@ interface AnalysisType {
   id: string;
   label: string;
   desc: string;
-  credit: number;
+  estimateKRW: number;
   styles: ColorStyles;
   icon: React.ReactNode;
   options: React.ReactNode;
@@ -105,9 +104,6 @@ export default function TextAnalysisPage() {
   const [activeResultTab, setActiveResultTab] = useState<string | null>(null);
   const [analysisRun, setAnalysisRun] = useState(false);
 
-  /* credit confirm dialog */
-  const [showCreditDialog, setShowCreditDialog] = useState(false);
-
   /* DB submission */
   const [email, setEmail] = useState("");
   const [additionalNotes, setAdditionalNotes] = useState("");
@@ -131,7 +127,7 @@ export default function TextAnalysisPage() {
       id: "topic",
       label: "토픽모델링",
       desc: "텍스트에서 주요 주제/토픽을 추출합니다",
-      credit: 300,
+      estimateKRW: 3000,
       styles: colorMap.purple,
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -157,7 +153,7 @@ export default function TextAnalysisPage() {
       id: "wordcloud",
       label: "워드클라우드",
       desc: "빈출 단어를 시각적으로 표시합니다",
-      credit: 200,
+      estimateKRW: 2000,
       styles: colorMap.blue,
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -198,7 +194,7 @@ export default function TextAnalysisPage() {
       id: "sentiment",
       label: "감성분석",
       desc: "텍스트의 긍정/부정/중립 논조를 분석합니다",
-      credit: 300,
+      estimateKRW: 3000,
       styles: colorMap.green,
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -228,7 +224,7 @@ export default function TextAnalysisPage() {
       id: "frequency",
       label: "키워드 빈도분석",
       desc: "주요 키워드의 출현 빈도를 분석합니다",
-      credit: 100,
+      estimateKRW: 1000,
       styles: colorMap.orange,
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -276,7 +272,7 @@ export default function TextAnalysisPage() {
       id: "network",
       label: "키워드 네트워크",
       desc: "단어 간 연관 관계를 네트워크로 시각화합니다",
-      credit: 300,
+      estimateKRW: 3000,
       styles: colorMap.teal,
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -302,7 +298,7 @@ export default function TextAnalysisPage() {
       id: "summary",
       label: "문서 요약",
       desc: "긴 문서를 핵심 내용으로 요약합니다",
-      credit: 200,
+      estimateKRW: 2000,
       styles: colorMap.rose,
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -330,14 +326,9 @@ export default function TextAnalysisPage() {
     },
   ];
 
-  const totalCredit = analyses.filter((a) => isSelected(a.id)).reduce((s, a) => s + a.credit, 0);
+  const totalEstimateKRW = analyses.filter((a) => isSelected(a.id)).reduce((s, a) => s + a.estimateKRW, 0);
 
   const handleRun = () => {
-    setShowCreditDialog(true);
-  };
-
-  const confirmRun = () => {
-    setShowCreditDialog(false);
     setAnalysisRun(true);
     setActiveResultTab(selected[0] ?? null);
   };
@@ -603,7 +594,7 @@ export default function TextAnalysisPage() {
                       {a.icon}
                     </div>
                     <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${a.styles.badge}`}>
-                      ~{a.credit} 크레딧
+                      예상 {a.estimateKRW.toLocaleString("ko-KR")}원
                     </span>
                   </div>
                   <div className="mt-3">
@@ -665,6 +656,9 @@ export default function TextAnalysisPage() {
           <div className="flex items-center gap-4">
             <div className="text-sm text-gray-600">
               <span className="font-medium text-gray-900">{selected.length}개</span> 분석 선택됨
+              {selected.length > 0 && (
+                <span className="ml-2 text-gray-400">예상 {totalEstimateKRW.toLocaleString("ko-KR")}원</span>
+              )}
             </div>
             <Link href="/text-results" className="text-sm text-gray-500 hover:text-gray-700 underline">
               이전 의뢰 결과 확인
@@ -739,19 +733,6 @@ export default function TextAnalysisPage() {
         </div>
       </div>
 
-      {/* Credit Confirm Dialog */}
-      <CreditConfirmDialog
-        isOpen={showCreditDialog}
-        onClose={() => setShowCreditDialog(false)}
-        onConfirm={confirmRun}
-        serviceName="텍스트 분석"
-        creditCost={totalCredit}
-        currentBalance={1000}
-        details={selected.map((id) => {
-          const a = analyses.find((x) => x.id === id)!;
-          return `${a.label}: ~${a.credit} 크레딧`;
-        })}
-      />
     </div>
   );
 }

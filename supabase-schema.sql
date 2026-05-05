@@ -50,24 +50,7 @@ CREATE TABLE chat_messages (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 6. 크레딧
-CREATE TABLE credits (
-  id INT PRIMARY KEY DEFAULT 1,
-  balance INT DEFAULT 100
-);
-
-CREATE TABLE credit_transactions (
-  id TEXT PRIMARY KEY,
-  type TEXT NOT NULL,
-  amount INT NOT NULL,
-  description TEXT DEFAULT '',
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- 초기 크레딧 데이터
-INSERT INTO credits (id, balance) VALUES (1, 100);
-
--- 7. 문의사항
+-- 6. 문의사항
 CREATE TABLE contact_inquiries (
   id TEXT PRIMARY KEY,
   email TEXT DEFAULT '',
@@ -81,7 +64,7 @@ CREATE TABLE contact_inquiries (
   replied_at TIMESTAMPTZ
 );
 
--- 8. 게시판
+-- 7. 게시판
 CREATE TABLE board_posts (
   id TEXT PRIMARY KEY,
   category TEXT NOT NULL CHECK (category IN ('free', 'qna')),
@@ -121,8 +104,6 @@ ALTER TABLE cases ENABLE ROW LEVEL SECURITY;
 ALTER TABLE dyads ENABLE ROW LEVEL SECURITY;
 ALTER TABLE service_requests ENABLE ROW LEVEL SECURITY;
 ALTER TABLE chat_messages ENABLE ROW LEVEL SECURITY;
-ALTER TABLE credits ENABLE ROW LEVEL SECURITY;
-ALTER TABLE credit_transactions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE contact_inquiries ENABLE ROW LEVEL SECURITY;
 ALTER TABLE board_posts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE board_comments ENABLE ROW LEVEL SECURITY;
@@ -133,8 +114,10 @@ CREATE POLICY "Allow all" ON cases FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Allow all" ON dyads FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Allow all" ON service_requests FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Allow all" ON chat_messages FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Allow all" ON credits FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Allow all" ON credit_transactions FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Allow all" ON contact_inquiries FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Allow all" ON board_posts FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Allow all" ON board_comments FOR ALL USING (true) WITH CHECK (true);
+
+-- Optional manual cleanup after confirming production no longer reads credit data:
+-- DROP TABLE IF EXISTS credit_transactions;
+-- DROP TABLE IF EXISTS credits;

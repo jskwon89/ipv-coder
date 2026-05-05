@@ -6,11 +6,6 @@ import { useEffect, useState, useCallback } from "react";
 import * as XLSX from "xlsx";
 import ResultFilesPanel from "@/components/ResultFilesPanel";
 
-interface CreditData {
-  balance: number;
-  transactions: { id: string; type: string; amount: number; description: string; createdAt: string }[];
-}
-
 interface Project {
   id: string;
   name: string;
@@ -68,11 +63,8 @@ const statusConfig: Record<string, { label: string; bg: string; text: string }> 
 export default function AdminPage() {
   const { isAdmin, loading: authLoading } = useAuth();
   const router = useRouter();
-  const [credits, setCredits] = useState<CreditData | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
-  const [chargeAmount, setChargeAmount] = useState("");
-  const [charging, setCharging] = useState(false);
-  const [activeTab, setActiveTab] = useState<"overview" | "requests" | "inquiries" | "live-chat" | "credits" | "projects" | "site-settings">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "requests" | "inquiries" | "live-chat" | "projects" | "site-settings">("overview");
 
   // Live chat (global chat sessions)
   const [chatSessions, setChatSessions] = useState<{ email: string; lastMessage: string; lastSender: string; lastAt: string; messageCount: number }[]>([]);
@@ -195,13 +187,8 @@ export default function AdminPage() {
   };
 
   const fetchData = async () => {
-    const [credRes, projRes] = await Promise.all([
-      fetch("/api/credits"),
-      fetch("/api/projects"),
-    ]);
-    const credData = await credRes.json();
+    const projRes = await fetch("/api/projects");
     const projData = await projRes.json();
-    setCredits(credData);
     setProjects(projData.projects || []);
   };
 
@@ -246,23 +233,6 @@ export default function AdminPage() {
       const data = await res.json();
       setChatMessages(data.messages ?? []);
     } catch { /* ignore */ }
-  };
-
-  const handleCharge = async () => {
-    const amount = parseInt(chargeAmount);
-    if (!amount || amount <= 0) return;
-    setCharging(true);
-    try {
-      await fetch("/api/credits", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount, description: `관리자 수동 충전 (${amount.toLocaleString()} 크레딧)` }),
-      });
-      setChargeAmount("");
-      await fetchData();
-    } finally {
-      setCharging(false);
-    }
   };
 
   const handleDeleteProject = async (id: string, name: string) => {
@@ -446,7 +416,6 @@ export default function AdminPage() {
           { key: "requests", label: `의뢰 관리${pendingCount ? ` (${pendingCount})` : ""}` },
           { key: "inquiries", label: `문의 관리${pendingInquiryCount ? ` (${pendingInquiryCount})` : ""}` },
           { key: "live-chat", label: `실시간 상담${chatSessions.filter(s => s.lastSender === "user").length ? ` (${chatSessions.filter(s => s.lastSender === "user").length})` : ""}` },
-          { key: "credits", label: "크레딧 관리" },
           { key: "projects", label: "프로젝트 관리" },
           { key: "site-settings", label: "사이트 설정" },
         ] as const).map((tab) => (
@@ -467,8 +436,7 @@ export default function AdminPage() {
       {/* Overview */}
       {activeTab === "overview" && (
         <div className="space-y-6">
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-            <OverviewCard label="크레딧 잔액" value={credits?.balance?.toLocaleString() ?? "..."} color="amber" />
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <OverviewCard label="총 의뢰" value={flatRequests.length} color="blue" />
             <OverviewCard label="대기중" value={pendingCount} color="red" />
             <OverviewCard label="진행중" value={inProgressCount} color="green" />
@@ -502,27 +470,6 @@ export default function AdminPage() {
               </div>
             ) : (
               <p className="text-sm text-gray-400">대기중인 의뢰가 없습니다</p>
-            )}
-          </div>
-
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h3 className="font-bold text-gray-900 mb-4">최근 크레딧 내역</h3>
-            {credits?.transactions?.length ? (
-              <div className="space-y-2">
-                {credits.transactions.slice(0, 10).map((tx) => (
-                  <div key={tx.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
-                    <div>
-                      <span className="text-sm text-gray-700">{tx.description}</span>
-                      <span className="text-xs text-gray-400 ml-2">{tx.createdAt.slice(0, 16).replace("T", " ")}</span>
-                    </div>
-                    <span className={`text-sm font-bold ${tx.type === "charge" ? "text-green-600" : "text-red-500"}`}>
-                      {tx.type === "charge" ? "+" : "-"}{tx.amount.toLocaleString()}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-sm text-gray-400">내역이 없습니다</p>
             )}
           </div>
         </div>
@@ -906,86 +853,6 @@ export default function AdminPage() {
               </div>
             </div>
           )}
-        </div>
-      )}
-
-      {/* Credits */}
-      {activeTab === "credits" && (
-        <div className="space-y-6">
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h3 className="font-bold text-gray-900 mb-1">크레딧 잔액</h3>
-            <p className="text-3xl font-bold text-primary mb-6">{credits?.balance?.toLocaleString() ?? 0} 크레딧</p>
-
-            <div className="flex gap-3 items-end">
-              <div className="flex-1">
-                <label className="block text-sm font-medium text-gray-600 mb-1.5">충전 금액</label>
-                <input
-                  type="number"
-                  value={chargeAmount}
-                  onChange={(e) => setChargeAmount(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && handleCharge()}
-                  placeholder="충전할 크레딧 수"
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-600/30 focus:border-teal-600"
-                />
-              </div>
-              <div className="flex gap-2">
-                {[1000, 5000, 10000, 50000].map((amt) => (
-                  <button
-                    key={amt}
-                    onClick={() => setChargeAmount(String(amt))}
-                    className="px-3 py-2.5 text-xs font-medium border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-600"
-                  >
-                    {(amt / 1000)}K
-                  </button>
-                ))}
-              </div>
-              <button
-                onClick={handleCharge}
-                disabled={charging || !chargeAmount}
-                className="px-6 py-2.5 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-teal-500 disabled:opacity-50 transition-colors"
-              >
-                {charging ? "충전 중..." : "충전"}
-              </button>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h3 className="font-bold text-gray-900 mb-4">전체 거래 내역</h3>
-            <div className="max-h-96 overflow-y-auto">
-              {credits?.transactions?.length ? (
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="text-left text-gray-400 border-b border-gray-100">
-                      <th className="pb-2 font-medium">날짜</th>
-                      <th className="pb-2 font-medium">유형</th>
-                      <th className="pb-2 font-medium">설명</th>
-                      <th className="pb-2 font-medium text-right">금액</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {credits.transactions.map((tx) => (
-                      <tr key={tx.id} className="border-b border-gray-50">
-                        <td className="py-2.5 text-gray-500">{tx.createdAt.slice(0, 10)}</td>
-                        <td className="py-2.5">
-                          <span className={`px-2 py-0.5 rounded text-xs font-medium ${
-                            tx.type === "charge" ? "bg-green-50 text-green-600" : tx.type === "refund" ? "bg-blue-50 text-blue-600" : "bg-red-50 text-red-500"
-                          }`}>
-                            {tx.type === "charge" ? "충전" : tx.type === "refund" ? "환불" : "사용"}
-                          </span>
-                        </td>
-                        <td className="py-2.5 text-gray-700">{tx.description}</td>
-                        <td className={`py-2.5 text-right font-bold ${tx.type === "charge" || tx.type === "refund" ? "text-green-600" : "text-red-500"}`}>
-                          {tx.type === "charge" || tx.type === "refund" ? "+" : "-"}{tx.amount.toLocaleString()}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              ) : (
-                <p className="text-sm text-gray-400 py-4">거래 내역이 없습니다</p>
-              )}
-            </div>
-          </div>
         </div>
       )}
 

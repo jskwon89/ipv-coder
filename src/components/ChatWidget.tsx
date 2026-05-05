@@ -18,7 +18,7 @@ const HIDDEN_PATHS = ["/login", "/signup", "/admin"];
 /* ── 자동 응답 규칙 ── */
 const autoReplies: { keywords: string[]; reply: string }[] = [
   {
-    keywords: ["가격", "비용", "요금", "얼마", "크레딧", "결제"],
+    keywords: ["가격", "비용", "요금", "얼마", "견적", "결제"],
     reply: "서비스 비용은 작업 범위에 따라 달라집니다. 간편 상담을 통해 구체적인 견적을 받아보실 수 있어요.\n\n상담사에게 연결하시겠어요?",
   },
   {

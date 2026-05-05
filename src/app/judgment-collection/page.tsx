@@ -524,11 +524,11 @@ export default function JudgmentCollectionPage() {
               <ul className="space-y-1.5 text-sm text-blue-700">
                 <li className="flex items-start gap-2">
                   <span className="text-blue-600 mt-1">&#8226;</span>
-                  <span><strong>사건번호 지정:</strong> ~100 크레딧/건</span>
+                  <span><strong>사건번호 지정:</strong> 건수 확인 후 견적 안내</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-blue-600 mt-1">&#8226;</span>
-                  <span><strong>키워드 검색 수집:</strong> ~200 크레딧/건 (검색 포함)</span>
+                  <span><strong>키워드 검색 수집:</strong> 검색 범위 확인 후 견적 안내</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-blue-600 mt-1">&#8226;</span>
