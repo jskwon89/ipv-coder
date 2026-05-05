@@ -265,17 +265,17 @@ export default function LandingPage() {
             {/* Stats cards (clickable) */}
             {!statsLoading && (
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-                <Link href="/my" className="bg-white rounded-xl p-5 border-2 border-emerald-200 shadow-sm hover:shadow-lg hover:border-emerald-300 hover:-translate-y-0.5 transition-all group">
-                  <div className="text-3xl sm:text-4xl font-bold text-emerald-600">{totalStats.total}</div>
-                  <div className="text-sm text-emerald-700 mt-1 font-medium flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-300" />전체 의뢰</div>
+                <Link href="/my" className="bg-white rounded-xl p-5 border-2 border-slate-300 shadow-sm hover:shadow-lg hover:border-slate-400 hover:-translate-y-0.5 transition-all group">
+                  <div className="text-3xl sm:text-4xl font-bold text-slate-700">{totalStats.total}</div>
+                  <div className="text-sm text-slate-600 mt-1 font-medium flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-slate-400" />전체 의뢰</div>
                 </Link>
-                <Link href="/my?status=pending" className="bg-white rounded-xl p-5 border-2 border-emerald-400 shadow-sm hover:shadow-lg hover:border-emerald-500 hover:-translate-y-0.5 transition-all group">
-                  <div className="text-3xl sm:text-4xl font-bold text-emerald-700">{totalStats.pending}</div>
-                  <div className="text-sm text-emerald-800 mt-1 font-medium flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-500" />접수</div>
+                <Link href="/my?status=pending" className="bg-white rounded-xl p-5 border-2 border-emerald-200 shadow-sm hover:shadow-lg hover:border-emerald-300 hover:-translate-y-0.5 transition-all group">
+                  <div className="text-3xl sm:text-4xl font-bold text-emerald-600">{totalStats.pending}</div>
+                  <div className="text-sm text-emerald-700 mt-1 font-medium flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-300" />접수</div>
                 </Link>
-                <Link href="/my?status=in_progress" className="bg-white rounded-xl p-5 border-2 border-emerald-600 shadow-sm hover:shadow-lg hover:border-emerald-700 hover:-translate-y-0.5 transition-all group">
-                  <div className="text-3xl sm:text-4xl font-bold text-emerald-800">{totalStats.in_progress}</div>
-                  <div className="text-sm text-emerald-900 mt-1 font-medium flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-700" />진행중</div>
+                <Link href="/my?status=in_progress" className="bg-white rounded-xl p-5 border-2 border-emerald-400 shadow-sm hover:shadow-lg hover:border-emerald-500 hover:-translate-y-0.5 transition-all group">
+                  <div className="text-3xl sm:text-4xl font-bold text-emerald-700">{totalStats.in_progress}</div>
+                  <div className="text-sm text-emerald-800 mt-1 font-medium flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-500" />진행중</div>
                 </Link>
                 <Link href="/my?status=completed" className="bg-white rounded-xl p-5 border-2 border-emerald-800 shadow-sm hover:shadow-lg hover:border-emerald-900 hover:-translate-y-0.5 transition-all group">
                   <div className="text-3xl sm:text-4xl font-bold text-emerald-900">{totalStats.completed}</div>
@@ -380,12 +380,7 @@ export default function LandingPage() {
       )}
 
       {/* CTA + Footer — 통합 */}
-      <footer id="contact" className="relative text-white px-4 sm:px-6 overflow-hidden">
-        {/* Background image */}
-        <div className="absolute inset-0">
-          <Image src="/images/dylan-gillis-KdeqA3aTnBY-unsplash.jpg" alt="" fill className="object-cover" />
-          <div className="absolute inset-0 bg-[#0f172a]/95" />
-        </div>
+      <footer id="contact" className="relative text-white px-4 sm:px-6 bg-gray-900 overflow-hidden">
         {/* CTA */}
         <div className="relative z-10 max-w-3xl mx-auto text-center py-20 sm:py-28">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">함께하는 연구의 시작</h2>
