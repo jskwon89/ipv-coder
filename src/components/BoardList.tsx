@@ -28,7 +28,15 @@ function formatDate(value: string) {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
-  });
+  }).replace(/\.\s?$/, "");
+}
+
+function maskEmail(email: string) {
+  if (!email || !email.includes("@")) return email || "익명";
+  const [local, domain] = email.split("@");
+  if (!local) return `***@${domain}`;
+  const head = local.charAt(0);
+  return `${head}***@${domain}`;
 }
 
 export default function BoardList({ category, title, description }: BoardListProps) {
@@ -150,27 +158,60 @@ export default function BoardList({ category, title, description }: BoardListPro
         ) : posts.length === 0 ? (
           <div className="px-6 py-12 text-center text-sm text-gray-400">아직 게시글이 없습니다.</div>
         ) : (
-          <div className="divide-y divide-gray-100">
-            {posts.map((post) => (
-              <Link key={post.id} href={`/board/${post.id}`} className="block px-5 py-4 hover:bg-gray-50">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="min-w-0 flex-1">
-                    <h2 className="truncate text-base font-semibold text-gray-900">{post.title}</h2>
-                    <p className="mt-1 line-clamp-2 text-sm text-gray-500">{post.content}</p>
-                    <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-gray-400">
-                      <span>{post.author_name || post.author_email}</span>
-                      <span>|</span>
-                      <span>{formatDate(post.created_at)}</span>
-                    </div>
+          <>
+            {/* Desktop: 표 형식 */}
+            <table className="hidden sm:table w-full text-sm">
+              <thead className="bg-slate-50 border-b border-gray-200">
+                <tr className="text-gray-600 text-xs font-semibold">
+                  <th className="px-3 py-3 w-16 text-center">번호</th>
+                  <th className="px-3 py-3 text-left">제목</th>
+                  <th className="px-3 py-3 w-40 text-center">작성자</th>
+                  <th className="px-3 py-3 w-28 text-center">작성일</th>
+                  <th className="px-3 py-3 w-16 text-center">조회</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {posts.map((post, idx) => (
+                  <tr key={post.id} className="hover:bg-slate-50 transition-colors">
+                    <td className="px-3 py-3 text-center text-gray-400">{posts.length - idx}</td>
+                    <td className="px-3 py-3">
+                      <Link href={`/board/${post.id}`} className="block truncate font-medium text-gray-900 hover:text-teal-700">
+                        {post.title}
+                      </Link>
+                    </td>
+                    <td className="px-3 py-3 text-center text-xs text-gray-500 font-mono">
+                      {maskEmail(post.author_email)}
+                    </td>
+                    <td className="px-3 py-3 text-center text-xs text-gray-500">
+                      {formatDate(post.created_at)}
+                    </td>
+                    <td className="px-3 py-3 text-center text-xs text-gray-500">
+                      {post.view_count ?? 0}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            {/* Mobile: 카드 형식 */}
+            <div className="sm:hidden divide-y divide-gray-100">
+              {posts.map((post, idx) => (
+                <Link key={post.id} href={`/board/${post.id}`} className="block px-4 py-3 hover:bg-slate-50">
+                  <div className="flex items-center gap-2 text-xs text-gray-400 mb-1">
+                    <span>#{posts.length - idx}</span>
                   </div>
-                  <div className="shrink-0 text-right text-xs text-gray-400">
-                    <div>조회</div>
-                    <div className="mt-1 text-sm font-semibold text-gray-700">{post.view_count ?? 0}</div>
+                  <h2 className="truncate text-sm font-semibold text-gray-900">{post.title}</h2>
+                  <div className="mt-1.5 flex items-center gap-2 text-[11px] text-gray-500">
+                    <span className="font-mono">{maskEmail(post.author_email)}</span>
+                    <span className="text-gray-300">|</span>
+                    <span>{formatDate(post.created_at)}</span>
+                    <span className="text-gray-300">|</span>
+                    <span>조회 {post.view_count ?? 0}</span>
                   </div>
-                </div>
-              </Link>
-            ))}
-          </div>
+                </Link>
+              ))}
+            </div>
+          </>
         )}
       </div>
     </div>
