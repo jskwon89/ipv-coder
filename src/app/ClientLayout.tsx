@@ -154,7 +154,7 @@ function TopMenuGroup({
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-1 w-52 bg-white rounded-xl border border-gray-200 shadow-lg py-1.5 z-50">
+        <div className="absolute top-full left-0 mt-2 w-60 bg-white rounded-xl border border-gray-200 shadow-xl py-2 z-50 ring-1 ring-black/5">
           {group.items.map((item) => {
             const isActive = group.prefixes.some(
               (p) => p.startsWith(item.href) && (pathname === p || pathname.startsWith(p + "/"))
@@ -162,18 +162,21 @@ function TopMenuGroup({
             return (
               <div key={item.href}>
                 {"divider" in item && item.divider && (
-                  <div className="my-1 border-t border-gray-100" />
+                  <div className="my-1.5 border-t border-gray-100" />
                 )}
                 <Link
                   href={item.href}
                   onClick={onClose}
-                  className={`block px-4 py-2.5 text-sm transition-colors ${
+                  className={`flex items-center justify-between px-4 py-3 text-[15px] font-semibold transition-all group/item ${
                     isActive
-                      ? "text-teal-600 bg-teal-50 font-medium"
-                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                      ? "text-teal-700 bg-teal-50"
+                      : "text-gray-800 hover:text-teal-700 hover:bg-teal-50/60"
                   }`}
                 >
-                  {item.label}
+                  <span>{item.label}</span>
+                  <svg className="w-4 h-4 text-gray-300 group-hover/item:text-teal-500 transition-all -translate-x-1 group-hover/item:translate-x-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
                 </Link>
               </div>
             );
@@ -250,6 +253,28 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     <div className="min-h-screen bg-slate-50/50">
       {/* Top Navigation */}
       <header className="fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-200">
+        {/* Utility bar */}
+        <div className="hidden lg:block bg-slate-50 border-b border-gray-100">
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 xl:px-20">
+            <div className="flex items-center justify-between h-9 text-xs">
+              <div className="flex items-center gap-1.5 text-gray-500">
+                <svg className="w-3.5 h-3.5 text-teal-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-.5a.5.5 0 01-.5-.5V10a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                </svg>
+                <span>대학원생·연구자 25% 할인 진행 중</span>
+              </div>
+              <div className="flex items-center gap-4 text-gray-500">
+                <Link href="/samples" className="hover:text-teal-600 transition-colors">결과물 샘플</Link>
+                <span className="text-gray-300">|</span>
+                <Link href="/faq" className="hover:text-teal-600 transition-colors">자주 묻는 질문</Link>
+                <span className="text-gray-300">|</span>
+                <Link href="/contact" className="hover:text-teal-600 transition-colors">문의하기</Link>
+                <span className="text-gray-300">|</span>
+                <Link href="/board/qna" className="hover:text-teal-600 transition-colors">Q&amp;A</Link>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 xl:px-20">
           <div className="flex items-center h-16 sm:h-20 gap-4">
             {/* Logo */}
@@ -425,7 +450,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       )}
 
       {/* Main content */}
-      <main className="min-h-screen pt-16 sm:pt-20">
+      <main className="min-h-screen pt-16 sm:pt-20 lg:pt-[116px]">
         {children}
       </main>
 
