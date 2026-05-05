@@ -256,7 +256,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       <header className="fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-200">
         {/* Utility bar */}
         <div className="hidden lg:block bg-slate-100 border-b border-gray-200">
-          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-2 xl:px-3">
+          <div className="w-full px-4 sm:px-6 lg:px-3 xl:px-4">
             <div className="flex items-center justify-between h-11 text-[13px]">
               <div className="flex items-center gap-2 text-gray-700 font-medium">
                 <svg className="w-4 h-4 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
@@ -276,7 +276,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </div>
           </div>
         </div>
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-2 xl:px-3">
+        <div className="w-full px-4 sm:px-6 lg:px-3 xl:px-4">
           <div className="flex items-center h-16 sm:h-20 lg:h-24 gap-4">
             {/* Logo */}
             <Link href="/" className="flex items-center shrink-0">
@@ -318,10 +318,15 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               {user && (
                 <Link
                   href="/my"
-                  className={`hidden sm:inline-flex items-center px-3 py-2 rounded-lg text-lg font-semibold whitespace-nowrap transition-colors ${
-                    pathname === "/my" || pathname.startsWith("/my/") ? "text-teal-600 bg-teal-50" : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                  className={`hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-lg font-semibold whitespace-nowrap transition-all ${
+                    pathname === "/my" || pathname.startsWith("/my/")
+                      ? "text-white bg-teal-600 shadow-sm"
+                      : "text-teal-700 bg-teal-50 ring-1 ring-teal-200 hover:bg-teal-100 hover:ring-teal-300"
                   }`}
                 >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                  </svg>
                   내 의뢰
                 </Link>
               )}
