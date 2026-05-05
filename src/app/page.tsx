@@ -247,7 +247,7 @@ export default function LandingPage() {
 
       {/* 연구현황 (My Research) - only when logged in */}
       {user && (
-        <section id="my-research" className="py-12 sm:py-20 px-4 sm:px-6 bg-slate-200 border-y border-slate-300">
+        <section id="my-research" className="py-12 sm:py-20 px-4 sm:px-6 bg-slate-100 border-y border-slate-200">
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center justify-between mb-8">
               <div>
@@ -265,21 +265,21 @@ export default function LandingPage() {
             {/* Stats cards (clickable) */}
             {!statsLoading && (
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-                <Link href="/my" className="bg-emerald-50 rounded-xl p-5 border-2 border-emerald-200 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all group">
-                  <div className="text-3xl sm:text-4xl font-bold text-emerald-700">{totalStats.total}</div>
-                  <div className="text-sm text-emerald-800 mt-1 font-medium flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-300" />전체 의뢰</div>
+                <Link href="/my" className="bg-white rounded-xl p-5 border-2 border-emerald-200 shadow-sm hover:shadow-lg hover:border-emerald-300 hover:-translate-y-0.5 transition-all group">
+                  <div className="text-3xl sm:text-4xl font-bold text-emerald-600">{totalStats.total}</div>
+                  <div className="text-sm text-emerald-700 mt-1 font-medium flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-300" />전체 의뢰</div>
                 </Link>
-                <Link href="/my?status=pending" className="bg-emerald-200 rounded-xl p-5 border-2 border-emerald-300 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all group">
-                  <div className="text-3xl sm:text-4xl font-bold text-emerald-800">{totalStats.pending}</div>
-                  <div className="text-sm text-emerald-900 mt-1 font-medium flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-500" />접수</div>
+                <Link href="/my?status=pending" className="bg-white rounded-xl p-5 border-2 border-emerald-400 shadow-sm hover:shadow-lg hover:border-emerald-500 hover:-translate-y-0.5 transition-all group">
+                  <div className="text-3xl sm:text-4xl font-bold text-emerald-700">{totalStats.pending}</div>
+                  <div className="text-sm text-emerald-800 mt-1 font-medium flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-500" />접수</div>
                 </Link>
-                <Link href="/my?status=in_progress" className="bg-emerald-400 rounded-xl p-5 border-2 border-emerald-500 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all group">
-                  <div className="text-3xl sm:text-4xl font-bold text-white">{totalStats.in_progress}</div>
-                  <div className="text-sm text-emerald-50 mt-1 font-medium flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-700" />진행중</div>
+                <Link href="/my?status=in_progress" className="bg-white rounded-xl p-5 border-2 border-emerald-600 shadow-sm hover:shadow-lg hover:border-emerald-700 hover:-translate-y-0.5 transition-all group">
+                  <div className="text-3xl sm:text-4xl font-bold text-emerald-800">{totalStats.in_progress}</div>
+                  <div className="text-sm text-emerald-900 mt-1 font-medium flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-700" />진행중</div>
                 </Link>
-                <Link href="/my?status=completed" className="bg-emerald-700 rounded-xl p-5 border-2 border-emerald-800 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all group">
-                  <div className="text-3xl sm:text-4xl font-bold text-white">{totalStats.completed}</div>
-                  <div className="text-sm text-emerald-50 mt-1 font-medium flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-300" />완료</div>
+                <Link href="/my?status=completed" className="bg-white rounded-xl p-5 border-2 border-emerald-800 shadow-sm hover:shadow-lg hover:border-emerald-900 hover:-translate-y-0.5 transition-all group">
+                  <div className="text-3xl sm:text-4xl font-bold text-emerald-900">{totalStats.completed}</div>
+                  <div className="text-sm text-emerald-900 mt-1 font-medium flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-900" />완료</div>
                 </Link>
               </div>
             )}
