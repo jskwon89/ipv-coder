@@ -39,7 +39,7 @@
 다음 작업자 주의:
 ```
 
-## 2026-05-05 - Codex
+## 2026-05-05 - Codex (협업 문서화)
 
 담당:
 
@@ -65,18 +65,60 @@
 
 남은 일:
 
-- 실제 코드 작업 전 Next 16.2.2 문서 확인
 - 필요하면 `PROGRESS.md` 한글 인코딩 상태 점검
-- 운영 환경변수와 Vercel 프로젝트 설정 대조
-- 도메인 하드코딩 정리: `https://researchon.vercel.app` 가 아래 4곳에 박혀 있음. `process.env.NEXT_PUBLIC_SITE_URL` 등으로 빼야 커스텀 도메인 전환 시 한 곳에서 관리 가능
-  - `src/lib/email.ts` (3곳: 접수/결과 등록/메시지 본문)
-  - `src/app/api/result-files/route.ts` (1곳: 결과 파일 등록 알림 본문)
-  - `.github/workflows/supabase-keep-alive.yml` (keep-alive 호출 URL)
+- 운영 환경변수와 Vercel/GitHub 설정 대조
+  - Vercel: `SITE_URL` 또는 `NEXT_PUBLIC_SITE_URL`, `ADMIN_PIN`, `ADMIN_SESSION_SECRET`
+  - GitHub repository variable: `PRIMER_SITE_URL`
 - 옛 골드 잔재(`hover:bg-[#b08a28]`, `hover:text-[#b08a28]`) 27개 파일·50+곳에서 일괄 치환 필요. UI 작업이므로 Claude 담당
-- 관리자 PIN(`4178`) 클라이언트 노출: `src/contexts/AuthContext.tsx:17`(`"use client"` 컴포넌트), `src/app/api/result-files/route.ts:10`. 서버 세션/쿠키 또는 서버 전용 env로 이전 필요
-- 크레딧 시스템(`src/lib/credits.ts`)이 `fs.writeFileSync`로 동작 — Vercel 서버리스에서 휘발. 사용 안 할 거면 `/credits` 메뉴/페이지 제거, 사용할 거면 Supabase로 이전
+
+## 2026-05-05 - Codex
+
+담당:
+
+- 운영/성능/구축 보완: 도메인 env 중앙화, 관리자 인증 서버 이전, 크레딧 Supabase 이전
+
+변경 파일:
+
+- `src/lib/site-url.ts`
+- `src/lib/admin-auth.ts`
+- `src/app/api/admin/session/route.ts`
+- `src/lib/email.ts`
+- `src/app/api/result-files/route.ts`
+- `.github/workflows/supabase-keep-alive.yml`
+- `src/contexts/AuthContext.tsx`
+- `src/components/AdminLoginModal.tsx`
+- `src/components/ResultFilesPanel.tsx`
+- `src/app/admin/page.tsx`
+- `src/app/project/[id]/page.tsx`
+- `src/app/ClientLayout.tsx`
+- `src/lib/credits.ts`
+- `src/app/api/credits/route.ts`
+- `src/app/api/credits/use/route.ts`
+- `docs/OPS_RUNBOOK.md`
+- `docs/AI_HANDOFF.md`
+
+완료:
+
+- `researchon.vercel.app` 호출부를 `getSiteUrl()`/`getSiteHost()` 기반으로 정리했다. 앱 코드는 `SITE_URL`, `NEXT_PUBLIC_SITE_URL`, Vercel URL, 기존 Vercel 도메인 fallback 순서로 사이트 URL을 결정한다.
+- GitHub keep-alive workflow는 repository variable `PRIMER_SITE_URL`을 사용하도록 변경했다.
+- 관리자 PIN 하드코딩을 제거하고 `/api/admin/session`에서 `ADMIN_PIN`을 검증한 뒤 HttpOnly 쿠키 세션을 발급하도록 변경했다.
+- 결과 파일 업로드/삭제 API는 `?pin=` 대신 관리자 세션 쿠키를 확인한다.
+- 크레딧 저장소를 `data/credits.json` 파일 쓰기에서 Supabase `credits`, `credit_transactions` 테이블 사용으로 변경했다.
+- Next 16/React 19 lint error를 막던 `ClientLayout` route-change effect를 비동기 callback으로 조정했다.
+
+검증:
+
+- `git diff --check` 통과
+- `npm run lint` 통과. 기존 warning 82건은 남아 있음.
+- `npm run build` 통과
+
+남은 일:
+
+- Vercel 환경변수 설정: `ADMIN_PIN`, `ADMIN_SESSION_SECRET`, `SITE_URL` 또는 `NEXT_PUBLIC_SITE_URL`
+- GitHub repository variable 설정: `PRIMER_SITE_URL`
+- 골드 hover 잔재 치환은 UI 작업이므로 Claude 담당
 
 다음 작업자 주의:
 
-- `CLAUDE.md`에는 기존에 자동 commit/push 규칙이 있다. 사용자 의도와 실제 브랜치 전략이 다르면 먼저 확인한다.
-
+- 작업 중 `src/app/consultation/page.tsx` 등 여러 UI 파일에 골드 hover 치환 변경이 작업트리에 감지됐다. Codex 담당 변경이 아니므로 이번 운영 커밋에는 포함하지 않는다.
+- `src/lib/site-url.ts`의 기존 Vercel 도메인은 env 미설정 시 fallback 용도로만 남아 있다.

@@ -8,6 +8,7 @@ export function AdminLoginModal({ onClose }: { onClose: () => void }) {
   const [digits, setDigits] = useState(["", "", "", ""]);
   const [error, setError] = useState(false);
   const [shake, setShake] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const inputRefs = [
     useRef<HTMLInputElement>(null),
     useRef<HTMLInputElement>(null),
@@ -19,7 +20,26 @@ export function AdminLoginModal({ onClose }: { onClose: () => void }) {
     inputRefs[0].current?.focus();
   }, []);
 
+  const submitPin = async (pin: string) => {
+    setSubmitting(true);
+    const success = await login(pin);
+    setSubmitting(false);
+    if (success) {
+      onClose();
+      return;
+    }
+
+    setError(true);
+    setShake(true);
+    setTimeout(() => {
+      setShake(false);
+      setDigits(["", "", "", ""]);
+      inputRefs[0].current?.focus();
+    }, 500);
+  };
+
   const handleChange = (index: number, value: string) => {
+    if (submitting) return;
     if (!/^\d*$/.test(value)) return;
     const newDigits = [...digits];
     newDigits[index] = value.slice(-1);
@@ -34,18 +54,7 @@ export function AdminLoginModal({ onClose }: { onClose: () => void }) {
     if (value && index === 3) {
       const pin = newDigits.join("");
       if (pin.length === 4) {
-        const success = login(pin);
-        if (success) {
-          onClose();
-        } else {
-          setError(true);
-          setShake(true);
-          setTimeout(() => {
-            setShake(false);
-            setDigits(["", "", "", ""]);
-            inputRefs[0].current?.focus();
-          }, 500);
-        }
+        submitPin(pin);
       }
     }
   };
@@ -79,6 +88,7 @@ export function AdminLoginModal({ onClose }: { onClose: () => void }) {
               inputMode="numeric"
               maxLength={1}
               value={digit}
+              disabled={submitting}
               onChange={(e) => handleChange(i, e.target.value)}
               onKeyDown={(e) => handleKeyDown(i, e)}
               className={`w-14 h-16 text-center text-2xl font-bold rounded-xl border-2 transition-all outline-none ${

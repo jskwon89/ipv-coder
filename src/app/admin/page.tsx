@@ -66,7 +66,7 @@ const statusConfig: Record<string, { label: string; bg: string; text: string }> 
 };
 
 export default function AdminPage() {
-  const { isAdmin } = useAuth();
+  const { isAdmin, loading: authLoading } = useAuth();
   const router = useRouter();
   const [credits, setCredits] = useState<CreditData | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
@@ -115,6 +115,7 @@ export default function AdminPage() {
   const [reqFiles, setReqFiles] = useState<{ name: string; originalName: string; size: number; createdAt: string; storagePath: string }[]>([]);
 
   useEffect(() => {
+    if (authLoading) return;
     if (!isAdmin) {
       router.push("/dashboard");
       return;
@@ -124,7 +125,7 @@ export default function AdminPage() {
     fetchInquiries();
     fetchSiteSettings();
     fetchChatSessions();
-  }, [isAdmin, router]);
+  }, [authLoading, isAdmin, router]);
 
   const fetchChatSessions = async () => {
     try {
@@ -401,6 +402,9 @@ export default function AdminPage() {
     }
   };
 
+  if (authLoading) {
+    return <div className="p-8 text-center text-gray-400">로딩 중...</div>;
+  }
   if (!isAdmin) return null;
 
   const totalCases = projects.reduce((s, p) => s + p.caseCount, 0);
@@ -715,7 +719,6 @@ export default function AdminPage() {
                     serviceType={selectedReq.type}
                     requestId={selectedReq.req.id}
                     mode="admin"
-                    adminPin="4178"
                   />
 
                   {/* Status update */}

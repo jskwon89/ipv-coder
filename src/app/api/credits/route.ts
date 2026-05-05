@@ -8,10 +8,17 @@ import {
 const DEFAULT_USER = "default";
 
 export async function GET() {
-  const balance = getBalance(DEFAULT_USER);
-  const transactions = getTransactions(DEFAULT_USER);
+  try {
+    const balance = await getBalance();
+    const transactions = await getTransactions();
 
-  return NextResponse.json({ balance, transactions });
+    return NextResponse.json({ balance, transactions });
+  } catch {
+    return NextResponse.json(
+      { error: "크레딧 정보 로드 중 오류가 발생했습니다.", balance: 0, transactions: [] },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(request: NextRequest) {
@@ -26,13 +33,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    chargeCredits(
+    await chargeCredits(
       DEFAULT_USER,
       amount,
       description || `${amount.toLocaleString()} 크레딧 충전`
     );
 
-    const balance = getBalance(DEFAULT_USER);
+    const balance = await getBalance();
     return NextResponse.json({ success: true, balance });
   } catch {
     return NextResponse.json(

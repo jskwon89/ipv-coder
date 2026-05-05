@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { useCredits, canAfford, getBalance } from "@/lib/credits";
+import { spendCredits, canAfford, getBalance } from "@/lib/credits";
 
 const DEFAULT_USER = "default";
 
@@ -22,8 +22,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!canAfford(DEFAULT_USER, amount)) {
-      const balance = getBalance(DEFAULT_USER);
+    if (!(await canAfford(DEFAULT_USER, amount))) {
+      const balance = await getBalance();
       return NextResponse.json(
         {
           error: "크레딧이 부족합니다.",
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const success = useCredits(
+    const success = await spendCredits(
       DEFAULT_USER,
       amount,
       service,
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const balance = getBalance(DEFAULT_USER);
+    const balance = await getBalance();
     return NextResponse.json({ success: true, balance });
   } catch {
     return NextResponse.json(

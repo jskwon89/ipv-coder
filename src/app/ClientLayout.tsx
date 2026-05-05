@@ -190,10 +190,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   // Close everything on route change
   useEffect(() => {
-    setMobileMenuOpen(false);
-    setMobileExpandedGroup(null);
-    setActiveDesktopGroup(null);
-    clearTimeout(closeTimerRef.current);
+    queueMicrotask(() => {
+      setMobileMenuOpen(false);
+      setMobileExpandedGroup(null);
+      setActiveDesktopGroup(null);
+      clearTimeout(closeTimerRef.current);
+    });
   }, [pathname]);
 
   const handleDesktopOpen = useCallback((label: string) => {

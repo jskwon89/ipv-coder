@@ -14,8 +14,6 @@ interface Props {
   serviceType: string;
   requestId: string;
   mode: "admin" | "user";
-  /** Admin PIN — required when mode === "admin" for upload/delete */
-  adminPin?: string;
 }
 
 function formatSize(bytes: number): string {
@@ -30,7 +28,7 @@ function formatSize(bytes: number): string {
   return `${n.toFixed(n < 10 && i > 0 ? 1 : 0)}${units[i]}`;
 }
 
-export default function ResultFilesPanel({ serviceType, requestId, mode, adminPin }: Props) {
+export default function ResultFilesPanel({ serviceType, requestId, mode }: Props) {
   const [files, setFiles] = useState<ResultFile[]>([]);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -53,7 +51,7 @@ export default function ResultFilesPanel({ serviceType, requestId, mode, adminPi
   }, [fetchFiles]);
 
   const handleUpload = async (selected: FileList | null) => {
-    if (!selected || selected.length === 0 || !adminPin) return;
+    if (!selected || selected.length === 0 || mode !== "admin") return;
     setUploading(true);
     setError(null);
     try {
@@ -63,8 +61,9 @@ export default function ResultFilesPanel({ serviceType, requestId, mode, adminPi
         fd.append("request_id", requestId);
         fd.append("file", file);
         fd.append("notify", "1");
-        const res = await fetch(`/api/result-files?pin=${encodeURIComponent(adminPin)}`, {
+        const res = await fetch("/api/result-files", {
           method: "POST",
+          credentials: "same-origin",
           body: fd,
         });
         if (!res.ok) {
@@ -92,12 +91,12 @@ export default function ResultFilesPanel({ serviceType, requestId, mode, adminPi
   };
 
   const handleDelete = async (file: ResultFile) => {
-    if (!adminPin) return;
+    if (mode !== "admin") return;
     if (!confirm(`'${file.name}' 파일을 삭제하시겠습니까?`)) return;
     try {
       await fetch(
-        `/api/result-files?service_type=${encodeURIComponent(serviceType)}&request_id=${encodeURIComponent(requestId)}&path=${encodeURIComponent(file.path)}&pin=${encodeURIComponent(adminPin)}`,
-        { method: "DELETE" }
+        `/api/result-files?service_type=${encodeURIComponent(serviceType)}&request_id=${encodeURIComponent(requestId)}&path=${encodeURIComponent(file.path)}`,
+        { method: "DELETE", credentials: "same-origin" }
       );
       await fetchFiles();
     } catch {

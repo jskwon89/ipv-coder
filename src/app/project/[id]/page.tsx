@@ -34,7 +34,7 @@ export default function ProjectDetailPage() {
   const router = useRouter();
   const projectId = params.id as string;
   const { user, loading: userLoading } = useUser();
-  const { isAdmin } = useAuth();
+  const { isAdmin, loading: adminLoading } = useAuth();
 
   const [project, setProject] = useState<ProjectInfo | null>(null);
   const [cases, setCases] = useState<CaseItem[]>([]);
@@ -82,12 +82,12 @@ export default function ProjectDetailPage() {
 
   // 로그인 체크: 비로그인 시 로그인 페이지로 리다이렉트
   useEffect(() => {
-    if (!userLoading && !user && !isAdmin) {
+    if (!userLoading && !adminLoading && !user && !isAdmin) {
       router.push("/login");
     }
-  }, [userLoading, user, isAdmin, router]);
+  }, [userLoading, adminLoading, user, isAdmin, router]);
 
-  if (userLoading) {
+  if (userLoading || adminLoading) {
     return <div className="p-8 text-center text-gray-400">로딩 중...</div>;
   }
   if (!user && !isAdmin) {

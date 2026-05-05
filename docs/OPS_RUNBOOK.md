@@ -52,9 +52,17 @@ NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
 DISCORD_WEBHOOK_URL=
+SITE_URL=
+NEXT_PUBLIC_SITE_URL=
+ADMIN_PIN=
+ADMIN_SESSION_SECRET=
 ```
 
-이메일 발송 기능을 점검할 때는 `src/lib/email.ts`에서 실제로 요구하는 SMTP 관련 환경변수를 확인한다.
+도메인 URL은 서버 코드에서 `SITE_URL`을 우선 사용하고, 없으면 `NEXT_PUBLIC_SITE_URL`, Vercel 기본 URL, 기존 Vercel 도메인 순서로 fallback한다. 커스텀 도메인 전환 시 Vercel 환경변수에 `SITE_URL` 또는 `NEXT_PUBLIC_SITE_URL`을 설정한다.
+
+`ADMIN_PIN`은 관리자 로그인 PIN이다. 클라이언트 코드에 직접 쓰지 않는다. `ADMIN_SESSION_SECRET`은 관리자 세션 쿠키 서명용 값이며, 없으면 `ADMIN_PIN`을 사용해 동작하지만 운영에서는 별도 난수 문자열로 설정하는 것을 권장한다.
+
+이메일 발송 기능을 점검할 때는 `src/lib/email.ts`에서 실제로 요구하는 `EMAIL_USER`, `EMAIL_PASS`, `EMAIL_FROM_NAME` 환경변수를 확인한다.
 
 ## 검증 명령
 
@@ -125,10 +133,10 @@ npm install
 현재 워크플로:
 
 - `.github/workflows/supabase-keep-alive.yml`
-- 매일 03:00 UTC에 `https://researchon.vercel.app/api/keep-alive` 호출
+- 매일 03:00 UTC에 GitHub repository variable `PRIMER_SITE_URL`의 `/api/keep-alive` 호출
 - HTTP 200이 아니면 실패
 
-도메인이나 API 경로가 바뀌면 이 워크플로도 같이 수정한다.
+도메인이나 API 경로가 바뀌면 GitHub repository variable `PRIMER_SITE_URL` 또는 이 워크플로를 같이 수정한다.
 
 ## 성능 점검 우선순위
 
@@ -150,4 +158,3 @@ npm install
 - 수정 파일
 - 검증 결과
 - Vercel/Supabase/GitHub 쪽에서 별도로 바꾼 설정
-

@@ -9,11 +9,18 @@ on:
 jobs:
   ping:
     runs-on: ubuntu-latest
+    env:
+      PRIMER_SITE_URL: ${{ vars.PRIMER_SITE_URL }}
     steps:
       - name: Ping keep-alive endpoint
         run: |
           set -e
-          response=$(curl -s -o /tmp/body.json -w "%{http_code}" "https://researchon.vercel.app/api/keep-alive")
+          if [ -z "$PRIMER_SITE_URL" ]; then
+            echo "::error::GitHub repository variable PRIMER_SITE_URL is not set"
+            exit 1
+          fi
+          site_url="${PRIMER_SITE_URL%/}"
+          response=$(curl -s -o /tmp/body.json -w "%{http_code}" "$site_url/api/keep-alive")
           echo "Status: $response"
           cat /tmp/body.json
           echo

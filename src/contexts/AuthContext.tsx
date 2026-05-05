@@ -4,43 +4,73 @@ import { createContext, useContext, useState, useEffect, ReactNode } from "react
 
 interface AuthContextType {
   isAdmin: boolean;
-  login: (pin: string) => boolean;
+  loading: boolean;
+  login: (pin: string) => Promise<boolean>;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
   isAdmin: false,
-  login: () => false,
+  loading: true,
+  login: async () => false,
   logout: () => {},
 });
 
-const ADMIN_PIN = "4178";
-const STORAGE_KEY = "researchon_admin";
-
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const saved = sessionStorage.getItem(STORAGE_KEY);
-    if (saved === "true") setIsAdmin(true);
+    let alive = true;
+    const checkSession = async () => {
+      try {
+        const res = await fetch("/api/admin/session", { credentials: "same-origin" });
+        const data = await res.json();
+        if (alive) setIsAdmin(!!data.isAdmin);
+      } catch {
+        if (alive) setIsAdmin(false);
+      } finally {
+        if (alive) setLoading(false);
+      }
+    };
+    checkSession();
+    return () => {
+      alive = false;
+    };
   }, []);
 
-  const login = (pin: string): boolean => {
-    if (pin === ADMIN_PIN) {
-      setIsAdmin(true);
-      sessionStorage.setItem(STORAGE_KEY, "true");
-      return true;
+  const login = async (pin: string): Promise<boolean> => {
+    try {
+      const res = await fetch("/api/admin/session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({ pin }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.isAdmin) {
+        setLoading(false);
+        setIsAdmin(true);
+        return true;
+      }
+    } catch {
+      /* ignore */
     }
+    setLoading(false);
+    setIsAdmin(false);
     return false;
   };
 
   const logout = () => {
     setIsAdmin(false);
-    sessionStorage.removeItem(STORAGE_KEY);
+    fetch("/api/admin/session", {
+      method: "DELETE",
+      credentials: "same-origin",
+    }).catch(() => {});
   };
 
   return (
-    <AuthContext.Provider value={{ isAdmin, login, logout }}>
+    <AuthContext.Provider value={{ isAdmin, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

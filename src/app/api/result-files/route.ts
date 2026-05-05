@@ -2,12 +2,13 @@ import { NextRequest } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { addResultFile, getResultFiles, removeResultFile, type ResultFile } from '@/lib/db';
 import { sendEmail } from '@/lib/email';
+import { isAdminRequest } from '@/lib/admin-auth';
+import { getSiteUrl } from '@/lib/site-url';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 const BUCKET = 'uploads';
-const ADMIN_PIN = '4178';
 
 const VALID_SERVICE_TYPES = new Set([
   'research-design', 'stats-design', 'survey', 'judgment-collection', 'judgment-coding',
@@ -43,9 +44,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const url = request.nextUrl;
-    const pin = url.searchParams.get('pin');
-    if (pin !== ADMIN_PIN) {
+    if (!isAdminRequest(request)) {
       return Response.json({ error: 'unauthorized' }, { status: 401 });
     }
 
@@ -104,10 +103,11 @@ export async function POST(request: NextRequest) {
           .single();
         const email = (row?.email as string | undefined) ?? '';
         if (email) {
+          const siteUrl = getSiteUrl();
           await sendEmail({
             to: email,
             subject: `[PRIMER] 결과 파일이 등록되었습니다 - ${file.name}`,
-            body: `안녕하세요.\n\n의뢰 결과 파일 '${file.name}'이(가) 등록되었습니다.\nPRIMER 사이트에서 다운로드하실 수 있습니다.\n\nhttps://researchon.vercel.app\n\n감사합니다.\nPRIMER 팀`,
+            body: `안녕하세요.\n\n의뢰 결과 파일 '${file.name}'이(가) 등록되었습니다.\nPRIMER 사이트에서 다운로드하실 수 있습니다.\n\n${siteUrl}\n\n감사합니다.\nPRIMER 팀`,
           });
         }
       } catch {
@@ -124,12 +124,11 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const url = request.nextUrl;
-    const pin = url.searchParams.get('pin');
-    if (pin !== ADMIN_PIN) {
+    if (!isAdminRequest(request)) {
       return Response.json({ error: 'unauthorized' }, { status: 401 });
     }
 
+    const url = request.nextUrl;
     const serviceType = url.searchParams.get('service_type');
     const requestId = url.searchParams.get('request_id');
     const path = url.searchParams.get('path');
