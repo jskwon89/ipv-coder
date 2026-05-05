@@ -247,7 +247,7 @@ export default function LandingPage() {
 
       {/* 연구현황 (My Research) - only when logged in */}
       {user && (
-        <section id="my-research" className="py-12 sm:py-20 px-4 sm:px-6 bg-slate-50 border-b border-gray-200">
+        <section id="my-research" className="py-12 sm:py-20 px-4 sm:px-6 bg-slate-100 border-b border-gray-200">
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center justify-between mb-8">
               <div>
@@ -265,19 +265,19 @@ export default function LandingPage() {
             {/* Stats cards (clickable) */}
             {!statsLoading && (
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-                <Link href="/my" className="bg-slate-50 rounded-xl p-5 border border-gray-100 hover:shadow-sm hover:border-gray-200 transition-all group">
+                <Link href="/my" className="bg-white rounded-xl p-5 border border-gray-300 hover:shadow-md hover:border-gray-400 transition-all group">
                   <div className="text-3xl sm:text-4xl font-bold text-gray-900">{totalStats.total}</div>
                   <div className="text-sm text-gray-500 mt-1 group-hover:text-gray-700">전체 의뢰</div>
                 </Link>
-                <Link href="/my?status=pending" className="bg-gray-50 rounded-xl p-5 border border-gray-100 hover:shadow-sm hover:border-gray-200 transition-all group">
-                  <div className="text-3xl sm:text-4xl font-bold text-gray-400">{totalStats.pending}</div>
+                <Link href="/my?status=pending" className="bg-white rounded-xl p-5 border border-gray-300 hover:shadow-md hover:border-gray-400 transition-all group">
+                  <div className="text-3xl sm:text-4xl font-bold text-gray-500">{totalStats.pending}</div>
                   <div className="text-sm text-gray-500 mt-1 flex items-center gap-1.5 group-hover:text-gray-700"><span className="w-2 h-2 rounded-full bg-gray-400" />접수</div>
                 </Link>
-                <Link href="/my?status=in_progress" className="bg-blue-50 rounded-xl p-5 border border-blue-100 hover:shadow-sm hover:border-blue-200 transition-all group">
+                <Link href="/my?status=in_progress" className="bg-blue-50 rounded-xl p-5 border border-blue-300 hover:shadow-md hover:border-blue-400 transition-all group">
                   <div className="text-3xl sm:text-4xl font-bold text-blue-600">{totalStats.in_progress}</div>
                   <div className="text-sm text-blue-600 mt-1 flex items-center gap-1.5 group-hover:text-blue-700"><span className="w-2 h-2 rounded-full bg-blue-500" />진행중</div>
                 </Link>
-                <Link href="/my?status=completed" className="bg-emerald-50 rounded-xl p-5 border border-emerald-100 hover:shadow-sm hover:border-emerald-200 transition-all group">
+                <Link href="/my?status=completed" className="bg-emerald-50 rounded-xl p-5 border border-emerald-300 hover:shadow-md hover:border-emerald-400 transition-all group">
                   <div className="text-3xl sm:text-4xl font-bold text-emerald-600">{totalStats.completed}</div>
                   <div className="text-sm text-emerald-600 mt-1 flex items-center gap-1.5 group-hover:text-emerald-700"><span className="w-2 h-2 rounded-full bg-emerald-500" />완료</div>
                 </Link>
