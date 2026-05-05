@@ -71,6 +71,7 @@
 - `notify=1`일 때 결과 파일 알림과 상태 변경 알림을 분리하지 않고 "작업 완료" 문구가 들어간 단일 이메일로 통합했다.
 - 라이브 Supabase에서 결과 파일이 이미 있는 contest 의뢰 `1777796114299-tyh5af2`는 `responded_at`이 비어 있어 1회성 보정했다.
 - 라이브 Supabase에 `board_posts`, `board_comments` 테이블이 이미 있음을 확인했고, Q&A seed 8건을 `board_posts`에 중복 없이 upsert했다.
+- PowerShell 실행 경로에서 깨진 라이브 Q&A seed 문구는 `supabase-board-migration.sql` UTF-8 원문을 다시 읽어 8건 모두 재보정했다.
 - 게시판 API를 추가했다. 글 작성/댓글 작성은 Supabase Auth bearer token 로그인 필수, 수정/삭제는 작성자 본인 또는 관리자 쿠키만 허용한다.
 - `/board/free`, `/board/qna`는 목록과 로그인 사용자 글쓰기 UI를 제공한다.
 - `/board/[id]`는 상세, 조회수 증가, 댓글, 작성자/관리자 수정·삭제를 제공한다.
