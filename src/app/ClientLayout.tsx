@@ -9,6 +9,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useUser } from "@/contexts/UserAuthContext";
 import { AdminLoginModal } from "@/components/AdminLoginModal";
 import ChatWidget from "@/components/ChatWidget";
+import { clearAdminSession, getLastSessionOwner } from "@/lib/session-policy";
 
 const NO_TOPNAV_PATHS = ["/login", "/signup"];
 
@@ -185,6 +186,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const [mobileExpandedGroup, setMobileExpandedGroup] = useState<string | null>(null);
   const [activeDesktopGroup, setActiveDesktopGroup] = useState<string | null>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const sessionPolicyResolvingRef = useRef(false);
 
   const isNoTopnav = NO_TOPNAV_PATHS.includes(pathname);
 
@@ -210,6 +212,23 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   useEffect(() => {
     return () => clearTimeout(closeTimerRef.current);
   }, []);
+
+  useEffect(() => {
+    if (!isAdmin || !user || sessionPolicyResolvingRef.current) return;
+    sessionPolicyResolvingRef.current = true;
+    const resolveSessionConflict = async () => {
+      try {
+        if (getLastSessionOwner() === "admin") {
+          await userSignOut();
+        } else {
+          await clearAdminSession();
+        }
+      } finally {
+        sessionPolicyResolvingRef.current = false;
+      }
+    };
+    void resolveSessionConflict();
+  }, [isAdmin, user, userSignOut]);
 
   if (isNoTopnav) {
     return <>{children}</>;

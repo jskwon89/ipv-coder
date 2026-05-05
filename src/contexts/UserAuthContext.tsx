@@ -9,6 +9,7 @@ import {
 } from "react";
 import { supabase } from "@/lib/supabase";
 import type { User, Session } from "@supabase/supabase-js";
+import { clearAdminSession } from "@/lib/session-policy";
 
 interface UserAuthContextType {
   user: User | null;
@@ -65,6 +66,7 @@ export function UserAuthProvider({ children }: { children: ReactNode }) {
       password,
     });
     if (error) return { error: error.message };
+    await clearAdminSession();
     return { error: null };
   };
 
@@ -78,6 +80,7 @@ export function UserAuthProvider({ children }: { children: ReactNode }) {
       password,
     });
     if (error) return { error: error.message };
+    await clearAdminSession();
     return { error: null };
   };
 

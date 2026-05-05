@@ -1,6 +1,11 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { supabase } from "@/lib/supabase";
+import {
+  ADMIN_SESSION_CLEARED_EVENT,
+  setLastSessionOwner,
+} from "@/lib/session-policy";
 
 interface AuthContextType {
   isAdmin: boolean;
@@ -39,6 +44,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  useEffect(() => {
+    const handleAdminSessionCleared = () => setIsAdmin(false);
+    window.addEventListener(ADMIN_SESSION_CLEARED_EVENT, handleAdminSessionCleared);
+    return () => {
+      window.removeEventListener(ADMIN_SESSION_CLEARED_EVENT, handleAdminSessionCleared);
+    };
+  }, []);
+
   const login = async (pin: string): Promise<boolean> => {
     try {
       const res = await fetch("/api/admin/session", {
@@ -49,6 +62,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.isAdmin) {
+        if (data.userSignedOut) {
+          await supabase.auth.signOut();
+        }
+        setLastSessionOwner("admin");
         setLoading(false);
         setIsAdmin(true);
         return true;

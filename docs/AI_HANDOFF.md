@@ -12,6 +12,7 @@
 - 레포는 Next.js 16.2.2, React 19.2.4 기반이다.
 - 주요 운영 연동은 Supabase, Vercel, GitHub Actions keep-alive, Discord/Nodemailer 알림, 파일 업로드/다운로드, Excel/PDF/ZIP 처리다.
 - `node_modules`가 설치되어 있다. Next.js 코드 수정 전 관련 문서는 `node_modules/next/dist/docs/`에서 먼저 확인한다.
+- 관리자 PIN 세션과 일반 사용자 Supabase Auth 세션은 상호 배타 정책이다. 마지막에 로그인한 쪽을 우선한다.
 
 ## 다음 작업자에게
 
@@ -38,6 +39,44 @@
 
 다음 작업자 주의:
 ```
+
+## 2026-05-05 17:17 - Codex
+
+담당:
+
+- 관리자 PIN 세션과 일반 사용자 Supabase Auth 세션 상호 배타 정책 적용
+
+변경 파일:
+
+- `src/app/api/admin/session/route.ts`
+- `src/contexts/AuthContext.tsx`
+- `src/contexts/UserAuthContext.tsx`
+- `src/app/ClientLayout.tsx`
+- `src/lib/session-policy.ts`
+- `docs/AI_HANDOFF.md`
+
+완료:
+
+- 정책을 상호 배타로 확정했다. 같은 브라우저에서 관리자와 일반 사용자가 동시에 활성화되면 마지막에 로그인한 쪽을 우선한다.
+- 관리자 PIN 로그인 성공 시 `/api/admin/session`이 `primer_admin_session`을 발급하고 Supabase Auth 계열 쿠키를 Max-Age=0으로 만료시키며 `userSignedOut: true`를 반환한다.
+- 관리자 로그인 성공 후 클라이언트는 `supabase.auth.signOut()`을 호출해 Supabase client-side auth cache를 정리한다.
+- 일반 사용자 로그인/가입 성공 시 `DELETE /api/admin/session`을 호출해 관리자 쿠키를 무효화하고 관리자 상태 UI를 즉시 false로 갱신한다.
+- `ClientLayout`에서 `isAdmin && user` 동시 truthy 상황을 방어한다. 마지막 로그인 기록이 `admin`이면 user sign out, `user`이거나 기록이 없으면 admin cookie clear.
+- `/admin` 페이지는 일반 사용자 세션 없이도 관리자 세션만 있으면 동작하는 정책을 유지한다.
+
+검증:
+
+- `npx tsc --noEmit` 통과
+- `npm run build` 통과
+
+남은 일:
+
+- Claude가 동시 표시 UI를 정리할 때 이 정책을 따른다. 관리자와 사용자 UI가 동시에 보이면 안 된다.
+
+다음 작업자 주의:
+
+- 기존 브라우저에서 이미 두 세션이 켜져 있는데 마지막 로그인 기록이 없으면 사용자 우선 fallback으로 관리자 쿠키를 지운다.
+- `image/landing*.webp` 미추적 파일은 이번 Codex 작업과 무관하므로 건드리지 않았다.
 
 ## 2026-05-05 17:08 - Codex
 
@@ -114,7 +153,7 @@
 남은 일:
 
 - 기존 빈 이메일 row `1775696531610-p0zjv1x`는 코드 패치만으로 자동 연결되지 않는다. 해당 의뢰가 `overod998@gmail.com` 소유가 맞다면 Supabase에서 `email='overod998@gmail.com'`으로 수동 보정 필요.
-- 관리자 PIN 세션과 사용자 Supabase Auth 세션 동시 활성 정책은 아직 미결정. 사용자가 A(동시 허용) 또는 B(상호 배타)를 선택한 뒤 반영한다.
+- 관리자 PIN 세션과 사용자 Supabase Auth 세션 동시 활성 정책은 2026-05-05 17:17 작업에서 상호 배타, 마지막 로그인 우선으로 반영했다.
 
 다음 작업자 주의:
 
