@@ -1,4 +1,4 @@
-const DEFAULT_SITE_URL = "https://researchon.vercel.app";
+const DEFAULT_SITE_URL = "https://primer-lab.vercel.app";
 
 function withProtocol(url: string): string {
   if (/^https?:\/\//i.test(url)) return url;
