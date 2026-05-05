@@ -314,7 +314,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </nav>
 
             {/* Right side */}
-            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            <div className="flex items-center gap-2 sm:gap-3 lg:gap-10 xl:gap-16 shrink-0">
               {user && (
                 <Link
                   href="/my"
