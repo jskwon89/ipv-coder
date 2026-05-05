@@ -40,6 +40,46 @@
 다음 작업자 주의:
 ```
 
+## 2026-05-05 20:58 - Codex
+
+담당:
+
+- 질문/답변 게시판 seed를 통계 내용 전용으로 교체
+
+변경 파일:
+
+- `supabase-board-migration.sql`
+- `docs/AI_HANDOFF.md`
+
+완료:
+
+- Q&A seed에서 비용, 작업 기간, 보안, 결과파일 다운로드, 이용 안내 등 운영성 문항을 제거했다.
+- Q&A seed를 통계 방법론 중심 10건으로 교체했다.
+  - 연구설계와 분석방법 선택
+  - 기초/고급 통계분석 종류
+  - 데이터 수집 전 통계 설계
+  - SPSS/R/Stata/Mplus/AMOS 선택 기준
+  - t검정/ANOVA/회귀분석 구분
+  - 매개효과/조절효과
+  - 로지스틱 회귀, 생존분석, 다층모형/LCA/SEM
+- `supabase-board-migration.sql`의 Q&A seed upsert를 `ON CONFLICT DO UPDATE`로 바꿔 기존 seed도 갱신되도록 했다.
+- 라이브 Supabase `board_posts`의 `seed-qna-1`~`seed-qna-10`을 새 통계 전용 문항으로 갱신했다.
+
+검증:
+
+- 라이브 Supabase Q&A count 10건 확인
+- 프로덕션 `/api/board/posts?category=qna` 200 응답 및 통계 전용 제목 10건 확인
+- `git diff --check` 통과
+
+남은 일:
+
+- 질문/답변 게시판은 통계 내용 전용으로 유지한다. 비용, 운영, 사용법 안내 문항은 Q&A seed에 넣지 않는다.
+
+다음 작업자 주의:
+
+- 사용자 작성 Q&A 글까지 강제로 통계 내용만 허용하는 서버 검증은 아직 없다. 현재 정책은 seed/운영 문구 기준이다.
+- `image/landing*.webp` 미추적 파일은 이번 Codex 작업과 무관하므로 건드리지 않았다.
+
 ## 2026-05-05 20:49 - Codex
 
 담당:
