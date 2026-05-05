@@ -284,7 +284,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </Link>
 
             {/* Desktop nav - 로고와 right side 사이에 메뉴 균등 분포 */}
-            <nav className="hidden lg:flex items-center flex-1 min-w-0 justify-around">
+            <nav className="hidden lg:flex items-center flex-1 min-w-0 justify-around lg:px-8 xl:px-16">
               {menuGroups.filter((g) => !("requiresUser" in g && g.requiresUser) || !!user).map((group) => {
                 const hl = group.highlight ? highlightStyles[group.highlight] : null;
                 const isActive = group.prefixes.some((p) => pathname === p || pathname.startsWith(p + "/"));
