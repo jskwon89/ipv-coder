@@ -251,7 +251,7 @@ export default function LandingPage() {
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">연구현황</h2>
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">내 연구현황</h2>
                 <p className="text-sm sm:text-base text-gray-500 mt-1">{user.email}님의 의뢰 현황 — 카드 클릭 시 상세 보기</p>
               </div>
               <Link href="/my" className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-teal-700 bg-teal-50 hover:bg-teal-100 rounded-lg transition-colors">
