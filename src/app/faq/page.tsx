@@ -173,7 +173,7 @@ export default function FaqPage() {
         <p className="text-sm text-gray-600 mb-3">원하는 답변을 찾지 못하셨나요?</p>
         <Link
           href="/contact"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors"
         >
           문의하기
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

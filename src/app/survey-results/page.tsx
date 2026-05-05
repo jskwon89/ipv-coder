@@ -142,7 +142,7 @@ export default function SurveyResultsPage() {
             <p className="text-sm text-gray-400 mb-4">아직 의뢰 내역이 없습니다.</p>
             <Link
               href="/survey-request"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors"
             >
               설문조사 의뢰하기
             </Link>
@@ -435,7 +435,7 @@ export default function SurveyResultsPage() {
                 <button
                   onClick={handleSendMessage}
                   disabled={sendingChat || !chatInput.trim()}
-                  className="px-4 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+                  className="px-4 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />

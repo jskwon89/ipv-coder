@@ -108,7 +108,7 @@ export default function QuantAnalysisPage() {
               </p>
               <Link
                 href="/quant-results"
-                className="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors"
+                className="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors"
               >
                 결과 확인 페이지로 이동
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -269,7 +269,7 @@ export default function QuantAnalysisPage() {
         <button
           onClick={handleSubmit}
           disabled={submitting || !email.trim() || !analysisType}
-          className="px-8 py-3 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-8 py-3 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {submitting ? "제출 중..." : "분석 의뢰하기"}
         </button>

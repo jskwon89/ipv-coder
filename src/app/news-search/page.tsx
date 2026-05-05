@@ -126,7 +126,7 @@ export default function NewsSearchPage() {
               </p>
               <Link
                 href="/news-results"
-                className="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors"
+                className="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors"
               >
                 결과 확인 페이지로 이동
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -182,7 +182,7 @@ export default function NewsSearchPage() {
               />
               <button
                 onClick={addKeyword}
-                className="px-4 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors"
+                className="px-4 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors"
               >
                 추가
               </button>
@@ -205,7 +205,7 @@ export default function NewsSearchPage() {
                       {kw}
                       <button
                         onClick={() => removeKeyword(kw)}
-                        className="hover:text-[#b08a28]"
+                        className="hover:text-teal-700"
                       >
                         <svg
                           className="w-3.5 h-3.5"
@@ -338,7 +338,7 @@ export default function NewsSearchPage() {
             !email.trim() ||
             (searchType === "keyword" ? keywords.length === 0 : !query.trim())
           }
-          className="px-8 py-3 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-8 py-3 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {submitting ? "제출 중..." : "수집 의뢰하기"}
         </button>

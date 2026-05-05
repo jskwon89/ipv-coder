@@ -241,7 +241,7 @@ export default function JournalSubmissionPage() {
 
           <div className="pt-1">
             <button type="submit" disabled={submitting || !serviceType}
-              className="px-6 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+              className="px-6 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
               {submitting ? "제출 중..." : "상담 신청하기"}
             </button>
           </div>
@@ -380,7 +380,7 @@ export default function JournalSubmissionPage() {
                   placeholder="메시지를 입력하세요..."
                   className="flex-1 px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-600/40 focus:border-teal-600" />
                 <button onClick={handleSendMessage} disabled={sendingChat || !chatInput.trim()}
-                  className="px-4 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0">
+                  className="px-4 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                   </svg>

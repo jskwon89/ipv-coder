@@ -183,7 +183,7 @@ export default function ChatWidget() {
           style={{ height: "500px" }}
         >
           {/* Header */}
-          <div className="px-5 py-4 bg-gradient-to-r from-primary to-[#b08a28] text-white shrink-0">
+          <div className="px-5 py-4 bg-gradient-to-r from-primary to-teal-700 text-white shrink-0">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 bg-white/20 rounded-full flex items-center justify-center">
@@ -228,7 +228,7 @@ export default function ChatWidget() {
               <Link
                 href={`/login?redirect=${encodeURIComponent(pathname)}`}
                 onClick={() => setIsOpen(false)}
-                className="inline-flex items-center px-5 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors"
+                className="inline-flex items-center px-5 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors"
               >
                 로그인하기
               </Link>
@@ -304,7 +304,7 @@ export default function ChatWidget() {
                   <button
                     onClick={handleSend}
                     disabled={sending || !input.trim()}
-                    className="p-2.5 bg-primary text-white rounded-xl hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+                    className="p-2.5 bg-primary text-white rounded-xl hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
@@ -323,7 +323,7 @@ export default function ChatWidget() {
         className={`fixed bottom-5 right-4 sm:right-6 z-50 w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-full shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-110 ${
           isOpen
             ? "bg-gray-600 hover:bg-gray-700"
-            : "bg-primary hover:bg-[#b08a28]"
+            : "bg-primary hover:bg-teal-700"
         }`}
       >
         {isOpen ? (

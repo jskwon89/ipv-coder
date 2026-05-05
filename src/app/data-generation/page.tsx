@@ -316,7 +316,7 @@ export default function ResearchDesignPage() {
             <button
               type="submit"
               disabled={submitting || !keywords.trim() || !field}
-              className="px-6 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {submitting ? "제출 중..." : "의뢰하기"}
             </button>
@@ -569,7 +569,7 @@ export default function ResearchDesignPage() {
                 <button
                   onClick={handleSendMessage}
                   disabled={sendingChat || !chatInput.trim()}
-                  className="px-4 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+                  className="px-4 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
                 >
                   <svg
                     className="w-4 h-4"

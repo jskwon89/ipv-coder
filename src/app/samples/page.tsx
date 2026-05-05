@@ -186,7 +186,7 @@ export default function SamplesPage() {
           <p className="text-sm text-gray-500 mb-4">원하시는 서비스가 있으신가요?</p>
           <Link
             href="/dashboard"
-            className="inline-flex px-6 py-3 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-[#b08a28] transition-colors shadow-sm"
+            className="inline-flex px-6 py-3 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-teal-700 transition-colors shadow-sm"
           >
             의뢰하러 가기
           </Link>

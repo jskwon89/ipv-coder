@@ -102,7 +102,7 @@ function LoginForm() {
             <button
               type="submit"
               disabled={loading || !email.trim() || !password}
-              className="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "로그인 중..." : "로그인"}
             </button>

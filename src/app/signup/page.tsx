@@ -99,7 +99,7 @@ export default function SignupPage() {
             </p>
             <Link
               href="/login"
-              className="inline-block px-6 py-2.5 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-[#b08a28] transition-colors"
+              className="inline-block px-6 py-2.5 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-teal-700 transition-colors"
             >
               로그인 페이지로 이동
             </Link>
@@ -190,7 +190,7 @@ export default function SignupPage() {
               disabled={
                 loading || !email.trim() || !password || !confirmPassword
               }
-              className="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-[#b08a28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "가입 중..." : "회원가입"}
             </button>
