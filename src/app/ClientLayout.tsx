@@ -17,12 +17,12 @@ type HighlightStyle = "consultation" | "journal" | null;
 
 const highlightStyles: Record<string, { base: string; active: string; hover: string }> = {
   consultation: {
-    base: "text-orange-600 lg:text-xl font-bold",
+    base: "text-orange-600 lg:text-2xl font-bold",
     active: "text-orange-700 bg-orange-50",
     hover: "hover:text-orange-700 hover:bg-orange-50/70",
   },
   journal: {
-    base: "text-indigo-600 lg:text-xl font-bold",
+    base: "text-indigo-600 lg:text-2xl font-bold",
     active: "text-indigo-700 bg-indigo-50",
     hover: "hover:text-indigo-700 hover:bg-indigo-50/70",
   },
@@ -139,7 +139,7 @@ function TopMenuGroup({
         className={`flex items-center gap-1 px-3 py-2 rounded-lg transition-colors whitespace-nowrap ${
           hl
             ? `${hl.base} ${isGroupActive ? hl.active : hl.hover}`
-            : `text-lg font-semibold ${isGroupActive ? "text-teal-600 bg-teal-50" : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"}`
+            : `text-xl font-semibold ${isGroupActive ? "text-teal-600 bg-teal-50" : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"}`
         }`}
       >
         {group.label}
@@ -292,7 +292,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                     className={`px-3 py-2 rounded-lg transition-colors whitespace-nowrap ${
                       hl
                         ? `${hl.base} ${isActive ? hl.active : hl.hover}`
-                        : `text-lg font-semibold ${isActive ? "text-teal-600 bg-teal-50" : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"}`
+                        : `text-xl font-semibold ${isActive ? "text-teal-600 bg-teal-50" : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"}`
                     }`}
                   >
                     {group.label}
