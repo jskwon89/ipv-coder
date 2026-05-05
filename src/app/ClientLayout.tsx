@@ -274,7 +274,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           </div>
         </div>
         <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 xl:px-20">
-          <div className="flex items-center h-16 sm:h-20 gap-4">
+          <div className="flex items-center h-16 sm:h-20 lg:h-24 gap-4">
             {/* Logo */}
             <Link href="/" className="flex items-center shrink-0">
               <Image src="/logo-primer.png" alt="PRIMER" width={220} height={50} className="h-10 sm:h-12 w-auto" priority />
@@ -448,7 +448,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       )}
 
       {/* Main content */}
-      <main className="min-h-screen pt-16 sm:pt-20 lg:pt-[124px]">
+      <main className="min-h-screen pt-16 sm:pt-20 lg:pt-[140px]">
         {children}
       </main>
 
