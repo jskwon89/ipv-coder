@@ -265,21 +265,21 @@ export default function LandingPage() {
             {/* Stats cards (clickable) */}
             {!statsLoading && (
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-                <Link href="/my" className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl p-5 border-2 border-slate-300 shadow-sm hover:shadow-lg hover:border-slate-500 hover:-translate-y-0.5 transition-all group">
-                  <div className="text-3xl sm:text-4xl font-bold text-slate-800">{totalStats.total}</div>
-                  <div className="text-sm text-slate-700 mt-1 font-medium flex items-center gap-1.5 group-hover:text-slate-900"><span className="w-2 h-2 rounded-full bg-slate-400" />전체 의뢰</div>
+                <Link href="/my" className="bg-emerald-50 rounded-xl p-5 border-2 border-emerald-200 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all group">
+                  <div className="text-3xl sm:text-4xl font-bold text-emerald-700">{totalStats.total}</div>
+                  <div className="text-sm text-emerald-800 mt-1 font-medium flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-300" />전체 의뢰</div>
                 </Link>
-                <Link href="/my?status=pending" className="bg-gradient-to-br from-teal-50 to-teal-100 rounded-xl p-5 border-2 border-teal-300 shadow-sm hover:shadow-lg hover:border-teal-500 hover:-translate-y-0.5 transition-all group">
-                  <div className="text-3xl sm:text-4xl font-bold text-teal-700">{totalStats.pending}</div>
-                  <div className="text-sm text-teal-800 mt-1 font-medium flex items-center gap-1.5 group-hover:text-teal-900"><span className="w-2 h-2 rounded-full bg-teal-400" />접수</div>
+                <Link href="/my?status=pending" className="bg-emerald-200 rounded-xl p-5 border-2 border-emerald-300 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all group">
+                  <div className="text-3xl sm:text-4xl font-bold text-emerald-800">{totalStats.pending}</div>
+                  <div className="text-sm text-emerald-900 mt-1 font-medium flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-500" />접수</div>
                 </Link>
-                <Link href="/my?status=in_progress" className="bg-gradient-to-br from-teal-200 to-teal-300 rounded-xl p-5 border-2 border-teal-500 shadow-sm hover:shadow-lg hover:border-teal-700 hover:-translate-y-0.5 transition-all group">
-                  <div className="text-3xl sm:text-4xl font-bold text-teal-900">{totalStats.in_progress}</div>
-                  <div className="text-sm text-teal-900 mt-1 font-medium flex items-center gap-1.5 group-hover:text-teal-950"><span className="w-2 h-2 rounded-full bg-teal-700" />진행중</div>
+                <Link href="/my?status=in_progress" className="bg-emerald-400 rounded-xl p-5 border-2 border-emerald-500 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all group">
+                  <div className="text-3xl sm:text-4xl font-bold text-white">{totalStats.in_progress}</div>
+                  <div className="text-sm text-emerald-50 mt-1 font-medium flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-700" />진행중</div>
                 </Link>
-                <Link href="/my?status=completed" className="bg-gradient-to-br from-teal-500 to-teal-700 rounded-xl p-5 border-2 border-teal-700 shadow-sm hover:shadow-lg hover:border-teal-900 hover:-translate-y-0.5 transition-all group">
+                <Link href="/my?status=completed" className="bg-emerald-700 rounded-xl p-5 border-2 border-emerald-800 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all group">
                   <div className="text-3xl sm:text-4xl font-bold text-white">{totalStats.completed}</div>
-                  <div className="text-sm text-teal-50 mt-1 font-medium flex items-center gap-1.5 group-hover:text-white"><span className="w-2 h-2 rounded-full bg-teal-200" />완료</div>
+                  <div className="text-sm text-emerald-50 mt-1 font-medium flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-300" />완료</div>
                 </Link>
               </div>
             )}
