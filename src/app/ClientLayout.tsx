@@ -4,7 +4,6 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { CreditBalance } from "./credits/CreditBalance";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUser } from "@/contexts/UserAuthContext";
 import { AdminLoginModal } from "@/components/AdminLoginModal";
@@ -100,12 +99,11 @@ const menuGroups = [
   },
   {
     label: "고객센터",
-    prefixes: ["/faq", "/contact", "/credits"],
+    prefixes: ["/faq", "/contact"],
     highlight: null as HighlightStyle,
     items: [
       { label: "자주 묻는 질문", href: "/faq" },
       { label: "문의사항", href: "/contact" },
-      { label: "크레딧 관리", href: "/credits" },
     ],
   },
 ];
@@ -322,9 +320,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 </Link>
               )}
 
-              <div className="hidden sm:block">
-                <CreditBalance />
-              </div>
 
               {/* Mobile menu button */}
               <button
@@ -415,7 +410,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 ) : (
                   <Link href="/login" onClick={closeMobile} className="block px-3 py-2.5 text-sm font-medium text-teal-600 hover:bg-teal-50 rounded-lg">로그인</Link>
                 )}
-                <div className="px-3"><CreditBalance /></div>
                 {isAdmin ? (
                   <div className="space-y-1">
                     <Link href="/admin" onClick={closeMobile} className="block px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg">관리자 패널</Link>
