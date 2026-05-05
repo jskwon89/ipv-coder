@@ -206,28 +206,6 @@ function MyPageInner() {
         })}
       </div>
 
-      {/* Service filter */}
-      <div className="mb-4 flex flex-wrap gap-2">
-        <button onClick={() => setServiceFilter("all")}
-          className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
-            serviceFilter === "all" ? "bg-teal-600 text-white border-teal-600" : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50"
-          }`}>
-          전체 서비스
-        </button>
-        {services.map((svc) => {
-          const has = requests.some((r) => r._serviceType === svc.type);
-          if (!has) return null;
-          return (
-            <button key={svc.type} onClick={() => setServiceFilter(svc.type)}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
-                serviceFilter === svc.type ? "bg-teal-600 text-white border-teal-600" : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50"
-              }`}>
-              {svc.label}
-            </button>
-          );
-        })}
-      </div>
-
       {/* List */}
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
         {loading ? (

@@ -144,22 +144,30 @@ export default function ResultFilesPanel({ serviceType, requestId, mode }: Props
       ) : (
         <div className="divide-y divide-gray-100">
           {files.map((f, idx) => (
-            <div key={f.path} className="px-4 py-2.5 flex items-center gap-3 hover:bg-gray-50">
-              <span className="text-xs text-gray-400 w-5 text-right shrink-0">{idx + 1}</span>
-              <svg className="w-4 h-4 text-teal-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div
+              key={f.path}
+              role="button"
+              tabIndex={0}
+              onClick={() => handleDownload(f)}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleDownload(f); } }}
+              className="group px-4 py-2.5 flex items-center gap-3 cursor-pointer hover:bg-teal-50 transition-colors"
+              title="클릭하여 다운로드"
+            >
+              <span className="text-xs text-gray-400 w-5 text-right shrink-0 group-hover:text-teal-500">{idx + 1}</span>
+              <svg className="w-4 h-4 text-teal-600 shrink-0 group-hover:text-teal-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
-              <span className="text-sm text-gray-700 truncate flex-1">{f.name}</span>
-              <span className="text-xs text-gray-400 shrink-0">{formatSize(f.size)}</span>
-              <button
-                onClick={() => handleDownload(f)}
-                className="text-xs text-teal-600 hover:text-teal-700 font-medium shrink-0"
-              >
+              <span className="text-sm text-gray-700 truncate flex-1 group-hover:text-teal-700 group-hover:font-medium group-hover:underline underline-offset-2">{f.name}</span>
+              <span className="text-xs text-gray-400 shrink-0 group-hover:text-teal-600">{formatSize(f.size)}</span>
+              <span className="inline-flex items-center gap-1 text-xs font-medium text-teal-600 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
                 다운로드
-              </button>
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+              </span>
               {isAdmin && (
                 <button
-                  onClick={() => handleDelete(f)}
+                  onClick={(e) => { e.stopPropagation(); handleDelete(f); }}
                   className="text-xs text-red-500 hover:text-red-600 font-medium shrink-0"
                 >
                   삭제
