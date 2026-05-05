@@ -247,7 +247,7 @@ export default function LandingPage() {
 
       {/* 연구현황 (My Research) - only when logged in */}
       {user && (
-        <section id="my-research" className="py-12 sm:py-20 px-4 sm:px-6 bg-white border-b border-gray-100">
+        <section id="my-research" className="py-12 sm:py-20 px-4 sm:px-6 bg-slate-50 border-b border-gray-200">
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center justify-between mb-8">
               <div>
@@ -284,6 +284,29 @@ export default function LandingPage() {
               </div>
             )}
 
+          </div>
+        </section>
+      )}
+
+      {/* 간편 의뢰 절차 — 이미지 배경 + 카드 디자인 */}
+      {sections.how_it_works && (
+        <section id="how-it-works" className="relative py-16 sm:py-24 px-4 sm:px-6 overflow-hidden">
+          <div className="absolute inset-0">
+            <Image src="/images/scott-graham-5fNmWej4tAA-unsplash.jpg" alt="" fill className="object-cover" />
+            <div className="absolute inset-0 bg-white/95" />
+          </div>
+          <div className="relative z-10 max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <span className="text-sm font-semibold text-teal-600 tracking-wide uppercase">Process</span>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mt-3 mb-4">간편 의뢰 절차</h2>
+              <p className="text-lg text-gray-500">복잡한 절차 없이, 빠르게 시작하세요</p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
+              <ProcessCard step={1} title="회원가입" description="간편 가입 후 바로 시작하세요" icon={<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />} />
+              <ProcessCard step={2} title="서비스 선택" description="필요한 연구 지원 서비스를 선택합니다" icon={<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />} />
+              <ProcessCard step={3} title="업로드 & 요청" description="연구 자료와 요구사항을 전달합니다" icon={<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />} />
+              <ProcessCard step={4} title="결과 확인" description="전문가가 수행한 분석 결과를 받아보세요" icon={<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />} />
+            </div>
           </div>
         </section>
       )}
@@ -351,29 +374,6 @@ export default function LandingPage() {
               <ValueCard icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>} title="1:1 맞춤 소통" description="담당자와 직접 소통합니다." color="amber" />
               <ValueCard icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>} title="데이터 보안" description="모든 자료는 암호화 저장, 요청 시 즉시 삭제." color="rose" />
               <ValueCard icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>} title="빠른 처리" description="체계적인 프로세스로 신속하게 결과를 제공합니다." color="cyan" />
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* How it Works — 이미지 배경 + 카드 디자인 */}
-      {sections.how_it_works && (
-        <section id="how-it-works" className="relative py-20 sm:py-32 px-4 sm:px-6 overflow-hidden">
-          <div className="absolute inset-0">
-            <Image src="/images/scott-graham-5fNmWej4tAA-unsplash.jpg" alt="" fill className="object-cover" />
-            <div className="absolute inset-0 bg-white/95" />
-          </div>
-          <div className="relative z-10 max-w-7xl mx-auto">
-            <div className="text-center mb-14">
-              <span className="text-sm font-semibold text-teal-600 tracking-wide uppercase">Process</span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mt-3 mb-4">간단한 4단계</h2>
-              <p className="text-lg text-gray-500">복잡한 절차 없이, 빠르게 시작하세요</p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
-              <ProcessCard step={1} title="회원가입" description="간편 가입 후 바로 시작하세요" icon={<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />} />
-              <ProcessCard step={2} title="서비스 선택" description="필요한 연구 지원 서비스를 선택합니다" icon={<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />} />
-              <ProcessCard step={3} title="업로드 & 요청" description="연구 자료와 요구사항을 전달합니다" icon={<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />} />
-              <ProcessCard step={4} title="결과 확인" description="전문가가 수행한 분석 결과를 받아보세요" icon={<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />} />
             </div>
           </div>
         </section>

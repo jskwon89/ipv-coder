@@ -90,6 +90,15 @@ const menuGroups = [
     ],
   },
   {
+    label: "게시판",
+    prefixes: ["/board"],
+    highlight: null as HighlightStyle,
+    items: [
+      { label: "자유게시판", href: "/board/free" },
+      { label: "질문/답변", href: "/board/qna" },
+    ],
+  },
+  {
     label: "고객센터",
     prefixes: ["/faq", "/contact", "/credits"],
     highlight: null as HighlightStyle,
@@ -251,7 +260,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </Link>
 
             {/* Desktop nav - flex with auto spacing */}
-            <nav className="hidden lg:flex items-center gap-0.5 flex-1 justify-center min-w-0">
+            <nav className="hidden lg:flex items-center gap-0.5 min-w-0">
               {menuGroups.filter((g) => !("requiresUser" in g && g.requiresUser) || !!user).map((group) => {
                 const hl = group.highlight ? highlightStyles[group.highlight] : null;
                 const isActive = group.prefixes.some((p) => pathname === p || pathname.startsWith(p + "/"));
@@ -281,7 +290,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </nav>
 
             {/* Right side */}
-            <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-2 sm:gap-3 ml-auto">
               {user && (
                 <Link
                   href="/my"
