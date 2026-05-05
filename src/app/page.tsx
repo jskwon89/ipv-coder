@@ -358,8 +358,8 @@ export default function LandingPage() {
               <MainServiceCard
                 number="03"
                 image="/images/service-3.webp"
-                title="통계분석"
-                tagline="기초통계부터 텍스트·질적 분석까지"
+                title="데이터 분석"
+                tagline="기초통계부터 통계·텍스트·질적분석까지"
                 features={["데이터 전처리 및 변환", "통계분석 및 텍스트 분석", "결과 해석 및 보고서"]}
                 href="/quant-analysis"
               />
