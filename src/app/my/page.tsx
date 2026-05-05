@@ -86,7 +86,8 @@ function MyPageInner() {
     if (!user?.email) return;
     setLoading(true);
     try {
-      const emailParam = `?email=${encodeURIComponent(user.email)}`;
+      const normalizedEmail = user.email.trim().toLowerCase();
+      const emailParam = `?email=${encodeURIComponent(normalizedEmail)}`;
       const results = await Promise.all(
         services.map((svc) =>
           fetch(`${svc.api}${emailParam}`)

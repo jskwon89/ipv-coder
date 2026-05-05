@@ -39,6 +39,47 @@
 다음 작업자 주의:
 ```
 
+## 2026-05-05 16:59 - Codex
+
+담당:
+
+- `/my` 사용자 의뢰 노출 이슈 진단 및 service_requests 이메일 정규화
+
+변경 파일:
+
+- `src/lib/db.ts`
+- `src/app/my/page.tsx`
+- `src/app/project/[id]/page.tsx`
+- `src/app/api/judgment-coding/route.ts`
+- `docs/AI_HANDOFF.md`
+
+완료:
+
+- Supabase `service_requests` 분포 확인: 전체 4건, `email=''` 1건, `email IS NULL` 0건, trim 후 blank 1건.
+- `overod998@gmail.com`은 정확 일치 0건, trim/lowercase 정규화 일치도 0건. 대소문자/공백 차이 row는 발견되지 않았다.
+- 빈 이메일 row는 `id=1775696531610-p0zjv1x`, `service_type=judgment-coding`, `projectId=1775662256546-dx7emb0`, `projectName=2023~2025 IPV 판결문`, `created_at=2026-04-09T01:02:11.61+00:00`.
+- 원인은 `src/app/project/[id]/page.tsx`의 판결문 코딩 의뢰 POST가 `email: ""`을 전송하던 경로로 확인했다.
+- `/my` fetchAll은 로그인 이메일을 trim/lowercase 후 13개 서비스 API에 전달하도록 변경했다.
+- 13개 서비스 API의 email 조회 비교는 공통 `_getServiceRequests()`에서 trim/lowercase 정규화 후 `.eq('email', normalizedEmail)`로 통일했다.
+- 새 service_requests 저장도 공통 `serviceRequestToRow()`에서 email을 trim/lowercase로 저장하도록 통일했다.
+- 판결문 코딩 의뢰 API는 이메일이 비어 있으면 400으로 막아 같은 유형의 빈 row 생성을 방지했다.
+
+검증:
+
+- `git diff --check` 통과
+- `npm run lint` 통과. 기존 warning 82건은 남아 있음.
+- `npm run build` 통과
+
+남은 일:
+
+- 기존 빈 이메일 row `1775696531610-p0zjv1x`는 코드 패치만으로 자동 연결되지 않는다. 해당 의뢰가 `overod998@gmail.com` 소유가 맞다면 Supabase에서 `email='overod998@gmail.com'`으로 수동 보정 필요.
+- 관리자 PIN 세션과 사용자 Supabase Auth 세션 동시 활성 정책은 아직 미결정. 사용자가 A(동시 허용) 또는 B(상호 배타)를 선택한 뒤 반영한다.
+
+다음 작업자 주의:
+
+- UI 골드 hover 잔재는 Claude 담당이므로 Codex 운영 커밋에서 섞지 않는다.
+- `image/landing*.webp` 미추적 파일은 이번 Codex 작업과 무관하므로 건드리지 않았다.
+
 ## 2026-05-05 - Codex (협업 문서화)
 
 담당:

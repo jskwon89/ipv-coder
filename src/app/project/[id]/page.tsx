@@ -325,7 +325,7 @@ export default function ProjectDetailPage() {
                     body: JSON.stringify({
                       projectId,
                       projectName: project?.name || "",
-                      email: "",
+                      email: user?.email?.trim().toLowerCase() || "",
                       note: requestNote,
                       fileCount: uploadedFiles.length,
                     }),

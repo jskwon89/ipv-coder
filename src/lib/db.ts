@@ -473,6 +473,10 @@ export async function getResultFiles(
 // Common columns stored directly in the service_requests table
 const SERVICE_COMMON_KEYS = ['id', 'email', 'status', 'adminResponse', 'respondedAt', 'createdAt'] as const;
 
+function normalizeEmail(value: unknown): string {
+  return typeof value === 'string' ? value.trim().toLowerCase() : '';
+}
+
 /**
  * Convert a DB row from service_requests into a typed service request object.
  * Common fields come from dedicated columns; everything else from the `data` JSONB.
@@ -497,7 +501,7 @@ function serviceRequestToRow(serviceType: string, obj: Record<string, unknown>):
   const row: Record<string, unknown> = {
     id: obj.id,
     service_type: serviceType,
-    email: obj.email ?? '',
+    email: normalizeEmail(obj.email),
     status: obj.status ?? 'pending',
     admin_response: obj.adminResponse ?? '',
     responded_at: obj.respondedAt || null,
@@ -515,12 +519,13 @@ function serviceRequestToRow(serviceType: string, obj: Record<string, unknown>):
 }
 
 async function _getServiceRequests<T>(serviceType: string, email?: string): Promise<T[]> {
+  const normalizedEmail = normalizeEmail(email);
   let query = supabase
     .from('service_requests')
     .select('*')
     .eq('service_type', serviceType);
-  if (email) {
-    query = query.eq('email', email);
+  if (normalizedEmail) {
+    query = query.eq('email', normalizedEmail);
   }
   const { data, error } = await query.order('created_at', { ascending: false });
   if (error) throw error;

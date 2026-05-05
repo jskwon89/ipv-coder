@@ -19,13 +19,18 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { projectId, projectName, email, note, fileCount } = body;
+    const normalizedEmail = typeof email === 'string' ? email.trim().toLowerCase() : '';
 
     if (!projectId) {
       return Response.json({ error: '프로젝트 ID가 필요합니다.' }, { status: 400 });
     }
 
+    if (!normalizedEmail) {
+      return Response.json({ error: 'Login email is required.' }, { status: 400 });
+    }
+
     const created = await createJudgmentCodingRequest({
-      email: (email || '').trim(),
+      email: normalizedEmail,
       projectId,
       projectName: (projectName || '').trim(),
       note: (note || '').trim(),
