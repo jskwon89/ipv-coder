@@ -284,43 +284,6 @@ export default function LandingPage() {
               </div>
             )}
 
-            {/* My Projects */}
-            {projects.length > 0 && (
-              <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
-                <div className="px-5 sm:px-6 py-4 border-b border-gray-100">
-                  <h3 className="text-lg font-bold text-gray-900">내 프로젝트</h3>
-                </div>
-                <div className="divide-y divide-gray-50">
-                  {projects.slice(0, 5).map((project) => {
-                    const pct = project.caseCount > 0 ? ((project.codedCount / project.caseCount) * 100).toFixed(1) : "0.0";
-                    return (
-                      <Link key={project.id} href={`/project/${project.id}`} className="flex items-center justify-between px-5 sm:px-6 py-4 hover:bg-slate-50 transition-colors group">
-                        <div className="flex items-center gap-3 min-w-0 flex-1">
-                          <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center shrink-0">
-                            <svg className="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-                            </svg>
-                          </div>
-                          <div className="min-w-0">
-                            <h4 className="text-sm sm:text-base font-semibold text-gray-900 group-hover:text-teal-700 transition-colors truncate">{project.name}</h4>
-                            <p className="text-xs text-gray-400 mt-0.5">{project.caseCount}건 중 {project.codedCount}건 완료 &middot; {project.createdAt.slice(0, 10)}</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-3 shrink-0 ml-2">
-                          <span className="text-sm font-bold text-gray-900 hidden sm:block">{pct}%</span>
-                          <div className="w-20 h-2 bg-gray-100 rounded-full overflow-hidden">
-                            <div className="h-full bg-gradient-to-r from-teal-500 to-teal-400 rounded-full" style={{ width: `${project.caseCount > 0 ? (project.codedCount / project.caseCount) * 100 : 0}%` }} />
-                          </div>
-                          <svg className="w-4 h-4 text-gray-300 group-hover:text-teal-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                          </svg>
-                        </div>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
           </div>
         </section>
       )}

@@ -90,6 +90,15 @@ const menuGroups = [
     ],
   },
   {
+    label: "내 의뢰",
+    prefixes: ["/my"],
+    highlight: null as HighlightStyle,
+    requiresUser: true,
+    items: [
+      { label: "내 의뢰", href: "/my" },
+    ],
+  },
+  {
     label: "고객센터",
     prefixes: ["/faq", "/contact", "/credits"],
     highlight: null as HighlightStyle,
@@ -252,7 +261,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
             {/* Desktop nav - flex with auto spacing */}
             <nav className="hidden lg:flex items-center gap-0.5 flex-1 justify-center min-w-0">
-              {menuGroups.map((group) => {
+              {menuGroups.filter((g) => !("requiresUser" in g && g.requiresUser) || !!user).map((group) => {
                 const hl = group.highlight ? highlightStyles[group.highlight] : null;
                 const isActive = group.prefixes.some((p) => pathname === p || pathname.startsWith(p + "/"));
                 return group.items.length === 1 ? (
@@ -332,7 +341,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           <div className="fixed inset-0 z-30 bg-black/30 lg:hidden" onClick={closeMobile} />
           <div className="fixed top-14 left-0 right-0 z-40 bg-white border-b border-gray-200 shadow-lg lg:hidden max-h-[80vh] overflow-y-auto">
             <div className="px-4 py-3 space-y-1">
-              {menuGroups.map((group) => {
+              {menuGroups.filter((g) => !("requiresUser" in g && g.requiresUser) || !!user).map((group) => {
                 const isExpanded = mobileExpandedGroup === group.label;
                 const isGroupActive = group.prefixes.some((p) => pathname === p || pathname.startsWith(p + "/"));
                 const hl = group.highlight ? highlightStyles[group.highlight] : null;
