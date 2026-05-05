@@ -167,10 +167,10 @@ function TopMenuGroup({
                 <Link
                   href={item.href}
                   onClick={onClose}
-                  className={`flex items-center justify-between px-4 py-3 text-[15px] font-semibold transition-all group/item ${
+                  className={`flex items-center justify-between px-4 py-2.5 text-sm font-medium transition-all group/item ${
                     isActive
                       ? "text-teal-700 bg-teal-50"
-                      : "text-gray-800 hover:text-teal-700 hover:bg-teal-50/60"
+                      : "text-gray-600 hover:text-teal-700 hover:bg-teal-50/60"
                   }`}
                 >
                   <span>{item.label}</span>
@@ -254,23 +254,21 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       {/* Top Navigation */}
       <header className="fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-200">
         {/* Utility bar */}
-        <div className="hidden lg:block bg-slate-50 border-b border-gray-100">
+        <div className="hidden lg:block bg-slate-100 border-b border-gray-200">
           <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 xl:px-20">
-            <div className="flex items-center justify-between h-9 text-xs">
-              <div className="flex items-center gap-1.5 text-gray-500">
-                <svg className="w-3.5 h-3.5 text-teal-500" fill="currentColor" viewBox="0 0 20 20">
+            <div className="flex items-center justify-between h-11 text-[13px]">
+              <div className="flex items-center gap-2 text-gray-700 font-medium">
+                <svg className="w-4 h-4 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-.5a.5.5 0 01-.5-.5V10a1 1 0 00-1-1H9z" clipRule="evenodd" />
                 </svg>
-                <span>대학원생·연구자 25% 할인 진행 중</span>
+                <span>석·박사과정 대학원생 25% 할인 진행 중</span>
               </div>
-              <div className="flex items-center gap-4 text-gray-500">
-                <Link href="/samples" className="hover:text-teal-600 transition-colors">결과물 샘플</Link>
+              <div className="flex items-center gap-4 text-gray-700 font-medium">
+                <Link href="/faq" className="hover:text-teal-700 transition-colors">자주 묻는 질문</Link>
                 <span className="text-gray-300">|</span>
-                <Link href="/faq" className="hover:text-teal-600 transition-colors">자주 묻는 질문</Link>
+                <Link href="/contact" className="hover:text-teal-700 transition-colors">문의하기</Link>
                 <span className="text-gray-300">|</span>
-                <Link href="/contact" className="hover:text-teal-600 transition-colors">문의하기</Link>
-                <span className="text-gray-300">|</span>
-                <Link href="/board/qna" className="hover:text-teal-600 transition-colors">Q&amp;A</Link>
+                <Link href="/board/qna" className="hover:text-teal-700 transition-colors">Q&amp;A</Link>
               </div>
             </div>
           </div>
@@ -450,7 +448,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       )}
 
       {/* Main content */}
-      <main className="min-h-screen pt-16 sm:pt-20 lg:pt-[116px]">
+      <main className="min-h-screen pt-16 sm:pt-20 lg:pt-[124px]">
         {children}
       </main>
 

@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/variable/woff2/SUITVariable.css");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap");
 
 :root {
   --background: #f8fafb;
@@ -46,7 +46,7 @@
 body {
   background: #ffffff;
   color: var(--foreground);
-  font-family: "SUIT Variable", SUIT, -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Helvetica Neue", "Segoe UI", "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+  font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", "Malgun Gothic", "Helvetica Neue", "Segoe UI", "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
