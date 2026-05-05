@@ -16,7 +16,10 @@ const serviceLabels: Record<string, string> = {
 };
 
 export async function notifyNewRequest(serviceType: string, email: string, details?: string) {
-  if (!WEBHOOK_URL) return;
+  if (!WEBHOOK_URL) {
+    console.warn('[discord] DISCORD_WEBHOOK_URL is not set — skipping notification');
+    return;
+  }
 
   const label = serviceLabels[serviceType] || serviceType;
   const now = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
@@ -34,7 +37,7 @@ export async function notifyNewRequest(serviceType: string, email: string, detai
   };
 
   try {
-    await fetch(WEBHOOK_URL, {
+    const res = await fetch(WEBHOOK_URL.trim(), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -42,18 +45,25 @@ export async function notifyNewRequest(serviceType: string, email: string, detai
         embeds: [embed],
       }),
     });
-  } catch {
-    // 알림 실패해도 의뢰 접수는 정상 진행
+    if (!res.ok) {
+      const body = await res.text().catch(() => '');
+      console.error(`[discord] notifyNewRequest non-OK status=${res.status} body=${body.slice(0, 200)}`);
+    }
+  } catch (err) {
+    console.error('[discord] notifyNewRequest fetch failed:', err);
   }
 }
 
 export async function notifyContactInquiry(email: string, subject: string) {
-  if (!WEBHOOK_URL) return;
+  if (!WEBHOOK_URL) {
+    console.warn('[discord] DISCORD_WEBHOOK_URL is not set — skipping notification');
+    return;
+  }
 
   const now = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
 
   try {
-    await fetch(WEBHOOK_URL, {
+    const res = await fetch(WEBHOOK_URL.trim(), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -70,18 +80,25 @@ export async function notifyContactInquiry(email: string, subject: string) {
         }],
       }),
     });
-  } catch {
-    // ignore
+    if (!res.ok) {
+      const body = await res.text().catch(() => '');
+      console.error(`[discord] notifyContactInquiry non-OK status=${res.status} body=${body.slice(0, 200)}`);
+    }
+  } catch (err) {
+    console.error('[discord] notifyContactInquiry fetch failed:', err);
   }
 }
 
 export async function notifyLiveChatRequest(email: string, message?: string) {
-  if (!WEBHOOK_URL) return;
+  if (!WEBHOOK_URL) {
+    console.warn('[discord] DISCORD_WEBHOOK_URL is not set — skipping notification');
+    return;
+  }
 
   const now = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
 
   try {
-    await fetch(WEBHOOK_URL, {
+    const res = await fetch(WEBHOOK_URL.trim(), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -99,7 +116,11 @@ export async function notifyLiveChatRequest(email: string, message?: string) {
         }],
       }),
     });
-  } catch {
-    // ignore
+    if (!res.ok) {
+      const body = await res.text().catch(() => '');
+      console.error(`[discord] notifyLiveChatRequest non-OK status=${res.status} body=${body.slice(0, 200)}`);
+    }
+  } catch (err) {
+    console.error('[discord] notifyLiveChatRequest fetch failed:', err);
   }
 }
