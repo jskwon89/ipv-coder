@@ -250,15 +250,15 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     <div className="min-h-screen bg-slate-50/50">
       {/* Top Navigation */}
       <header className="fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-200">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-6">
           <div className="flex items-center h-16 sm:h-20 gap-4">
             {/* Logo */}
             <Link href="/" className="flex items-center shrink-0">
               <Image src="/logo-primer.png" alt="PRIMER" width={220} height={50} className="h-10 sm:h-12 w-auto" priority />
             </Link>
 
-            {/* Desktop nav - flex with auto spacing */}
-            <nav className="hidden lg:flex items-center gap-1 xl:gap-2 flex-1 justify-end min-w-0 ml-4">
+            {/* Desktop nav - 로고와 right side 사이에 메뉴 균등 분포 */}
+            <nav className="hidden lg:flex items-center flex-1 min-w-0 justify-around">
               {menuGroups.filter((g) => !("requiresUser" in g && g.requiresUser) || !!user).map((group) => {
                 const hl = group.highlight ? highlightStyles[group.highlight] : null;
                 const isActive = group.prefixes.some((p) => pathname === p || pathname.startsWith(p + "/"));
@@ -288,7 +288,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </nav>
 
             {/* Right side */}
-            <div className="flex items-center gap-2 sm:gap-3 lg:ml-6">
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
               {user && (
                 <Link
                   href="/my"
