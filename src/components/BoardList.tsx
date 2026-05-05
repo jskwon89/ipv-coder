@@ -31,12 +31,30 @@ function formatDate(value: string) {
   }).replace(/\.\s?$/, "");
 }
 
+const COMMON_EMAIL_DOMAINS = new Set([
+  "gmail.com",
+  "naver.com",
+  "daum.net",
+  "hanmail.net",
+  "kakao.com",
+  "nate.com",
+  "yahoo.com",
+  "yahoo.co.kr",
+  "hotmail.com",
+  "outlook.com",
+  "icloud.com",
+  "live.com",
+  "proton.me",
+  "protonmail.com",
+]);
+
 function maskEmail(email: string) {
   if (!email || !email.includes("@")) return email || "익명";
   const [local, domain] = email.split("@");
   if (!local) return `***@${domain}`;
   const head = local.charAt(0);
-  return `${head}***@${domain}`;
+  const safeDomain = COMMON_EMAIL_DOMAINS.has(domain.toLowerCase()) ? domain : "***";
+  return `${head}***@${safeDomain}`;
 }
 
 export default function BoardList({ category, title, description }: BoardListProps) {
