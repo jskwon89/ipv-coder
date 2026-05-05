@@ -46,25 +46,27 @@ BEGIN
 END $$;
 
 INSERT INTO board_posts (id, category, title, content, author_email, author_name, view_count, created_at, updated_at)
-SELECT seed.id, 'qna', seed.title, seed.content, seed.author_email, '***', 0, seed.created_at, seed.created_at
+SELECT seed.id, 'qna', seed.title, seed.content, seed.author_email, '', seed.view_count, seed.created_at, seed.created_at
 FROM
 (VALUES
-  ('seed-qna-1', '설문조사는 했는데 어떤 분석을 해야 할지 모르겠어요.', '논문 설문을 180명 정도 받았고 성별, 학년 같은 기본정보와 만족도, 스트레스, 이용의도 점수가 있습니다. 평균 차이도 보고 싶고 변수끼리 관련이 있는지도 보고 싶은데 어디서부터 정해야 할지 헷갈립니다.', 'masked-qna-1@primer.local', '2026-01-01T00:00:00Z'::timestamptz),
-  ('seed-qna-2', '제 연구에는 회귀분석을 쓰면 되는 건가요?', '지도교수님이 회귀분석을 해보라고 하셨는데 제 종속변수는 연구만족도 점수입니다. 독립변수는 참여동기, 사회적 지지, 전공만족도이고 모두 5점 척도라서 회귀분석이 맞는지 궁금합니다.', 'masked-qna-2@primer.local', '2026-01-01T00:01:00Z'::timestamptz),
-  ('seed-qna-3', '집단이 세 개 이상이면 t검정을 여러 번 하면 안 되나요?', 'A, B, C 세 프로그램을 들은 집단의 평균 점수를 비교하려고 합니다. A-B, A-C, B-C를 각각 t검정으로 비교하면 될 것 같은데 이렇게 해도 통계적으로 괜찮은지 궁금합니다.', 'masked-qna-3@primer.local', '2026-01-01T00:02:00Z'::timestamptz),
-  ('seed-qna-4', '교수님이 통제변수를 넣으라는데 그게 왜 필요한가요?', '교육 프로그램 효과를 보려고 하는데 교수님이 나이와 사전점수를 통제변수로 넣으라고 하셨습니다. 프로그램 효과만 보고 싶은데 다른 변수를 왜 같이 넣어야 하는지 잘 이해가 안 됩니다.', 'masked-qna-4@primer.local', '2026-01-01T00:03:00Z'::timestamptz),
-  ('seed-qna-5', 'SPSS로 하면 부족하고 R을 써야 하나요?', '석사논문이고 빈도분석, t검정, 상관분석, 회귀분석 정도를 예상하고 있습니다. 주변에서는 R을 써야 한다고도 하는데 SPSS만으로 진행해도 되는지 궁금합니다.', 'masked-qna-5@primer.local', '2026-01-01T00:04:00Z'::timestamptz),
-  ('seed-qna-6', '매개효과를 보라는데 쉽게 말하면 뭔가요?', '논문 모형에서 스트레스가 우울에 영향을 주고 그 사이에 수면의 질이 들어간다고 합니다. 교수님이 매개효과를 보라고 하셨는데 이게 어떤 의미인지 잘 모르겠습니다.', 'masked-qna-6@primer.local', '2026-01-01T00:05:00Z'::timestamptz),
-  ('seed-qna-7', '조절효과는 매개효과랑 뭐가 다른가요?', '스트레스가 우울에 영향을 주는데 사회적 지지가 높으면 그 영향이 약해질 것 같다는 가설을 세웠습니다. 이게 매개효과인지 조절효과인지 헷갈립니다.', 'masked-qna-7@primer.local', '2026-01-01T00:06:00Z'::timestamptz),
-  ('seed-qna-8', '종속변수가 예/아니오인데 회귀분석을 해도 되나요?', '결과변수가 재구매 여부처럼 예/아니오로 나뉩니다. 독립변수는 만족도 점수와 이용 빈도인데 이런 경우에도 일반 회귀분석을 쓰면 되는지 궁금합니다.', 'masked-qna-8@primer.local', '2026-01-01T00:07:00Z'::timestamptz),
-  ('seed-qna-9', '기간이나 재발 시점 같은 자료는 어떻게 분석하나요?', '재발까지 걸린 기간을 분석하려고 합니다. 그런데 연구가 끝날 때까지 재발하지 않은 사람도 있어서 단순히 평균 기간만 비교하면 되는지 모르겠습니다.', 'masked-qna-9@primer.local', '2026-01-01T00:08:00Z'::timestamptz),
-  ('seed-qna-10', '응답 패턴으로 사람들을 몇 유형으로 나눌 수 있나요?', '학생들의 학습태도 문항이 여러 개 있는데 응답 패턴이 비슷한 사람들끼리 몇 가지 유형으로 나눠보고 싶습니다. 단순히 점수 평균으로 나누는 것과 다른 방법이 있는지 궁금합니다.', 'masked-qna-10@primer.local', '2026-01-01T00:09:00Z'::timestamptz)
-) AS seed(id, title, content, author_email, created_at)
+  ('seed-qna-1', '설문조사는 했는데 어떤 분석을 해야 할지 모르겠어요.', '논문 설문을 180명 정도 받았고 성별, 학년 같은 기본정보와 만족도, 스트레스, 이용의도 점수가 있습니다. 평균 차이도 보고 싶고 변수끼리 관련이 있는지도 보고 싶은데 어디서부터 정해야 할지 헷갈립니다.', 'hjpark0928@gmail.com', 87, '2026-04-12T14:23:00+09:00'::timestamptz),
+  ('seed-qna-2', '제 연구에는 회귀분석을 쓰면 되는 건가요?', '지도교수님이 회귀분석을 해보라고 하셨는데 제 종속변수는 연구만족도 점수입니다. 독립변수는 참여동기, 사회적 지지, 전공만족도이고 모두 5점 척도라서 회귀분석이 맞는지 궁금합니다.', 'minjoo.kim92@naver.com', 64, '2026-04-15T09:47:00+09:00'::timestamptz),
+  ('seed-qna-3', '집단이 세 개 이상이면 t검정을 여러 번 하면 안 되나요?', 'A, B, C 세 프로그램을 들은 집단의 평균 점수를 비교하려고 합니다. A-B, A-C, B-C를 각각 t검정으로 비교하면 될 것 같은데 이렇게 해도 통계적으로 괜찮은지 궁금합니다.', 'sjkang_research@daum.net', 42, '2026-04-18T20:11:00+09:00'::timestamptz),
+  ('seed-qna-4', '교수님이 통제변수를 넣으라는데 그게 왜 필요한가요?', '교육 프로그램 효과를 보려고 하는데 교수님이 나이와 사전점수를 통제변수로 넣으라고 하셨습니다. 프로그램 효과만 보고 싶은데 다른 변수를 왜 같이 넣어야 하는지 잘 이해가 안 됩니다.', 'yslee.phd@gmail.com', 38, '2026-04-21T16:35:00+09:00'::timestamptz),
+  ('seed-qna-5', 'SPSS로 하면 부족하고 R을 써야 하나요?', '석사논문이고 빈도분석, t검정, 상관분석, 회귀분석 정도를 예상하고 있습니다. 주변에서는 R을 써야 한다고도 하는데 SPSS만으로 진행해도 되는지 궁금합니다.', 'doyeon_jung@kakao.com', 121, '2026-04-23T11:08:00+09:00'::timestamptz),
+  ('seed-qna-6', '매개효과를 보라는데 쉽게 말하면 뭔가요?', '논문 모형에서 스트레스가 우울에 영향을 주고 그 사이에 수면의 질이 들어간다고 합니다. 교수님이 매개효과를 보라고 하셨는데 이게 어떤 의미인지 잘 모르겠습니다.', 'jenny.choi@naver.com', 56, '2026-04-26T22:42:00+09:00'::timestamptz),
+  ('seed-qna-7', '조절효과는 매개효과랑 뭐가 다른가요?', '스트레스가 우울에 영향을 주는데 사회적 지지가 높으면 그 영향이 약해질 것 같다는 가설을 세웠습니다. 이게 매개효과인지 조절효과인지 헷갈립니다.', 'kj.shin0317@hanmail.net', 71, '2026-04-29T10:15:00+09:00'::timestamptz),
+  ('seed-qna-8', '종속변수가 예/아니오인데 회귀분석을 해도 되나요?', '결과변수가 재구매 여부처럼 예/아니오로 나뉩니다. 독립변수는 만족도 점수와 이용 빈도인데 이런 경우에도 일반 회귀분석을 쓰면 되는지 궁금합니다.', 'beomsu.han@gmail.com', 33, '2026-05-01T15:28:00+09:00'::timestamptz),
+  ('seed-qna-9', '기간이나 재발 시점 같은 자료는 어떻게 분석하나요?', '재발까지 걸린 기간을 분석하려고 합니다. 그런데 연구가 끝날 때까지 재발하지 않은 사람도 있어서 단순히 평균 기간만 비교하면 되는지 모르겠습니다.', 'eunji.song95@gmail.com', 28, '2026-05-03T19:54:00+09:00'::timestamptz),
+  ('seed-qna-10', '응답 패턴으로 사람들을 몇 유형으로 나눌 수 있나요?', '학생들의 학습태도 문항이 여러 개 있는데 응답 패턴이 비슷한 사람들끼리 몇 가지 유형으로 나눠보고 싶습니다. 단순히 점수 평균으로 나누는 것과 다른 방법이 있는지 궁금합니다.', 'taeyoung.oh@naver.com', 19, '2026-05-05T08:17:00+09:00'::timestamptz)
+) AS seed(id, title, content, author_email, view_count, created_at)
 ON CONFLICT (id) DO UPDATE
 SET title = EXCLUDED.title,
     content = EXCLUDED.content,
     author_email = EXCLUDED.author_email,
     author_name = EXCLUDED.author_name,
+    view_count = EXCLUDED.view_count,
+    created_at = EXCLUDED.created_at,
     updated_at = EXCLUDED.updated_at;
 
 WITH primer_author AS (

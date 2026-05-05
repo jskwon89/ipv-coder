@@ -99,9 +99,10 @@ const menuGroups = [
   },
   {
     label: "고객센터",
-    prefixes: ["/faq", "/contact"],
+    prefixes: ["/faq", "/contact", "/pricing"],
     highlight: null as HighlightStyle,
     items: [
+      { label: "가격 안내", href: "/pricing" },
       { label: "자주 묻는 질문", href: "/faq" },
       { label: "문의사항", href: "/contact" },
     ],
@@ -264,6 +265,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 <span>석·박사과정 대학원생 25% 할인 진행 중</span>
               </div>
               <div className="flex items-center gap-4 text-gray-700 font-medium">
+                <Link href="/pricing" className="hover:text-teal-700 transition-colors">가격 안내</Link>
+                <span className="text-gray-300">|</span>
                 <Link href="/faq" className="hover:text-teal-700 transition-colors">자주 묻는 질문</Link>
                 <span className="text-gray-300">|</span>
                 <Link href="/contact" className="hover:text-teal-700 transition-colors">문의하기</Link>
