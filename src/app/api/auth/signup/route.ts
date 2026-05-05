@@ -3,8 +3,9 @@ import { supabaseAdmin } from '@/lib/supabase-admin';
 
 export async function POST(req: Request) {
   const { email, password } = await req.json();
+  const normalizedEmail = typeof email === 'string' ? email.trim().toLowerCase() : '';
 
-  if (!email || !password) {
+  if (!normalizedEmail || !password) {
     return NextResponse.json({ error: '이메일과 비밀번호를 입력해주세요.' }, { status: 400 });
   }
 
@@ -13,7 +14,7 @@ export async function POST(req: Request) {
   }
 
   const { data, error } = await supabaseAdmin.auth.admin.createUser({
-    email,
+    email: normalizedEmail,
     password,
     email_confirm: true,
   });

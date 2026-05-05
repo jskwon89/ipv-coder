@@ -39,6 +39,47 @@
 다음 작업자 주의:
 ```
 
+## 2026-05-05 17:08 - Codex
+
+담당:
+
+- `jskwon@kicj.re.kr` `/my` 미노출 추가 진단, auth 로딩 레이스 보완, 관리자 디버그 엔드포인트 추가
+
+변경 파일:
+
+- `src/app/my/page.tsx`
+- `src/contexts/UserAuthContext.tsx`
+- `src/app/api/auth/signup/route.ts`
+- `src/lib/db.ts`
+- `src/app/api/admin/debug/route.ts`
+- `docs/OPS_RUNBOOK.md`
+- `docs/AI_HANDOFF.md`
+
+완료:
+
+- Supabase 기준 `jskwon@kicj.re.kr`은 service_requests 정확 일치 3건, 정규화 일치 3건, 대소문자/공백 mismatch 0건으로 확인했다.
+- 프로덕션 API 기준 `/api/research-design`, `/api/stats-design`, `/api/contest`가 `jskwon@kicj.re.kr`로 각각 1건씩 반환하는 것을 확인했다.
+- `/my`가 Supabase Auth 세션 복원 중 `user === null` 상태를 로그인 필요로 오판하지 않도록 `UserAuthContext.loading`을 반영했다.
+- 로그인/회원가입 이메일, `contact_inquiries.email` 저장/수정도 trim/lowercase 정규화하도록 보완했다.
+- 관리자 세션 전용 `/api/admin/debug?email=...` 엔드포인트를 추가해 Auth 사용자, `/my` 대상 의뢰 매칭, 빈 이메일 row, 문의 이메일 상태를 점검할 수 있게 했다.
+- `docs/OPS_RUNBOOK.md`에 기존 `service_requests`, `contact_inquiries` 이메일 정규화 SQL을 기록했다.
+
+검증:
+
+- `git diff --check` 통과
+- `npm run lint` 통과. 기존 warning 82건은 남아 있음.
+- `npm run build` 통과
+
+남은 일:
+
+- Supabase SQL Editor에서 정규화 SQL 실행 여부는 운영자가 결정해야 한다. 이번 작업에서는 production 데이터 update를 수행하지 않았다.
+- 기존 빈 이메일 row `1775696531610-p0zjv1x` 수동 연결 여부는 사용자 확인 후 진행한다.
+
+다음 작업자 주의:
+
+- `/api/admin/debug`은 관리자 세션 쿠키가 있어야 접근 가능하다.
+- `image/landing*.webp` 미추적 파일은 이번 Codex 작업과 무관하므로 건드리지 않았다.
+
 ## 2026-05-05 16:59 - Codex
 
 담당:

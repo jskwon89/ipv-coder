@@ -61,7 +61,7 @@ export default function MyPage() {
 }
 
 function MyPageInner() {
-  const { user } = useUser();
+  const { user, loading: authLoading } = useUser();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -79,11 +79,15 @@ function MyPageInner() {
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!user) router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
-  }, [user, router, pathname]);
+    if (!authLoading && !user) router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
+  }, [authLoading, user, router, pathname]);
 
   const fetchAll = useCallback(async () => {
-    if (!user?.email) return;
+    if (authLoading) return;
+    if (!user?.email) {
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     try {
       const normalizedEmail = user.email.trim().toLowerCase();
@@ -113,7 +117,7 @@ function MyPageInner() {
     } finally {
       setLoading(false);
     }
-  }, [user]);
+  }, [authLoading, user]);
 
   useEffect(() => { fetchAll(); }, [fetchAll]);
 
@@ -171,6 +175,9 @@ function MyPageInner() {
     router.replace(`${pathname}?${sp.toString()}`);
   };
 
+  if (authLoading) {
+    return <div className="p-8 max-w-5xl mx-auto text-sm text-gray-400">불러오는 중...</div>;
+  }
   if (!user) return null;
 
   return (

@@ -59,8 +59,9 @@ export function UserAuthProvider({ children }: { children: ReactNode }) {
     email: string,
     password: string
   ): Promise<{ error: string | null }> => {
+    const normalizedEmail = email.trim().toLowerCase();
     const { error } = await supabase.auth.signInWithPassword({
-      email,
+      email: normalizedEmail,
       password,
     });
     if (error) return { error: error.message };
@@ -71,8 +72,9 @@ export function UserAuthProvider({ children }: { children: ReactNode }) {
     email: string,
     password: string
   ): Promise<{ error: string | null }> => {
+    const normalizedEmail = email.trim().toLowerCase();
     const { error } = await supabase.auth.signUp({
-      email,
+      email: normalizedEmail,
       password,
     });
     if (error) return { error: error.message };

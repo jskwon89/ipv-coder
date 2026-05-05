@@ -1527,7 +1527,7 @@ export async function createContactInquiry(
     .from('contact_inquiries')
     .insert({
       id,
-      email: data.email,
+      email: normalizeEmail(data.email),
       name: data.name,
       category: data.category,
       subject: data.subject,
@@ -1556,7 +1556,7 @@ export async function createContactInquiry(
 
 export async function updateContactInquiry(id: string, patch: Partial<ContactInquiry>): Promise<ContactInquiry | undefined> {
   const row: Record<string, unknown> = {};
-  if (patch.email !== undefined) row.email = patch.email;
+  if (patch.email !== undefined) row.email = normalizeEmail(patch.email);
   if (patch.name !== undefined) row.name = patch.name;
   if (patch.category !== undefined) row.category = patch.category;
   if (patch.subject !== undefined) row.subject = patch.subject;

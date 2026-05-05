@@ -62,6 +62,26 @@ ADMIN_SESSION_SECRET=
 
 `ADMIN_PIN`은 관리자 로그인 PIN이다. 클라이언트 코드에 직접 쓰지 않는다. `ADMIN_SESSION_SECRET`은 관리자 세션 쿠키 서명용 값이며, 없으면 `ADMIN_PIN`을 사용해 동작하지만 운영에서는 별도 난수 문자열로 설정하는 것을 권장한다.
 
+## 이메일 정규화 운영 SQL
+
+`service_requests.email`과 `contact_inquiries.email`은 앱 코드에서 저장/조회 시 `trim().toLowerCase()`로 정규화한다. 기존 데이터에 대소문자나 앞뒤 공백이 섞였을 때는 Supabase SQL Editor에서 아래 SQL을 1회 실행한다.
+
+```sql
+update service_requests
+set email = lower(btrim(email))
+where email is not null
+  and email <> lower(btrim(email));
+
+update contact_inquiries
+set email = lower(btrim(email))
+where email is not null
+  and email <> lower(btrim(email));
+```
+
+주의: `email=''`처럼 비어 있는 기존 의뢰는 이 SQL로 사용자 계정에 자동 연결되지 않는다. 소유자가 확인된 row만 별도 승인 후 `update service_requests set email = 'user@example.com' where id = '...'` 형태로 보정한다.
+
+관리자 세션에서 `/api/admin/debug?email=user@example.com`을 호출하면 해당 이메일의 Auth 사용자, `/my` 대상 service_requests 매칭, 빈 이메일 row, 문의 이메일 정규화 상태를 확인할 수 있다.
+
 이메일 발송 기능을 점검할 때는 `src/lib/email.ts`에서 실제로 요구하는 `EMAIL_USER`, `EMAIL_PASS`, `EMAIL_FROM_NAME` 환경변수를 확인한다.
 
 ## 검증 명령
