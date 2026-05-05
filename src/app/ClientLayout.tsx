@@ -154,7 +154,7 @@ function TopMenuGroup({
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 w-60 bg-white rounded-xl border border-gray-200 shadow-xl py-2 z-50 ring-1 ring-black/5">
+        <div className="absolute top-full left-0 mt-2 w-60 bg-white rounded-xl border border-gray-200 shadow-xl py-3 z-50 ring-1 ring-black/5">
           {group.items.map((item) => {
             const isActive = group.prefixes.some(
               (p) => p.startsWith(item.href) && (pathname === p || pathname.startsWith(p + "/"))
@@ -167,7 +167,7 @@ function TopMenuGroup({
                 <Link
                   href={item.href}
                   onClick={onClose}
-                  className={`flex items-center justify-between px-4 py-2.5 text-sm font-medium transition-all group/item ${
+                  className={`flex items-center justify-between px-4 py-3.5 text-sm font-medium transition-all group/item ${
                     isActive
                       ? "text-teal-700 bg-teal-50"
                       : "text-gray-600 hover:text-teal-700 hover:bg-teal-50/60"
@@ -255,7 +255,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       <header className="fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-200">
         {/* Utility bar */}
         <div className="hidden lg:block bg-slate-100 border-b border-gray-200">
-          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 xl:px-20">
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
             <div className="flex items-center justify-between h-11 text-[13px]">
               <div className="flex items-center gap-2 text-gray-700 font-medium">
                 <svg className="w-4 h-4 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
@@ -273,7 +273,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </div>
           </div>
         </div>
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 xl:px-20">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
           <div className="flex items-center h-16 sm:h-20 lg:h-24 gap-4">
             {/* Logo */}
             <Link href="/" className="flex items-center shrink-0">
