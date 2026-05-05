@@ -258,7 +258,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </Link>
 
             {/* Desktop nav - flex with auto spacing */}
-            <nav className="hidden lg:flex items-center gap-0.5 min-w-0">
+            <nav className="hidden lg:flex items-center gap-1 xl:gap-2 flex-1 justify-end min-w-0 ml-4">
               {menuGroups.filter((g) => !("requiresUser" in g && g.requiresUser) || !!user).map((group) => {
                 const hl = group.highlight ? highlightStyles[group.highlight] : null;
                 const isActive = group.prefixes.some((p) => pathname === p || pathname.startsWith(p + "/"));
@@ -288,7 +288,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </nav>
 
             {/* Right side */}
-            <div className="flex items-center gap-2 sm:gap-3 ml-auto">
+            <div className="flex items-center gap-2 sm:gap-3 lg:ml-6">
               {user && (
                 <Link
                   href="/my"
