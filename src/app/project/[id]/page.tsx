@@ -247,7 +247,7 @@ export default function ProjectDetailPage() {
               <span className="text-xs font-semibold text-gray-500">업로드된 파일 ({uploadedFiles.length})</span>
               <button
                 onClick={() => window.open(`/api/projects/${projectId}/files/download-all`, "_blank")}
-                className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium text-white bg-primary rounded-md hover:bg-[#b08a28] transition-colors"
+                className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium text-white bg-primary rounded-md hover:bg-teal-700 transition-colors"
               >
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -284,7 +284,7 @@ export default function ProjectDetailPage() {
                         alert("파일 다운로드에 실패했습니다.");
                       }
                     }}
-                    className="text-xs text-primary hover:text-[#b08a28] font-medium shrink-0"
+                    className="text-xs text-primary hover:text-teal-700 font-medium shrink-0"
                   >
                     다운로드
                   </button>
@@ -337,7 +337,7 @@ export default function ProjectDetailPage() {
                 }
               }}
               disabled={requesting}
-              className="w-full px-6 py-3 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-[#b08a28] transition-colors disabled:opacity-50"
+              className="w-full px-6 py-3 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-teal-700 transition-colors disabled:opacity-50"
             >
               {requesting ? "접수 중..." : `의뢰하기 (${uploadedFiles.length}개 파일)`}
             </button>

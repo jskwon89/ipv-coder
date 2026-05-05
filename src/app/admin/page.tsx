@@ -680,7 +680,7 @@ export default function AdminPage() {
                             const projectId = String((selectedReq.req as Record<string, unknown>).projectId);
                             window.open(`/api/projects/${projectId}/files/download-all`, "_blank");
                           }}
-                          className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium text-white bg-primary rounded-md hover:bg-[#b08a28] transition-colors"
+                          className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium text-white bg-primary rounded-md hover:bg-teal-700 transition-colors"
                         >
                           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -704,7 +704,7 @@ export default function AdminPage() {
                                 const data = await res.json();
                                 if (data.url) window.open(data.url, "_blank");
                               }}
-                              className="text-xs text-primary hover:text-[#b08a28] font-medium shrink-0"
+                              className="text-xs text-primary hover:text-teal-700 font-medium shrink-0"
                             >
                               다운로드
                             </button>
@@ -749,7 +749,7 @@ export default function AdminPage() {
                     <button
                       onClick={handleUpdateRequest}
                       disabled={updating}
-                      className="px-6 py-2.5 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-[#b08a28] disabled:opacity-50 transition-colors"
+                      className="px-6 py-2.5 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-teal-700 disabled:opacity-50 transition-colors"
                     >
                       {updating ? "처리 중..." : "저장"}
                     </button>
@@ -786,7 +786,7 @@ export default function AdminPage() {
                       <button
                         onClick={handleSendAdminChat}
                         disabled={sendingChat || !adminChatInput.trim()}
-                        className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-[#b08a28] disabled:opacity-50"
+                        className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-teal-700 disabled:opacity-50"
                       >
                         전송
                       </button>
@@ -897,7 +897,7 @@ export default function AdminPage() {
                     <button
                       onClick={handleReplyInquiry}
                       disabled={replyUpdating || !adminReply.trim()}
-                      className="px-6 py-2.5 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-[#b08a28] disabled:opacity-50 transition-colors"
+                      className="px-6 py-2.5 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-teal-700 disabled:opacity-50 transition-colors"
                     >
                       {replyUpdating ? "처리 중..." : "답변 저장"}
                     </button>
@@ -1172,7 +1172,7 @@ export default function AdminPage() {
               <button
                 onClick={handleSaveSiteSettings}
                 disabled={savingSettings}
-                className="px-6 py-2.5 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-[#b08a28] disabled:opacity-50 transition-colors"
+                className="px-6 py-2.5 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-teal-700 disabled:opacity-50 transition-colors"
               >
                 {savingSettings ? "저장 중..." : "저장"}
               </button>
