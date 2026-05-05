@@ -40,6 +40,37 @@
 다음 작업자 주의:
 ```
 
+## 2026-05-05 21:28 - Codex
+
+담당:
+
+- 질문/답변 게시판 seed 구조 보정
+
+변경 파일:
+
+- `supabase-board-migration.sql`
+- `docs/AI_HANDOFF.md`
+
+완료:
+
+- Q&A seed를 질문글 안에 답변까지 들어가 있던 구조에서 `질문글 + PRIMER 답변 댓글` 구조로 바꿨다.
+- seed 질문글 작성자명은 모두 `***`로 마스킹했다.
+- seed 답변 댓글은 모두 `PRIMER` 작성자로 등록했다.
+- 라이브 Supabase `board_posts` 10건과 `board_comments` 답변 댓글 10건을 갱신했다.
+
+검증:
+
+- 프로덕션 `/api/board/posts?category=qna&limit=10&offset=0` 200 응답, seed 질문글 작성자명 `***` 확인
+- 프로덕션 `/api/board/posts/seed-qna-2` 200 응답, 질문 본문과 `PRIMER` 답변 댓글 1건 확인
+
+남은 일:
+
+- 없음
+
+다음 작업자 주의:
+
+- Q&A seed 답변 본문은 게시글 content가 아니라 `board_comments`에 `PRIMER` 댓글로 둔다.
+
 ## 2026-05-05 21:10 - Codex
 
 담당:
