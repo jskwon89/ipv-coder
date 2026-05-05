@@ -90,15 +90,6 @@ const menuGroups = [
     ],
   },
   {
-    label: "내 의뢰",
-    prefixes: ["/my"],
-    highlight: null as HighlightStyle,
-    requiresUser: true,
-    items: [
-      { label: "내 의뢰", href: "/my" },
-    ],
-  },
-  {
     label: "고객센터",
     prefixes: ["/faq", "/contact", "/credits"],
     highlight: null as HighlightStyle,
@@ -291,9 +282,16 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
             {/* Right side */}
             <div className="flex items-center gap-2 sm:gap-3">
-              <div className="hidden sm:block">
-                <CreditBalance />
-              </div>
+              {user && (
+                <Link
+                  href="/my"
+                  className={`hidden sm:inline-flex items-center px-3 py-2 rounded-lg text-base font-semibold whitespace-nowrap transition-colors ${
+                    pathname === "/my" || pathname.startsWith("/my/") ? "text-teal-600 bg-teal-50" : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                  }`}
+                >
+                  내 의뢰
+                </Link>
+              )}
 
               {user ? (
                 <div className="hidden sm:flex items-center gap-2">
@@ -314,6 +312,10 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   로그인
                 </Link>
               )}
+
+              <div className="hidden sm:block">
+                <CreditBalance />
+              </div>
 
               {/* Mobile menu button */}
               <button
@@ -391,7 +393,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 );
               })}
               <div className="pt-3 mt-3 border-t border-gray-100 space-y-2">
-                <div className="px-3"><CreditBalance /></div>
+                {user && (
+                  <Link href="/my" onClick={closeMobile} className={`block px-3 py-2.5 rounded-lg text-sm font-semibold ${pathname === "/my" || pathname.startsWith("/my/") ? "text-teal-600 bg-teal-50" : "text-gray-700 hover:bg-gray-50"}`}>
+                    내 의뢰
+                  </Link>
+                )}
                 {user ? (
                   <div className="px-3 py-2 flex items-center justify-between">
                     <span className="text-xs text-gray-500 truncate">{user.email}</span>
@@ -400,6 +406,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 ) : (
                   <Link href="/login" onClick={closeMobile} className="block px-3 py-2.5 text-sm font-medium text-teal-600 hover:bg-teal-50 rounded-lg">로그인</Link>
                 )}
+                <div className="px-3"><CreditBalance /></div>
                 {isAdmin ? (
                   <div className="space-y-1">
                     <Link href="/admin" onClick={closeMobile} className="block px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg">관리자 패널</Link>
