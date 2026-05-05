@@ -256,7 +256,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       <header className="fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-200">
         {/* Utility bar */}
         <div className="hidden lg:block bg-slate-100 border-b border-gray-200">
-          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-4 xl:px-6">
             <div className="flex items-center justify-between h-11 text-[13px]">
               <div className="flex items-center gap-2 text-gray-700 font-medium">
                 <svg className="w-4 h-4 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
@@ -276,11 +276,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </div>
           </div>
         </div>
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-4 xl:px-6">
           <div className="flex items-center h-16 sm:h-20 lg:h-24 gap-4">
             {/* Logo */}
             <Link href="/" className="flex items-center shrink-0">
-              <Image src="/logo-primer.png" alt="PRIMER" width={220} height={50} className="h-10 sm:h-12 w-auto" priority />
+              <Image src="/logo-primer.png" alt="PRIMER" width={220} height={50} className="h-8 sm:h-10 w-auto" priority />
             </Link>
 
             {/* Desktop nav - 로고와 right side 사이에 메뉴 균등 분포 */}
