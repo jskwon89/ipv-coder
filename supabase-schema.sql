@@ -81,6 +81,28 @@ CREATE TABLE contact_inquiries (
   replied_at TIMESTAMPTZ
 );
 
+-- 8. 게시판
+CREATE TABLE board_posts (
+  id TEXT PRIMARY KEY,
+  category TEXT NOT NULL CHECK (category IN ('free', 'qna')),
+  title TEXT NOT NULL,
+  content TEXT NOT NULL,
+  author_email TEXT NOT NULL,
+  author_name TEXT DEFAULT '',
+  view_count INT DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE board_comments (
+  id TEXT PRIMARY KEY,
+  post_id TEXT NOT NULL REFERENCES board_posts(id) ON DELETE CASCADE,
+  content TEXT NOT NULL,
+  author_email TEXT NOT NULL,
+  author_name TEXT DEFAULT '',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- 인덱스
 CREATE INDEX idx_cases_project ON cases(project_id);
 CREATE INDEX idx_dyads_project ON dyads(project_id);
@@ -89,6 +111,9 @@ CREATE INDEX idx_service_requests_type ON service_requests(service_type);
 CREATE INDEX idx_service_requests_status ON service_requests(status);
 CREATE INDEX idx_chat_messages_request ON chat_messages(request_id);
 CREATE INDEX idx_chat_messages_type ON chat_messages(service_type);
+CREATE INDEX idx_board_posts_category ON board_posts(category);
+CREATE INDEX idx_board_posts_created ON board_posts(created_at DESC);
+CREATE INDEX idx_board_comments_post ON board_comments(post_id);
 
 -- RLS 비활성화 (서버사이드 전용)
 ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
@@ -99,6 +124,8 @@ ALTER TABLE chat_messages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE credits ENABLE ROW LEVEL SECURITY;
 ALTER TABLE credit_transactions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE contact_inquiries ENABLE ROW LEVEL SECURITY;
+ALTER TABLE board_posts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE board_comments ENABLE ROW LEVEL SECURITY;
 
 -- 모든 테이블에 anon 접근 허용 (서버사이드 API에서만 호출)
 CREATE POLICY "Allow all" ON projects FOR ALL USING (true) WITH CHECK (true);
@@ -109,3 +136,5 @@ CREATE POLICY "Allow all" ON chat_messages FOR ALL USING (true) WITH CHECK (true
 CREATE POLICY "Allow all" ON credits FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Allow all" ON credit_transactions FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Allow all" ON contact_inquiries FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Allow all" ON board_posts FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Allow all" ON board_comments FOR ALL USING (true) WITH CHECK (true);

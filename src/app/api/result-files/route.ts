@@ -11,9 +11,19 @@ export const dynamic = 'force-dynamic';
 const BUCKET = 'uploads';
 
 const VALID_SERVICE_TYPES = new Set([
-  'research-design', 'stats-design', 'survey', 'judgment-collection', 'judgment-coding',
-  'news-collection', 'data-transform', 'quant-analysis', 'qual-analysis', 'text-analysis-request',
-  'consultation', 'journal-submission', 'contest',
+  'research-design',
+  'stats-design',
+  'survey',
+  'judgment-collection',
+  'judgment-coding',
+  'news-collection',
+  'data-transform',
+  'quant-analysis',
+  'qual-analysis',
+  'text-analysis-request',
+  'consultation',
+  'journal-submission',
+  'contest',
 ]);
 
 function ensureService(serviceType: string | null): serviceType is string {
@@ -27,13 +37,39 @@ async function ensureBucket() {
   }
 }
 
+async function markRequestCompleted(serviceType: string, requestId: string) {
+  const respondedAt = new Date().toISOString();
+  const { data: row, error: selectError } = await supabaseAdmin
+    .from('service_requests')
+    .select('email, status')
+    .eq('service_type', serviceType)
+    .eq('id', requestId)
+    .single();
+  if (selectError) throw selectError;
+
+  const statusChanged = row?.status !== 'completed';
+  if (statusChanged) {
+    const { error: updateError } = await supabaseAdmin
+      .from('service_requests')
+      .update({ status: 'completed', responded_at: respondedAt })
+      .eq('service_type', serviceType)
+      .eq('id', requestId);
+    if (updateError) throw updateError;
+  }
+
+  return {
+    email: (row?.email as string | undefined) ?? '',
+    statusChanged,
+  };
+}
+
 export async function GET(request: NextRequest) {
   try {
     const url = request.nextUrl;
     const serviceType = url.searchParams.get('service_type');
     const requestId = url.searchParams.get('request_id');
     if (!ensureService(serviceType) || !requestId) {
-      return Response.json({ error: 'service_type / request_id 가 필요합니다.' }, { status: 400 });
+      return Response.json({ error: 'service_type and request_id are required' }, { status: 400 });
     }
     const files = await getResultFiles(serviceType, requestId);
     return Response.json({ files });
@@ -61,15 +97,15 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: 'invalid request_id' }, { status: 400 });
     }
     if (!(file instanceof File)) {
-      return Response.json({ error: '파일이 필요합니다.' }, { status: 400 });
+      return Response.json({ error: 'file is required' }, { status: 400 });
     }
     if (file.size > 50 * 1024 * 1024) {
-      return Response.json({ error: '파일 크기는 50MB 이하여야 합니다.' }, { status: 400 });
+      return Response.json({ error: 'file must be 50MB or smaller' }, { status: 400 });
     }
 
     await ensureBucket();
 
-    const safeName = file.name.replace(/[^\w.\-가-힣 ]/g, '_');
+    const safeName = file.name.replace(/[^\w.\-\uAC00-\uD7A3]/g, '_');
     const storagePath = `request-files/${serviceType}/${requestId}/${Date.now()}_${safeName}`;
     const buffer = Buffer.from(await file.arrayBuffer());
 
@@ -80,7 +116,7 @@ export async function POST(request: NextRequest) {
         upsert: false,
       });
     if (uploadError) {
-      return Response.json({ error: `업로드 실패: ${uploadError.message}` }, { status: 500 });
+      return Response.json({ error: `upload failed: ${uploadError.message}` }, { status: 500 });
     }
 
     const meta: ResultFile = {
@@ -91,34 +127,27 @@ export async function POST(request: NextRequest) {
       uploadedAt: new Date().toISOString(),
     };
     await addResultFile(serviceType, requestId, meta);
+    const completion = await markRequestCompleted(serviceType, requestId);
 
-    // Optionally notify the requester by email
     if (notify) {
       try {
-        const { data: row } = await supabaseAdmin
-          .from('service_requests')
-          .select('email')
-          .eq('service_type', serviceType)
-          .eq('id', requestId)
-          .single();
-        const email = (row?.email as string | undefined) ?? '';
-        if (email) {
+        if (completion.email) {
           const siteUrl = getSiteUrl();
           await sendEmail({
-            to: email,
-            subject: `[PRIMER] 결과 파일이 등록되었습니다 - ${file.name}`,
-            body: `안녕하세요.\n\n의뢰 결과 파일 '${file.name}'이(가) 등록되었습니다.\nPRIMER 사이트에서 다운로드하실 수 있습니다.\n\n${siteUrl}\n\n감사합니다.\nPRIMER 팀`,
+            to: completion.email,
+            subject: `[PRIMER] 작업 완료: 결과 파일이 등록되었습니다 - ${file.name}`,
+            body: `안녕하세요.\n\n요청하신 작업이 완료되어 결과 파일 '${file.name}'이 등록되었습니다.\n진행 상태는 '작업 완료'로 변경되었습니다.\n\nPRIMER 사이트의 '내 의뢰' 페이지에서 결과 파일을 다운로드하실 수 있습니다.\n${siteUrl}/my\n\n감사합니다.\nPRIMER 드림`,
           });
         }
       } catch {
-        /* notify failure is non-fatal */
+        /* Notify failure is non-fatal. */
       }
     }
 
-    return Response.json({ file: meta });
+    return Response.json({ file: meta, status: 'completed', statusChanged: completion.statusChanged });
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'unknown';
-    return Response.json({ error: `업로드 처리 실패: ${msg}` }, { status: 500 });
+    return Response.json({ error: `upload handling failed: ${msg}` }, { status: 500 });
   }
 }
 
@@ -133,11 +162,11 @@ export async function DELETE(request: NextRequest) {
     const requestId = url.searchParams.get('request_id');
     const path = url.searchParams.get('path');
     if (!ensureService(serviceType) || !requestId || !path) {
-      return Response.json({ error: 'service_type / request_id / path 가 필요합니다.' }, { status: 400 });
+      return Response.json({ error: 'service_type, request_id, and path are required' }, { status: 400 });
     }
     const expectedPrefix = `request-files/${serviceType}/${requestId}/`;
     if (!path.startsWith(expectedPrefix)) {
-      return Response.json({ error: '유효하지 않은 경로입니다.' }, { status: 400 });
+      return Response.json({ error: 'invalid path' }, { status: 400 });
     }
 
     await supabaseAdmin.storage.from(BUCKET).remove([path]);
@@ -145,6 +174,6 @@ export async function DELETE(request: NextRequest) {
     return Response.json({ ok: true });
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'unknown';
-    return Response.json({ error: `삭제 실패: ${msg}` }, { status: 500 });
+    return Response.json({ error: `delete failed: ${msg}` }, { status: 500 });
   }
 }

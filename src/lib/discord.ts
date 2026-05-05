@@ -97,6 +97,56 @@ export async function notifyContactInquiry(email: string, subject: string) {
   }
 }
 
+export async function notifyNewBoardPost({
+  id,
+  category,
+  title,
+  authorEmail,
+  url,
+}: {
+  id: string;
+  category: string;
+  title: string;
+  authorEmail: string;
+  url: string;
+}) {
+  if (!WEBHOOK_URL) {
+    console.warn('[discord] DISCORD_WEBHOOK_URL is not set - skipping board notification');
+    return;
+  }
+
+  const now = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+  const categoryLabel = category === 'qna' ? '질문/답변' : '자유게시판';
+
+  try {
+    const res = await fetch(WEBHOOK_URL.trim(), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: 'PRIMER',
+        embeds: [{
+          title: `새 게시글: ${title.slice(0, 100)}`,
+          url,
+          color: 0x14b8a6,
+          fields: [
+            { name: '게시판', value: categoryLabel, inline: true },
+            { name: '작성자', value: authorEmail, inline: true },
+            { name: '작성 시간', value: now, inline: false },
+            { name: '바로가기', value: `[게시글 보기](${url})`, inline: false },
+          ],
+          footer: { text: `PRIMER 게시판 알림 · ${id}` },
+        }],
+      }),
+    });
+    if (!res.ok) {
+      const body = await res.text().catch(() => '');
+      console.error(`[discord] notifyNewBoardPost non-OK status=${res.status} body=${body.slice(0, 200)}`);
+    }
+  } catch (err) {
+    console.error('[discord] notifyNewBoardPost fetch failed:', err);
+  }
+}
+
 export async function notifyLiveChatRequest(email: string, message?: string) {
   if (!WEBHOOK_URL) {
     console.warn('[discord] DISCORD_WEBHOOK_URL is not set — skipping notification');

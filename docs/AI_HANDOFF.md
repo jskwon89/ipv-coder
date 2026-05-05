@@ -40,6 +40,59 @@
 다음 작업자 주의:
 ```
 
+## 2026-05-05 20:49 - Codex
+
+담당:
+
+- 결과 파일 업로드 시 의뢰 자동 완료 처리
+- 자유게시판/질문답변 게시판 사용자 작성 기능 구현
+
+변경 파일:
+
+- `src/app/api/result-files/route.ts`
+- `src/app/api/board/posts/route.ts`
+- `src/app/api/board/posts/[id]/route.ts`
+- `src/app/api/board/posts/[id]/comments/route.ts`
+- `src/app/api/board/posts/[id]/comments/[commentId]/route.ts`
+- `src/app/board/free/page.tsx`
+- `src/app/board/qna/page.tsx`
+- `src/app/board/[id]/page.tsx`
+- `src/components/BoardList.tsx`
+- `src/components/BoardDetail.tsx`
+- `src/lib/request-auth.ts`
+- `src/lib/discord.ts`
+- `supabase-schema.sql`
+- `supabase-board-migration.sql`
+- `docs/AI_HANDOFF.md`
+
+완료:
+
+- `POST /api/result-files` 업로드 성공 후 `service_requests.status`가 `completed`가 아니면 `completed`로 전환하고 `responded_at`을 갱신하도록 변경했다.
+- `notify=1`일 때 결과 파일 알림과 상태 변경 알림을 분리하지 않고 "작업 완료" 문구가 들어간 단일 이메일로 통합했다.
+- 라이브 Supabase에서 결과 파일이 이미 있는 contest 의뢰 `1777796114299-tyh5af2`는 `responded_at`이 비어 있어 1회성 보정했다.
+- 라이브 Supabase에 `board_posts`, `board_comments` 테이블이 이미 있음을 확인했고, Q&A seed 8건을 `board_posts`에 중복 없이 upsert했다.
+- 게시판 API를 추가했다. 글 작성/댓글 작성은 Supabase Auth bearer token 로그인 필수, 수정/삭제는 작성자 본인 또는 관리자 쿠키만 허용한다.
+- `/board/free`, `/board/qna`는 목록과 로그인 사용자 글쓰기 UI를 제공한다.
+- `/board/[id]`는 상세, 조회수 증가, 댓글, 작성자/관리자 수정·삭제를 제공한다.
+- 새 게시글 등록 시 Discord 알림을 보내며 `getSiteUrl()/board/[id]` 링크를 포함한다.
+- `supabase-board-migration.sql`에 게시판 테이블/인덱스/RLS/seed와 결과파일 완료 보정 SQL을 기록했다.
+
+검증:
+
+- `git diff --check` 통과
+- `npm run lint` 통과. 기존 warning 위주로 84건은 남아 있음.
+- `npm run build` 통과
+
+남은 일:
+
+- 게시판 운영 메모: 운영 DB가 초기화되거나 새 환경을 만들면 `supabase-board-migration.sql`을 Supabase SQL Editor에서 실행해야 한다.
+- 게시판 UI 문구/스타일 세부 조정은 Claude 담당으로 넘겨도 된다. 정책상 비로그인은 목록만 보고 글쓰기/댓글 작성은 숨김 또는 로그인 링크로 안내한다.
+
+다음 작업자 주의:
+
+- 게시판 API는 client Supabase access token을 `Authorization: Bearer ...`로 보내는 방식이다. 관리자 삭제/수정은 `primer_admin_session` 쿠키만으로 가능하다.
+- `image/landing*.webp` 미추적 파일은 이번 Codex 작업과 무관하므로 건드리지 않았다.
+
 ## 2026-05-05 17:17 - Codex
 
 담당:
