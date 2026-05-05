@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { getGlobalChatMessages, addGlobalChatMessage } from '@/lib/db';
+import { notifyLiveChatRequest } from '@/lib/discord';
 
 export async function GET(request: NextRequest) {
   try {
@@ -30,7 +31,11 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: '메시지를 입력해주세요.' }, { status: 400 });
     }
 
-    const msg = await addGlobalChatMessage(email, sender, message.trim());
+    const trimmed = message.trim();
+    const msg = await addGlobalChatMessage(email, sender, trimmed);
+    if (sender === 'user') {
+      await notifyLiveChatRequest(email, trimmed);
+    }
     return Response.json({ message: msg }, { status: 201 });
   } catch (err) {
     console.error('[global-chat POST] failed:', err);
