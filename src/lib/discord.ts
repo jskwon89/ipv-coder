@@ -1,3 +1,5 @@
+import { getSiteUrl } from './site-url';
+
 const WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
 
 const serviceLabels: Record<string, string> = {
@@ -24,16 +26,19 @@ export async function notifyNewRequest(serviceType: string, email: string, detai
   const label = serviceLabels[serviceType] || serviceType;
   const now = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
 
+  const adminUrl = `${getSiteUrl()}/admin`;
   const embed = {
     title: `새 의뢰 접수: ${label}`,
+    url: adminUrl,
     color: 0x14b8a6,
     fields: [
       { name: '서비스', value: label, inline: true },
       { name: '이메일', value: email, inline: true },
       { name: '접수 시간', value: now, inline: false },
       ...(details ? [{ name: '내용', value: details.slice(0, 200), inline: false }] : []),
+      { name: '바로가기', value: `[관리자 페이지에서 확인](${adminUrl})`, inline: false },
     ],
-    footer: { text: 'PRIMER 알림' },
+    footer: { text: 'PRIMER 알림 · 제목을 누르면 관리자 페이지로 이동' },
   };
 
   try {
@@ -63,6 +68,7 @@ export async function notifyContactInquiry(email: string, subject: string) {
   const now = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
 
   try {
+    const adminUrl = `${getSiteUrl()}/admin`;
     const res = await fetch(WEBHOOK_URL.trim(), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -70,13 +76,15 @@ export async function notifyContactInquiry(email: string, subject: string) {
         username: 'PRIMER',
         embeds: [{
           title: '새 문의 접수',
+          url: adminUrl,
           color: 0x5865f2,
           fields: [
             { name: '이메일', value: email, inline: true },
             { name: '제목', value: subject.slice(0, 100), inline: true },
             { name: '접수 시간', value: now, inline: false },
+            { name: '바로가기', value: `[관리자 페이지에서 답변](${adminUrl})`, inline: false },
           ],
-          footer: { text: 'PRIMER 알림' },
+          footer: { text: 'PRIMER 알림 · 제목을 누르면 관리자 페이지로 이동' },
         }],
       }),
     });
@@ -98,6 +106,7 @@ export async function notifyLiveChatRequest(email: string, message?: string) {
   const now = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
 
   try {
+    const adminUrl = `${getSiteUrl()}/admin`;
     const res = await fetch(WEBHOOK_URL.trim(), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -106,13 +115,15 @@ export async function notifyLiveChatRequest(email: string, message?: string) {
         content: '@everyone',
         embeds: [{
           title: '상담사 연결 요청',
+          url: adminUrl,
           color: 0xef4444,
           fields: [
             { name: '고객', value: email, inline: true },
             { name: '요청 시간', value: now, inline: true },
             ...(message ? [{ name: '내용', value: message.slice(0, 200), inline: false }] : []),
+            { name: '바로가기', value: `[관리자 페이지에서 답변](${adminUrl})`, inline: false },
           ],
-          footer: { text: 'PRIMER 실시간 상담 — 관리자 페이지에서 응답하세요' },
+          footer: { text: 'PRIMER 실시간 상담 · 제목을 누르면 관리자 페이지로 이동' },
         }],
       }),
     });
