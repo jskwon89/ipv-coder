@@ -318,7 +318,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               {user && (
                 <Link
                   href="/my"
-                  className={`hidden sm:inline-flex items-center px-3 py-2 rounded-lg text-base font-semibold whitespace-nowrap transition-colors ${
+                  className={`hidden sm:inline-flex items-center px-3 py-2 rounded-lg text-xl font-semibold whitespace-nowrap transition-colors ${
                     pathname === "/my" || pathname.startsWith("/my/") ? "text-teal-600 bg-teal-50" : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
                   }`}
                 >
