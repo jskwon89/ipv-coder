@@ -41,6 +41,33 @@
 다음 작업자 주의:
 ```
 
+## 2026-05-06 - Claude Code (게시판 작성자 마스킹)
+
+담당:
+
+- 게시판 상세 페이지/댓글의 작성자 표시를 목록과 동일한 마스킹된 이메일로 통일
+
+변경 파일:
+
+- `src/components/BoardDetail.tsx`
+
+완료:
+
+- 상세 본문 작성자: `post.author_name || maskEmail(...)` → `maskEmail(post.author_email)`
+- 댓글 작성자: `comment.author_name || maskEmail(...)` → `maskEmail(comment.author_email)`
+
+검증:
+
+- 코드 수정만. 로컬 lint/build 미실행.
+
+남은 일:
+
+- DB의 `author_name` 컬럼은 그대로 둠. 표시에서만 빼는 정책. 향후 닉네임 기능 도입 시 이 결정 재검토 필요.
+
+다음 작업자 주의:
+
+- `getRequestActor`의 `getUserName`은 user_metadata나 이메일 로컬파트를 사용. 닉네임 정책 변경 시 `src/lib/request-auth.ts` 함께 검토.
+
 ## 2026-05-06 - Claude Code
 
 담당:

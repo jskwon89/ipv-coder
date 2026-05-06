@@ -238,7 +238,7 @@ export default function BoardDetail() {
                 <div className="min-w-0 flex-1">
                   <h1 className="text-2xl font-bold text-gray-900 break-keep">{post.title}</h1>
                   <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-gray-400">
-                    <span className="font-mono">{post.author_name || maskEmail(post.author_email)}</span>
+                    <span className="font-mono">{maskEmail(post.author_email)}</span>
                     <span>|</span>
                     <span>{formatDate(post.created_at)}</span>
                     <span>|</span>
@@ -274,7 +274,7 @@ export default function BoardDetail() {
                     <div className="flex items-start justify-between gap-3">
                       <div>
                         <div className="text-xs text-gray-400">
-                          <span className="font-mono">{comment.author_name || maskEmail(comment.author_email)}</span> · {formatDate(comment.created_at)}
+                          <span className="font-mono">{maskEmail(comment.author_email)}</span> · {formatDate(comment.created_at)}
                         </div>
                         <p className="mt-2 whitespace-pre-wrap text-sm text-gray-700">{comment.content}</p>
                       </div>
