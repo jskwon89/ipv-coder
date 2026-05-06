@@ -272,6 +272,25 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 <Link href="/contact" className="hover:text-teal-700 transition-colors">문의하기</Link>
                 <span className="text-gray-300">|</span>
                 <Link href="/board/qna" className="hover:text-teal-700 transition-colors">Q&amp;A</Link>
+                <span className="text-gray-300">|</span>
+                {user ? (
+                  <span className="flex items-center gap-2">
+                    <svg className="w-3.5 h-3.5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    <span className="text-gray-600 max-w-[160px] truncate">{user.email}</span>
+                    <span className="text-gray-300">|</span>
+                    <button onClick={() => userSignOut()} className="hover:text-teal-700 transition-colors">
+                      로그아웃
+                    </button>
+                  </span>
+                ) : (
+                  <>
+                    <Link href="/login" className="hover:text-teal-700 transition-colors">로그인</Link>
+                    <span className="text-gray-300">/</span>
+                    <Link href="/signup" className="hover:text-teal-700 transition-colors">회원가입</Link>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -330,27 +349,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   내 의뢰
                 </Link>
               )}
-
-              {user ? (
-                <div className="hidden sm:flex items-center gap-2">
-                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-50">
-                    <div className="w-6 h-6 rounded-full bg-teal-100 flex items-center justify-center">
-                      <svg className="w-3.5 h-3.5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                      </svg>
-                    </div>
-                    <span className="text-xs text-gray-600 max-w-[120px] truncate">{user.email}</span>
-                    <button onClick={() => userSignOut()} className="text-[10px] text-gray-400 hover:text-gray-600 transition-colors">
-                      로그아웃
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <Link href="/login" className="hidden sm:inline-flex items-center px-4 py-2 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors">
-                  로그인
-                </Link>
-              )}
-
 
               {/* Mobile menu button */}
               <button
